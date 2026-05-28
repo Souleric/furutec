@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" preserveAspectRatio="xMidYMid slice">
+  
+  <defs>
+    <linearGradient id="dcBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0A1C2E"></stop><stop offset="1" stop-color="#050B14"></stop></linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#dcBg)"></rect>
+  
+  <g fill="#0A1220">
+    <polygon points="40,80 220,100 220,360 40,380"></polygon>
+    <polygon points="380,100 560,80 560,380 380,360"></polygon>
+  </g>
+  <g fill="#1E78C8" opacity="0.6">
+    <rect x="50" y="110" width="160" height="4"></rect>
+    <rect x="50" y="130" width="160" height="4"></rect>
+    <rect x="50" y="150" width="160" height="4"></rect>
+    <rect x="50" y="180" width="160" height="14"></rect>
+    <rect x="50" y="210" width="160" height="4"></rect>
+    <rect x="50" y="230" width="160" height="4"></rect>
+    <rect x="50" y="250" width="160" height="14"></rect>
+    <rect x="390" y="110" width="160" height="4"></rect>
+    <rect x="390" y="130" width="160" height="4"></rect>
+    <rect x="390" y="160" width="160" height="14"></rect>
+    <rect x="390" y="190" width="160" height="4"></rect>
+    <rect x="390" y="220" width="160" height="4"></rect>
+  </g>
+  
+  <rect x="0" y="40" width="600" height="24" fill="#F06A00" opacity="0.2"></rect>
+  <rect x="0" y="52" width="600" height="2" fill="#F06A00"></rect>
+  
+  <polygon points="220,380 380,380 560,380 600,400 0,400 40,380" fill="#050B14"></polygon>
+  <text x="14" y="390" font-family="Inter, Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.3)" letter-spacing="2">PLACEHOLDER · DATA CENTRE</text>
+</svg>

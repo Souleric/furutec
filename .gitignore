@@ -1,0 +1,30 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Playwright runtime / test output
+.playwright-mcp/
+
+# Python (used by the checklist generator)
+__pycache__/
+*.pyc
+
+# Large source video — exceeds GitHub's 100 MB per-file limit.
+# The web build uses the compressed assets/banner-video-2.mp4 instead.
+assets/banner video 2.mov
+
+# Temp / debug files generated while diagnosing rendering
+po-hotspots-debug.png
+po-section-debug.png
+po-final-check.png
+viewport-debug.png
+viewport-debug2.png
+top-debug.png

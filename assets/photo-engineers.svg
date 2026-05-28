@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" preserveAspectRatio="xMidYMid slice">
+  
+  <defs><linearGradient id="twBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A2A30"></stop><stop offset="1" stop-color="#0F0F12"></stop></linearGradient></defs>
+  <rect width="600" height="400" fill="url(#twBg)"></rect>
+  
+  <g fill="#F06A00" opacity="0.2">
+    <circle cx="520" cy="100" r="24"></circle>
+    <circle cx="560" cy="220" r="18"></circle>
+  </g>
+  
+  <g fill="#1A1A1F">
+    <path d="M 80 160 q 30 -70 80 -70 q 50 0 80 70 v 240 h -160 z"></path>
+    <ellipse cx="160" cy="110" rx="40" ry="42" fill="#0A0A0B"></ellipse>
+    <path d="M 120 96 q 40 -54 80 0 v 14 h -80 z" fill="#F06A00"></path>
+    <path d="M 280 160 q 30 -70 80 -70 q 50 0 80 70 v 240 h -160 z" fill="#2A2A30"></path>
+    <ellipse cx="360" cy="110" rx="40" ry="42" fill="#1A1A1F"></ellipse>
+    <path d="M 320 96 q 40 -54 80 0 v 14 h -80 z" fill="#EFEFEF"></path>
+  </g>
+  
+  <rect x="240" y="240" width="100" height="60" rx="4" fill="#0A0A0B"></rect>
+  <rect x="246" y="246" width="88" height="48" fill="#1E78C8" opacity="0.6"></rect>
+  <rect x="195" y="260" width="160" height="8" fill="#FFD89A" opacity="0.7"></rect>
+  <text x="14" y="390" font-family="Inter, Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.3)" letter-spacing="2">PLACEHOLDER · ENGINEERS</text>
+</svg>

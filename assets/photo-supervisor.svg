@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" preserveAspectRatio="xMidYMid slice">
+  
+  <defs><linearGradient id="spBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A2A30"></stop><stop offset="1" stop-color="#0F0F12"></stop></linearGradient></defs>
+  <rect width="600" height="400" fill="url(#spBg)"></rect>
+  
+  <g fill="#F06A00" opacity="0.25">
+    <circle cx="480" cy="80" r="30"></circle>
+    <circle cx="540" cy="180" r="22"></circle>
+    <circle cx="470" cy="320" r="18"></circle>
+  </g>
+  
+  <g fill="#0A0A0B">
+    <path d="M 220 170 q 35 -80 90 -80 q 55 0 90 80 v 230 h -180 z"></path>
+    <ellipse cx="310" cy="110" rx="44" ry="46"></ellipse>
+  </g>
+  
+  <path d="M 266 96 q 44 -56 88 0 v 14 h -88 z" fill="#EFEFEF"></path>
+  <rect x="266" y="108" width="88" height="4" fill="#C8C8CE"></rect>
+  
+  <rect x="230" y="250" width="160" height="8" fill="#FFD89A"></rect>
+  <rect x="230" y="280" width="160" height="8" fill="#FFD89A"></rect>
+  <text x="14" y="390" font-family="Inter, Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.3)" letter-spacing="2">PLACEHOLDER · SUPERVISOR</text>
+</svg>

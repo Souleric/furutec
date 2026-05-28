@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <rect width="400" height="400" fill="#F7F7F7"></rect>
+  
+  <g transform="translate(40 80)">
+    
+    <rect x="0" y="40" width="320" height="120" fill="#D9D9DD" stroke="#9FA2A8" stroke-width="1.5"></rect>
+    <rect x="0" y="40" width="320" height="8" fill="#B8BBC1"></rect>
+    <rect x="0" y="152" width="320" height="8" fill="#B8BBC1"></rect>
+    
+    <g stroke="#9FA2A8" stroke-width="1">
+      <line x1="60" y1="48" x2="60" y2="152"></line>
+      <line x1="120" y1="48" x2="120" y2="152"></line>
+      <line x1="180" y1="48" x2="180" y2="152"></line>
+      <line x1="240" y1="48" x2="240" y2="152"></line>
+    </g>
+    
+    <rect x="-12" y="34" width="18" height="132" fill="#C27A3A"></rect>
+    <rect x="-12" y="34" width="18" height="8" fill="#8F5420"></rect>
+    <rect x="314" y="34" width="18" height="132" fill="#C27A3A"></rect>
+    <rect x="314" y="34" width="18" height="8" fill="#8F5420"></rect>
+    
+    <g fill="#555">
+      <circle cx="-3" cy="52" r="3"></circle>
+      <circle cx="-3" cy="100" r="3"></circle>
+      <circle cx="-3" cy="148" r="3"></circle>
+      <circle cx="323" cy="52" r="3"></circle>
+      <circle cx="323" cy="100" r="3"></circle>
+      <circle cx="323" cy="148" r="3"></circle>
+    </g>
+    
+    <text x="130" y="108" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="800" fill="#1A1A1A" letter-spacing="1">FURUTEC</text>
+  </g>
+  <text x="200" y="320" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#555">AH Compact Sandwich Busduct</text>
+  <text x="200" y="340" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="11" fill="#9A9A9A">Indoor Installation · 630 – 6300A</text>
+</svg>

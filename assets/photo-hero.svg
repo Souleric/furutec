@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" preserveAspectRatio="xMidYMid slice">
+  
+  <defs>
+    <linearGradient id="heroBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1A1A1F"></stop>
+      <stop offset="0.6" stop-color="#2A2A30"></stop>
+      <stop offset="1" stop-color="#0F0F12"></stop>
+    </linearGradient>
+    <linearGradient id="heroVignette" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="rgba(0,0,0,0.2)"></stop>
+      <stop offset="1" stop-color="rgba(0,0,0,0.65)"></stop>
+    </linearGradient>
+    <pattern id="gridP" width="120" height="120" patternUnits="userSpaceOnUse">
+      <path d="M 120 0 L 0 0 0 120" fill="none" stroke="#3A3A40" stroke-width="0.5"></path>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#heroBg)"></rect>
+  <rect width="1600" height="900" fill="url(#gridP)" opacity="0.3"></rect>
+
+  
+  <g opacity="0.55" fill="#0A0A0B">
+    <rect x="0" y="620" width="260" height="280"></rect>
+    <rect x="260" y="580" width="180" height="320"></rect>
+    <rect x="1180" y="600" width="200" height="300"></rect>
+    <rect x="1380" y="560" width="220" height="340"></rect>
+  </g>
+
+  
+  <circle cx="950" cy="480" r="420" fill="#F06A00" opacity="0.12"></circle>
+  <circle cx="860" cy="520" r="200" fill="#F06A00" opacity="0.18"></circle>
+
+  
+  <g fill="#0A0A0B" opacity="0.9">
+    
+    <path d="M 620 520 q 30 -70 80 -70 q 50 0 80 70 v 260 h -160 z"></path>
+    <ellipse cx="700" cy="440" rx="46" ry="48" fill="#18181B"></ellipse>
+    <path d="M 654 420 q 46 -60 92 0 v 14 h -92 z" fill="#2A2A30"></path>
+    
+    <path d="M 820 540 q 30 -70 80 -70 q 50 0 80 70 v 260 h -160 z" fill="#C24B00"></path>
+    <ellipse cx="900" cy="460" rx="46" ry="48" fill="#1A1A1F"></ellipse>
+    <path d="M 854 440 q 46 -60 92 0 v 14 h -92 z" fill="#F06A00"></path>
+    <rect x="830" y="600" width="140" height="10" fill="#F3A25B"></rect>
+    <rect x="830" y="640" width="140" height="10" fill="#F3A25B"></rect>
+  </g>
+
+  
+  <g opacity="0.6">
+    <rect x="0" y="140" width="1600" height="60" fill="#3A3A40"></rect>
+    <rect x="0" y="140" width="1600" height="4" fill="#4A4A52"></rect>
+    <rect x="0" y="196" width="1600" height="4" fill="#18181B"></rect>
+    <g stroke="#18181B" stroke-width="1">
+      <line x1="200" y1="144" x2="200" y2="196"></line>
+      <line x1="400" y1="144" x2="400" y2="196"></line>
+      <line x1="600" y1="144" x2="600" y2="196"></line>
+      <line x1="800" y1="144" x2="800" y2="196"></line>
+      <line x1="1000" y1="144" x2="1000" y2="196"></line>
+      <line x1="1200" y1="144" x2="1200" y2="196"></line>
+      <line x1="1400" y1="144" x2="1400" y2="196"></line>
+    </g>
+  </g>
+
+  
+  <rect width="1600" height="900" fill="url(#heroVignette)"></rect>
+
+  
+  <text x="30" y="870" font-family="Inter, Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.3)" letter-spacing="2">PLACEHOLDER · SWAP FOR FACTORY PHOTOGRAPHY</text>
+</svg>

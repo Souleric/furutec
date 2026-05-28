@@ -1,0 +1,1126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Get a Quote — Furutec Busduct Systems</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+<style id="furutec-tokens">
+/* ============================================================
+   Furutec — Industrial Design Tokens
+   Modelled after the "Validus" industrial site template
+   (bold condensed type + orange/black/white).
+   Content: Furutec busduct systems (busduct, data centre, smart monitoring).
+   ============================================================ */
+
+:root {
+  /* ---------- BRAND COLORS ---------- */
+  --orange-700: #1F2270;   /* pressed */
+  --orange-600: #262986;   /* hover */
+  --orange-500: #2E3192;   /* primary */
+  --orange-400: #4248B5;   /* light hover */
+  --orange-100: #DCDEF2;   /* tinted bg */
+  --orange-50:  #EEEFF8;
+
+  --ink-950: #0A0A0B;      /* full black panels */
+  --ink-900: #111114;      /* dark section bg, primary text */
+  --ink-800: #1A1A1F;
+  --ink-700: #2A2A30;
+  --ink-600: #4A4A52;
+  --ink-500: #6B6B73;      /* secondary body */
+  --ink-400: #9A9AA2;      /* muted */
+  --ink-300: #C8C8CE;      /* disabled, dividers on dark */
+  --line-200: #E6E6EA;
+  --line-100: #F1F1F3;
+  --bg-100:  #F6F6F8;
+  --bg-50:   #FAFAFB;
+  --white:   #FFFFFF;
+
+  /* ---------- SEMANTIC ---------- */
+  --fg:         var(--ink-900);
+  --fg-muted:   var(--ink-500);
+  --fg-subtle:  var(--ink-400);
+  --fg-inverse: var(--white);
+  --bg:         var(--white);
+  --bg-dark:    var(--ink-900);
+  --bg-orange:  var(--orange-500);
+  --border:     var(--line-200);
+  --primary:    var(--orange-500);
+  --primary-hover: var(--orange-400);
+
+  /* ---------- TYPE FAMILIES ---------- */
+  /* Display: condensed/squarish industrial — Saira Condensed is the
+     closest Google Font to the reference (Barlow Condensed is the fallback).
+     Body: Inter — geometric neutral sans. */
+  --font-display: "Saira Condensed", "Barlow Condensed", "Oswald",
+                  "Arial Narrow", Impact, sans-serif;
+  --font-sans:    "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-num:     "Saira Condensed", "Barlow Condensed", sans-serif;
+  --font-mono:    "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+
+  /* ---------- TYPE SCALE ---------- */
+  --fs-xs:   11px;
+  --fs-sm:   12px;
+  --fs-base: 14px;    /* body baseline */
+  --fs-md:   16px;
+  --fs-lg:   18px;
+  --fs-xl:   22px;
+  --fs-2xl:  28px;
+  --fs-3xl:  36px;
+  --fs-4xl:  48px;
+  --fs-5xl:  64px;
+  --fs-hero: 84px;    /* hero h1 — reference is ~90px at design width */
+  --fs-mega: 120px;   /* date numerals on blog cards */
+
+  --lh-tight:  1.05;
+  --lh-snug:   1.2;
+  --lh-normal: 1.55;
+  --lh-loose:  1.7;
+
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-semibold:600;
+  --fw-bold:    700;
+  --fw-heavy:   800;
+
+  --ls-tight:  -0.01em;
+  --ls-wide:   0.05em;
+  --ls-mega:   0.1em;
+
+  /* ---------- SPACING (4px base) ---------- */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-10: 40px;
+  --s-12: 48px;
+  --s-16: 64px;
+  --s-20: 80px;
+  --s-24: 96px;
+  --s-32: 128px;
+
+  /* ---------- RADII ---------- */
+  /* Reference is SQUARE — almost no radii. Circular icons + pills only. */
+  --r-none: 0;
+  --r-xs:   2px;
+  --r-sm:   4px;
+  --r-md:   8px;
+  --r-pill: 999px;
+
+  /* ---------- SHADOWS ---------- */
+  --shadow-sm:  0 1px 2px rgba(17,17,20,.04);
+  --shadow-md:  0 6px 20px rgba(17,17,20,.08);
+  --shadow-lg:  0 16px 40px rgba(17,17,20,.12);
+  --shadow-card:0 8px 24px rgba(17,17,20,.06);
+
+  /* ---------- LAYOUT ---------- */
+  --container:  1200px;
+  --container-wide: 1320px;
+  --gutter:     24px;
+  --section-y:  96px;
+
+  /* ---------- MOTION ---------- */
+  --ease-std:   cubic-bezier(.4, 0, .2, 1);
+  --ease-out:   cubic-bezier(.22, 1, .36, 1);
+  --dur-fast:   150ms;
+  --dur-med:    250ms;
+  --dur-slow:   400ms;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img, svg { display: block; max-width: 100%; }
+
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--orange-500); }
+
+button { font-family: inherit; cursor: pointer; }
+
+/* ============================================================
+   TYPE CLASSES
+   ============================================================ */
+
+/* Display — condensed industrial headlines.
+   Matches ref: very tight leading, slight letter-spacing, 600-700 weight. */
+.display, h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  color: var(--fg);
+  margin: 0 0 var(--s-4);
+}
+
+h1, .h1 { font-size: var(--fs-hero); font-weight: var(--fw-bold); line-height: 1.02; }
+h2, .h2 { font-size: var(--fs-4xl); line-height: 1.1; }
+h3, .h3 { font-size: var(--fs-2xl); line-height: 1.15; }
+h4, .h4 { font-size: var(--fs-xl);  line-height: 1.2; }
+
+/* Eyebrow — small orange caps above headlines. */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-wide);
+  color: var(--orange-500);
+  text-transform: none;     /* ref uses title-case + "!" */
+  margin: 0 0 var(--s-3);
+  display: inline-block;
+}
+
+p, .body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: var(--lh-loose);
+  color: var(--ink-500);
+  margin: 0 0 var(--s-4);
+}
+
+.body-lg { font-size: var(--fs-md); }
+
+.meta, small {
+  font-size: var(--fs-sm);
+  color: var(--ink-400);
+}
+
+/* Numeric style for step numbers, dates, stats */
+.num {
+  font-family: var(--font-num);
+  font-weight: var(--fw-regular);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* Links inside copy */
+.text-link {
+  color: var(--fg);
+  border-bottom: 1px solid var(--fg);
+  font-weight: var(--fw-semibold);
+}
+.text-link:hover { color: var(--orange-500); border-color: var(--orange-500); }
+
+
+  /* ── Button hover interactions ─────────────────────────────── */
+  .btn-dark {
+    border: 1.5px solid transparent !important;
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+  }
+  .btn-dark:hover {
+    background: transparent !important;
+    color: #141414 !important;
+    border-color: #141414 !important;
+  }
+  .btn-outline {
+    background: transparent !important;
+    color: #111114 !important;
+    border: 1.5px solid #111114 !important;
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+  }
+  .btn-outline:hover {
+    background: #141414 !important;
+    color: #FFFFFF !important;
+    border-color: #141414 !important;
+  }
+  /* White-filled button → hover: transparent + white outline */
+  .btn-white-filled {
+    background: #FFFFFF !important;
+    color: #111114 !important;
+    border: 1.5px solid transparent !important;
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+  }
+  .btn-white-filled:hover {
+    background: transparent !important;
+    color: #FFFFFF !important;
+    border-color: #FFFFFF !important;
+  }
+  /* White-outline button → hover: white filled + black text */
+  .btn-white-outline {
+    background: transparent !important;
+    color: #FFFFFF !important;
+    border: 1.5px solid #FFFFFF !important;
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+  }
+  .btn-white-outline:hover {
+    background: #FFFFFF !important;
+    color: #111114 !important;
+    border-color: #FFFFFF !important;
+  }
+  /* ─────────────────────────────────────────────────────────── */
+
+  /* Blue filled button hover */
+  .btn-blue {
+    border:1.5px solid transparent !important;
+    transition:background 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+  }
+  .btn-blue:hover {
+    background:transparent !important;
+    color:#2E3192 !important;
+    border-color:#2E3192 !important;
+  }
+
+</style>
+
+<style>
+  html { background: #FFFFFF; }
+  body { background: transparent; }
+  main { display: block; }
+  @keyframes spinRing { to { transform: rotate(360deg); } }
+  @keyframes busductFloat {
+    0%, 100% { transform: translateY(0) rotate(-0.4deg); }
+    50%      { transform: translateY(-5px) rotate(0.4deg); }
+  }
+
+  /* Hero slide content fade-in (triggered when slide gets .is-active) */
+  .hero-fade {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 900ms cubic-bezier(0.22, 1, 0.36, 1),
+                transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .hero-slide.is-active .hero-fade {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .hero-slide.is-active .hero-fade-1 { transition-delay: 200ms; }
+  .hero-slide.is-active .hero-fade-2 { transition-delay: 400ms; }
+  .hero-slide.is-active .hero-fade-3 { transition-delay: 600ms; }
+
+  /* ============================================================
+     Responsive header — hamburger on mobile, scaling logo
+     ============================================================ */
+  #ft-header-inner { gap: 32px; padding: 16px 32px; }
+  #ft-burger { display: none; }
+  #ft-mobile-nav { display: none; }
+  .ft-logo-img { height: 44px; width: auto; display: block; }
+
+  /* Tablet: tighten spacing, shrink logo */
+  @media (max-width: 1100px) {
+    #ft-header-inner { gap: 20px; padding: 14px 24px; }
+    #ft-nav { gap: 20px; }
+    #ft-nav a { font-size: 12px; padding: 20px 0; }
+    .ft-logo-img { height: 38px; }
+    #ft-phone { display: none; }
+  }
+
+  /* Mobile: hamburger replaces nav, quote button shrinks, logo smaller */
+  @media (max-width: 820px) {
+    #ft-header-inner {
+      grid-template-columns: auto auto !important;
+      gap: 12px;
+      padding: 12px 18px;
+    }
+    .ft-logo-img { height: 32px; }
+    #ft-nav { display: none !important; }
+    #ft-utility { gap: 10px; }
+    #ft-quote-label { display: none; }
+    #ft-quote-btn { padding: 0 14px !important; }
+    #ft-burger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border: 1px solid #E6E6EA;
+      background: #FFFFFF;
+      cursor: pointer;
+      padding: 0;
+    }
+    #ft-burger span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: #111114;
+      position: relative;
+    }
+    #ft-burger span::before,
+    #ft-burger span::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 20px;
+      height: 2px;
+      background: #111114;
+    }
+    #ft-burger span::before { top: -6px; }
+    #ft-burger span::after  { top: 6px; }
+    #ft-burger.open span { background: transparent; }
+    #ft-burger.open span::before { top: 0; transform: rotate(45deg); }
+    #ft-burger.open span::after  { top: 0; transform: rotate(-45deg); }
+
+    #ft-mobile-nav {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #FFFFFF;
+      border-top: 1px solid #F1F1F3;
+      border-bottom: 1px solid #F1F1F3;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+      padding: 8px 0;
+      z-index: 30;
+    }
+    #ft-mobile-nav.open { display: block; }
+    #ft-mobile-nav a {
+      display: block;
+      padding: 14px 24px;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      font-weight: 500;
+      color: #111114;
+      border-bottom: 1px solid #F1F1F3;
+    }
+    #ft-mobile-nav a:last-child { border-bottom: none; }
+    #ft-mobile-nav a.active { color: #2E3192; }
+  }
+
+  /* Small phones */
+  @media (max-width: 420px) {
+    .ft-logo-img { height: 28px; }
+    #ft-header-inner { padding: 10px 14px; gap: 8px; }
+    #ft-quote-btn { height: 40px !important; }
+  }
+
+  /* Service cards: hover -> blue + slight enlarge */
+  .service-card {
+    cursor: pointer;
+    transition: background 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+  }
+  .service-card .sc-pattern {
+    opacity: 0;
+    transition: opacity 220ms ease;
+  }
+  .service-card .sc-icon,
+  .service-card .sc-title,
+  .service-card .sc-desc,
+  .service-card .sc-cta-text,
+  .service-card .sc-cta-circle,
+  .service-card .sc-cta-arrow {
+    transition: color 220ms ease, stroke 220ms ease, background 220ms ease;
+  }
+  .service-card:hover {
+    background: #2E3192 !important;
+    transform: scale(1.03);
+    z-index: 2;
+    box-shadow: 0 18px 40px rgba(46, 49, 146, 0.22);
+  }
+  .service-card:hover .sc-pattern { opacity: 1; }
+  .service-card:hover .sc-icon { stroke: #FFFFFF !important; }
+  .service-card:hover .sc-title { color: #FFFFFF !important; }
+  .service-card:hover .sc-desc { color: rgba(255, 255, 255, 0.85) !important; }
+  .service-card:hover .sc-cta-text { color: #FFFFFF !important; }
+  .service-card:hover .sc-cta-circle { background: #FFFFFF !important; }
+  .service-card:hover .sc-cta-arrow { stroke: #2E3192 !important; }
+
+  /* Scroll-triggered reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
+                transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.reveal-image {
+    transform: scale(1.08);
+    transition: opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
+                transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+  }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<style>
+html { scroll-padding-top: 80px; }
+</style>
+<style>
+/* === furutec-btn-polish v2 === */
+.btn-dark, .btn-outline, .btn-blue, .btn-submit-now,
+.btn-white-filled, .btn-white-outline,
+.ft-hero-btn-primary, .ft-hero-btn-secondary,
+.ps-btn-primary, .ps-btn-secondary {
+  border-radius: 8px !important;
+}
+
+.btn-arrow {
+  position: relative; display: inline-block;
+  width: 28px; height: 28px; overflow: hidden;
+  line-height: 1;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.btn-arrow > span {
+  position: absolute; inset: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: transform .35s cubic-bezier(.22,1,.36,1);
+}
+.btn-arrow > span svg {
+  width: 24px; height: 24px;
+}
+.btn-arrow > .a { transform: translateX(0); }
+.btn-arrow > .b { transform: translateX(-110%); }
+
+.btn-dark:hover  .btn-arrow > .a,
+.btn-outline:hover  .btn-arrow > .a,
+.btn-blue:hover  .btn-arrow > .a,
+.btn-submit-now:hover  .btn-arrow > .a,
+.btn-white-filled:hover  .btn-arrow > .a,
+.btn-white-outline:hover  .btn-arrow > .a,
+.ft-hero-btn-primary:hover  .btn-arrow > .a,
+.ft-hero-btn-secondary:hover  .btn-arrow > .a,
+.ps-btn-primary:hover  .btn-arrow > .a,
+.ps-btn-secondary:hover  .btn-arrow > .a {
+  transform: translateX(110%);
+}
+.btn-dark:hover  .btn-arrow > .b,
+.btn-outline:hover  .btn-arrow > .b,
+.btn-blue:hover  .btn-arrow > .b,
+.btn-submit-now:hover  .btn-arrow > .b,
+.btn-white-filled:hover  .btn-arrow > .b,
+.btn-white-outline:hover  .btn-arrow > .b,
+.ft-hero-btn-primary:hover  .btn-arrow > .b,
+.ft-hero-btn-secondary:hover  .btn-arrow > .b,
+.ps-btn-primary:hover  .btn-arrow > .b,
+.ps-btn-secondary:hover  .btn-arrow > .b {
+  transform: translateX(0);
+}
+</style>
+</head>
+
+<body>
+
+<main data-screen-label="Furutec Homepage">
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<style>
+  /* Products dropdown */
+  .ft-nav-dropdown { position:relative; display:inline-flex; align-items:center; }
+  .ft-nav-dropdown > a { display:inline-flex; align-items:center; gap:5px; }
+  .ft-nav-menu {
+    position:absolute; top:calc(100% + 0px); left:50%;
+    transform:translateX(-50%) translateY(8px);
+    min-width:260px; background:#FFFFFF;
+    border:1px solid #ECECF1;
+    box-shadow:0 16px 36px rgba(17,17,20,0.10);
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity 140ms ease, transform 140ms ease, visibility 140ms;
+    z-index:50; padding:8px 0;
+  }
+  .ft-nav-dropdown:hover .ft-nav-menu,
+  .ft-nav-dropdown:focus-within .ft-nav-menu {
+    opacity:1; visibility:visible; pointer-events:auto;
+    transform:translateX(-50%) translateY(0);
+  }
+  .ft-nav-menu a {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:11px 22px; font-family:var(--font-sans);
+    font-size:13px; font-weight:500; color:#4A4A52;
+    text-decoration:none;
+    transition:background 80ms ease, color 80ms ease, padding-left 80ms ease, border-color 80ms ease;
+  }
+  .ft-nav-menu a:hover {
+    background:#F4F6FB; color:#2E3192; padding-left:26px;
+    border-left:2px solid #2E3192;
+  }
+  .ft-nav-menu a svg { opacity:0; transition:opacity 80ms ease; }
+  .ft-nav-menu a:hover svg { opacity:1; }
+</style>
+<header style="position:sticky;top:0;z-index:40;width:100%;background:#FFFFFF;border-bottom:1px solid #F1F1F3;">
+  <div id="ft-header-inner" style="max-width:1320px;margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:32px;padding:16px 32px;">
+    <a href="index.html" style="display:inline-flex;align-items:center;text-decoration:none;">
+      <img class="ft-logo-img" src="assets/Logo.jpeg" alt="Furutec — Busduct System"/>
+    </a>
+
+    <nav id="ft-nav" style="display:flex;gap:28px;justify-content:center;">
+      <a href="index.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">Home
+        </a>
+      <div class="ft-nav-dropdown">
+        <a href="product.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
+          Our Products
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          
+        </a>
+        <div class="ft-nav-menu" role="menu">
+          <a href="product.html#indoor" role="menuitem">Indoor Solution <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+          <a href="product.html#outdoor" role="menuitem">Outdoor Solution <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+          <a href="product.html#datacenter" role="menuitem">Data Centre Solution <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+          <a href="product.html#power" role="menuitem">Power Monitoring Solution <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+          <a href="product.html#lightning" role="menuitem">Lightning Solution <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+          <a href="product.html#lightning" role="menuitem">Lightning Solution <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+      <div class="ft-nav-dropdown">
+        <a href="portfolio.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
+          Portfolio
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          
+        </a>
+        <div class="ft-nav-menu" role="menu">
+          <a href="portfolio.html" role="menuitem">Certificate Credential <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+          <a href="portfolio-track-record.html" role="menuitem">Track Record <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+    </nav>
+
+    <div id="ft-utility" style="display:flex;align-items:center;gap:20px;">
+      <div id="ft-phone" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-sans);font-size:13px;font-weight:600;color:#111114;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M5 4h4l2 5-2 1a12 12 0 0 0 5 5l1-2 5 2v4a1 1 0 0 1-1 1A17 17 0 0 1 4 5a1 1 0 0 1 1-1Z"/></svg>
+        <span>+603-5635 0538</span>
+      </div>
+      <a href="quote.html" id="ft-quote-btn" class="btn-dark" style="display:inline-flex;align-items:center;gap:12px;border:none;padding:0 24px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:opacity 200ms ease;background:#141414;color:#FFFFFF;text-decoration:none;">
+        <span id="ft-quote-label" style="font-family:var(--font-sans);font-size:13px;font-weight:600;text-transform:none;">Get A Quote</span>
+        <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
+      </a>
+      <button id="ft-burger" aria-label="Open menu" aria-expanded="false"><span></span></button>
+    </div>
+  </div>
+  <nav id="ft-mobile-nav" aria-label="Mobile">
+    <a href="index.html">Home</a>
+    <a href="product.html">Our Products</a>
+    <a href="portfolio.html">Portfolio</a>
+  </nav>
+</header>
+<script>
+  (function () {
+    var burger = document.getElementById('ft-burger');
+    var menu = document.getElementById('ft-mobile-nav');
+    if (!burger || !menu) return;
+    function close() { burger.classList.remove('open'); menu.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); }
+    burger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = !burger.classList.contains('open');
+      burger.classList.toggle('open', open);
+      menu.classList.toggle('open', open);
+      burger.setAttribute('aria-expanded', String(open));
+    });
+    document.addEventListener('click', function (e) {
+      if (!menu.classList.contains('open')) return;
+      if (menu.contains(e.target) || burger.contains(e.target)) return;
+      close();
+    });
+    menu.addEventListener('click', function (e) { if (e.target.tagName === 'A') close(); });
+  })();
+</script>
+
+
+<!-- PAGE HEADER -->
+<section style="background:#F4F6FB;padding:80px 0 64px;border-bottom:1px solid #ECECF1;">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px;text-align:center;">
+    <span class="eyebrow" style="display:inline-block;margin-bottom:14px;">GET A QUOTE</span>
+    <h1 style="font-family:var(--font-display);font-size:clamp(42px,5vw,72px);font-weight:700;line-height:1.05;letter-spacing:-0.01em;color:#111114;margin:0 0 16px;text-wrap:balance;">
+      Specify Your Next <span style="color:#2E3192;">Busduct Project.</span>
+    </h1>
+    <p style="font-size:15px;line-height:1.7;color:#4A4A52;max-width:680px;margin:0 auto;">Tell us about your single-line, load profile and project timeline. Our engineering team responds within 24 hours with a tailored specification and budgetary quote.</p>
+  </div>
+</section>
+<!-- ============================================================
+     GET IN TOUCH — Contact form + locations + map
+     ============================================================ -->
+<style>
+  .gi-grid { display:grid; grid-template-columns:1.05fr 1fr; gap:24px; align-items:stretch; }
+  .gi-card { background:#FFFFFF; padding:36px 36px; box-shadow:0 14px 40px rgba(17,17,20,0.08); display:flex; flex-direction:column; }
+  .gi-input, .gi-textarea, .gi-select {
+    width:100%; border:1px solid #E1E3EA; padding:0 16px; box-sizing:border-box;
+    font-family:var(--font-sans); font-size:16px; color:#111114; background:#FFFFFF;
+    outline:none; height:48px; appearance:none;
+  }
+  .gi-textarea { padding:14px 16px; height:96px; resize:vertical; }
+  .gi-input:focus, .gi-textarea:focus, .gi-select:focus { border-color:#2E3192; }
+  .gi-label { display:block; font-family:var(--font-sans); font-size:12px; font-weight:600; color:#4A4A52; margin-bottom:6px; letter-spacing:0.2px; }
+  .gi-field { margin-bottom:16px; }
+  .gi-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .gi-loc { display:grid; grid-template-columns:1fr auto; align-items:start; gap:16px; padding:16px 0; border-bottom:1px solid #ECECF1; }
+  .gi-loc:last-of-type { border-bottom:none; }
+  .gi-pill {
+    display:inline-flex; align-items:center; gap:6px; padding:8px 14px;
+    background:#F4F6FB; color:#2E3192; border-radius:999px;
+    font-family:var(--font-sans); font-size:12px; font-weight:600; text-decoration:none;
+    transition:background 200ms ease;
+  }
+  .gi-pill:hover { background:#E4E7F4; }
+  .gi-direct { display:grid; grid-template-columns:repeat(3,1fr); gap:0; background:#FFFFFF; box-shadow:0 14px 40px rgba(17,17,20,0.08); margin-top:24px; }
+  .gi-direct-cell { padding:24px 28px; border-right:1px solid #ECECF1; display:flex; align-items:center; gap:14px; }
+  .gi-direct-cell:last-child { border-right:none; }
+  .gi-direct-icon {
+    width:40px; height:40px; border-radius:50%; background:#F4F6FB; color:#2E3192;
+    display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .gi-direct-label { font-family:var(--font-sans); font-size:11px; font-weight:600; color:#6B6B73; letter-spacing:0.4px; text-transform:uppercase; margin:0 0 2px; }
+  .gi-direct-value { font-family:var(--font-sans); font-size:13px; font-weight:600; color:#111114; line-height:1.35; margin:0; }
+  @media (max-width: 900px) {
+    .gi-grid { grid-template-columns:1fr; }
+    .gi-direct { grid-template-columns:1fr 1fr; }
+    .gi-direct-cell:nth-child(2) { border-right:none; }
+    .gi-direct-cell:nth-child(1), .gi-direct-cell:nth-child(2) { border-bottom:1px solid #ECECF1; }
+  }
+  @media (max-width: 600px) {
+    .gi-row { grid-template-columns:1fr; }
+    .gi-direct { grid-template-columns:1fr; }
+    .gi-direct-cell { border-right:none; border-bottom:1px solid #ECECF1; }
+    .gi-direct-cell:last-child { border-bottom:none; }
+  }
+</style>
+<section id="quote" style="background:#F4F6FB;padding:96px 0;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 32px;">
+    <div style="text-align:center;margin-bottom:48px;">
+      <span class="eyebrow">GET IN TOUCH</span>
+      <h2 style="font-family:var(--font-display);font-size:56px;font-weight:700;line-height:1.04;letter-spacing:-0.01em;color:#111114;margin:8px 0 0;text-wrap:balance;">
+        Ready to specify your<br/>
+        <span style="color:#2E3192;">next busduct project?</span>
+      </h2>
+    </div>
+
+    <div class="gi-grid">
+      <!-- LEFT — Form -->
+      <form class="gi-card" onsubmit="event.preventDefault();">
+        <h3 style="font-family:var(--font-display);font-size:22px;font-weight:700;color:#111114;margin:0 0 20px;">Furutec Busduct System</h3>
+
+        <div class="gi-field">
+          <label class="gi-label">Select Topic *</label>
+          <div style="position:relative;">
+            <select class="gi-select" required>
+              <option value="">Choose one</option>
+              <option>Indoor Solution</option>
+              <option>Outdoor Solution</option>
+              <option>Data Centre Solution</option>
+              <option>Power Monitoring Solution</option>
+              <option>Others</option>
+            </select>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B6B73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);pointer-events:none;"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+        </div>
+
+        <div class="gi-field">
+          <label class="gi-label">Full Name *</label>
+          <input class="gi-input" placeholder="Your full name" required/>
+        </div>
+
+        <div class="gi-row">
+          <div class="gi-field">
+            <label class="gi-label">Corporate Email *</label>
+            <input class="gi-input" type="email" placeholder="name@company.com" required/>
+          </div>
+          <div class="gi-field">
+            <label class="gi-label">Phone Number *</label>
+            <input class="gi-input" type="tel" placeholder="+60 …" required/>
+          </div>
+        </div>
+
+        <div class="gi-field">
+          <label class="gi-label">Country *</label>
+          <div style="position:relative;">
+            <select class="gi-select" required>
+              <option value="">Select country</option>
+              <option>Malaysia</option>
+              <option>Singapore</option>
+              <option>Indonesia</option>
+              <option>Thailand</option>
+              <option>Vietnam</option>
+              <option>Philippines</option>
+              <option>Brunei</option>
+              <option>India</option>
+              <option>United Arab Emirates</option>
+              <option>Saudi Arabia</option>
+              <option>Qatar</option>
+              <option>Australia</option>
+              <option>Other</option>
+            </select>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B6B73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);pointer-events:none;"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+        </div>
+
+        <div class="gi-field">
+          <label class="gi-label">Project Description *</label>
+          <textarea class="gi-textarea" placeholder="Load, location, schedule, project type…" required></textarea>
+        </div>
+
+        <button type="submit" class="btn-blue" style="width:100%;background:#2E3192;color:#FFFFFF;height:52px;font-family:var(--font-sans);font-size:14px;font-weight:600;letter-spacing:0.3px;cursor:pointer;margin-top:8px;">
+          Submit Now
+        </button>
+
+        <p style="font-size:11.5px;line-height:1.6;color:#6B6B73;margin:18px 0 0;text-align:center;letter-spacing:0.2px;">
+          Response within 24 hours · No Spam · Dedicated Engineering Support
+        </p>
+      </form>
+
+      <!-- RIGHT — Locations + map -->
+      <div class="gi-card" style="padding:0;overflow:hidden;">
+        <div style="padding:32px 36px 8px;">
+          <h3 style="font-family:var(--font-display);font-size:22px;font-weight:700;color:#111114;margin:0 0 8px;">Furutec Electrical Sdn Bhd</h3>
+          <div class="gi-loc">
+            <div>
+              <div style="font-family:var(--font-sans);font-size:11px;font-weight:600;color:#6B6B73;letter-spacing:0.4px;text-transform:uppercase;margin-bottom:4px;">Headquarters</div>
+              <div style="font-size:13px;line-height:1.55;color:#111114;">
+                Subang Jaya, Selangor.
+              </div>
+            </div>
+            <a class="gi-pill" href="https://www.google.com/maps/dir/?api=1&amp;destination=Subang+Jaya+Selangor" target="_blank" rel="noopener">
+              Directions
+              <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
+            </a>
+          </div>
+          <div class="gi-loc">
+            <div>
+              <div style="font-family:var(--font-sans);font-size:11px;font-weight:600;color:#6B6B73;letter-spacing:0.4px;text-transform:uppercase;margin-bottom:4px;">Manufacturing Plant</div>
+              <div style="font-size:13px;line-height:1.55;color:#111114;">
+                Penang, Malaysia.
+              </div>
+            </div>
+            <a class="gi-pill" href="https://www.google.com/maps/dir/?api=1&amp;destination=Penang+Malaysia" target="_blank" rel="noopener">
+              Directions
+              <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
+            </a>
+          </div>
+
+          <!-- Map tabs -->
+          <div id="gi-map-tabs" style="display:flex;gap:0;border-bottom:1px solid #ECECF1;margin:18px 0 0;">
+            <button type="button" data-map="subang" class="gi-map-tab is-active" style="background:none;border:none;padding:12px 20px 14px;font-family:var(--font-sans);font-size:12px;font-weight:600;letter-spacing:0.4px;text-transform:uppercase;color:#2E3192;cursor:pointer;border-bottom:2px solid #2E3192;margin-bottom:-1px;">Subang Jaya HQ</button>
+            <button type="button" data-map="penang" class="gi-map-tab" style="background:none;border:none;padding:12px 20px 14px;font-family:var(--font-sans);font-size:12px;font-weight:600;letter-spacing:0.4px;text-transform:uppercase;color:#6B6B73;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;">Penang Plant</button>
+          </div>
+        </div>
+
+        <div style="flex:1;min-height:240px;">
+          <iframe
+            id="gi-map-frame"
+            src="https://www.google.com/maps?q=Subang+Jaya+Selangor&amp;output=embed"
+            style="width:100%;height:100%;min-height:260px;border:0;display:block;"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Furutec Location Map"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function mapTabs() {
+        var frame = document.getElementById('gi-map-frame');
+        var tabs = document.querySelectorAll('#gi-map-tabs .gi-map-tab');
+        if (!frame || !tabs.length) return;
+        var URLS = {
+          subang: 'https://www.google.com/maps?q=Subang+Jaya+Selangor&output=embed',
+          penang: 'https://www.google.com/maps?q=Penang+Malaysia&output=embed'
+        };
+        tabs.forEach(function (t) {
+          t.addEventListener('click', function () {
+            var key = t.getAttribute('data-map');
+            if (!URLS[key]) return;
+            frame.src = URLS[key];
+            tabs.forEach(function (x) {
+              x.classList.remove('is-active');
+              x.style.color = '#6B6B73';
+              x.style.borderBottomColor = 'transparent';
+            });
+            t.classList.add('is-active');
+            t.style.color = '#2E3192';
+            t.style.borderBottomColor = '#2E3192';
+          });
+        });
+      })();
+    </script>
+
+    <!-- Contact Us Directly strip -->
+    <div class="gi-direct">
+      <div class="gi-direct-cell">
+        <span class="gi-direct-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+        </span>
+        <div>
+          <p class="gi-direct-label">Email</p>
+          <p class="gi-direct-value">info@furutec.com.my</p>
+        </div>
+      </div>
+      <div class="gi-direct-cell">
+        <span class="gi-direct-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2 1a12 12 0 0 0 5 5l1-2 5 2v4a1 1 0 0 1-1 1A17 17 0 0 1 4 5a1 1 0 0 1 1-1Z"/></svg>
+        </span>
+        <div>
+          <p class="gi-direct-label">Phone</p>
+          <p class="gi-direct-value">+603-5635 0538</p>
+        </div>
+      </div>
+      <div class="gi-direct-cell">
+        <span class="gi-direct-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        </span>
+        <div>
+          <p class="gi-direct-label">Working Hours</p>
+          <p class="gi-direct-value">8:30 AM – 6:00 PM<br/>Monday to Friday</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer style="background:#0F0F12;color:#FFFFFF;">
+  <div style="max-width:1320px;margin:0 auto;padding:64px 32px 40px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr;gap:40px;">
+    <div>
+      <div style="display:inline-flex;align-items:center;margin-bottom:14px;">
+        <img src="assets/Logo.jpeg" alt="Furutec — Busduct System" style="height:42px;width:auto;display:block;filter:invert(1) grayscale(1) brightness(1.6) contrast(1.4);mix-blend-mode:screen;"/>
+      </div>
+      <p style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:#FFFFFF;margin:0 0 4px;line-height:1.4;">Furutec Electrical Sdn Bhd</p>
+      <p style="font-size:11px;color:rgba(255,255,255,0.45);margin:0 0 16px;font-style:italic;">Company No. 198001003423 (57207-W)</p>
+      <p style="font-size:12px;line-height:1.7;color:rgba(255,255,255,0.6);margin:0 0 22px;max-width:260px;">
+        Engineering The Future Of Power Distribution — Reliable, Efficient,
+        And Built For Demanding Environments Worldwide.
+      </p>
+      <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0 0 10px;display:flex;align-items:center;gap:10px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M3 6h18v12H3Z"/><path d="M3 6l9 7 9-7"/></svg>
+        <a href="mailto:info@furutec.com.my" style="color:rgba(255,255,255,0.85);font-size:13px;text-decoration:none;">info@furutec.com.my</a>
+      </p>
+      <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0 0 10px;display:flex;align-items:center;gap:10px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M5 4h4l2 5-2 1a12 12 0 0 0 5 5l1-2 5 2v4a1 1 0 0 1-1 1A17 17 0 0 1 4 5a1 1 0 0 1 1-1Z"/></svg>
+        <span style="color:rgba(255,255,255,0.85);font-size:13px;">+603-5635 0538</span>
+      </p>
+      <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0;display:flex;align-items:center;gap:10px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M12 22s-8-7-8-13a8 8 0 0 1 16 0c0 6-8 13-8 13Z"/><circle cx="12" cy="9" r="3"/></svg>
+        <span style="color:rgba(255,255,255,0.85);font-size:13px;">Subang Jaya, Selangor</span>
+      </p>
+    </div>
+
+    <div>
+      <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">Product</h4>
+      <ul style="list-style:none;padding:0;margin:0;">
+        <li style="margin-bottom:10px;"><a href="product.html#indoor" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Indoor Solution</a></li>
+        <li style="margin-bottom:10px;"><a href="product.html#outdoor" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Outdoor Solution</a></li>
+        <li style="margin-bottom:10px;"><a href="product.html#datacenter" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Data Centre Solution</a></li>
+        <li style="margin-bottom:10px;"><a href="product.html#power" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Power Monitoring Solution</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">Industries</h4>
+      <ul style="list-style:none;padding:0;margin:0;">
+        <li style="margin-bottom:10px;"><a href="portfolio-track-record.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Data Centres</a></li>
+        <li style="margin-bottom:10px;"><a href="portfolio-track-record.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Commercial Buildings</a></li>
+        <li style="margin-bottom:10px;"><a href="portfolio-track-record.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Public Transportation</a></li>
+        <li style="margin-bottom:10px;"><a href="portfolio-track-record.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Medical &amp; Healthcare</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">Support</h4>
+      <ul style="list-style:none;padding:0;margin:0;">
+        <li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Technical Docs</a></li>
+        <li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Product Catalog</a></li>
+        <li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">FAQ</a></li>
+        <li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Warranty</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">Company</h4>
+      <ul style="list-style:none;padding:0;margin:0;">
+        <li style="margin-bottom:10px;"><a href="index.html#company-profile" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">About Furutec</a></li>
+        <li style="margin-bottom:10px;"><a href="portfolio-track-record.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Key Projects</a></li>
+        <li style="margin-bottom:10px;"><a href="portfolio.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Certifications</a></li>
+        <li style="margin-bottom:10px;"><a href="quote.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="height:4px;background:#2E3192;"></div>
+
+  <div style="background:#0A0A0B;padding:18px 0;">
+    <div style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;">
+      <div style="display:flex;gap:8px;align-items:center;font-size:11px;">
+        <a href="#" style="color:rgba(255,255,255,0.55);text-decoration:none;">Privacy Policy</a>
+        <span style="color:rgba(255,255,255,0.3);">·</span>
+        <a href="#" style="color:rgba(255,255,255,0.55);text-decoration:none;">Terms &amp; Conditions</a>
+        <span style="color:rgba(255,255,255,0.3);">·</span>
+        <a href="#" style="color:rgba(255,255,255,0.55);text-decoration:none;">Sitemap</a>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.55);text-align:center;">© 2026 Furutec Electrical Sdn Bhd. All Rights Reserved.</div>
+      <div style="display:flex;align-items:center;gap:10px;justify-content:flex-end;">
+        <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.4px;text-transform:uppercase;margin-right:4px;">Social Media</span>
+        <a href="#" aria-label="Facebook" style="width:34px;height:34px;border-radius:50%;background:#1877F2;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06c0 5.01 3.66 9.16 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.51 1.49-3.9 3.78-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.45 2.91h-2.33V22c4.78-.78 8.44-4.93 8.44-9.94Z"/></svg>
+        </a>
+        <a href="#" aria-label="YouTube" style="width:34px;height:34px;border-radius:50%;background:#FF0000;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>
+        </a>
+        <a href="#" aria-label="LinkedIn" style="width:34px;height:34px;border-radius:50%;background:#0A66C2;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.99 0 1.78-.77 1.78-1.72V1.72C24 .77 23.21 0 22.22 0Z"/></svg>
+        </a>
+        <a href="#" aria-label="WhatsApp" style="width:34px;height:34px;border-radius:50%;background:#25D366;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-1 1.1-.2.2-.4.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.5-1.7-1.6-2-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5L9.4 7c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-1 .9-1 2.3 0 1.4 1 2.7 1.2 2.9.2.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.4-.1-.2-.3-.2-.5-.3ZM12 22a10 10 0 0 1-5.1-1.4l-3.6 1 .9-3.6A10 10 0 1 1 12 22Zm0-18a8 8 0 0 0-6.7 12.4l-.5 2 2-.6A8 8 0 1 0 12 4Z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</main>
+
+</main>
+<script>
+  /* Cross-page smooth scroll — store target, navigate without hash */
+  document.addEventListener("click", function(e) {
+    var link = e.target.closest('a[href^="index.html#"]');
+    if (!link) return;
+    var href = link.getAttribute("href");
+    var hash = href.split("#")[1];
+    if (!hash) return;
+    e.preventDefault();
+    sessionStorage.setItem("ft-scroll-target", hash);
+    document.documentElement.style.transition = "opacity 260ms cubic-bezier(0.4,0,1,1)";
+    document.documentElement.style.opacity = "0";
+    setTimeout(function() { window.location.href = "index.html"; }, 280);
+  });
+</script>
+<script>
+  /* Sticky header — elevate on scroll */
+  (function(){
+    var hdr = document.querySelector('header');
+    if(!hdr) return;
+    var shadow = '0 2px 24px rgba(17,17,20,0.09)';
+    function update(){
+      hdr.style.boxShadow = window.scrollY > 8 ? shadow : 'none';
+      hdr.style.transition = 'box-shadow 300ms ease';
+    }
+    window.addEventListener('scroll', update, {passive:true});
+    update();
+  })();
+</script>
+<script>
+/* === furutec-scroll-reveal v4 === */
+(function () {
+  var SELECTORS = [
+    /* === Cards (replicate Products-page behaviour everywhere) === */
+    '.cp-card-feature', '.cp-card-mini',
+    '.prod-card',
+    '.ind-card',
+    '.cert-card',
+    '.cert-stand',
+
+    /* === Product page section blocks === */
+    '.ps-info', '.ps-spec-card', '.ps-video-card', '.ps-diagram-band',
+    '.ps-tag',
+    '.ps-features-list > li',
+
+    /* === Product Overview interactive diagram (homepage) === */
+    '.po-figure', '.po-detail', '.po-grid > div',
+
+    /* === Homepage section columns (Company Profile + R&D split) === */
+    '.cp-grid > div',
+
+    /* === Homepage stats === */
+    '.ft-stat-num', '.ft-stat-label',
+
+    /* === Homepage Regional Projects tabs === */
+    '.rp-tab',
+
+    /* === Homepage world map === */
+    '#world-map-dots',
+
+    /* === Quote / contact === */
+    '.gi-card', '.gi-field', '.gi-loc', '.gi-direct-cell',
+
+    /* === Page-level + section-level major titles === */
+    'section h1',
+    'section h2',
+
+    /* === Eyebrows everywhere === */
+    '.eyebrow',
+
+    /* === Explicit opt-in (add data-reveal attribute to any element) === */
+    '[data-reveal]',
+
+    /* === Footer (subtle) === */
+    'footer h4', 'footer ul li'
+  ];
+
+  // The transition we want for the reveal — forced inline so it wins
+  // against any element's existing `transition: ...` rule.
+  var REVEAL_TRANSITION =
+    'opacity 800ms cubic-bezier(.22,1,.36,1), '
+    + 'transform 800ms cubic-bezier(.22,1,.36,1)';
+
+  var els = document.querySelectorAll(SELECTORS.join(','));
+
+  // Suppress transition while applying the initial invisible state so the
+  // elements snap to opacity:0 instantly (no visible flash from 1 -> 0 -> 1).
+  els.forEach(function (el) {
+    if (!el.classList) return;
+    el.style.transition = 'none';
+    el.classList.add('reveal');
+  });
+  if (els.length) { void els[0].offsetWidth; }
+
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(function (el) {
+      el.style.transition = '';
+      el.classList.add('is-visible');
+    });
+    return;
+  }
+
+  requestAnimationFrame(function () {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var el = e.target;
+        var parent = el.parentElement;
+        var siblings = parent ? Array.prototype.filter.call(
+          parent.children,
+          function (c) { return c.classList && c.classList.contains('reveal'); }
+        ) : [el];
+        var idx = siblings.indexOf(el);
+        var delay = Math.min(idx * 80, 640);
+
+        // Force the reveal transition inline so it overrides any rule like
+        // `.prod-card { transition: background 200ms ease; }`.
+        el.style.transition = REVEAL_TRANSITION;
+        el.style.transitionDelay = delay + 'ms';
+        el.classList.add('is-visible');
+
+        // Once the animation ends, restore the element's original transition
+        // CSS so its hover effects work as before.
+        var clearAt = 800 + delay + 80;
+        setTimeout(function () {
+          el.style.transition = '';
+          el.style.transitionDelay = '';
+        }, clearAt);
+
+        io.unobserve(el);
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+
+    els.forEach(function (el) { io.observe(el); });
+  });
+})();
+</script>
+
+</body>
+</html>

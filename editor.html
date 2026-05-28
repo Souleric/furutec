@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Furutec Editor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f4f5f7;
+    --sidebar-bg: #eef0f4;
+    --surface: #ffffff;
+    --text: #111114;
+    --muted: #6B6B73;
+    --border: #ECECEF;
+    --border-strong: #DCDCE0;
+    --primary: #2E3192;
+    --primary-hover: #25287A;
+    --accent: #2E3192;
+    --danger: #B42318;
+    --radius: 6px;
+    --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-display: 'Saira Condensed', 'Barlow Condensed', 'Oswald', 'Inter', sans-serif;
+  }
+
+  html, body { height: 100vh; }
+  body {
+    font-family: var(--font-ui);
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  input, textarea, select { font-size: 16px; font-family: inherit; }
+  button { font-family: inherit; cursor: pointer; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .shell { display: flex; flex-direction: column; height: 100vh; }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    border-bottom: 2px solid var(--primary);
+    background: var(--surface);
+    flex-shrink: 0;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 12px;
+    text-decoration: none;
+  }
+  .brand-mark {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .brand-tag {
+    font-family: var(--font-ui);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--muted);
+    padding: 3px 8px;
+    border: 1px solid var(--border-strong);
+    border-radius: 2px;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    flex-shrink: 0;
+    gap: 16px;
+  }
+  .toolbar-left, .toolbar-right { display: flex; align-items: center; gap: 10px; }
+  .crumb { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .page-select {
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    max-width: 280px;
+  }
+
+  .device-toggle {
+    display: flex;
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 3px;
+    gap: 2px;
+  }
+  .device-toggle button {
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    background: transparent;
+    color: var(--muted);
+    transition: background 150ms ease, color 150ms ease, box-shadow 150ms ease;
+  }
+  .device-toggle button.active {
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+  }
+
+  .status { font-size: 12px; color: var(--muted); min-height: 16px; }
+  .status.error { color: var(--danger); }
+
+  .btn {
+    padding: 7px 14px;
+    border-radius: 4px;
+    border: 1px solid var(--border-strong);
+    background: #fff;
+    color: var(--text);
+    font-weight: 500;
+    font-size: 13px;
+    transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+  }
+  .btn:hover { border-color: var(--primary); color: var(--primary); }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 5px 16px 5px 5px;
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    font-weight: 600;
+    border-radius: 4px;
+  }
+  .btn-primary:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+    color: #fff;
+  }
+  .btn-primary::before {
+    content: '';
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #fff
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232E3192' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'><path d='M5 12h14'/><path d='M13 6l6 6-6 6'/></svg>")
+      center / 11px no-repeat;
+    flex-shrink: 0;
+  }
+  .btn-ghost { background: transparent; border-color: transparent; color: var(--muted); }
+  .btn-ghost:hover { color: var(--primary); border-color: transparent; }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+
+  .body { display: flex; flex: 1; min-height: 0; }
+
+  /* ---------- Sidebar with sections + fields ---------- */
+  .sidebar {
+    width: 380px;
+    flex-shrink: 0;
+    border-right: 1px solid var(--border-strong);
+    background: var(--sidebar-bg);
+    overflow-y: auto;
+  }
+
+  .sidebar-search {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+  .sidebar-search input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #fff;
+  }
+
+  .sidebar-inner { padding: 14px 14px 80px; }
+
+  .group {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .group-header {
+    width: 100%;
+    text-align: left;
+    padding: 12px 14px;
+    background: #fff;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+  }
+  .group.open .group-header { border-bottom-color: var(--border); }
+  .group-header .title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .group-header .meta {
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .group-header .chev {
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid var(--muted);
+    border-bottom: 2px solid var(--muted);
+    transform: rotate(-45deg);
+    transition: transform 200ms ease;
+  }
+  .group.open .chev { transform: rotate(45deg); }
+  .group.flash { box-shadow: 0 0 0 2px var(--primary); }
+  .group-body {
+    display: none;
+    padding: 12px 14px 14px;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .group.open .group-body { display: flex; }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .field .type {
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .field input[type="text"],
+  .field input[type="url"],
+  .field textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    background: #fff;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--text);
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+  .field input[type="text"]:focus,
+  .field input[type="url"]:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(46, 49, 146, 0.12);
+  }
+  .field textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
+  .field .image-preview {
+    background: #f4f5f7;
+    border-radius: 6px;
+    padding: 6px;
+    display: flex;
+  }
+  .field .image-preview img {
+    max-width: 100%;
+    max-height: 100px;
+    border-radius: 4px;
+    display: block;
+  }
+  .field .upload-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .field .upload-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 7px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background 150ms ease;
+  }
+  .field .upload-btn:hover { background: var(--primary-hover); }
+  .field .link-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .field .link-presets button {
+    background: #f4f5f7;
+    border: 1px solid var(--border);
+    padding: 4px 8px;
+    font-size: 11px;
+    border-radius: 4px;
+    color: var(--muted);
+  }
+  .field .link-presets button:hover { color: var(--primary); border-color: var(--primary); }
+
+  .empty-hint {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 20px 14px;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  /* Footer actions */
+  .sidebar-footer {
+    position: sticky;
+    bottom: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 12px 14px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .sidebar-footer .btn { flex: 1; font-size: 12px; padding: 6px 10px; }
+
+  .danger-btn {
+    background: transparent;
+    color: var(--danger);
+    border: 1px solid #e8c1c1;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .danger-btn:hover { background: #fdecec; }
+
+  /* ---------- Preview ---------- */
+  .preview {
+    flex: 1;
+    background: var(--bg);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px;
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    position: relative;
+  }
+  .preview-stage {
+    position: relative;
+    background: #fff;
+    overflow: hidden;
+    transition: width 220ms ease, height 220ms ease;
+  }
+  .preview-stage.has-device {
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(11, 31, 58, .12);
+  }
+  .preview-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: top left;
+    background: #fff;
+  }
+  .preview-frame iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+  .zoom-control {
+    display: inline-flex;
+    align-items: stretch;
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    background: #fff;
+    overflow: hidden;
+  }
+  .zoom-control button {
+    border: none;
+    background: #fff;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0 10px;
+    cursor: pointer;
+    line-height: 1;
+    transition: background 150ms ease, color 150ms ease;
+  }
+  .zoom-control button:hover { background: var(--sidebar-bg); color: var(--primary); }
+  .zoom-control button:disabled { color: #c4c4c8; cursor: not-allowed; background: #fff; }
+  .zoom-readout {
+    border: none;
+    background: #fff;
+    color: var(--text);
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    min-width: 56px;
+    padding: 6px 4px;
+    border-left: 1px solid var(--border-strong);
+    border-right: 1px solid var(--border-strong);
+    cursor: pointer;
+    transition: color 150ms ease;
+  }
+  .zoom-readout:hover { color: var(--primary); }
+  .zoom-readout.is-fit::after {
+    content: ' · FIT';
+    font-size: 9px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="header">
+    <a href="./index.html" class="brand" target="_blank" rel="noopener">
+      <span class="brand-mark">FURUTEC</span>
+      <span class="brand-tag">Editor</span>
+    </a>
+    <div class="header-right">
+      <span>ericcheah@betasocial.my</span>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <span class="crumb">← Furutec Electric</span>
+      <select class="page-select" id="pageSelect">
+        <option value="/">Homepage (/)</option>
+      </select>
+    </div>
+
+    <div class="device-toggle" id="deviceToggle">
+      <button data-device="desktop" class="active">Desktop</button>
+      <button data-device="tablet">Tablet</button>
+      <button data-device="mobile">Mobile</button>
+    </div>
+    <div class="zoom-control" role="group" aria-label="Preview zoom">
+      <button type="button" id="zoomOutBtn" title="Zoom out" aria-label="Zoom out">−</button>
+      <button type="button" class="zoom-readout is-fit" id="zoomReadout" title="Click to reset to fit">100%</button>
+      <button type="button" id="zoomInBtn" title="Zoom in" aria-label="Zoom in">+</button>
+    </div>
+
+    <div class="toolbar-right">
+      <span class="status" id="status"></span>
+      <a href="./index.html" target="_blank" rel="noopener" class="btn btn-ghost">View live ↗</a>
+      <button class="btn btn-primary" id="downloadBtn">Download edits</button>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <aside class="sidebar">
+      <div class="sidebar-search">
+        <input id="searchBox" type="text" placeholder="Search text, image, or link…" />
+      </div>
+      <div class="sidebar-inner" id="groupsHost">
+        <div class="empty-hint">Loading page…</div>
+      </div>
+      <div class="sidebar-footer">
+        <label class="btn" style="cursor:pointer;">
+          <input type="file" id="importFile" accept="application/json" style="display:none;" />
+          Import JSON
+        </label>
+        <button class="btn" id="refreshBtn">Reload</button>
+        <button class="danger-btn" id="resetBtn" style="flex:1;">Reset all</button>
+      </div>
+    </aside>
+
+    <main class="preview" id="preview">
+      <div class="preview-stage" id="previewStage">
+        <div class="preview-frame" id="previewFrame">
+          <iframe id="previewIframe" src="./index.html" title="Furutec website preview"></iframe>
+        </div>
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<script>
+  // ========== Device toggle + zoom (auto-fit + manual) ==========
+  var DEVICE_WIDTH = { desktop: null, tablet: 768, mobile: 375 };
+  var DESIGN_W = 1440;            // canonical desktop width to render at
+  var PREVIEW_PADDING = 48;       // 24px padding * 2 sides on .preview
+  var ZOOM_MIN = 0.25;
+  var ZOOM_MAX = 2.0;
+  var ZOOM_STEP = 0.1;
+  var deviceToggle = document.getElementById('deviceToggle');
+  var previewEl = document.getElementById('preview');
+  var previewStage = document.getElementById('previewStage');
+  var previewFrame = document.getElementById('previewFrame');
+  var zoomReadout = document.getElementById('zoomReadout');
+  var zoomInBtn = document.getElementById('zoomInBtn');
+  var zoomOutBtn = document.getElementById('zoomOutBtn');
+  var currentDevice = 'desktop';
+  var userScale = null;           // null = auto-fit; number = manual override
+
+  function fitScale(availW) {
+    return Math.max(ZOOM_MIN, Math.min(1, availW / DESIGN_W));
+  }
+
+  function effectiveScale(availW) {
+    return userScale != null ? userScale : fitScale(availW);
+  }
+
+  function layoutPreview() {
+    var availW = Math.max(0, previewEl.clientWidth - PREVIEW_PADDING);
+    var availH = Math.max(0, previewEl.clientHeight - PREVIEW_PADDING);
+    if (currentDevice === 'desktop') {
+      var scale = effectiveScale(availW);
+      var visibleW = Math.round(DESIGN_W * scale);
+      var visibleH = availH;
+      previewStage.style.width = visibleW + 'px';
+      previewStage.style.height = visibleH + 'px';
+      previewStage.classList.remove('has-device');
+      previewFrame.style.width = DESIGN_W + 'px';
+      previewFrame.style.height = Math.round(visibleH / scale) + 'px';
+      previewFrame.style.transform = 'scale(' + scale + ')';
+      zoomReadout.textContent = Math.round(scale * 100) + '%';
+      zoomReadout.classList.toggle('is-fit', userScale == null);
+      zoomInBtn.disabled = scale >= ZOOM_MAX - 0.001;
+      zoomOutBtn.disabled = scale <= ZOOM_MIN + 0.001;
+    } else {
+      var w = DEVICE_WIDTH[currentDevice];
+      previewStage.style.width = w + 'px';
+      previewStage.style.height = availH + 'px';
+      previewStage.classList.add('has-device');
+      previewFrame.style.width = w + 'px';
+      previewFrame.style.height = availH + 'px';
+      previewFrame.style.transform = 'none';
+      zoomReadout.textContent = '100%';
+      zoomReadout.classList.remove('is-fit');
+      zoomInBtn.disabled = true;
+      zoomOutBtn.disabled = true;
+    }
+  }
+
+  function applyDevice(d) {
+    currentDevice = d;
+    userScale = null; // reset to fit/native when switching device
+    Array.prototype.forEach.call(deviceToggle.children, function (b) {
+      b.classList.toggle('active', b.dataset.device === d);
+    });
+    layoutPreview();
+  }
+
+  function nudgeZoom(delta) {
+    if (currentDevice !== 'desktop') return;
+    var availW = Math.max(0, previewEl.clientWidth - PREVIEW_PADDING);
+    var current = effectiveScale(availW);
+    // Snap nudges to clean 10% steps relative to current value.
+    var next = Math.round((current + delta) * 10) / 10;
+    next = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, next));
+    userScale = next;
+    layoutPreview();
+  }
+
+  zoomInBtn.addEventListener('click', function () { nudgeZoom(ZOOM_STEP); });
+  zoomOutBtn.addEventListener('click', function () { nudgeZoom(-ZOOM_STEP); });
+  zoomReadout.addEventListener('click', function () {
+    if (currentDevice !== 'desktop') return;
+    userScale = null;
+    layoutPreview();
+  });
+
+  deviceToggle.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-device]');
+    if (b) applyDevice(b.dataset.device);
+  });
+
+  var resizeRaf = null;
+  window.addEventListener('resize', function () {
+    if (resizeRaf) return;
+    resizeRaf = requestAnimationFrame(function () {
+      resizeRaf = null;
+      layoutPreview();
+    });
+  });
+
+  applyDevice('desktop');
+
+  // ========== Iframe + edit protocol (postMessage-based, works over file://) ==========
+  var iframe = document.getElementById('previewIframe');
+  var ITEMS = [];   // flat list of editable items from iframe scan
+  var GROUPS = [];  // [{ key, label, items: [] }]
+  var OPEN_GROUPS = new Set();
+  var iframeReady = false;
+  var statusEl = document.getElementById('status');
+
+  // Link preset destinations (keep in sync with index.html)
+  var LINK_PRESETS = [
+    { label: 'Home',            url: '/' },
+    { label: 'About Us',        url: '/about' },
+    { label: 'Busduct Systems', url: '/busduct' },
+    { label: 'Industries',      url: '/industries' },
+    { label: 'Contact',         url: '/contact' },
+    { label: 'Quote',           url: '/quote' }
+  ];
+
+  function setStatus(msg, isError) {
+    statusEl.textContent = msg || '';
+    statusEl.classList.toggle('error', !!isError);
+    if (msg) setTimeout(function () {
+      if (statusEl.textContent === msg) { statusEl.textContent = ''; statusEl.classList.remove('error'); }
+    }, 2000);
+  }
+
+  function postToIframe(msg) {
+    try { iframe.contentWindow.postMessage(msg, '*'); } catch (e) {}
+  }
+
+  function requestScan() {
+    postToIframe({ type: '__scan_request' });
+  }
+
+  function onScanResult(items) {
+    ITEMS = items || [];
+    // Group by groupKey, preserving first-seen label and order.
+    var map = new Map();
+    GROUPS = [];
+    ITEMS.forEach(function (it) {
+      if (!map.has(it.groupKey)) {
+        var g = { key: it.groupKey, label: it.groupLabel, order: it.groupOrder || 0, items: [] };
+        map.set(it.groupKey, g);
+        GROUPS.push(g);
+      }
+      map.get(it.groupKey).items.push(it);
+    });
+    GROUPS.sort(function (a, b) {
+      var rank = function (g) {
+        if (g.key === 'header') return 0;
+        if (g.key === 'footer') return 99998;
+        if (g.key === 'other')  return 99999;
+        return g.order || 500;
+      };
+      return rank(a) - rank(b);
+    });
+    if (OPEN_GROUPS.size === 0 && GROUPS.length) OPEN_GROUPS.add(GROUPS[0].key);
+    renderGroups();
+  }
+
+  // ========== Render sidebar ==========
+  function truncate(s, n) {
+    s = (s || '').replace(/\s+/g, ' ').trim();
+    return s.length > n ? s.slice(0, n - 1) + '…' : s;
+  }
+
+  function stripTags(s) {
+    var tmp = document.createElement('div');
+    tmp.innerHTML = s || '';
+    return tmp.textContent || tmp.innerText || '';
+  }
+
+  function fieldLabel(item) {
+    if (item.kind === 'text')  return 'Text — ' + truncate(stripTags(item.value), 40);
+    if (item.kind === 'image') return 'Image — ' + truncate(item.value, 40);
+    if (item.kind === 'link')  return 'Link — ' + truncate(item.plain || '', 40);
+  }
+
+  var GROUP_ELS = {};
+
+  function renderGroups() {
+    var host = document.getElementById('groupsHost');
+    host.innerHTML = '';
+    GROUP_ELS = {};
+    if (!GROUPS.length) {
+      host.innerHTML = '<div class="empty-hint">No editable elements found on this page.</div>';
+      return;
+    }
+    var q = (document.getElementById('searchBox').value || '').toLowerCase();
+
+    GROUPS.forEach(function (g) {
+      var matches = q ? g.items.filter(function (it) {
+        return fieldLabel(it).toLowerCase().indexOf(q) !== -1;
+      }) : g.items;
+      if (!matches.length) return;
+
+      var wrap = document.createElement('div');
+      wrap.className = 'group' + (OPEN_GROUPS.has(g.key) ? ' open' : '');
+
+      var head = document.createElement('button');
+      head.className = 'group-header';
+      head.type = 'button';
+      head.innerHTML =
+        '<span class="title">' + escapeHtml(g.label) + '</span>' +
+        '<span class="meta">' + matches.length + ' field' + (matches.length === 1 ? '' : 's') + '</span>' +
+        '<span class="chev"></span>';
+      head.addEventListener('click', function () {
+        if (OPEN_GROUPS.has(g.key)) OPEN_GROUPS.delete(g.key);
+        else OPEN_GROUPS.add(g.key);
+        wrap.classList.toggle('open');
+      });
+      wrap.appendChild(head);
+
+      var body = document.createElement('div');
+      body.className = 'group-body';
+      matches.forEach(function (it) { body.appendChild(renderField(it)); });
+      wrap.appendChild(body);
+
+      host.appendChild(wrap);
+      GROUP_ELS[g.key] = wrap;
+    });
+  }
+
+  function focusGroup(key) {
+    var el = GROUP_ELS[key];
+    if (!el) return;
+    if (!OPEN_GROUPS.has(key)) {
+      OPEN_GROUPS.add(key);
+      el.classList.add('open');
+    }
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    el.classList.remove('flash');
+    void el.offsetWidth; // restart anim
+    el.classList.add('flash');
+    setTimeout(function () { el.classList.remove('flash'); }, 1200);
+  }
+
+  function escapeHtml(s) {
+    return (s || '').replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function renderField(item) {
+    var wrap = document.createElement('div');
+    wrap.className = 'field';
+
+    var label = document.createElement('label');
+    label.innerHTML = '<span>' + escapeHtml(fieldLabel(item)) + '</span><span class="type">' + item.kind + '</span>';
+    wrap.appendChild(label);
+
+    if (item.kind === 'text') {
+      var current = item.value || '';
+      var long = stripTags(current).length > 60 || /\n/.test(current);
+      var input = document.createElement(long ? 'textarea' : 'input');
+      if (!long) input.type = 'text';
+      input.value = stripTags(current);
+      input.rows = 3;
+      input.addEventListener('input', function () {
+        updateText(item, input.value);
+        label.firstChild.textContent = fieldLabel(item);
+      });
+      wrap.appendChild(input);
+    }
+
+    if (item.kind === 'image') {
+      if (item.value) {
+        var preview = document.createElement('div');
+        preview.className = 'image-preview';
+        preview.innerHTML = '<img src="' + escapeHtml(item.value) + '" alt=""/>';
+        wrap.appendChild(preview);
+      }
+      var urlInput = document.createElement('input');
+      urlInput.type = 'url';
+      urlInput.placeholder = 'Image URL';
+      urlInput.value = item.value || '';
+      urlInput.addEventListener('input', function () {
+        updateImage(item, urlInput.value);
+      });
+      var row = document.createElement('div');
+      row.className = 'upload-row';
+      var fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = 'image/*';
+      fileInput.style.display = 'none';
+      var uploadBtn = document.createElement('button');
+      uploadBtn.type = 'button';
+      uploadBtn.className = 'upload-btn';
+      uploadBtn.textContent = 'Upload';
+      uploadBtn.addEventListener('click', function () { fileInput.click(); });
+      fileInput.addEventListener('change', function () {
+        var f = fileInput.files && fileInput.files[0];
+        if (!f) return;
+        fileToDataUrl(f, function (url) {
+          urlInput.value = url;
+          updateImage(item, url);
+          if (wrap.firstChild !== label) wrap.removeChild(wrap.firstChild);
+          var p = document.createElement('div');
+          p.className = 'image-preview';
+          p.innerHTML = '<img src="' + url + '" alt=""/>';
+          wrap.insertBefore(p, wrap.children[1]);
+        });
+      });
+      row.appendChild(uploadBtn);
+      row.appendChild(fileInput);
+      row.appendChild(urlInput);
+      wrap.appendChild(row);
+    }
+
+    if (item.kind === 'link') {
+      var linkInput = document.createElement('input');
+      linkInput.type = 'text';
+      linkInput.placeholder = 'URL or path';
+      linkInput.value = item.value || '';
+      linkInput.addEventListener('input', function () { updateLink(item, linkInput.value); });
+      wrap.appendChild(linkInput);
+      var presets = document.createElement('div');
+      presets.className = 'link-presets';
+      LINK_PRESETS.forEach(function (p) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = p.label;
+        b.addEventListener('click', function () {
+          linkInput.value = p.url;
+          updateLink(item, p.url);
+        });
+        presets.appendChild(b);
+      });
+      wrap.appendChild(presets);
+    }
+
+    return wrap;
+  }
+
+  function fileToDataUrl(file, cb) {
+    var MAX = 1600;
+    var r = new FileReader();
+    r.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var w = img.width, h = img.height;
+        if (w > MAX || h > MAX) {
+          var s = Math.min(MAX / w, MAX / h);
+          w = Math.round(w * s); h = Math.round(h * s);
+        }
+        var c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        c.getContext('2d').drawImage(img, 0, 0, w, h);
+        cb(c.toDataURL(file.type.indexOf('png') !== -1 ? 'image/png' : 'image/jpeg', 0.9));
+      };
+      img.src = r.result;
+    };
+    r.readAsDataURL(file);
+  }
+
+  // ========== Apply updates via postMessage ==========
+  var saveTimer = null;
+  function queueSave() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () { setStatus('Saved'); }, 200);
+  }
+  function updateText(item, value) {
+    item.value = value;
+    postToIframe({ type: '__patch', patch: { texts: { [item.id]: value } } });
+    queueSave();
+  }
+  function updateImage(item, url) {
+    item.value = url;
+    postToIframe({ type: '__patch', patch: { images: { [item.id]: url } } });
+    queueSave();
+  }
+  function updateLink(item, url) {
+    item.value = url;
+    postToIframe({ type: '__patch', patch: { links: { [item.id]: url } } });
+    queueSave();
+  }
+
+  // ========== Search ==========
+  document.getElementById('searchBox').addEventListener('input', renderGroups);
+
+  // ========== Snapshot helpers (build patch from current ITEMS) ==========
+  function snapshot() {
+    var s = { texts: {}, images: {}, links: {} };
+    ITEMS.forEach(function (it) {
+      if (it.kind === 'text')  s.texts[it.id]  = it.value;
+      if (it.kind === 'image') s.images[it.id] = it.value;
+      if (it.kind === 'link')  s.links[it.id]  = it.value;
+    });
+    return s;
+  }
+
+  // ========== Footer actions ==========
+  document.getElementById('refreshBtn').addEventListener('click', function () {
+    iframeReady = false;
+    iframe.src = iframe.src;
+  });
+  document.getElementById('resetBtn').addEventListener('click', function () {
+    if (!confirm('Reset every saved edit? This removes all text, image, and link changes.')) return;
+    postToIframe({ type: '__clear_all' });
+  });
+  document.getElementById('downloadBtn').addEventListener('click', function () {
+    var blob = new Blob([JSON.stringify(snapshot(), null, 2)], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    var stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+    a.download = 'furutec-edits-' + stamp + '.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    setStatus('Downloaded');
+  });
+  document.getElementById('importFile').addEventListener('change', function (e) {
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var incoming = JSON.parse(reader.result);
+        var patch = {
+          texts:  incoming.texts  || {},
+          images: incoming.images || {},
+          links:  incoming.links  || {}
+        };
+        postToIframe({ type: '__patch', patch: patch });
+        // Rescan after patch completes (next tick should be enough).
+        setTimeout(requestScan, 200);
+        setStatus('Imported ' + file.name);
+      } catch (err) {
+        setStatus('Invalid JSON file', true);
+      }
+      e.target.value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  // ========== Iframe lifecycle (postMessage handshake) ==========
+  iframe.addEventListener('load', function () {
+    iframeReady = false;
+    // The iframe will postMessage __edit_mode_available when ready.
+  });
+
+  window.addEventListener('message', function (e) {
+    if (!e.data || typeof e.data !== 'object') return;
+    if (e.data.type === '__edit_mode_available') {
+      iframeReady = true;
+      // We edit via sidebar only — keep inline overlay off.
+      postToIframe({ type: '__deactivate_edit_mode' });
+      // Tell iframe we are an editor so it forwards section clicks.
+      postToIframe({ type: '__set_editor_mode', attached: true });
+      requestScan();
+      // Hero slides inject ~150ms after load; rescan once to catch them.
+      setTimeout(requestScan, 600);
+    }
+    if (e.data.type === '__scan_result') {
+      onScanResult(e.data.items);
+    }
+    if (e.data.type === '__clear_done') {
+      setStatus('All edits reset');
+      requestScan();
+    }
+    if (e.data.type === '__section_clicked') {
+      focusGroup(e.data.groupKey);
+    }
+  });
+
+  // Fallback: if no message arrives within 3s, retry the scan in case the
+  // iframe finished before our message listener was attached.
+  setTimeout(function () {
+    if (!iframeReady) requestScan();
+  }, 3000);
+</script>
+
+</body>
+</html>

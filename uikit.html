@@ -1,0 +1,974 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>UI Kit — Furutec (hidden)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+<style>
+/* ============================================================
+   Furutec UI Kit — single-page pattern library
+   Mirrors the design tokens used across the live site so any
+   change here can be copy-pasted into the production CSS.
+   ============================================================ */
+
+:root {
+  --brand-700: #1F2270;
+  --brand-600: #262986;
+  --brand-500: #2E3192;
+  --brand-400: #4248B5;
+  --brand-100: #DCDEF2;
+  --brand-50:  #EEEFF8;
+
+  --ink-950: #0A0A0B;
+  --ink-900: #111114;
+  --ink-800: #1A1A1F;
+  --ink-700: #2A2A30;
+  --ink-600: #4A4A52;
+  --ink-500: #6B6B73;
+  --ink-400: #9A9AA2;
+  --ink-300: #C8C8CE;
+  --line-200: #E6E6EA;
+  --line-100: #F1F1F3;
+  --bg-100:   #F6F6F8;
+  --bg-50:    #FAFAFB;
+  --white:    #FFFFFF;
+  --accent-orange: #F37021;
+
+  --font-display: "Saira Condensed","Barlow Condensed","Oswald","Arial Narrow",Impact,sans-serif;
+  --font-sans:    "Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+*,*::before,*::after { box-sizing:border-box; }
+html,body { margin:0; padding:0; font-family:var(--font-sans); color:var(--ink-900); background:var(--bg-50); }
+img,svg { display:block; max-width:100%; }
+a { color:inherit; text-decoration:none; }
+button { font-family:inherit; cursor:pointer; }
+
+/* ── Layout shell ─────────────────────────────────────────── */
+.uk-shell { display:grid; grid-template-columns:240px 1fr; min-height:100vh; }
+.uk-side {
+  background:var(--ink-900); color:#FFFFFF; padding:32px 20px;
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+}
+.uk-side-brand {
+  font-family:var(--font-display); font-weight:700; font-size:22px;
+  letter-spacing:0.02em; margin-bottom:6px;
+}
+.uk-side-meta { font-size:11px; color:rgba(255,255,255,0.5); margin-bottom:32px; letter-spacing:0.4px; text-transform:uppercase; }
+.uk-side nav { display:flex; flex-direction:column; gap:2px; }
+.uk-side nav a {
+  display:block; padding:10px 14px; border-radius:6px;
+  font-size:13px; font-weight:500; color:rgba(255,255,255,0.7);
+  transition:background 150ms ease, color 150ms ease;
+}
+.uk-side nav a:hover { background:rgba(255,255,255,0.06); color:#FFFFFF; }
+.uk-side nav a.is-active { background:var(--brand-500); color:#FFFFFF; }
+
+.uk-main { padding:48px 56px 96px; max-width:1180px; }
+.uk-section { padding:48px 0; border-bottom:1px solid var(--line-200); }
+.uk-section:last-child { border-bottom:none; }
+.uk-section-head { display:flex; align-items:baseline; gap:14px; margin-bottom:24px; }
+.uk-section-num { font-family:var(--font-display); font-weight:700; font-size:14px; color:var(--brand-500); letter-spacing:0.1em; }
+.uk-section-title { font-family:var(--font-display); font-size:32px; font-weight:700; letter-spacing:-0.01em; margin:0; color:var(--ink-900); }
+.uk-section-desc { font-size:14px; color:var(--ink-500); margin:0 0 28px; max-width:680px; line-height:1.7; }
+
+.uk-row { display:flex; flex-wrap:wrap; gap:16px; align-items:center; margin-bottom:18px; }
+.uk-row.tight { gap:10px; }
+.uk-grid { display:grid; gap:16px; }
+.uk-grid.cols-2 { grid-template-columns:repeat(2,1fr); }
+.uk-grid.cols-3 { grid-template-columns:repeat(3,1fr); }
+.uk-grid.cols-4 { grid-template-columns:repeat(4,1fr); }
+.uk-grid.cols-5 { grid-template-columns:repeat(5,1fr); }
+@media (max-width:900px) {
+  .uk-shell { grid-template-columns:1fr; }
+  .uk-side { position:static; height:auto; }
+  .uk-main { padding:32px 24px 64px; }
+  .uk-grid.cols-3,.uk-grid.cols-4,.uk-grid.cols-5 { grid-template-columns:1fr 1fr; }
+}
+
+.uk-label {
+  display:inline-block; font-family:var(--font-sans); font-size:10px;
+  font-weight:700; letter-spacing:0.5px; text-transform:uppercase;
+  color:var(--ink-400); margin-bottom:8px;
+}
+
+/* ── Colour swatches ──────────────────────────────────────── */
+.swatch { border:1px solid var(--line-200); border-radius:8px; overflow:hidden; background:#FFFFFF; }
+.swatch-box { height:88px; }
+.swatch-meta { padding:10px 14px; font-family:var(--font-sans); font-size:12px; color:var(--ink-900); }
+.swatch-meta .name { font-weight:600; }
+.swatch-meta .hex { color:var(--ink-500); font-family:"JetBrains Mono",Menlo,monospace; font-size:11px; }
+
+/* ── Type specimen ───────────────────────────────────────── */
+.spec-row { padding:18px 0; border-bottom:1px dashed var(--line-200); display:grid; grid-template-columns:120px 1fr; gap:24px; align-items:baseline; }
+.spec-row:last-child { border-bottom:none; }
+.spec-row .key { font-family:"JetBrains Mono",Menlo,monospace; font-size:11px; color:var(--ink-500); }
+.spec-h1 { font-family:var(--font-display); font-size:64px; font-weight:700; line-height:1.02; margin:0; letter-spacing:-0.01em; }
+.spec-h2 { font-family:var(--font-display); font-size:44px; font-weight:700; line-height:1.05; margin:0; }
+.spec-h3 { font-family:var(--font-display); font-size:28px; font-weight:700; line-height:1.15; margin:0; }
+.spec-h4 { font-family:var(--font-display); font-size:20px; font-weight:700; line-height:1.2; margin:0; }
+.spec-body { font-size:14px; line-height:1.8; margin:0; color:var(--ink-500); max-width:560px; }
+.spec-eyebrow {
+  font-family:var(--font-sans); font-size:12px; font-weight:600;
+  letter-spacing:0.6px; text-transform:uppercase; color:var(--brand-500);
+}
+
+/* ── BUTTONS ─────────────────────────────────────────────── */
+.btn {
+  display:inline-flex; align-items:center; gap:10px; padding:0 22px; height:48px;
+  font-family:var(--font-sans); font-size:13px; font-weight:600; letter-spacing:0.3px;
+  border:1.5px solid transparent; cursor:pointer; text-decoration:none;
+  border-radius:8px;
+  transition:background .3s ease, color .3s ease, border-color .3s ease, transform .2s ease;
+}
+
+/* Sliding-arrow hover effect
+   Markup: <span class="arrow"><span class="a"><svg.../></span><span class="b"><svg.../></span></span>
+   - At rest: 'a' visible, 'b' parked off-left
+   - On hover: 'a' slides out right, 'b' slides in from left
+   The SVG uses a custom path with a half-length stem (M9 12h4) + standard head. */
+.btn .arrow {
+  position:relative; display:inline-block;
+  width:28px; height:28px; overflow:hidden;
+  line-height:1;
+}
+.btn .arrow > span {
+  position:absolute; inset:0;
+  display:inline-flex; align-items:center; justify-content:center;
+  transition:transform .35s cubic-bezier(.22,1,.36,1);
+}
+.btn .arrow > span svg {
+  width:24px; height:24px;
+}
+.btn .arrow > .a { transform:translateX(0); }
+.btn .arrow > .b { transform:translateX(-110%); }
+.btn:hover .arrow > .a { transform:translateX(110%); }
+.btn:hover .arrow > .b { transform:translateX(0); }
+
+/* Existing site variants */
+.btn-brand          { background:var(--brand-500); color:#FFFFFF; }
+.btn-brand:hover    { background:transparent; color:var(--brand-500); border-color:var(--brand-500); }
+.btn-dark           { background:#141414; color:#FFFFFF; }
+.btn-dark:hover     { background:transparent; color:#141414; border-color:#141414; }
+.btn-outline        { background:transparent; color:#111114; border-color:#111114; }
+.btn-outline:hover  { background:#141414; color:#FFFFFF; }
+.btn-white-filled   { background:#FFFFFF; color:#111114; }
+.btn-white-filled:hover { background:transparent; color:#FFFFFF; border-color:#FFFFFF; }
+.btn-white-outline  { background:transparent; color:#FFFFFF; border-color:#FFFFFF; }
+.btn-white-outline:hover { background:#FFFFFF; color:#111114; }
+.btn-ghost          { background:transparent; color:var(--ink-900); border-color:var(--line-200); }
+.btn-ghost:hover    { background:var(--bg-100); border-color:var(--ink-900); }
+
+/* Size variants */
+.btn-sm { height:36px; padding:0 16px; font-size:12px; }
+.btn-lg { height:56px; padding:0 28px; font-size:14px; }
+
+/* Dark backdrop sample (for white buttons) */
+.dark-stage { background:var(--ink-900); padding:24px; border-radius:8px; display:flex; flex-wrap:wrap; gap:14px; align-items:center; }
+
+/* ── FORM ELEMENTS ───────────────────────────────────────── */
+.ff-field { margin-bottom:14px; max-width:380px; }
+.ff-label { display:block; font-family:var(--font-sans); font-size:12px; font-weight:600; color:var(--ink-600); margin-bottom:6px; letter-spacing:0.2px; }
+.ff-input, .ff-select, .ff-textarea {
+  width:100%; border:1px solid var(--line-200); padding:0 16px; box-sizing:border-box;
+  font-family:var(--font-sans); font-size:14px; color:var(--ink-900); background:#FFFFFF;
+  outline:none; height:46px; transition:border-color 150ms ease;
+}
+.ff-textarea { padding:12px 16px; height:90px; resize:vertical; }
+.ff-input:focus,.ff-select:focus,.ff-textarea:focus { border-color:var(--brand-500); }
+
+/* ── CARDS ────────────────────────────────────────────────── */
+/* Pattern A: hover-blue service card (homepage 'OUR PRODUCTS' grid) */
+.card-service {
+  background:#FFFFFF; border:1px solid var(--line-100);
+  padding:32px 24px 24px; cursor:pointer;
+  transition:background 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+}
+.card-service:hover {
+  background:var(--brand-500); transform:scale(1.03);
+  box-shadow:0 18px 40px rgba(46,49,146,0.22);
+}
+.card-service .sc-icon { color:var(--brand-500); margin-bottom:20px; transition:color 220ms ease; }
+.card-service:hover .sc-icon { color:#FFFFFF; }
+.card-service h3 { font-family:var(--font-display); font-size:20px; font-weight:600; line-height:1.15; color:var(--ink-900); margin:0 0 12px; transition:color 220ms ease; }
+.card-service:hover h3 { color:#FFFFFF; }
+.card-service p { font-size:13px; line-height:1.7; color:var(--ink-500); margin:0 0 24px; transition:color 220ms ease; }
+.card-service:hover p { color:rgba(255,255,255,0.85); }
+.card-service .sc-cta { display:inline-flex; align-items:center; gap:10px; padding-top:16px; border-top:1px solid rgba(128,128,128,0.15); font-size:13px; font-weight:600; color:var(--ink-900); transition:color 220ms ease, border-color 220ms ease; }
+.card-service:hover .sc-cta { color:#FFFFFF; border-top-color:rgba(255,255,255,0.25); }
+.card-service .sc-cta-circle { width:22px; height:22px; border-radius:50%; background:var(--brand-500); display:inline-flex; align-items:center; justify-content:center; transition:transform .2s, background .2s; }
+.card-service:hover .sc-cta-circle { background:#FFFFFF; transform:translateX(3px); }
+.card-service .sc-cta-circle svg { stroke:#FFFFFF; transition:stroke .2s; }
+.card-service:hover .sc-cta-circle svg { stroke:var(--brand-500); }
+
+/* Pattern B: certification card (portfolio cert wall) */
+.card-cert {
+  background:#FFFFFF; border:1px solid var(--line-200);
+  padding:28px 18px 20px; text-align:center;
+  transition:transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+.card-cert:hover { transform:translateY(-3px); box-shadow:0 16px 32px rgba(17,17,20,0.07); border-color:var(--brand-500); }
+.card-cert .mark { height:64px; display:flex; align-items:center; justify-content:center; margin-bottom:14px; border-bottom:1px solid var(--line-100); padding-bottom:14px; }
+.card-cert .mark img { max-height:44px; width:auto; object-fit:contain; }
+.card-cert .sub { margin:0; font-size:12px; color:var(--ink-500); }
+
+/* Pattern C: industry card (Track Record) */
+.card-industry { background:#FFFFFF; border:1px solid var(--line-100); overflow:hidden; transition:transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease; }
+.card-industry:hover { transform:translateY(-3px); box-shadow:0 18px 36px rgba(17,17,20,0.08); border-color:var(--brand-500); }
+.card-industry .img { aspect-ratio:4/3; background-size:cover; background-position:center; background-color:#EAEDF5; }
+.card-industry .body { padding:20px 20px 22px; }
+.card-industry .tag {
+  display:inline-flex; padding:5px 12px; border-radius:999px;
+  background:var(--brand-50); color:var(--brand-500);
+  font-size:10.5px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase;
+  margin-bottom:8px;
+}
+.card-industry h3 { font-family:var(--font-display); font-size:20px; font-weight:700; line-height:1.15; margin:0 0 8px; }
+.card-industry p { font-size:13px; line-height:1.6; color:var(--ink-500); margin:0; }
+
+/* Pattern D: milestone card */
+.card-milestone { display:grid; grid-template-columns:140px 1fr; background:#FFFFFF; border:1px solid var(--line-100); box-shadow:0 8px 24px rgba(17,17,20,0.04); transition:transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease; }
+.card-milestone:hover { transform:translateY(-3px); border-color:var(--brand-500); box-shadow:0 16px 32px rgba(17,17,20,0.08); }
+.card-milestone .thumb { background-size:cover; background-position:center; background-color:#EAEDF5; }
+.card-milestone .body { padding:18px 22px; }
+.card-milestone .eyebrow { font-family:var(--font-sans); font-size:10px; font-weight:700; letter-spacing:0.12em; color:#D93025; }
+.card-milestone h4 { font-family:var(--font-display); font-size:18px; font-weight:700; margin:6px 0 6px; }
+.card-milestone p { font-size:12.5px; line-height:1.6; color:var(--ink-500); margin:0; }
+
+/* ── TAGS / PILLS ────────────────────────────────────────── */
+.tag {
+  display:inline-flex; padding:5px 14px; border-radius:999px;
+  font-family:var(--font-sans); font-size:11px; font-weight:700;
+  letter-spacing:0.5px; text-transform:uppercase;
+}
+.tag.green  { background:#D4F4DD; color:#1B7A3B; }
+.tag.blue   { background:#D6EAF8; color:#1A5C8E; }
+.tag.orange { background:#FFE2C9; color:#B85100; }
+.tag.purple { background:#E5DCF7; color:#4B2B8E; }
+.tag.red    { background:#F9D5D5; color:#9B1B1B; }
+.tag.teal   { background:#D0F0EC; color:#0D6B61; }
+.tag.brand  { background:var(--brand-50); color:var(--brand-500); }
+
+/* ── ANIMATIONS / EFFECTS ────────────────────────────────── */
+@keyframes pulseDot {
+  0%,100% { transform:scale(1); opacity:1; }
+  50%     { transform:scale(1.4); opacity:0.5; }
+}
+.eyebrow-dot {
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--font-sans); font-size:12px; font-weight:600;
+  letter-spacing:0.6px; text-transform:uppercase; color:var(--ink-900);
+}
+.eyebrow-dot::before {
+  content:''; width:8px; height:8px; border-radius:50%;
+  background:var(--accent-orange);
+  animation:pulseDot 2.2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position:-200% 0; }
+  100% { background-position:200% 0; }
+}
+.shimmer-bar {
+  height:8px; border-radius:4px;
+  background:linear-gradient(90deg, var(--line-200) 0%, var(--line-100) 50%, var(--line-200) 100%);
+  background-size:200% 100%;
+  animation:shimmer 1.6s linear infinite;
+}
+
+/* === Scroll reveal system =================================
+   Elements with .reveal start invisible + 40px below their final spot
+   and animate in once they enter the viewport. Siblings of the same
+   parent get a staggered transition-delay (handled in JS) so they
+   appear one after another instead of all at once.
+   ========================================================== */
+.reveal {
+  opacity:0; transform:translateY(40px);
+  transition:opacity 800ms cubic-bezier(.22,1,.36,1),
+              transform 800ms cubic-bezier(.22,1,.36,1);
+  will-change:opacity, transform;
+}
+.reveal.is-visible { opacity:1; transform:translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity:1 !important; transform:none !important; transition:none !important; }
+}
+
+/* ── HOVER LIFT (utility) ─────────────────────────────────── */
+.hover-lift { transition:transform .25s ease, box-shadow .25s ease; cursor:pointer; }
+.hover-lift:hover { transform:translateY(-4px); box-shadow:0 18px 38px rgba(17,17,20,0.12); }
+
+/* ── EXPERIMENT SANDBOX ─────────────────────────────────── */
+.sandbox {
+  border:2px dashed var(--brand-100);
+  background:repeating-linear-gradient(45deg, #FAFAFB, #FAFAFB 14px, #F2F3FA 14px, #F2F3FA 28px);
+  padding:36px; border-radius:12px;
+}
+.sandbox h4 { font-family:var(--font-display); margin:0 0 8px; }
+.sandbox p { font-size:13px; color:var(--ink-500); margin:0 0 18px; }
+
+/* Animated underline link */
+.link-underline { position:relative; display:inline-block; color:var(--ink-900); font-weight:600; }
+.link-underline::after {
+  content:''; position:absolute; left:0; right:0; bottom:-2px; height:2px;
+  background:var(--brand-500); transform:scaleX(0); transform-origin:right;
+  transition:transform .3s ease;
+}
+.link-underline:hover::after { transform:scaleX(1); transform-origin:left; }
+
+/* Tilt card */
+.card-tilt { transition:transform .35s cubic-bezier(.22,1,.36,1); background:var(--brand-500); color:#FFFFFF; padding:28px; border-radius:8px; }
+.card-tilt:hover { transform:perspective(800px) rotateX(2deg) rotateY(-3deg) translateY(-4px); box-shadow:0 28px 60px rgba(46,49,146,0.35); }
+</style>
+</head>
+<body>
+
+<div class="uk-shell">
+
+  <!-- ── Sidebar nav ─────────────────────────────────────── -->
+  <aside class="uk-side">
+    <div class="uk-side-brand">Furutec UI Kit</div>
+    <div class="uk-side-meta">Hidden · v0.1</div>
+    <nav>
+      <a href="#colours" class="is-active">Colours</a>
+      <a href="#typography">Typography</a>
+      <a href="#buttons">Buttons</a>
+      <a href="#forms">Form elements</a>
+      <a href="#tags">Tags &amp; pills</a>
+      <a href="#cards-service">Service cards</a>
+      <a href="#cards-cert">Cert cards</a>
+      <a href="#cards-industry">Industry cards</a>
+      <a href="#cards-milestone">Milestone cards</a>
+      <a href="#animations">Animations</a>
+      <a href="#sandbox">Sandbox</a>
+      <a href="#hotspot-editor">Hotspot editor</a>
+    </nav>
+  </aside>
+
+  <!-- ── Main canvas ─────────────────────────────────────── -->
+  <main class="uk-main">
+
+    <!-- Header -->
+    <header style="margin-bottom:24px;">
+      <div class="eyebrow-dot">Pattern Library</div>
+      <h1 style="font-family:var(--font-display);font-size:48px;font-weight:700;letter-spacing:-0.01em;margin:8px 0 8px;">Furutec UI Kit</h1>
+      <p style="font-size:15px;color:var(--ink-500);max-width:680px;line-height:1.7;margin:0;">
+        Hidden internal page. Use this to preview and tweak design tokens, buttons,
+        cards, and animations before pushing them to the live site. Not linked from any nav.
+      </p>
+    </header>
+
+    <!-- ── Colours ─────────────────────────────────────── -->
+    <section class="uk-section" id="colours">
+      <div class="uk-section-head">
+        <span class="uk-section-num">01</span>
+        <h2 class="uk-section-title">Colours</h2>
+      </div>
+
+      <span class="uk-label">Brand</span>
+      <div class="uk-grid cols-5">
+        <div class="swatch"><div class="swatch-box" style="background:var(--brand-700);"></div><div class="swatch-meta"><div class="name">brand-700</div><div class="hex">#1F2270</div></div></div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--brand-600);"></div><div class="swatch-meta"><div class="name">brand-600</div><div class="hex">#262986</div></div></div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--brand-500);"></div><div class="swatch-meta"><div class="name">brand-500 ★</div><div class="hex">#2E3192</div></div></div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--brand-400);"></div><div class="swatch-meta"><div class="name">brand-400</div><div class="hex">#4248B5</div></div></div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--brand-100);"></div><div class="swatch-meta"><div class="name">brand-100</div><div class="hex">#DCDEF2</div></div></div>
+      </div>
+
+      <span class="uk-label" style="margin-top:24px;">Ink (text & dark surfaces)</span>
+      <div class="uk-grid cols-5">
+        <div class="swatch"><div class="swatch-box" style="background:var(--ink-950);"></div><div class="swatch-meta"><div class="name">ink-950</div><div class="hex">#0A0A0B</div></div></div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--ink-900);"></div><div class="swatch-meta"><div class="name">ink-900</div><div class="hex">#111114</div></div></div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--ink-600);"></div><div class="swatch-meta"><div class="name">ink-600</div><div class="hex">#4A4A52</div></div></div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--ink-400);"></div><div class="swatch-meta"><div class="name">ink-400</div><div class="hex">#9A9AA2</div></div></div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--line-200);"></div><div class="swatch-meta"><div class="name">line-200</div><div class="hex">#E6E6EA</div></div></div>
+      </div>
+
+      <span class="uk-label" style="margin-top:24px;">Accent</span>
+      <div class="uk-grid cols-5">
+        <div class="swatch"><div class="swatch-box" style="background:var(--accent-orange);"></div><div class="swatch-meta"><div class="name">accent-orange</div><div class="hex">#F37021</div></div></div>
+      </div>
+    </section>
+
+    <!-- ── Typography ─────────────────────────────────── -->
+    <section class="uk-section" id="typography">
+      <div class="uk-section-head">
+        <span class="uk-section-num">02</span>
+        <h2 class="uk-section-title">Typography</h2>
+      </div>
+      <p class="uk-section-desc">Display = Saira Condensed (bold industrial headlines). Body = Inter (geometric neutral).</p>
+
+      <div class="spec-row"><span class="key">.spec-h1<br/>64 / 1.02</span><h1 class="spec-h1">Your Path To Efficiency &amp; Reliability</h1></div>
+      <div class="spec-row"><span class="key">.spec-h2<br/>44 / 1.05</span><h2 class="spec-h2">Build on expertise. Driven by innovation.</h2></div>
+      <div class="spec-row"><span class="key">.spec-h3<br/>28 / 1.15</span><h3 class="spec-h3">Our Product Milestones</h3></div>
+      <div class="spec-row"><span class="key">.spec-h4<br/>20 / 1.20</span><h4 class="spec-h4">Data Centre Application</h4></div>
+      <div class="spec-row"><span class="key">.spec-eyebrow<br/>12 / wide</span><div class="spec-eyebrow">OUR PRODUCTS</div></div>
+      <div class="spec-row"><span class="key">.spec-body<br/>14 / 1.8</span><p class="spec-body">Furutec Electrical Sdn Bhd is a manufacturer of busduct systems, specialising in indoor, outdoor, data centre, lightning and power monitoring solutions.</p></div>
+      <div class="spec-row"><span class="key">.eyebrow-dot<br/>animated</span><div class="eyebrow-dot">Unlocking Busduct Innovation</div></div>
+    </section>
+
+    <!-- ── Buttons ────────────────────────────────────── -->
+    <section class="uk-section" id="buttons">
+      <div class="uk-section-head">
+        <span class="uk-section-num">03</span>
+        <h2 class="uk-section-title">Buttons</h2>
+      </div>
+      <p class="uk-section-desc">Hover every button to see its transition state. Default height 48px; small / large variants available.</p>
+
+      <span class="uk-label">Primary palette</span>
+      <div class="uk-row">
+        <a class="btn btn-brand">Brand <span class="arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span></a>
+        <a class="btn btn-dark">Dark <span class="arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span></a>
+        <a class="btn btn-outline">Outline <span class="arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span></a>
+        <a class="btn btn-ghost">Ghost <span class="arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span></a>
+      </div>
+
+      <span class="uk-label" style="margin-top:18px;">On dark backgrounds</span>
+      <div class="dark-stage">
+        <a class="btn btn-white-filled">White Filled <span class="arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span></a>
+        <a class="btn btn-white-outline">White Outline <span class="arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span></a>
+      </div>
+
+      <span class="uk-label" style="margin-top:18px;">Size variants (.btn-sm · default · .btn-lg)</span>
+      <div class="uk-row">
+        <a class="btn btn-brand btn-sm">Small <span class="arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span></a>
+        <a class="btn btn-brand">Default <span class="arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span></a>
+        <a class="btn btn-brand btn-lg">Large <span class="arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span></a>
+      </div>
+    </section>
+
+    <!-- ── Form elements ─────────────────────────────── -->
+    <section class="uk-section" id="forms">
+      <div class="uk-section-head">
+        <span class="uk-section-num">04</span>
+        <h2 class="uk-section-title">Form elements</h2>
+      </div>
+
+      <form onsubmit="event.preventDefault();" style="max-width:420px;">
+        <div class="ff-field">
+          <label class="ff-label">Topic *</label>
+          <select class="ff-select" required>
+            <option value="">Choose one</option>
+            <option>Indoor Solution</option>
+            <option>Outdoor Solution</option>
+            <option>Data Centre Solution</option>
+            <option>Power Monitoring Solution</option>
+            <option>Others</option>
+          </select>
+        </div>
+        <div class="ff-field">
+          <label class="ff-label">Full Name *</label>
+          <input class="ff-input" placeholder="Your full name"/>
+        </div>
+        <div class="ff-field">
+          <label class="ff-label">Corporate Email *</label>
+          <input class="ff-input" type="email" placeholder="name@company.com"/>
+        </div>
+        <div class="ff-field">
+          <label class="ff-label">Project Description *</label>
+          <textarea class="ff-textarea" placeholder="Load, location, schedule…"></textarea>
+        </div>
+        <button type="submit" class="btn btn-brand" style="width:100%;height:52px;">Submit Now <span class="arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span></button>
+      </form>
+    </section>
+
+    <!-- ── Tags / pills ──────────────────────────────── -->
+    <section class="uk-section" id="tags">
+      <div class="uk-section-head">
+        <span class="uk-section-num">05</span>
+        <h2 class="uk-section-title">Tags &amp; pills</h2>
+      </div>
+      <div class="uk-row">
+        <span class="tag brand">Featured</span>
+        <span class="tag green">Most Popular</span>
+        <span class="tag blue">Weatherproof</span>
+        <span class="tag orange">Mission Critical</span>
+        <span class="tag purple">Smart System</span>
+        <span class="tag red">Heavy Duty</span>
+        <span class="tag teal">Reliability</span>
+      </div>
+    </section>
+
+    <!-- ── Service cards ─────────────────────────────── -->
+    <section class="uk-section" id="cards-service">
+      <div class="uk-section-head">
+        <span class="uk-section-num">06</span>
+        <h2 class="uk-section-title">Service cards</h2>
+      </div>
+      <p class="uk-section-desc">Hover: card turns brand blue + scales 3%. Used on homepage 'OUR PRODUCTS' grid.</p>
+
+      <div class="uk-grid cols-3">
+        <div class="card-service">
+          <div class="sc-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+          </div>
+          <h3>Indoor<br/>Solution</h3>
+          <p>Compact sandwich busduct from 250 A to 6,300 A for commercial towers, factories, and infrastructure builds.</p>
+          <span class="sc-cta">
+            <span class="sc-cta-circle">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+            </span>
+            Explore More
+          </span>
+        </div>
+
+        <div class="card-service">
+          <div class="sc-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="6" rx="1"/><rect x="2" y="15" width="20" height="6" rx="1"/></svg>
+          </div>
+          <h3>Data Centre<br/>Solution</h3>
+          <p>Hot-pluggable tap-offs and high-density distribution engineered for hyperscale uptime.</p>
+          <span class="sc-cta">
+            <span class="sc-cta-circle">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+            </span>
+            Explore More
+          </span>
+        </div>
+
+        <div class="card-service">
+          <div class="sc-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <h3>Power Monitoring<br/>Solution</h3>
+          <p>Per-circuit current, voltage, and temperature streamed live to your BMS for predictive maintenance.</p>
+          <span class="sc-cta">
+            <span class="sc-cta-circle">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+            </span>
+            Explore More
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Cert cards ───────────────────────────────── -->
+    <section class="uk-section" id="cards-cert">
+      <div class="uk-section-head">
+        <span class="uk-section-num">07</span>
+        <h2 class="uk-section-title">Certification cards</h2>
+      </div>
+      <p class="uk-section-desc">Used on the Certifications page. Hover lifts and tints the border.</p>
+
+      <div class="uk-grid cols-4">
+        <div class="card-cert"><div class="mark"><img src="assets/certs/intertek.svg" alt="Intertek"/></div><p class="sub">Total Quality. Assured.</p></div>
+        <div class="card-cert"><div class="mark"><img src="assets/certs/kema.png" alt="KEMA Labs"/></div><p class="sub">KEMA-KEUR · Powered by DEKRA</p></div>
+        <div class="card-cert"><div class="mark"><img src="assets/certs/dekra.svg" alt="DEKRA"/></div><p class="sub">Type-test laboratory</p></div>
+        <div class="card-cert"><div class="mark"><img src="assets/certs/ul.svg" alt="UL Solutions"/></div><p class="sub">Underwriters Laboratories</p></div>
+      </div>
+    </section>
+
+    <!-- ── Industry cards ──────────────────────────── -->
+    <section class="uk-section" id="cards-industry">
+      <div class="uk-section-head">
+        <span class="uk-section-num">08</span>
+        <h2 class="uk-section-title">Industry cards</h2>
+      </div>
+      <p class="uk-section-desc">Used on the Track Record page. Image cap + tag + title + 2-line copy. Hover lifts.</p>
+
+      <div class="uk-grid cols-3">
+        <article class="card-industry">
+          <div class="img" style="background-image:url(https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&q=80&auto=format&fit=crop);"></div>
+          <div class="body">
+            <span class="tag brand">High Reliability</span>
+            <h3>Data Centre</h3>
+            <p>High-capacity busduct systems with plug-and-play expansion.</p>
+          </div>
+        </article>
+        <article class="card-industry">
+          <div class="img" style="background-image:url(https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=80&auto=format&fit=crop);"></div>
+          <div class="body">
+            <span class="tag brand">Heavy Duty</span>
+            <h3>Infrastructure (MRT &amp; Train Station)</h3>
+            <p>Robust power distribution for MRT and railway infrastructure.</p>
+          </div>
+        </article>
+        <article class="card-industry">
+          <div class="img" style="background-image:url(https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=900&q=80&auto=format&fit=crop);"></div>
+          <div class="body">
+            <span class="tag brand">Mission Critical</span>
+            <h3>Medical &amp; Healthcare</h3>
+            <p>Uninterrupted, safe power for hospitals and healthcare.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ── Milestone cards ──────────────────────────── -->
+    <section class="uk-section" id="cards-milestone">
+      <div class="uk-section-head">
+        <span class="uk-section-num">09</span>
+        <h2 class="uk-section-title">Milestone cards (homepage Product R&amp;D)</h2>
+      </div>
+
+      <div class="uk-grid cols-1" style="grid-template-columns:1fr;max-width:560px;">
+        <a class="card-milestone" href="#">
+          <div class="thumb" style="background-image:url(https://furutec.com.my/wp-content/uploads/2019/07/BIM1.jpg);"></div>
+          <div class="body">
+            <span class="eyebrow">MISSION CRITICAL</span>
+            <h4>Data Centre Application</h4>
+            <p>High-efficiency live system solutions for zero-downtime data halls.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ── Animations ──────────────────────────────── -->
+    <section class="uk-section" id="animations">
+      <div class="uk-section-head">
+        <span class="uk-section-num">10</span>
+        <h2 class="uk-section-title">Animations &amp; effects</h2>
+      </div>
+
+      <span class="uk-label">Pulsing eyebrow dot</span>
+      <div class="uk-row">
+        <div class="eyebrow-dot">Unlocking Busduct Innovation</div>
+      </div>
+
+      <span class="uk-label" style="margin-top:18px;">Shimmer skeleton</span>
+      <div class="uk-grid cols-2" style="max-width:520px;">
+        <div class="shimmer-bar"></div>
+        <div class="shimmer-bar"></div>
+      </div>
+
+      <span class="uk-label" style="margin-top:18px;">Hover lift (.hover-lift)</span>
+      <div class="uk-grid cols-3">
+        <div class="hover-lift" style="background:#FFFFFF;border:1px solid var(--line-200);padding:24px;border-radius:8px;">Hover me</div>
+        <div class="hover-lift" style="background:#FFFFFF;border:1px solid var(--line-200);padding:24px;border-radius:8px;">Hover me</div>
+        <div class="hover-lift" style="background:#FFFFFF;border:1px solid var(--line-200);padding:24px;border-radius:8px;">Hover me</div>
+      </div>
+
+      <span class="uk-label" style="margin-top:18px;">Scroll reveal (.reveal)</span>
+      <div class="uk-grid cols-2" style="max-width:680px;">
+        <div class="reveal" style="background:var(--brand-50);padding:20px;border-radius:8px;font-size:13px;">Element fades in + slides up on scroll into view.</div>
+        <div class="reveal" style="background:var(--brand-50);padding:20px;border-radius:8px;font-size:13px;">Trigger handled by IntersectionObserver below.</div>
+      </div>
+    </section>
+
+    <!-- ── Sandbox ──────────────────────────────────── -->
+    <section class="uk-section" id="sandbox">
+      <div class="uk-section-head">
+        <span class="uk-section-num">11</span>
+        <h2 class="uk-section-title">Experiment sandbox</h2>
+      </div>
+      <p class="uk-section-desc">Drop new component ideas here. Test before promoting to the live site.</p>
+
+      <div class="sandbox">
+        <h4>Animated underline link</h4>
+        <p>Hover the link below — the underline draws in from the right and stays put.</p>
+        <a class="link-underline" href="#">Read the case study</a>
+      </div>
+
+      <div class="sandbox" style="margin-top:18px;">
+        <h4>3D tilt card on hover</h4>
+        <p>Hover this card — it tilts slightly toward the cursor on the X / Y axis.</p>
+        <a class="card-tilt" href="#" style="text-decoration:none;display:block;max-width:320px;">
+          <div style="font-family:var(--font-display);font-size:24px;font-weight:700;line-height:1.1;margin-bottom:6px;">Engineered<br/>For Uptime</div>
+          <div style="font-size:13px;opacity:0.85;">Hover to tilt.</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ── Hotspot editor ─────────────────────────────── -->
+    <section class="uk-section" id="hotspot-editor">
+      <div class="uk-section-head">
+        <span class="uk-section-num">12</span>
+        <h2 class="uk-section-title">Product Overview — Hotspot editor</h2>
+      </div>
+      <p class="uk-section-desc">Drag each numbered hotspot to its correct circle in the diagram. The
+        x / y percentages update live as you drag. When you're happy with the placement, hit
+        <b>Copy code</b> and paste it into the DATA array in <code>index.html</code>.</p>
+
+      <div class="he-wrap" style="display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:start;">
+        <div id="he-figure" style="position:relative;background:#FFFFFF;border:1px solid var(--line-200);">
+          <div id="he-image-wrap" style="position:relative;width:100%;aspect-ratio:1080/800;">
+            <img src="assets/PRODUCT%20OVERVIEW.png" alt="" style="width:100%;height:100%;display:block;object-fit:contain;user-select:none;-webkit-user-drag:none;pointer-events:none;"/>
+            <!-- 5 draggable hotspots injected by JS below -->
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="background:#FFFFFF;border:1px solid var(--line-200);padding:18px;">
+            <div style="font-family:var(--font-display);font-weight:700;font-size:18px;margin-bottom:12px;">Live coordinates</div>
+            <table id="he-coords" style="width:100%;border-collapse:collapse;font-family:'JetBrains Mono',Menlo,monospace;font-size:13px;">
+              <thead>
+                <tr style="text-align:left;color:var(--ink-500);font-weight:600;">
+                  <th style="padding:6px 8px;">#</th>
+                  <th style="padding:6px 8px;">x %</th>
+                  <th style="padding:6px 8px;">y %</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <div style="display:flex;gap:10px;">
+            <button id="he-copy" class="btn btn-brand">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              Copy code
+            </button>
+            <button id="he-reset" class="btn btn-ghost">Reset</button>
+          </div>
+
+          <div style="background:#0A0A0B;color:#E1E3EA;padding:14px;font-family:'JetBrains Mono',Menlo,monospace;font-size:11.5px;line-height:1.6;white-space:pre;overflow-x:auto;max-height:280px;border-radius:6px;">
+<span id="he-code"></span></div>
+
+          <p style="font-size:12px;color:var(--ink-500);margin:0;line-height:1.6;">
+            Drag with mouse or touch. <kbd>Tab</kbd> / click a handle to focus it,
+            then use <kbd>← ↑ → ↓</kbd> arrow keys for 1&nbsp;px nudges
+            (<kbd>Shift</kbd>+arrow for 10&nbsp;px jumps). Hold <kbd>Shift</kbd>
+            during drag for 0.5% snapping.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <style>
+      .he-handle {
+        position:absolute; width:36px; height:36px; border-radius:50%;
+        background:rgba(46,49,146,0.5); color:#FFFFFF;
+        display:flex; align-items:center; justify-content:center;
+        font-family:var(--font-display); font-weight:700; font-size:16px;
+        border:2px solid rgba(255,255,255,0.85);
+        box-shadow:0 4px 12px rgba(46,49,146,0.35);
+        cursor:grab; user-select:none;
+        transform:translate(-50%, -50%);
+        transition:transform .15s ease, box-shadow .15s ease, outline-color .15s ease;
+        touch-action:none; z-index:5;
+        outline:2px solid transparent; outline-offset:2px;
+      }
+      .he-handle:hover { transform:translate(-50%,-50%) scale(1.1); }
+      .he-handle.is-dragging { cursor:grabbing; transform:translate(-50%,-50%) scale(1.18); box-shadow:0 10px 24px rgba(46,49,146,0.7); }
+      .he-handle:focus { outline-color:#F37021; }
+      .he-handle:focus-visible { outline-color:#F37021; }
+      #he-coords tbody td { padding:6px 8px; border-top:1px solid var(--line-100); }
+      #he-coords tbody td:first-child { color:var(--brand-500); font-weight:700; }
+      .he-edit-row:hover { background:var(--bg-100); }
+    </style>
+
+    <script>
+      (function () {
+        // Default positions (current values in index.html for the product overview)
+        var DEFAULTS = [
+          { num: 1, x: 15.5, y: 20.1 },
+          { num: 2, x: 50.0, y: 17.0 },
+          { num: 3, x: 43.0, y: 78.4 },
+          { num: 4, x: 72.1, y: 23.4 },
+          { num: 5, x: 82.5, y: 70.1 }
+        ];
+        var data = JSON.parse(JSON.stringify(DEFAULTS));
+
+        var wrap = document.getElementById('he-image-wrap');
+        if (!wrap) return;
+        var coordsBody = document.querySelector('#he-coords tbody');
+        var codeEl = document.getElementById('he-code');
+
+        function clamp(n, lo, hi) { return Math.max(lo, Math.min(hi, n)); }
+
+        function render() {
+          // build handles
+          wrap.querySelectorAll('.he-handle').forEach(function (h) { h.remove(); });
+          data.forEach(function (d, i) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'he-handle';
+            btn.dataset.idx = i;
+            btn.style.left = d.x + '%';
+            btn.style.top  = d.y + '%';
+            btn.textContent = d.num;
+            wrap.appendChild(btn);
+          });
+          // coords table
+          coordsBody.innerHTML = data.map(function (d) {
+            return '<tr class="he-edit-row"><td>' + d.num + '</td>'
+              + '<td>' + d.x.toFixed(1) + '</td>'
+              + '<td>' + d.y.toFixed(1) + '</td></tr>';
+          }).join('');
+          // code preview
+          codeEl.textContent = data.map(function (d, i) {
+            return '      { num: ' + d.num + ', x: ' + d.x.toFixed(1) + ', y: ' + d.y.toFixed(1) + ' }'
+              + (i === data.length - 1 ? '' : ',');
+          }).join('\n');
+          bindDrag();
+        }
+
+        function bindDrag() {
+          wrap.querySelectorAll('.he-handle').forEach(function (h) {
+            h.tabIndex = 0;
+            h.addEventListener('pointerdown', onDown);
+            h.addEventListener('keydown', onKey);
+          });
+        }
+
+        // Arrow keys nudge the focused handle by 1 actual pixel.
+        // Hold Shift for 10px jumps.
+        function onKey(e) {
+          var key = e.key;
+          if (key !== 'ArrowLeft' && key !== 'ArrowRight' &&
+              key !== 'ArrowUp'   && key !== 'ArrowDown') return;
+          e.preventDefault();
+          var handle = e.currentTarget;
+          var idx = parseInt(handle.dataset.idx, 10);
+          var rect = wrap.getBoundingClientRect();
+          if (!rect.width || !rect.height) return;
+          var step = e.shiftKey ? 10 : 1;          // pixels
+          var dxPct = (step / rect.width)  * 100;  // px → %
+          var dyPct = (step / rect.height) * 100;
+          if (key === 'ArrowLeft')  data[idx].x -= dxPct;
+          if (key === 'ArrowRight') data[idx].x += dxPct;
+          if (key === 'ArrowUp')    data[idx].y -= dyPct;
+          if (key === 'ArrowDown')  data[idx].y += dyPct;
+          data[idx].x = clamp(data[idx].x, 0, 100);
+          data[idx].y = clamp(data[idx].y, 0, 100);
+          handle.style.left = data[idx].x + '%';
+          handle.style.top  = data[idx].y + '%';
+          updateReadout();
+        }
+
+        var dragging = null;
+        function onDown(e) {
+          e.preventDefault();
+          dragging = e.currentTarget;
+          dragging.classList.add('is-dragging');
+          dragging.setPointerCapture(e.pointerId);
+          dragging.addEventListener('pointermove', onMove);
+          dragging.addEventListener('pointerup', onUp);
+          dragging.addEventListener('pointercancel', onUp);
+        }
+        function onMove(e) {
+          if (!dragging) return;
+          var rect = wrap.getBoundingClientRect();
+          var x = ((e.clientX - rect.left) / rect.width) * 100;
+          var y = ((e.clientY - rect.top)  / rect.height) * 100;
+          x = clamp(x, 0, 100);
+          y = clamp(y, 0, 100);
+          if (e.shiftKey) {
+            x = Math.round(x * 2) / 2; // 0.5% snapping
+            y = Math.round(y * 2) / 2;
+          }
+          var idx = parseInt(dragging.dataset.idx, 10);
+          data[idx].x = x;
+          data[idx].y = y;
+          dragging.style.left = x + '%';
+          dragging.style.top  = y + '%';
+          updateReadout();
+        }
+        function onUp(e) {
+          if (!dragging) return;
+          dragging.classList.remove('is-dragging');
+          dragging.releasePointerCapture(e.pointerId);
+          dragging.removeEventListener('pointermove', onMove);
+          dragging.removeEventListener('pointerup', onUp);
+          dragging.removeEventListener('pointercancel', onUp);
+          dragging = null;
+        }
+        function updateReadout() {
+          coordsBody.innerHTML = data.map(function (d) {
+            return '<tr class="he-edit-row"><td>' + d.num + '</td>'
+              + '<td>' + d.x.toFixed(1) + '</td>'
+              + '<td>' + d.y.toFixed(1) + '</td></tr>';
+          }).join('');
+          codeEl.textContent = data.map(function (d, i) {
+            return '      { num: ' + d.num + ', x: ' + d.x.toFixed(1) + ', y: ' + d.y.toFixed(1) + ' }'
+              + (i === data.length - 1 ? '' : ',');
+          }).join('\n');
+        }
+
+        document.getElementById('he-reset').addEventListener('click', function () {
+          data = JSON.parse(JSON.stringify(DEFAULTS));
+          render();
+        });
+        document.getElementById('he-copy').addEventListener('click', function (e) {
+          var text = codeEl.textContent;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function () {
+              var b = e.currentTarget;
+              var orig = b.innerHTML;
+              b.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+              setTimeout(function () { b.innerHTML = orig; }, 1400);
+            });
+          }
+        });
+
+        render();
+      })();
+    </script>
+
+  </main>
+
+</div>
+
+<script>
+  // Sidebar active state on scroll
+  (function() {
+    var links = document.querySelectorAll('.uk-side nav a');
+    var sections = Array.from(links).map(function(a) {
+      return document.querySelector(a.getAttribute('href'));
+    });
+    function update() {
+      var y = window.scrollY + 100;
+      var idx = 0;
+      for (var i = 0; i < sections.length; i++) {
+        if (sections[i] && sections[i].offsetTop <= y) idx = i;
+      }
+      links.forEach(function(a, i) { a.classList.toggle('is-active', i === idx); });
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  })();
+
+  // Reveal-on-scroll with auto-tagging + staggered siblings
+  (function() {
+    // Auto-tag every interesting element with .reveal on load
+    var SELECTORS = [
+      '.uk-section-head',
+      '.swatch', '.tag',
+      '.spec-row',
+      '.ff-field',
+      '.card-service', '.card-cert', '.card-industry', '.card-milestone',
+      '.sandbox',
+      '.uk-row > .btn',
+      '.dark-stage > .btn',
+      '.shimmer-bar',
+      '.card-tilt',
+      '.eyebrow-dot',
+      '.hover-lift'
+    ];
+    document.querySelectorAll(SELECTORS.join(',')).forEach(function(el) {
+      el.classList.add('reveal');
+    });
+
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function(el) { el.classList.add('is-visible'); });
+      return;
+    }
+
+    // When an element enters the viewport, stagger by sibling index.
+    // Cap stagger at 8 siblings × 80 ms = 640 ms so big grids don't drag.
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (!e.isIntersecting) return;
+        var el = e.target;
+        var parent = el.parentElement;
+        var siblings = parent ? Array.prototype.filter.call(
+          parent.children, function(c){ return c.classList.contains('reveal'); }
+        ) : [el];
+        var idx = siblings.indexOf(el);
+        var delay = Math.min(idx * 80, 640);
+        el.style.transitionDelay = delay + 'ms';
+        el.classList.add('is-visible');
+        io.unobserve(el);
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+
+    els.forEach(function(el) { io.observe(el); });
+  })();
+</script>
+
+</body>
+</html>

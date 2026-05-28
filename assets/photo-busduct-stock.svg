@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" preserveAspectRatio="xMidYMid slice">
+  
+  <defs><linearGradient id="bdBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A2A30"></stop><stop offset="1" stop-color="#0F0F12"></stop></linearGradient></defs>
+  <rect width="600" height="400" fill="url(#bdBg)"></rect>
+  
+  <g opacity="0.5">
+    <circle cx="120" cy="60" r="80" fill="#F06A00" opacity="0.3"></circle>
+    <circle cx="460" cy="60" r="80" fill="#F06A00" opacity="0.3"></circle>
+  </g>
+  
+  <g>
+    <rect x="100" y="200" width="400" height="34" fill="#D9D9DD" stroke="#9FA2A8"></rect>
+    <rect x="100" y="240" width="400" height="34" fill="#C0C0C5" stroke="#9FA2A8"></rect>
+    <rect x="100" y="280" width="400" height="34" fill="#ACACB2" stroke="#9FA2A8"></rect>
+    
+    <rect x="88" y="194" width="14" height="128" fill="#C27A3A"></rect>
+    <rect x="498" y="194" width="14" height="128" fill="#C27A3A"></rect>
+  </g>
+  
+  <g fill="#E65C00">
+    <rect x="210" y="340" width="180" height="40"></rect>
+    <polygon points="210,340 190,320 210,320"></polygon>
+    <rect x="230" y="300" width="10" height="40" fill="#2A2A30"></rect>
+    <rect x="370" y="300" width="10" height="40" fill="#2A2A30"></rect>
+  </g>
+  <g fill="#0A0A0B">
+    <circle cx="240" cy="380" r="16"></circle>
+    <circle cx="370" cy="380" r="16"></circle>
+  </g>
+  <text x="14" y="390" font-family="Inter, Arial, sans-serif" font-size="9" fill="rgba(255,255,255,0.3)" letter-spacing="2">PLACEHOLDER · BUSDUCT STOCK</text>
+</svg>

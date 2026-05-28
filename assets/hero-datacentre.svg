@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 500" width="1600" height="500">
+  
+  <defs>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0A2540"></stop>
+      <stop offset="1" stop-color="#1E3A5F"></stop>
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FF6A00" stop-opacity="0.35"></stop>
+      <stop offset="1" stop-color="#FF6A00" stop-opacity="0"></stop>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="500" fill="url(#skyGrad)"></rect>
+  
+  <rect x="0" y="0" width="1600" height="500" fill="url(#glow)"></rect>
+  
+  <g opacity="0.6">
+    <g fill="#081A2E">
+      <rect x="80" y="260" width="90" height="240"></rect>
+      <rect x="200" y="240" width="90" height="260"></rect>
+      <rect x="320" y="270" width="90" height="230"></rect>
+      <rect x="440" y="230" width="90" height="270"></rect>
+      <rect x="1080" y="250" width="90" height="250"></rect>
+      <rect x="1200" y="270" width="90" height="230"></rect>
+      <rect x="1320" y="240" width="90" height="260"></rect>
+      <rect x="1440" y="260" width="90" height="240"></rect>
+    </g>
+    <g fill="#1E78C8" opacity="0.7">
+      <rect x="90" y="275" width="70" height="4"></rect>
+      <rect x="90" y="285" width="70" height="4"></rect>
+      <rect x="90" y="295" width="70" height="4"></rect>
+      <rect x="210" y="255" width="70" height="4"></rect>
+      <rect x="210" y="265" width="70" height="4"></rect>
+      <rect x="330" y="285" width="70" height="4"></rect>
+      <rect x="450" y="245" width="70" height="4"></rect>
+      <rect x="1090" y="265" width="70" height="4"></rect>
+      <rect x="1210" y="285" width="70" height="4"></rect>
+      <rect x="1330" y="255" width="70" height="4"></rect>
+      <rect x="1450" y="275" width="70" height="4"></rect>
+    </g>
+  </g>
+  
+  <g transform="translate(0 160)">
+    <rect x="0" y="0" width="1600" height="60" fill="#D9D9DD"></rect>
+    <rect x="0" y="0" width="1600" height="4" fill="#B8BBC1"></rect>
+    <rect x="0" y="56" width="1600" height="4" fill="#B8BBC1"></rect>
+    <g stroke="#9FA2A8" stroke-width="1">
+      <line x1="200" y1="4" x2="200" y2="56"></line>
+      <line x1="400" y1="4" x2="400" y2="56"></line>
+      <line x1="600" y1="4" x2="600" y2="56"></line>
+      <line x1="800" y1="4" x2="800" y2="56"></line>
+      <line x1="1000" y1="4" x2="1000" y2="56"></line>
+      <line x1="1200" y1="4" x2="1200" y2="56"></line>
+      <line x1="1400" y1="4" x2="1400" y2="56"></line>
+    </g>
+  </g>
+  
+  <rect x="0" y="225" width="1600" height="3" fill="#FF6A00"></rect>
+</svg>
