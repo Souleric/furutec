@@ -663,7 +663,7 @@ header {
         </div>
       </div>
       <a href="portfolio.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
-        Certs
+        Certificates
       </a>
       <a href="portfolio-track-record.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
         Portfolio
@@ -685,7 +685,7 @@ header {
   <nav id="ft-mobile-nav" aria-label="Mobile">
     <a href="index.html" class="active">Home</a>
     <a href="product.html">Our Products</a>
-    <a href="portfolio.html">Certs</a>
+    <a href="portfolio.html">Certificates</a>
     <a href="portfolio-track-record.html">Portfolio</a>
   </nav>
 </header>
@@ -1839,10 +1839,6 @@ header {
   }
   .prod-card:last-child { border-right:none; }
   .prod-card:hover { background:#F4F6FB; }
-  .prod-card.is-active { background:#F4F6FB; }
-  .prod-card.is-active::after {
-    content:''; position:absolute; left:0; right:0; bottom:-1px; height:3px; background:#2E3192;
-  }
   .prod-card-icon { margin-bottom:24px; }
   .prod-card h3 {
     font-family:var(--font-display); font-size:20px; font-weight:600;
@@ -1865,63 +1861,6 @@ header {
     transition:transform 200ms ease;
   }
   .prod-card:hover .prod-card-cta-circle { transform:translateX(2px); }
-  .prod-card.is-active .prod-card-cta-circle { transform:rotate(90deg); }
-
-  /* Expandable detail panel */
-  .prod-detail {
-    display:none; background:#FFFFFF;
-    border-left:1px solid #F1F1F3; border-right:1px solid #F1F1F3; border-bottom:1px solid #F1F1F3;
-    overflow:hidden;
-  }
-  .prod-detail.is-open { display:block; animation:prodDetailIn 360ms cubic-bezier(0.22, 1, 0.36, 1); }
-  @keyframes prodDetailIn {
-    0%   { opacity:0; transform:translateY(-12px); }
-    100% { opacity:1; transform:translateY(0); }
-  }
-  .prod-detail-inner {
-    display:grid; grid-template-columns:1.1fr 1fr; gap:48px;
-    padding:48px;
-  }
-  .prod-detail-img {
-    aspect-ratio: 4/3; background-size:cover; background-position:center; background-color:#EAEDF5;
-  }
-  .prod-detail-body { display:flex; flex-direction:column; justify-content:center; }
-  .prod-detail-eyebrow {
-    font-family:var(--font-sans); font-size:11px; font-weight:600;
-    letter-spacing:0.6px; text-transform:uppercase; color:#2E3192; margin:0 0 12px;
-  }
-  .prod-detail-body h3 {
-    font-family:var(--font-display); font-size:32px; font-weight:700;
-    line-height:1.1; color:#111114; margin:0 0 18px;
-  }
-  .prod-detail-body p {
-    font-size:14px; line-height:1.8; color:#4A4A52; margin:0 0 24px;
-  }
-  .prod-detail-specs {
-    display:grid; grid-template-columns:repeat(2, 1fr); gap:16px 32px;
-    padding:20px 0; border-top:1px solid #ECECF1; border-bottom:1px solid #ECECF1;
-    margin-bottom:24px;
-  }
-  .prod-detail-spec dt {
-    font-size:11px; font-weight:600; letter-spacing:0.5px; text-transform:uppercase;
-    color:#6B6B73; margin:0 0 4px;
-  }
-  .prod-detail-spec dd {
-    font-family:var(--font-display); font-size:18px; font-weight:600; color:#111114; margin:0;
-  }
-  .prod-detail-close {
-    position:absolute; top:20px; right:20px;
-    width:36px; height:36px; border-radius:50%;
-    background:#FFFFFF; border:1px solid #ECECF1; cursor:pointer;
-    display:inline-flex; align-items:center; justify-content:center;
-    transition:background 200ms ease, border-color 200ms ease;
-  }
-  .prod-detail-close:hover { background:#F4F6FB; border-color:#2E3192; }
-  .prod-detail { position:relative; }
-  @media (max-width: 800px) {
-    .prod-detail-inner { grid-template-columns:1fr; gap:28px; padding:28px; }
-    .prod-detail-body h3 { font-size:24px; }
-  }
   @media (max-width: 1100px) {
     .prod-grid { grid-template-columns:repeat(3, 1fr); }
     .prod-card:nth-child(3n) { border-right:none; }
@@ -1964,7 +1903,7 @@ header {
 
     <div class="prod-grid" id="prod-grid">
       <!-- Indoor Solution -->
-      <button type="button" class="prod-card" data-product="indoor">
+      <a class="prod-card" href="product.html#indoor" style="text-decoration:none;color:inherit;">
         <div class="prod-card-icon">
           <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h.01"/><path d="M9 13h.01"/><path d="M9 17h.01"/></svg>
         </div>
@@ -1977,10 +1916,10 @@ Solution</h3>
           </span>
           Explore More
         </span>
-      </button>
+      </a>
 
       <!-- Outdoor Solution -->
-      <button type="button" class="prod-card" data-product="outdoor">
+      <a class="prod-card" href="product.html#outdoor" style="text-decoration:none;color:inherit;">
         <div class="prod-card-icon">
           <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M4.93 19.07l1.41-1.41"/><path d="M17.66 6.34l1.41-1.41"/></svg>
         </div>
@@ -1993,10 +1932,10 @@ Solution</h3>
           </span>
           Explore More
         </span>
-      </button>
+      </a>
 
       <!-- Data Centre Solution -->
-      <button type="button" class="prod-card" data-product="datacenter">
+      <a class="prod-card" href="product.html#datacenter" style="text-decoration:none;color:inherit;">
         <div class="prod-card-icon">
           <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="6" rx="1"/><rect x="2" y="15" width="20" height="6" rx="1"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
         </div>
@@ -2009,10 +1948,10 @@ Solution</h3>
           </span>
           Explore More
         </span>
-      </button>
+      </a>
 
       <!-- Power Monitoring Solution -->
-      <button type="button" class="prod-card" data-product="power">
+      <a class="prod-card" href="product.html#power" style="text-decoration:none;color:inherit;">
         <div class="prod-card-icon">
           <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
         </div>
@@ -2025,10 +1964,10 @@ Solution</h3>
           </span>
           Explore More
         </span>
-      </button>
+      </a>
 
       <!-- Lighting Solution -->
-      <button type="button" class="prod-card" data-product="lighting">
+      <a class="prod-card" href="product.html#lighting" style="text-decoration:none;color:inherit;">
         <div class="prod-card-icon">
           <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
         </div>
@@ -2041,144 +1980,13 @@ Solution</h3>
           </span>
           Explore More
         </span>
-      </button>
+      </a>
     </div>
 
-    <div class="prod-detail" id="prod-detail" aria-live="polite"></div>
   </div>
 </section>
 
-<script>
-  (function productDetails() {
-    var DATA = {
-      lighting: {
-        eyebrow: 'Reliability',
-        title: 'Lighting Solution',
-        copy: 'The Lighting Busduct (LB) handles general lighting circuit runs from 16A to 40A, while the Power Busduct (PB) carries heavier general power loads from 63A to 630A — both in compact, space-saving profiles ideal for ceiling and perimeter installations across commercial, residential and industrial projects.',
-        img: 'photo-1605727216801-e27ce1d0cc28',
-        specs: [
-          ['LB Current', '16A ~ 40A (Copper)'],
-          ['PB Current', '63A ~ 630A'],
-          ['Standard', 'IEC 61439-6'],
-          ['IP Rating', 'IP40 / IP54']
-        ]
-      },
-      power: {
-        eyebrow: 'Smart Metering',
-        title: 'Power Monitoring Solution',
-        copy: 'Per-circuit current, voltage, harmonics and conductor temperature streamed live to your BMS over Modbus or BACnet. Predictive analytics flag rising thermal trends before failures occur, and per-tenant submetering simplifies billing and ESG reporting.',
-        img: 'photo-1581092918056-0c4c3acd3789',
-        specs: [
-          ['Channels', '24 – 96 per panel'],
-          ['Protocols', 'Modbus TCP / BACnet'],
-          ['Accuracy', 'Class 0.5S'],
-          ['Sampling', '1 s telemetry']
-        ]
-      },
-      datacenter: {
-        eyebrow: 'Hyperscale Distribution',
-        title: 'Data Center Solution',
-        copy: 'Hot-pluggable tap-off boxes let you reconfigure power without downtime — perfect for hyperscale facilities running 24/7. Compact sandwich construction reduces voltage drop across long riser runs and supports the density today’s AI data halls demand.',
-        img: 'photo-1558494949-ef010cbdcc31',
-        specs: [
-          ['Current Range', '800 – 6,300 A'],
-          ['Tap-Off Density', 'Every 0.5 m'],
-          ['IP Rating', 'IP54 indoor'],
-          ['Type-Tested', 'ASTA / KEMA']
-        ]
-      },
-      outdoor: {
-        eyebrow: 'Sealed For Site',
-        title: 'Outdoor Solution',
-        copy: 'IP65 to IP68 cast-resin busduct built for sun, monsoon rain, salt spray, dust and heavy industrial exposure. Sealed-for-life epoxy encapsulation means no maintenance windows, no moisture ingress, and a service life measured in decades — not years.',
-        img: 'photo-1497366216548-37526070297c',
-        specs: [
-          ['Ingress Protection', 'IP65 – IP68'],
-          ['Ambient', '− 5 °C to + 55 °C'],
-          ['Insulation', 'Cast epoxy resin'],
-          ['Service Life', '40+ years']
-        ]
-      },
-      indoor: {
-        eyebrow: 'Sandwich Busduct',
-        title: 'Indoor Solution',
-        copy: 'Compact sandwich-type LV busduct from 250 A to 6,300 A in copper or aluminium. Type-tested at ASTA and KEMA to IEC 61439-6 for short-circuit, temperature-rise and IP performance. Standard for commercial towers, factories and infrastructure builds across the region.',
-        img: 'photo-1565793298595-6a879b1d9492',
-        specs: [
-          ['Current Range', '250 – 6,300 A'],
-          ['Conductor', 'Copper / Aluminium'],
-          ['Standard', 'IEC 61439-6'],
-          ['Insulation', 'Mylar + epoxy']
-        ]
-      }
-    };
 
-    function imgUrl(id) {
-      return 'https://images.unsplash.com/' + id + '?w=900&q=80&auto=format&fit=crop';
-    }
-
-    var grid = document.getElementById('prod-grid');
-    var panel = document.getElementById('prod-detail');
-    if (!grid || !panel) return;
-
-    var cards = grid.querySelectorAll('.prod-card');
-    var current = null;
-
-    function close() {
-      panel.classList.remove('is-open');
-      panel.innerHTML = '';
-      cards.forEach(function (c) { c.classList.remove('is-active'); });
-      current = null;
-    }
-
-    function open(key, card) {
-      var d = DATA[key];
-      if (!d) return;
-      cards.forEach(function (c) { c.classList.remove('is-active'); });
-      card.classList.add('is-active');
-      var specsHtml = d.specs.map(function (s) {
-        return '<div class="prod-detail-spec"><dt>' + s[0] + '</dt><dd>' + s[1] + '</dd></div>';
-      }).join('');
-      panel.innerHTML =
-        '<button type="button" class="prod-detail-close" aria-label="Close">' +
-          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#111114" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>' +
-        '</button>' +
-        '<div class="prod-detail-inner">' +
-          '<div class="prod-detail-img" style="background-image:url(' + imgUrl(d.img) + ');"></div>' +
-          '<div class="prod-detail-body">' +
-            '<p class="prod-detail-eyebrow">' + d.eyebrow + '</p>' +
-            '<h3>' + d.title + '</h3>' +
-            '<p>' + d.copy + '</p>' +
-            '<dl class="prod-detail-specs">' + specsHtml + '</dl>' +
-            '<div style="display:flex;flex-wrap:wrap;gap:18px;align-items:center;">' +
-              '<a href="product.html#' + key + '" style="display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 22px;background:#2E3192;color:#FFFFFF;font-family:var(--font-sans);font-size:13px;font-weight:600;text-decoration:none;transition:background 200ms ease;">' +
-                'View Full Specs' +
-                '<span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>' +
-              '</a>' +
-              '<a href="quote.html?topic=' + key + '" style="display:inline-flex;align-items:center;gap:10px;font-family:var(--font-sans);font-size:13px;font-weight:600;color:#111114;text-decoration:none;">' +
-                '<span style="width:28px;height:28px;border-radius:50%;border:1.5px solid #2E3192;display:inline-flex;align-items:center;justify-content:center;">' +
-                  '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>' +
-                '</span>' +
-                'Request A Spec Sheet' +
-              '</a>' +
-            '</div>' +
-          '</div>' +
-        '</div>';
-      panel.classList.add('is-open');
-      current = key;
-      var closeBtn = panel.querySelector('.prod-detail-close');
-      if (closeBtn) closeBtn.addEventListener('click', close);
-    }
-
-    cards.forEach(function (card) {
-      card.addEventListener('click', function () {
-        var key = card.getAttribute('data-product');
-        if (current === key) { close(); return; }
-        open(key, card);
-      });
-    });
-  })();
-</script>
 
 <!-- ============================================================
      ENV ORANGE (blue panel)
@@ -2794,7 +2602,7 @@ Monitoring</h3>
   <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,30,0.55) 0%,rgba(10,10,30,0.75) 100%);z-index:1;"></div>
   <div style="position:relative;z-index:2;max-width:880px;">
     <h2 style="font-family:var(--font-display);font-size:72px;font-weight:700;line-height:1.02;letter-spacing:-0.01em;margin:0 0 18px;color:#FFFFFF;text-wrap:balance;text-shadow:0 4px 32px rgba(0,0,0,0.45);">
-      Certs <span style="color:#FFFFFF;">&amp;</span><br/>
+      Certificates <span style="color:#FFFFFF;">&amp;</span><br/>
       <span style="color:#8E94FF;">Portfolio</span>
     </h2>
     <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,0.88);margin:0 0 36px;text-shadow:0 2px 16px rgba(0,0,0,0.45);">
@@ -2802,7 +2610,7 @@ Monitoring</h3>
     </p>
     <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
       <a href="portfolio.html" class="btn-white-outline" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
-        Certs
+        Certificates
         <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
       </a>
       <a href="portfolio-track-record.html" class="btn-white-outline" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
