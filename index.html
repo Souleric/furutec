@@ -2251,12 +2251,15 @@ Solution</h3>
     position:relative;
     max-width:1080px;
     margin:0 auto;
-    padding:140px 0;             /* breathing room so cards can pop above/below the figure */
+    /* The popup card can pop above/below the figure into this padding +
+       into the section's own 96 px padding, so we don't need a huge gap. */
+    padding:32px 0;
   }
   .pop-figure {
     position:relative;
     background:#FFFFFF;
     border:1px solid #ECECF1;
+    border-radius:20px;
     overflow:visible;
   }
   .pop-image-wrap {
@@ -2373,7 +2376,7 @@ Solution</h3>
   }
 
   @media (max-width: 720px) {
-    .pop-stage { padding:80px 0; }
+    .pop-stage { padding:24px 0; }
     .pop-card { width:220px; height:165px; }
   }
 </style>
@@ -3458,24 +3461,63 @@ Monitoring</h3>
     var ORIGIN = [101.5, 3.0];
 
     // Destinations to fan rocket-lines out to. No labels — just lines.
+    // ~40 worldwide markets; many sit on the far hemisphere from Shah
+    // Alam and only become visible after the user drags the globe.
     var DESTS = [
+      // South-east Asia + Pacific Rim
       [103.85,   1.30],   // Singapore
       [106.85,  -6.20],   // Indonesia (Jakarta)
+      [100.50,  13.75],   // Thailand (Bangkok)
+      [105.85,  21.00],   // Vietnam (Hanoi)
+      [120.98,  14.60],   // Philippines (Manila)
+      [ 96.16,  16.80],   // Myanmar (Yangon)
       [114.18,  22.30],   // Hong Kong
+      [121.57,  25.05],   // Taiwan (Taipei)
       [121.40,  31.20],   // China (Shanghai)
+      [116.41,  39.90],   // China (Beijing)
       [127.00,  37.50],   // South Korea (Seoul)
       [139.70,  35.70],   // Japan (Tokyo)
-      [120.98,  14.60],   // Philippines (Manila)
-      [105.85,  21.00],   // Vietnam (Hanoi)
-      [100.50,  13.75],   // Thailand (Bangkok)
-      [ 96.16,  16.80],   // Myanmar (Yangon)
+      // South Asia
       [ 72.83,  19.08],   // India (Mumbai)
+      [ 77.20,  28.60],   // India (Delhi)
       [ 90.41,  23.81],   // Bangladesh (Dhaka)
       [ 67.00,  24.86],   // Pakistan (Karachi)
+      [ 79.86,   6.93],   // Sri Lanka (Colombo)
+      // Middle East
       [ 55.30,  25.20],   // UAE (Dubai)
       [ 46.70,  24.70],   // Saudi Arabia (Riyadh)
+      [ 51.53,  25.29],   // Qatar (Doha)
       [ 51.42,  35.69],   // Iran (Tehran)
+      [ 28.98,  41.01],   // Turkey (Istanbul)
+      [ 34.78,  32.08],   // Israel (Tel Aviv)
+      // Europe
+      [ -0.13,  51.51],   // UK (London)
+      [  2.35,  48.86],   // France (Paris)
+      [ 13.40,  52.52],   // Germany (Berlin)
+      [  8.68,  50.11],   // Germany (Frankfurt)
+      [  4.90,  52.37],   // Netherlands (Amsterdam)
+      [ -3.70,  40.42],   // Spain (Madrid)
+      [ 12.50,  41.90],   // Italy (Rome)
+      [ 18.07,  59.33],   // Sweden (Stockholm)
+      [ 23.73,  37.98],   // Greece (Athens)
+      [ 37.62,  55.75],   // Russia (Moscow)
+      // North America
+      [-74.01,  40.71],   // USA (New York)
+      [-87.65,  41.88],   // USA (Chicago)
+      [-95.37,  29.76],   // USA (Houston)
+      [-118.24, 34.05],   // USA (Los Angeles)
+      [-122.42, 37.77],   // USA (San Francisco)
+      [-79.38,  43.65],   // Canada (Toronto)
+      // South America
+      [-46.63, -23.55],   // Brazil (São Paulo)
+      [-58.38, -34.60],   // Argentina (Buenos Aires)
+      // Africa
+      [ 31.24,  30.04],   // Egypt (Cairo)
+      [  3.38,   6.45],   // Nigeria (Lagos)
+      [ 28.04, -26.20],   // South Africa (Johannesburg)
+      // Oceania
       [151.20, -33.86],   // Australia (Sydney)
+      [144.96, -37.81],   // Australia (Melbourne)
       [174.78, -41.29]    // New Zealand (Wellington)
     ];
 
@@ -3555,7 +3597,7 @@ Monitoring</h3>
       p.setAttribute('d', 'M 0,0');
       p.setAttribute('pathLength', ARC_PATH_LENGTH);
       p.setAttribute('fill', 'none');
-      p.setAttribute('stroke', '#F37021');
+      p.setAttribute('stroke', '#2E3192');
       p.setAttribute('stroke-width', '1.6');
       p.setAttribute('stroke-linecap', 'round');
       p.setAttribute('stroke-dasharray', ARC_PATH_LENGTH);
@@ -3564,21 +3606,28 @@ Monitoring</h3>
 
       var delay = (i * 0.32).toFixed(2);
 
+      // dashoffset: full → 0 (draw outward), then HOLD at 0 for the rest
+      // of the cycle.  When the cycle restarts, it snaps back to the
+      // starting value (the full length) — but opacity is already 0 at
+      // that moment so the snap is invisible.  No reverse motion =
+      // line never visually retreats from the endpoint back to Malaysia.
       var dashAnim = document.createElementNS(SVG_NS, 'animate');
       dashAnim.setAttribute('attributeName', 'stroke-dashoffset');
-      dashAnim.setAttribute('values', ARC_PATH_LENGTH + ';0;0;' + ARC_PATH_LENGTH);
-      dashAnim.setAttribute('keyTimes', '0;0.45;0.85;1');
+      dashAnim.setAttribute('values', ARC_PATH_LENGTH + ';0;0');
+      dashAnim.setAttribute('keyTimes', '0;0.45;1');
       dashAnim.setAttribute('dur', CYCLE + 's');
       dashAnim.setAttribute('begin', delay + 's');
       dashAnim.setAttribute('repeatCount', 'indefinite');
       dashAnim.setAttribute('calcMode', 'spline');
-      dashAnim.setAttribute('keySplines', '0.22 1 0.36 1; 0 0 1 1; 0.4 0 1 1');
+      dashAnim.setAttribute('keySplines', '0.22 1 0.36 1; 0 0 1 1');
       p.appendChild(dashAnim);
 
+      // opacity holds at 0.5 through the draw + hold, then fades to 0
+      // before the loop boundary so the dashoffset snap-reset is hidden.
       var opAnim = document.createElementNS(SVG_NS, 'animate');
       opAnim.setAttribute('attributeName', 'stroke-opacity');
-      opAnim.setAttribute('values', '0.85;0.85;0.85;0');
-      opAnim.setAttribute('keyTimes', '0;0.45;0.80;1');
+      opAnim.setAttribute('values', '0.5;0.5;0.5;0');
+      opAnim.setAttribute('keyTimes', '0;0.45;0.85;1');
       opAnim.setAttribute('dur', CYCLE + 's');
       opAnim.setAttribute('begin', delay + 's');
       opAnim.setAttribute('repeatCount', 'indefinite');
@@ -3589,7 +3638,7 @@ Monitoring</h3>
 
       var c = document.createElementNS(SVG_NS, 'circle');
       c.setAttribute('r', '2.4');
-      c.setAttribute('fill', '#F37021');
+      c.setAttribute('fill', '#2E3192');
       c.setAttribute('opacity', '0.85');
       c.setAttribute('visibility', 'hidden');
       dotsG.appendChild(c);
