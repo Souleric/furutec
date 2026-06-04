@@ -17,14 +17,16 @@ PAGES = ["index.html", "product.html", "portfolio.html",
 CSS_MARKER_V1 = "/* === furutec-btn-polish v1 === */"
 CSS_MARKER_V2 = "/* === furutec-btn-polish v2 === */"
 CSS_MARKER_V3 = "/* === furutec-btn-polish v3 === */"
+CSS_MARKER_V4 = "/* === furutec-btn-polish v4 === */"
 
 CSS_BLOCK = f"""<style>
-{CSS_MARKER_V3}
-/* v3: bumped radius 8 → 10 px so all CTAs read as soft-curve pills,
-   and added .gi-cta-btn (new homepage Get-In-Touch CTA) plus a
-   catch-all rule for any 48 px+ tall <a> / <button> that explicitly
-   declares one of the brand colours as background. */
-.btn-dark, .btn-outline, .btn-blue, .btn-submit-now,
+{CSS_MARKER_V4}
+/* v4: added .btn-orange to both the radius rule and the arrow
+   slide-on-hover animation, so the new orange-filled buttons on the
+   Credential banner pick up curved corners + arrow motion.
+   v3: bumped radius 8 → 10 px; added .gi-cta-btn, #ft-quote-btn,
+   .gi-direct-cta. */
+.btn-dark, .btn-outline, .btn-blue, .btn-orange, .btn-submit-now,
 .btn-white-filled, .btn-white-outline,
 .ft-hero-btn-primary, .ft-hero-btn-secondary,
 .ps-btn-primary, .ps-btn-secondary,
@@ -55,25 +57,29 @@ CSS_BLOCK = f"""<style>
 .btn-dark:hover  .btn-arrow > .a,
 .btn-outline:hover  .btn-arrow > .a,
 .btn-blue:hover  .btn-arrow > .a,
+.btn-orange:hover  .btn-arrow > .a,
 .btn-submit-now:hover  .btn-arrow > .a,
 .btn-white-filled:hover  .btn-arrow > .a,
 .btn-white-outline:hover  .btn-arrow > .a,
 .ft-hero-btn-primary:hover  .btn-arrow > .a,
 .ft-hero-btn-secondary:hover  .btn-arrow > .a,
 .ps-btn-primary:hover  .btn-arrow > .a,
-.ps-btn-secondary:hover  .btn-arrow > .a {{
+.ps-btn-secondary:hover  .btn-arrow > .a,
+.gi-cta-btn:hover  .btn-arrow > .a {{
   transform: translateX(110%);
 }}
 .btn-dark:hover  .btn-arrow > .b,
 .btn-outline:hover  .btn-arrow > .b,
 .btn-blue:hover  .btn-arrow > .b,
+.btn-orange:hover  .btn-arrow > .b,
 .btn-submit-now:hover  .btn-arrow > .b,
 .btn-white-filled:hover  .btn-arrow > .b,
 .btn-white-outline:hover  .btn-arrow > .b,
 .ft-hero-btn-primary:hover  .btn-arrow > .b,
 .ft-hero-btn-secondary:hover  .btn-arrow > .b,
 .ps-btn-primary:hover  .btn-arrow > .b,
-.ps-btn-secondary:hover  .btn-arrow > .b {{
+.ps-btn-secondary:hover  .btn-arrow > .b,
+.gi-cta-btn:hover  .btn-arrow > .b {{
   transform: translateX(0);
 }}
 </style>
@@ -118,24 +124,26 @@ V2_STYLE_RE = re.compile(
     r'<style>\s*' + re.escape(CSS_MARKER_V2) + r'.*?</style>\s*',
     re.DOTALL,
 )
+V3_STYLE_RE = re.compile(
+    r'<style>\s*' + re.escape(CSS_MARKER_V3) + r'.*?</style>\s*',
+    re.DOTALL,
+)
 
 for page in PAGES:
     p = ROOT / page
     html = p.read_text()
     changed = False
 
-    # 1. If v1 or v2 block is present, strip it (we'll inject v3)
-    removed_v1 = V1_STYLE_RE.subn("", html)
-    html = removed_v1[0]
-    removed = removed_v1[1]
-    removed_v2 = V2_STYLE_RE.subn("", html)
-    html = removed_v2[0]
-    removed += removed_v2[1]
+    # 1. If v1/v2/v3 blocks are present, strip them (we'll inject v4)
+    removed = 0
+    for pat in (V1_STYLE_RE, V2_STYLE_RE, V3_STYLE_RE):
+        html, n = pat.subn("", html)
+        removed += n
     if removed:
         changed = True
 
-    # 2. Inject v3 CSS if not already there
-    if CSS_MARKER_V3 not in html:
+    # 2. Inject v4 CSS if not already there
+    if CSS_MARKER_V4 not in html:
         html = html.replace("</head>", CSS_BLOCK + "</head>", 1)
         changed = True
 

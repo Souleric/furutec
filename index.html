@@ -269,6 +269,20 @@ p, .body {
     color: #111114 !important;
     border-color: #FFFFFF !important;
   }
+  /* Filled brand-orange button — used on dark sections (e.g. Credential banner). */
+  .btn-orange {
+    background: #F58220 !important;
+    color: #FFFFFF !important;
+    border: 1.5px solid #F58220 !important;
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+    box-shadow: 0 4px 14px rgba(245,130,32,0.30);
+  }
+  .btn-orange:hover {
+    background: transparent !important;
+    color: #FFFFFF !important;
+    border-color: #FFFFFF !important;
+    box-shadow: none;
+  }
   .btn-submit-now {
     transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   }
@@ -536,12 +550,13 @@ header {
 </style>
 
 <style>
-/* === furutec-btn-polish v3 === */
-/* v3: bumped radius 8 → 10 px so all CTAs read as soft-curve pills,
-   and added .gi-cta-btn (new homepage Get-In-Touch CTA) plus a
-   catch-all rule for any 48 px+ tall <a> / <button> that explicitly
-   declares one of the brand colours as background. */
-.btn-dark, .btn-outline, .btn-blue, .btn-submit-now,
+/* === furutec-btn-polish v4 === */
+/* v4: added .btn-orange to both the radius rule and the arrow
+   slide-on-hover animation, so the new orange-filled buttons on the
+   Credential banner pick up curved corners + arrow motion.
+   v3: bumped radius 8 → 10 px; added .gi-cta-btn, #ft-quote-btn,
+   .gi-direct-cta. */
+.btn-dark, .btn-outline, .btn-blue, .btn-orange, .btn-submit-now,
 .btn-white-filled, .btn-white-outline,
 .ft-hero-btn-primary, .ft-hero-btn-secondary,
 .ps-btn-primary, .ps-btn-secondary,
@@ -572,25 +587,29 @@ header {
 .btn-dark:hover  .btn-arrow > .a,
 .btn-outline:hover  .btn-arrow > .a,
 .btn-blue:hover  .btn-arrow > .a,
+.btn-orange:hover  .btn-arrow > .a,
 .btn-submit-now:hover  .btn-arrow > .a,
 .btn-white-filled:hover  .btn-arrow > .a,
 .btn-white-outline:hover  .btn-arrow > .a,
 .ft-hero-btn-primary:hover  .btn-arrow > .a,
 .ft-hero-btn-secondary:hover  .btn-arrow > .a,
 .ps-btn-primary:hover  .btn-arrow > .a,
-.ps-btn-secondary:hover  .btn-arrow > .a {
+.ps-btn-secondary:hover  .btn-arrow > .a,
+.gi-cta-btn:hover  .btn-arrow > .a {
   transform: translateX(110%);
 }
 .btn-dark:hover  .btn-arrow > .b,
 .btn-outline:hover  .btn-arrow > .b,
 .btn-blue:hover  .btn-arrow > .b,
+.btn-orange:hover  .btn-arrow > .b,
 .btn-submit-now:hover  .btn-arrow > .b,
 .btn-white-filled:hover  .btn-arrow > .b,
 .btn-white-outline:hover  .btn-arrow > .b,
 .ft-hero-btn-primary:hover  .btn-arrow > .b,
 .ft-hero-btn-secondary:hover  .btn-arrow > .b,
 .ps-btn-primary:hover  .btn-arrow > .b,
-.ps-btn-secondary:hover  .btn-arrow > .b {
+.ps-btn-secondary:hover  .btn-arrow > .b,
+.gi-cta-btn:hover  .btn-arrow > .b {
   transform: translateX(0);
 }
 </style>
@@ -2625,11 +2644,11 @@ Monitoring</h3>
       Where Credential Meets Capability.
     </p>
     <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
-      <a href="portfolio.html" class="btn-white-outline" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
+      <a href="portfolio.html" class="btn-orange" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
         Certificates
         <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
       </a>
-      <a href="portfolio-track-record.html" class="btn-white-outline" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
+      <a href="portfolio-track-record.html" class="btn-orange" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
         Portfolio
         <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
       </a>
