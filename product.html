@@ -1212,16 +1212,32 @@ header {
   <div class="ps-inner">
 
     <div class="ps-title-bar">
-      <h2 class="ps-title">OUTDOOR SOLUTION</h2>
+      <h2 class="ps-title">OUTDOOR BUSDUCT SOLUTION</h2>
     </div>
 
-    <div class="ps-grid">
+    <div class="ps-grid ps-grid--gallery">
 
-      <!-- LEFT: info card -->
-      <div class="ps-info">
-        <div class="ps-info-images">
-          <img src="assets/products/outdoor-hero.png" alt="CAST RESIN BUSDUCT" style="width:100%;height:auto;max-height:140px;"/>
+      <!-- LEFT: image slideshow -->
+      <div class="ps-gallery" data-gallery>
+        <div class="ps-gallery-stage">
+          <div class="ps-gallery-slide is-active"><img src="assets/products/outdoor-hero.png" alt="Cast Resin Busduct"/></div>
+
+          <button type="button" class="ps-gallery-nav ps-gallery-prev" aria-label="Previous image">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button type="button" class="ps-gallery-nav ps-gallery-next" aria-label="Next image">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+          <div class="ps-gallery-counter"><span data-counter-current>1</span> / 1</div>
         </div>
+
+        <div class="ps-gallery-thumbs">
+          <button type="button" class="ps-gallery-thumb is-active" aria-label="View image 1"><img src="assets/products/outdoor-hero.png" alt=""/></button>
+        </div>
+      </div>
+
+      <!-- RIGHT: consolidated content panel -->
+      <div class="ps-content">
         <span class="ps-tag tag-blue">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 1 0 0-9h-1.18A7 7 0 1 0 5 16.79"/><path d="M8 19v3"/><path d="M12 19v3"/><path d="M16 19v3"/></svg>
           Weatherproof
@@ -1230,16 +1246,31 @@ header {
         <p class="ps-product-subtitle"><em>Safe by Design, Powered by Resin</em></p>
         <p class="ps-product-desc">Built for the most extreme environments. The CR busduct is encapsulated in a specialized cast resin that provides total protection against water, dust, and chemical corrosion.</p>
 
-        <h4 class="ps-features-heading">Key Features</h4>
-        <ul class="ps-features-list">
-          <li>· Compliant with BS 6387, IEC 60331, JIS C8364 &amp; CNS 14286</li>
-          <li>· Mineral-Insulated Cast Resin Type</li>
-          <li>· Excellent Heat Dissipation</li>
-          <li>· Resistant to Water, Fire &amp; Corrosion</li>
-          <li>· Seismic Zone 4 Protection</li>
-          <li>· IK10 Mechanical Impact</li>
-          <li>· High Degree Protection of IP68</li>
+        <div class="ps-content-divider"></div>
+
+        <div class="ps-content-section-label">Key Features</div>
+        <ul class="ps-feature-grid">
+          <li><span>Compliant with BS 6387, IEC 60331, JIS C8364 &amp; CNS 14286</span></li>
+          <li><span>Mineral-Insulated Cast Resin Type</span></li>
+          <li><span>Excellent Heat Dissipation</span></li>
+          <li><span>Resistant to Water, Fire &amp; Corrosion</span></li>
+          <li><span>Seismic Zone 4 Protection</span></li>
+          <li><span>IK10 Mechanical Impact</span></li>
+          <li><span>High Degree Protection of IP68</span></li>
         </ul>
+
+        <div class="ps-content-divider"></div>
+
+        <div class="ps-content-section-label">Technical Specification</div>
+        <div class="ps-spec-rows">
+          <div><span class="label">Current Rating</span>     <span class="value">400 A – 6,300 A</span></div>
+          <div><span class="label">IP Rating</span>          <span class="value">IP68</span></div>
+          <div><span class="label">Compliance Standard</span><span class="value">IEC 61439-6 &amp; IEC 61439-1</span></div>
+          <div><span class="label">Voltage</span>            <span class="value">Up to 1,000 V</span></div>
+          <div><span class="label">Conductor</span>          <span class="value">Copper / Aluminium</span></div>
+        </div>
+
+        <div class="ps-content-divider"></div>
 
         <div class="ps-cta">
           <a class="ps-btn-primary" href="quote.html?topic=outdoor">
@@ -1251,21 +1282,6 @@ header {
             Request a Catalog
           </a>
         </div>
-      </div>
-
-      <!-- RIGHT: spec card + video stacked -->
-      <div class="ps-side">
-        <div class="ps-spec-card">
-          <h4 class="ps-spec-title">Technical Specification</h4>
-          <div class="ps-spec-grid">
-          <div><p class="ps-spec-label">Current Rating</p><p class="ps-spec-value">400 A – 6,300 A</p></div>
-          <div><p class="ps-spec-label">IP Rating</p><p class="ps-spec-value">IP68</p></div>
-          <div><p class="ps-spec-label">Compliance Standard</p><p class="ps-spec-value">IEC 61439-6 &amp; IEC 61439-1</p></div>
-          <div><p class="ps-spec-label">Voltage</p><p class="ps-spec-value">Up to 1,000 V</p></div>
-          <div><p class="ps-spec-label">Conductor</p><p class="ps-spec-value">Copper / Aluminium</p></div>
-          </div>
-        </div>
-
       </div>
 
     </div>
@@ -1289,16 +1305,32 @@ header {
   <div class="ps-inner">
 
     <div class="ps-title-bar">
-      <h2 class="ps-title">DATA CENTRE SOLUTION</h2>
+      <h2 class="ps-title">DATA CENTRE BUSDUCT SOLUTION</h2>
     </div>
 
-    <div class="ps-grid">
+    <div class="ps-grid ps-grid--gallery">
 
-      <!-- LEFT: info card -->
-      <div class="ps-info">
-        <div class="ps-info-images">
-          <img src="assets/products/datacenter-hero.png" alt="i-DC BUSDUCT" style="width:100%;height:auto;max-height:140px;"/>
+      <!-- LEFT: image slideshow -->
+      <div class="ps-gallery" data-gallery>
+        <div class="ps-gallery-stage">
+          <div class="ps-gallery-slide is-active"><img src="assets/products/datacenter-hero.png" alt="i-DC Busduct"/></div>
+
+          <button type="button" class="ps-gallery-nav ps-gallery-prev" aria-label="Previous image">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button type="button" class="ps-gallery-nav ps-gallery-next" aria-label="Next image">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+          <div class="ps-gallery-counter"><span data-counter-current>1</span> / 1</div>
         </div>
+
+        <div class="ps-gallery-thumbs">
+          <button type="button" class="ps-gallery-thumb is-active" aria-label="View image 1"><img src="assets/products/datacenter-hero.png" alt=""/></button>
+        </div>
+      </div>
+
+      <!-- RIGHT: consolidated content panel -->
+      <div class="ps-content">
         <span class="ps-tag tag-orange">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 14.39 8.25 21 9.27l-4.78 4.66L17.66 21 12 17.77 6.34 21l1.45-7.07L3 9.27l6.61-1.02z"/></svg>
           Featured
@@ -1307,19 +1339,34 @@ header {
         <p class="ps-product-subtitle"><em>High Density Power, Zero Downtime</em></p>
         <p class="ps-product-desc">In an era where AI, Cloud, and Edge computing define global progress, uptime is the only currency that matters. Furutec i-DC is not just a busduct — it is a high-performance infrastructure solution engineered to eliminate risk and empower scalability.</p>
 
-        <h4 class="ps-features-heading">Key Features</h4>
-        <ul class="ps-features-list">
-          <li>· Compliant with IEC 61439-6</li>
-          <li>· Space-Efficient Modular &amp; Compact Design</li>
-          <li>· Flexibility &amp; Scalability for Future Expansion</li>
-          <li>· Degree Protection of IP40 / 54</li>
-          <li>· Quick Installation &amp; Lower Installation Cost</li>
-          <li>· Maintenance-Free</li>
-          <li>· Eco-Friendly &amp; Reusable</li>
-          <li>· Customizable Tap Off Units</li>
-          <li>· Safe Live Installation of Tap Off Units</li>
-          <li>· Integrated with Branch Circuit Power Monitoring</li>
+        <div class="ps-content-divider"></div>
+
+        <div class="ps-content-section-label">Key Features</div>
+        <ul class="ps-feature-grid">
+          <li><span>Compliant with IEC 61439-6</span></li>
+          <li><span>Space-Efficient Modular &amp; Compact Design</span></li>
+          <li><span>Flexibility &amp; Scalability for Future Expansion</span></li>
+          <li><span>Degree Protection of IP40 / 54</span></li>
+          <li><span>Quick Installation &amp; Lower Installation Cost</span></li>
+          <li><span>Maintenance-Free</span></li>
+          <li><span>Eco-Friendly &amp; Reusable</span></li>
+          <li><span>Customizable Tap Off Units</span></li>
+          <li><span>Safe Live Installation of Tap Off Units</span></li>
+          <li><span>Integrated with Branch Circuit Power Monitoring</span></li>
         </ul>
+
+        <div class="ps-content-divider"></div>
+
+        <div class="ps-content-section-label">Technical Specification</div>
+        <div class="ps-spec-rows">
+          <div><span class="label">Busduct Current Rating</span><span class="value">250 A · 400 A · 630 A · 800 A</span></div>
+          <div><span class="label">TOU Current Rating</span>    <span class="value">16 A · 32 A · 63 A · 100 A</span></div>
+          <div><span class="label">Compliance Standard</span>   <span class="value">IEC 61439-6 &amp; IEC 61439-1</span></div>
+          <div><span class="label">Conductor</span>             <span class="value">Copper</span></div>
+          <div><span class="label">Housing Material</span>      <span class="value">Extruded Aluminium-Alloy</span></div>
+        </div>
+
+        <div class="ps-content-divider"></div>
 
         <div class="ps-cta">
           <a class="ps-btn-primary" href="quote.html?topic=datacenter">
@@ -1331,21 +1378,6 @@ header {
             Request a Catalog
           </a>
         </div>
-      </div>
-
-      <!-- RIGHT: spec card + video stacked -->
-      <div class="ps-side">
-        <div class="ps-spec-card">
-          <h4 class="ps-spec-title">Technical Specification</h4>
-          <div class="ps-spec-grid">
-          <div><p class="ps-spec-label">Busduct Current Rating</p><p class="ps-spec-value">250 A · 400 A · 630 A · 800 A</p></div>
-          <div><p class="ps-spec-label">TOU Current Rating</p><p class="ps-spec-value">16 A · 32 A · 63 A · 100 A</p></div>
-          <div><p class="ps-spec-label">Compliance Standard</p><p class="ps-spec-value">IEC 61439-6 &amp; IEC 61439-1</p></div>
-          <div><p class="ps-spec-label">Conductor</p><p class="ps-spec-value">Copper</p></div>
-          <div><p class="ps-spec-label">Housing Material</p><p class="ps-spec-value">Extruded Aluminium-Alloy</p></div>
-          </div>
-        </div>
-
       </div>
 
     </div>
@@ -1372,13 +1404,31 @@ header {
       <h2 class="ps-title">POWER MONITORING SOLUTION</h2>
     </div>
 
-    <div class="ps-grid ps-grid--single">
+    <div class="ps-grid ps-grid--gallery">
 
-      <!-- Single centred info card (BCPM has no tech spec table per PDF §3.2.4) -->
-      <div class="ps-info">
-        <div class="ps-info-images">
-          <img src="assets/products/power-hero.png" alt="BCPM SYSTEM" style="width:100%;height:auto;max-height:160px;"/>
+      <!-- LEFT: image slideshow -->
+      <div class="ps-gallery" data-gallery>
+        <div class="ps-gallery-stage">
+          <div class="ps-gallery-slide is-active"><img src="assets/products/power-hero.png" alt="BCPM System"/></div>
+
+          <button type="button" class="ps-gallery-nav ps-gallery-prev" aria-label="Previous image">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button type="button" class="ps-gallery-nav ps-gallery-next" aria-label="Next image">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+          <div class="ps-gallery-counter"><span data-counter-current>1</span> / 1</div>
         </div>
+
+        <div class="ps-gallery-thumbs">
+          <button type="button" class="ps-gallery-thumb is-active" aria-label="View image 1"><img src="assets/products/power-hero.png" alt=""/></button>
+        </div>
+      </div>
+
+      <!-- RIGHT: consolidated content panel
+           BCPM has no tech-spec table per PDF §3.2.4 — Key Capabilities
+           shown instead, no spec rows. -->
+      <div class="ps-content">
         <span class="ps-tag tag-purple">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3"/><path d="M15 1v3"/><path d="M9 20v3"/><path d="M15 20v3"/><path d="M20 9h3"/><path d="M20 15h3"/><path d="M1 9h3"/><path d="M1 15h3"/></svg>
           Smart System
@@ -1386,6 +1436,20 @@ header {
         <h3 class="ps-product-title">BCPM SYSTEM</h3>
         <p class="ps-product-subtitle"><em>Precision Monitoring, Proven Savings</em></p>
         <p class="ps-product-desc">The Branch Circuit Power Monitoring (BCPM) system uses sensors to collect real-time data on electricity usage and potential issues, then displays everything on a user-friendly HMI screen. This allows you to see exactly where energy is being wasted, prevent power overloads before they cause a blackout, and ensure electricity is distributed evenly and safely across the entire system.</p>
+
+        <div class="ps-content-divider"></div>
+
+        <div class="ps-content-section-label">Key Capabilities</div>
+        <ul class="ps-feature-grid">
+          <li><span>Real-Time Energy Telemetry</span></li>
+          <li><span>Per-Circuit Current &amp; Voltage Sensing</span></li>
+          <li><span>User-Friendly HMI Display</span></li>
+          <li><span>Overload &amp; Anomaly Alerts</span></li>
+          <li><span>Identify Energy Wastage</span></li>
+          <li><span>Even Load Distribution Across Network</span></li>
+        </ul>
+
+        <div class="ps-content-divider"></div>
 
         <div class="ps-cta">
           <a class="ps-btn-primary" href="quote.html?topic=power">
@@ -1408,16 +1472,34 @@ header {
   <div class="ps-inner">
 
     <div class="ps-title-bar">
-      <h2 class="ps-title">LIGHTING SOLUTION</h2>
+      <h2 class="ps-title">LIGHTING BUSDUCT SOLUTION</h2>
     </div>
 
-    <div class="ps-grid">
+    <div class="ps-grid ps-grid--gallery">
 
-      <!-- LEFT: info card -->
-      <div class="ps-info">
-        <div class="ps-info-images">
-          <img src="assets/products/lighting-hero-left.png" alt="LB&amp;PB BUSDUCT — view 1"/><img src="assets/products/lighting-hero-right.png" alt="LB&amp;PB BUSDUCT — view 2"/>
+      <!-- LEFT: image slideshow -->
+      <div class="ps-gallery" data-gallery>
+        <div class="ps-gallery-stage">
+          <div class="ps-gallery-slide is-active"><img src="assets/products/lighting-hero-left.png" alt="LB & PB Busduct — view 1"/></div>
+          <div class="ps-gallery-slide"><img src="assets/products/lighting-hero-right.png" alt="LB & PB Busduct — view 2"/></div>
+
+          <button type="button" class="ps-gallery-nav ps-gallery-prev" aria-label="Previous image">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button type="button" class="ps-gallery-nav ps-gallery-next" aria-label="Next image">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+          <div class="ps-gallery-counter"><span data-counter-current>1</span> / 2</div>
         </div>
+
+        <div class="ps-gallery-thumbs">
+          <button type="button" class="ps-gallery-thumb is-active" aria-label="View image 1"><img src="assets/products/lighting-hero-left.png" alt=""/></button>
+          <button type="button" class="ps-gallery-thumb" aria-label="View image 2"><img src="assets/products/lighting-hero-right.png" alt=""/></button>
+        </div>
+      </div>
+
+      <!-- RIGHT: consolidated content panel -->
+      <div class="ps-content">
         <span class="ps-tag tag-teal">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
           Reliability
@@ -1425,6 +1507,33 @@ header {
         <h3 class="ps-product-title">LB&amp;PB BUSDUCT</h3>
         <p class="ps-product-subtitle"><em>Where Light Meets Performance</em></p>
         <p class="ps-product-desc">The Lighting Busduct system enables efficient installation and easy maintenance with detachable, reusable components that reduce costs, while the Power Busduct system ensures safe, reliable, and efficient power distribution through its wide phase spacing design, enhancing insulation performance for diverse project needs.</p>
+
+        <div class="ps-content-divider"></div>
+
+        <div class="ps-content-section-label">Key Features</div>
+        <ul class="ps-feature-grid">
+          <li><span>Detachable, Reusable Components</span></li>
+          <li><span>Efficient, Low-Cost Installation</span></li>
+          <li><span>Wide Phase-Spacing Design</span></li>
+          <li><span>Enhanced Insulation Performance</span></li>
+          <li><span>Compact Ceiling / Perimeter Profile</span></li>
+          <li><span>Plug-In Tap-Off Flexibility</span></li>
+        </ul>
+
+        <div class="ps-content-divider"></div>
+
+        <div class="ps-content-section-label">Technical Specification</div>
+        <div class="ps-spec-rows">
+          <div><span class="label">LB Current Rating</span>       <span class="value">Copper · 16A ~ 40A</span></div>
+          <div><span class="label">PB Current Rating</span>       <span class="value">Copper 63A ~ 400A · Aluminium 100A ~ 630A</span></div>
+          <div><span class="label">IP Rating</span>               <span class="value">IP40 / IP54</span></div>
+          <div><span class="label">Compliance Standard</span>     <span class="value">IEC 61439-6 &amp; IEC 61439-1</span></div>
+          <div><span class="label">Conductor Material</span>      <span class="value">LB Copper · PB Copper &amp; Aluminium</span></div>
+          <div><span class="label">System Frequency</span>        <span class="value">50 / 60 Hz</span></div>
+          <div><span class="label">Operational Voltage (AC)</span><span class="value">230 / 400 V</span></div>
+        </div>
+
+        <div class="ps-content-divider"></div>
 
         <div class="ps-cta">
           <a class="ps-btn-primary" href="quote.html?topic=lighting">
@@ -1436,23 +1545,6 @@ header {
             Request a Catalog
           </a>
         </div>
-      </div>
-
-      <!-- RIGHT: spec card + video stacked -->
-      <div class="ps-side">
-        <div class="ps-spec-card">
-          <h4 class="ps-spec-title">Technical Specification</h4>
-          <div class="ps-spec-grid">
-          <div><p class="ps-spec-label">LB Current Rating</p><p class="ps-spec-value">Copper · 16A ~ 40A</p></div>
-          <div><p class="ps-spec-label">PB Current Rating</p><p class="ps-spec-value">Copper 63A ~ 400A · Aluminium 100A ~ 630A</p></div>
-          <div><p class="ps-spec-label">IP Rating</p><p class="ps-spec-value">IP40 / IP54</p></div>
-          <div><p class="ps-spec-label">Compliance Standard</p><p class="ps-spec-value">IEC 61439-6 &amp; IEC 61439-1</p></div>
-          <div><p class="ps-spec-label">Conductor Material</p><p class="ps-spec-value">LB Copper · PB Copper &amp; Aluminium</p></div>
-          <div><p class="ps-spec-label">System Frequency</p><p class="ps-spec-value">50 / 60 Hz</p></div>
-          <div><p class="ps-spec-label">Operational Voltage (AC)</p><p class="ps-spec-value">230 / 400 V</p></div>
-          </div>
-        </div>
-
       </div>
 
     </div>
