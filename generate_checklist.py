@@ -248,7 +248,7 @@ add_table([
     ("Card 2 — Outdoor Solution",                       "Done", ""),
     ("Card 3 — Data Centre Solution",                   "Done", ""),
     ("Card 4 — Power Monitoring Solution",              "Done", ""),
-    ("Card 5 — Lightning Solution",                     "Done", ""),
+    ("Card 5 — Lighting Solution",                     "Done", ""),
     ("Hover state — card turns brand blue, scales 3%, icon and text invert", "Done", ""),
 ])
 
@@ -314,7 +314,7 @@ add_table([
 
 add_section_heading("Floating product sub-nav (sticky as user scrolls)")
 add_table([
-    ("Quick-jump to Indoor / Outdoor / Data Centre / Power Monitoring / Lightning", "Done", ""),
+    ("Quick-jump to Indoor / Outdoor / Data Centre / Power Monitoring / Lighting", "Done", ""),
 ])
 
 add_section_heading("Section 1 — Indoor Solution  (AH & AH-ES Busduct)")
