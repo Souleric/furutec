@@ -501,13 +501,13 @@ html { scroll-padding-top: 80px; }
   transform: translateX(0);
 }
 </style>
-<!-- nav-blue v4 -->
-<style id="nav-blue-v4">
+<!-- nav-blue v5 -->
+<style id="nav-blue-v5">
 /* ============================================================
-   Nav bar — brand blue background, white type, white CTA pill
-   v4: logo swapped to assets/Logo-white.png (true white-on-
-   transparent PNG), so the white tile that v3 wrapped around
-   the JPEG is no longer needed.
+   Nav bar — brand blue background, white type, orange CTA pill
+   v5: "Get A Quote" pill goes from white to brand orange
+   (#F58220) with white label. Hover inverts to transparent
+   with white border.
    ============================================================ */
 header {
   background: #2E3192 !important;
@@ -549,13 +549,13 @@ header {
   background: #FFFFFF !important;
 }
 
-/* --- Get A Quote — white pill on blue (was solid black) --- */
+/* --- Get A Quote — brand-orange pill on blue --- */
 #ft-quote-btn {
-  background: #FFFFFF !important;
-  color: #2E3192 !important;
-  border: 1.5px solid #FFFFFF !important;
+  background: #F58220 !important;
+  color: #FFFFFF !important;
+  border: 1.5px solid #F58220 !important;
   transition: background .25s ease, color .25s ease, border-color .25s ease !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  box-shadow: 0 4px 14px rgba(245,130,32,0.30);
 }
 #ft-quote-btn:hover {
   background: transparent !important;
@@ -947,15 +947,15 @@ header {
   .ps-btn-secondary {
     display:inline-flex; align-items:center; gap:10px;
     padding:0 22px; height:44px;
-    background:#141414; color:#FFFFFF; text-decoration:none;
-    border:1.5px solid transparent;
+    background:#F58220; color:#FFFFFF; text-decoration:none;
+    border:1.5px solid #F58220;
     font-family:var(--font-sans); font-size:13px; font-weight:700;
     transition:background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   }
   .ps-btn-secondary:hover {
     background:transparent;
-    color:#141414;
-    border-color:#141414;
+    color:#F58220;
+    border-color:#F58220;
   }
 
   /* === RIGHT: spec card (stretches to match the info card height) === */
