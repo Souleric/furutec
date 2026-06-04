@@ -658,6 +658,130 @@ html { scroll-padding-top: 80px; }
   .ps-grid { display:grid; grid-template-columns:1.4fr 1fr; gap:28px; align-items:stretch; }
   /* Single-column variant — used by BCPM (no spec card per PDF §3.2.4) */
   .ps-grid--single { grid-template-columns:minmax(0, 820px); justify-content:center; }
+
+  /* ============================================================
+     Gallery layout variant — used by sections with an image slideshow
+     on the left and ALL product info (badge, title, subtitle, desc,
+     key features, tech spec, buttons) consolidated on the right.
+     ============================================================ */
+  .ps-grid--gallery { grid-template-columns:1.05fr 1fr; gap:48px; align-items:stretch; }
+
+  /* --- LEFT: slideshow (stretches to match the right column's height) --- */
+  .ps-gallery {
+    background:#FFFFFF; border:1px solid #ECECF1;
+    box-shadow:0 14px 36px rgba(17,17,20,0.06);
+    display:flex; flex-direction:column;
+    overflow:hidden;
+  }
+  .ps-gallery-stage {
+    position:relative; flex:1; min-height:440px;
+    background:#0A0A0B; overflow:hidden;
+  }
+  .ps-gallery-thumbs-wrap { flex-shrink:0; }
+  .ps-gallery-slide {
+    position:absolute; inset:0;
+    opacity:0; transition:opacity .55s cubic-bezier(.22,1,.36,1);
+    pointer-events:none;
+  }
+  .ps-gallery-slide.is-active { opacity:1; pointer-events:auto; }
+  .ps-gallery-slide img {
+    width:100%; height:100%; object-fit:contain; display:block;
+  }
+  .ps-gallery-nav {
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:44px; height:44px; border-radius:50%;
+    background:rgba(255,255,255,0.92); color:#111114;
+    border:none; cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center;
+    box-shadow:0 6px 16px rgba(0,0,0,0.18);
+    transition:background .2s ease, transform .2s ease;
+    z-index:3;
+  }
+  .ps-gallery-nav:hover { background:#FFFFFF; transform:translateY(-50%) scale(1.08); }
+  .ps-gallery-prev { left:18px; }
+  .ps-gallery-next { right:18px; }
+  .ps-gallery-counter {
+    position:absolute; left:50%; bottom:18px;
+    transform:translateX(-50%); z-index:3;
+    padding:6px 14px; border-radius:999px;
+    background:rgba(17,17,20,0.78); color:#FFFFFF;
+    font-family:var(--font-sans); font-size:11px; font-weight:600;
+    letter-spacing:0.4px; backdrop-filter:blur(6px);
+  }
+  .ps-gallery-thumbs {
+    display:grid; grid-auto-flow:column; grid-auto-columns:1fr; gap:8px;
+    padding:14px; background:#F8F9FC;
+    border-top:1px solid #ECECF1;
+  }
+  .ps-gallery-thumb {
+    aspect-ratio:4/3; border:2px solid transparent; border-radius:4px;
+    background:#FFFFFF; padding:0; cursor:pointer; overflow:hidden;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .ps-gallery-thumb img {
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
+  .ps-gallery-thumb:hover { transform:translateY(-2px); }
+  .ps-gallery-thumb.is-active { border-color:#2E3192; }
+
+  /* --- RIGHT: combined content panel --- */
+  .ps-content {
+    display:flex; flex-direction:column;
+  }
+  .ps-content > .ps-tag { align-self:flex-start; }
+  .ps-content-divider {
+    height:1px; background:linear-gradient(90deg, rgba(46,49,146,0.18) 0%, rgba(46,49,146,0.04) 100%);
+    margin:28px 0;
+  }
+  .ps-content-section-label {
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:var(--font-sans); font-size:11px; font-weight:700;
+    letter-spacing:0.18em; text-transform:uppercase;
+    color:#2E3192; margin:0 0 16px;
+  }
+  .ps-content-section-label::before {
+    content:''; width:22px; height:2px; background:#2E3192;
+  }
+  /* Key features rendered as 2-column checked list */
+  .ps-feature-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:10px 22px;
+    list-style:none; padding:0; margin:0;
+  }
+  .ps-feature-grid li {
+    display:grid; grid-template-columns:18px 1fr; gap:10px;
+    font-size:13px; line-height:1.45; color:#111114;
+  }
+  .ps-feature-grid li::before {
+    content:''; width:18px; height:18px; border-radius:50%;
+    background:rgba(46,49,146,0.10);
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232E3192' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><path d='M4 12l5 5L20 6'/></svg>");
+    background-size:11px; background-repeat:no-repeat; background-position:center;
+  }
+  /* Spec rows — full-width labelled rows */
+  .ps-spec-rows { display:flex; flex-direction:column; }
+  .ps-spec-rows > div {
+    display:grid; grid-template-columns:1fr auto; gap:18px;
+    padding:12px 0;
+    border-top:1px solid rgba(46,49,146,0.10);
+    align-items:baseline;
+  }
+  .ps-spec-rows > div:first-child { border-top:none; padding-top:0; }
+  .ps-spec-rows > div:last-child  { padding-bottom:0; }
+  .ps-spec-rows .label {
+    font-family:var(--font-sans); font-weight:600;
+    font-size:12px; color:#6B6B73; letter-spacing:0.04em;
+    text-transform:uppercase;
+  }
+  .ps-spec-rows .value {
+    font-family:var(--font-display); font-weight:700;
+    font-size:15px; color:#111114; text-align:right; line-height:1.3;
+  }
+
+  @media (max-width: 1000px) {
+    .ps-grid--gallery { grid-template-columns:1fr; gap:32px; }
+    .ps-gallery-stage { min-height:320px; }
+    .ps-feature-grid { grid-template-columns:1fr; }
+  }
   @media (max-width: 1000px) {
     .ps-grid { grid-template-columns:1fr; }
   }
@@ -910,16 +1034,40 @@ html { scroll-padding-top: 80px; }
   <div class="ps-inner">
 
     <div class="ps-title-bar">
-      <h2 class="ps-title">INDOOR SOLUTION</h2>
+      <h2 class="ps-title">INDOOR BUSDUCT SOLUTION</h2>
     </div>
 
-    <div class="ps-grid">
+    <div class="ps-grid ps-grid--gallery">
 
-      <!-- LEFT: info card -->
-      <div class="ps-info">
-        <div class="ps-info-images">
-          <img src="assets/products/indoor-hero.png" alt="AH &amp; AH-ES BUSDUCT" style="width:100%;height:auto;max-height:140px;"/>
+      <!-- LEFT: image slideshow -->
+      <div class="ps-gallery" data-gallery>
+        <div class="ps-gallery-stage">
+          <div class="ps-gallery-slide is-active"><img src="assets/Indoor%20Busduct%20Solution/Picture%201.png" alt="AH &amp; AH-ES Busduct — ceiling installation"/></div>
+          <div class="ps-gallery-slide"><img src="assets/Indoor%20Busduct%20Solution/picture%202.png" alt="AH &amp; AH-ES Busduct — power distribution panels overhead"/></div>
+          <div class="ps-gallery-slide"><img src="assets/Indoor%20Busduct%20Solution/picture%203.png" alt="AH &amp; AH-ES Busduct — L1 L2 L3 N connection close-up"/></div>
+          <div class="ps-gallery-slide"><img src="assets/Indoor%20Busduct%20Solution/picture%204.png" alt="AH &amp; AH-ES Busduct — insulation and bolt detail"/></div>
+          <div class="ps-gallery-slide"><img src="assets/Indoor%20Busduct%20Solution/picture%205.jpg" alt="AH &amp; AH-ES Busduct — ceiling-mounted installation"/></div>
+
+          <button type="button" class="ps-gallery-nav ps-gallery-prev" aria-label="Previous image">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button type="button" class="ps-gallery-nav ps-gallery-next" aria-label="Next image">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+          <div class="ps-gallery-counter"><span data-counter-current>1</span> / 5</div>
         </div>
+
+        <div class="ps-gallery-thumbs">
+          <button type="button" class="ps-gallery-thumb is-active" aria-label="View image 1"><img src="assets/Indoor%20Busduct%20Solution/Picture%201.png" alt=""/></button>
+          <button type="button" class="ps-gallery-thumb" aria-label="View image 2"><img src="assets/Indoor%20Busduct%20Solution/picture%202.png" alt=""/></button>
+          <button type="button" class="ps-gallery-thumb" aria-label="View image 3"><img src="assets/Indoor%20Busduct%20Solution/picture%203.png" alt=""/></button>
+          <button type="button" class="ps-gallery-thumb" aria-label="View image 4"><img src="assets/Indoor%20Busduct%20Solution/picture%204.png" alt=""/></button>
+          <button type="button" class="ps-gallery-thumb" aria-label="View image 5"><img src="assets/Indoor%20Busduct%20Solution/picture%205.jpg" alt=""/></button>
+        </div>
+      </div>
+
+      <!-- RIGHT: consolidated content panel (badge, title, subtitle, desc, key features, tech spec, buttons) -->
+      <div class="ps-content">
         <span class="ps-tag tag-green">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
           Most Popular
@@ -928,18 +1076,33 @@ html { scroll-padding-top: 80px; }
         <p class="ps-product-subtitle"><em>Integrated Power Distribution for Every Scale</em></p>
         <p class="ps-product-desc">The sandwich-type busduct designed for high-capacity power transmission with minimal voltage drop. Its compact architecture makes it ideal for tight riser shafts in modern architecture.</p>
 
-        <h4 class="ps-features-heading">Key Features</h4>
-        <ul class="ps-features-list">
-          <li>· Compliant with IEC 61439-6 &amp; UL 857</li>
-          <li>· Compact Sandwich Construction</li>
-          <li>· Extruded Aluminium Alloy Housing</li>
-          <li>· Corrosion Resistant</li>
-          <li>· Excellent Heat Dissipation</li>
-          <li>· 50% Earth Bar or 100% Housing Ground System</li>
-          <li>· Seismic Zone 4 Protection</li>
-          <li>· IK10 Mechanical Impact</li>
-          <li>· Complete IP66</li>
+        <div class="ps-content-divider"></div>
+
+        <div class="ps-content-section-label">Key Features</div>
+        <ul class="ps-feature-grid">
+          <li><span>Compliant with IEC 61439-6 &amp; UL 857</span></li>
+          <li><span>Compact Sandwich Construction</span></li>
+          <li><span>Extruded Aluminium Alloy Housing</span></li>
+          <li><span>Corrosion Resistant</span></li>
+          <li><span>Excellent Heat Dissipation</span></li>
+          <li><span>50% Earth Bar or 100% Housing Ground System</span></li>
+          <li><span>Seismic Zone 4 Protection</span></li>
+          <li><span>IK10 Mechanical Impact</span></li>
+          <li><span>Complete IP66</span></li>
         </ul>
+
+        <div class="ps-content-divider"></div>
+
+        <div class="ps-content-section-label">Technical Specification</div>
+        <div class="ps-spec-rows">
+          <div><span class="label">Current Rating</span>     <span class="value">500 A – 6,300 A</span></div>
+          <div><span class="label">Voltage</span>            <span class="value">Up to 1,000 V</span></div>
+          <div><span class="label">Compliance Standard</span><span class="value">IEC 61439-6 &amp; IEC 61439-1</span></div>
+          <div><span class="label">Insulation Material</span><span class="value">Polyester Film / Epoxy (Optional)</span></div>
+          <div><span class="label">Conductor</span>          <span class="value">Copper / Aluminium</span></div>
+        </div>
+
+        <div class="ps-content-divider"></div>
 
         <div class="ps-cta">
           <a class="ps-btn-primary" href="quote.html?topic=indoor">
@@ -951,21 +1114,6 @@ html { scroll-padding-top: 80px; }
             Request a Catalog
           </a>
         </div>
-      </div>
-
-      <!-- RIGHT: spec card + video stacked -->
-      <div class="ps-side">
-        <div class="ps-spec-card">
-          <h4 class="ps-spec-title">Technical Specification</h4>
-          <div class="ps-spec-grid">
-          <div><p class="ps-spec-label">Current Rating</p><p class="ps-spec-value">500 A – 6,300 A</p></div>
-          <div><p class="ps-spec-label">Voltage</p><p class="ps-spec-value">Up to 1,000 V</p></div>
-          <div><p class="ps-spec-label">Compliance Standard</p><p class="ps-spec-value">IEC 61439-6 &amp; IEC 61439-1</p></div>
-          <div><p class="ps-spec-label">Insulation Material</p><p class="ps-spec-value">Polyester Film / Epoxy (Optional)</p></div>
-          <div><p class="ps-spec-label">Conductor</p><p class="ps-spec-value">Copper / Aluminium</p></div>
-          </div>
-        </div>
-
       </div>
 
     </div>
@@ -1571,6 +1719,95 @@ html { scroll-padding-top: 80px; }
     els.forEach(function (el) { io.observe(el); });
   });
 })();
+</script>
+
+<script>
+  // Image slideshow (used by the Indoor Solution gallery).
+  (function productGallery() {
+    var AUTOPLAY_MS = 3000;
+
+    document.querySelectorAll('[data-gallery]').forEach(function (gallery) {
+      var slides = gallery.querySelectorAll('.ps-gallery-slide');
+      var thumbs = gallery.querySelectorAll('.ps-gallery-thumb');
+      var counter = gallery.querySelector('[data-counter-current]');
+      var prev = gallery.querySelector('.ps-gallery-prev');
+      var next = gallery.querySelector('.ps-gallery-next');
+      var index = 0;
+      if (!slides.length) return;
+
+      var timer = null;
+      function startAuto() {
+        stopAuto();
+        timer = setInterval(function () { go(index + 1); }, AUTOPLAY_MS);
+      }
+      function stopAuto() {
+        if (timer) { clearInterval(timer); timer = null; }
+      }
+
+      function go(i) {
+        index = (i + slides.length) % slides.length;
+        slides.forEach(function (s, idx) { s.classList.toggle('is-active', idx === index); });
+        thumbs.forEach(function (t, idx) { t.classList.toggle('is-active', idx === index); });
+        if (counter) counter.textContent = String(index + 1);
+      }
+
+      function userTriggered(fn) {
+        return function (e) {
+          stopAuto();
+          fn(e);
+          // Resume autoplay shortly after the user stops interacting.
+          startAuto();
+        };
+      }
+
+      if (prev) prev.addEventListener('click', userTriggered(function () { go(index - 1); }));
+      if (next) next.addEventListener('click', userTriggered(function () { go(index + 1); }));
+      thumbs.forEach(function (t, idx) {
+        t.addEventListener('click', userTriggered(function () { go(idx); }));
+      });
+
+      // Keyboard arrows when focus is inside the gallery.
+      gallery.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          stopAuto();
+          go(index + (e.key === 'ArrowLeft' ? -1 : 1));
+          startAuto();
+        }
+      });
+
+      // Touch swipe (basic).
+      var startX = null;
+      gallery.addEventListener('touchstart', function (e) {
+        startX = e.touches[0].clientX;
+        stopAuto();
+      }, { passive: true });
+      gallery.addEventListener('touchend', function (e) {
+        if (startX == null) return;
+        var dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 40) go(index + (dx < 0 ? 1 : -1));
+        startX = null;
+        startAuto();
+      });
+
+      // Pause when the user hovers the gallery, resume on leave.
+      gallery.addEventListener('mouseenter', stopAuto);
+      gallery.addEventListener('mouseleave', startAuto);
+
+      // Only run autoplay when the gallery is in view (no wasted cycles).
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (ent) {
+            if (ent.isIntersecting) startAuto();
+            else stopAuto();
+          });
+        }, { threshold: 0.2 });
+        io.observe(gallery);
+      } else {
+        startAuto();
+      }
+    });
+  })();
 </script>
 
 <script>
