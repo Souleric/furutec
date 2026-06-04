@@ -2243,132 +2243,143 @@ Solution</h3>
 </section>
 
 <!-- ============================================================
-     PRODUCT OVERVIEW — interactive diagram
+     PRODUCT OVERVIEW — interactive diagram with image-pop hotspots
+     Promoted from uikit.html "Product Overview — popup" prototype.
      ============================================================ -->
 <style>
-  .po-grid { display:grid; grid-template-columns:1.25fr 1fr; gap:48px; align-items:stretch; }
-  .po-figure {
-    position:relative; background:#FFFFFF; overflow:visible;
-    display:flex; align-items:center; justify-content:center;
-    min-height:480px;
+  .pop-stage {
+    position:relative;
+    max-width:1080px;
+    margin:0 auto;
+    padding:140px 0;             /* breathing room so cards can pop above/below the figure */
   }
-  .po-image-wrap {
-    position:relative; width:100%;
-    aspect-ratio: 1080 / 800;
-  }
-  .po-image-wrap img {
-    width:100%; height:100%; display:block; object-fit:contain;
-  }
-  .po-hotspot {
-    position:absolute; width:30px; height:30px; border-radius:50%;
-    background:transparent; border:0; padding:0; cursor:pointer;
-    margin-left:-15px; margin-top:-15px;
-    transition:transform 200ms ease;
+  .pop-figure {
+    position:relative;
+    background:#FFFFFF;
+    border:1px solid #ECECF1;
     overflow:visible;
   }
-  .po-hotspot:hover { transform:scale(1.08); }
+  .pop-image-wrap {
+    position:relative;
+    width:100%;
+    aspect-ratio:1080/800;
+  }
+  .pop-image-wrap .pop-bg {
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:contain;
+    display:block;
+    user-select:none;
+    -webkit-user-drag:none;
+  }
 
-  /* Every hotspot shows a subtle outline + pulsing ring so the user can
-     locate it before clicking. The active one gets a stronger glow. */
-  .po-hotspot-ring {
-    position:absolute; inset:0; border-radius:50%;
-    box-shadow:0 0 0 3px rgba(46,49,146,0.45), 0 0 0 6px rgba(46,49,146,0.12);
-    transition:box-shadow 220ms ease;
-  }
-  .po-hotspot.is-active .po-hotspot-ring {
-    box-shadow:0 0 0 4px rgba(46,49,146,0.85), 0 0 0 12px rgba(46,49,146,0.22);
-  }
-  .po-hotspot::after {
-    content:""; position:absolute;
-    top:50%; left:50%;
-    width:30px; height:30px;
-    margin-top:-15px; margin-left:-15px;
+  /* Numbered hotspot dots */
+  .pop-pt {
+    position:absolute;
+    width:38px; height:38px;
     border-radius:50%;
-    border:2px solid rgba(46,49,146,0.55);
-    transform-origin:center center;
-    animation:poRing 2s ease-out infinite;
+    background:#2E3192;
+    color:#FFFFFF;
+    font-family:var(--font-display); font-weight:700; font-size:15px;
+    border:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transform:translate(-50%,-50%);
+    box-shadow:0 6px 16px rgba(46,49,146,0.40);
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+    z-index:3;
   }
-  /* Stagger the pulse so all 5 rings aren't in phase. */
-  .po-hotspot[data-idx="0"]::after { animation-delay:    0ms; }
-  .po-hotspot[data-idx="1"]::after { animation-delay:  400ms; }
-  .po-hotspot[data-idx="2"]::after { animation-delay:  800ms; }
-  .po-hotspot[data-idx="3"]::after { animation-delay: 1200ms; }
-  .po-hotspot[data-idx="4"]::after { animation-delay: 1600ms; }
-  @keyframes poRing {
-    0%   { transform:scale(1);   opacity:0.75; }
-    100% { transform:scale(2.4); opacity:0; }
+  .pop-pt::before {
+    content:''; position:absolute; inset:-6px;
+    border-radius:50%;
+    background:rgba(46,49,146,0.15);
+    opacity:0;
+    transform:scale(0.6);
+    transition:opacity .25s ease, transform .25s ease;
+    z-index:-1;
+  }
+  .pop-pt:hover {
+    transform:translate(-50%,-50%) scale(1.08);
+    box-shadow:0 8px 22px rgba(46,49,146,0.55);
+  }
+  .pop-pt:hover::before { opacity:1; transform:scale(1); }
+  .pop-pt.is-active {
+    background:#F37021;
+    box-shadow:0 8px 22px rgba(243,112,33,0.50);
+    z-index:5;
+  }
+  .pop-pt.is-active::before {
+    opacity:1; transform:scale(1);
+    background:rgba(243,112,33,0.18);
+    animation:pop-pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pop-pulse {
+    0%,100% { transform:scale(1);    opacity:0.6; }
+    50%     { transform:scale(1.25); opacity:0.3; }
   }
 
-  .po-detail {
-    background:#FFFFFF; border:1px solid #ECECF1;
-    box-shadow:0 18px 44px rgba(17,17,20,0.08);
-    overflow:hidden; display:flex; flex-direction:column;
-    min-height:480px;
+  /* Floating image card.  Outer .pop-card handles position + scale
+     animation; .pop-card-content holds the rounded-corners + clipping
+     so the brand-blue drop shadow can extend cleanly. */
+  .pop-card {
+    position:absolute;
+    width:300px; height:220px;
+    opacity:0;
+    transform:scale(0);
+    pointer-events:none;
+    will-change:transform, opacity, left, top;
+    z-index:4;
   }
-  .po-detail-img {
-    aspect-ratio:16/9; background-size:cover; background-position:center;
-    background-color:#EAEDF5;
+  .pop-card-content {
+    position:absolute; inset:0;
+    background:#FFFFFF;
+    border:1px solid #ECECF1;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:
+      0 24px 60px rgba(46,49,146,0.35),
+      0 8px 20px rgba(46,49,146,0.22);
   }
-  .po-detail-body { padding:28px 32px 28px; flex:1; display:flex; flex-direction:column; }
-  .po-detail-num {
+  .pop-card-content img {
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover; display:block;
+  }
+  .pop-close {
+    position:absolute; top:8px; right:8px;
+    width:28px; height:28px; border-radius:50%;
+    background:rgba(255,255,255,0.94); color:#111114;
+    border:none; cursor:pointer;
     display:inline-flex; align-items:center; justify-content:center;
-    width:36px; height:36px; border-radius:50%;
-    background:#2E3192; color:#FFFFFF;
-    font-family:var(--font-display); font-size:14px; font-weight:700;
-    margin-bottom:14px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.18);
+    transition:background .15s ease, transform .15s ease;
+    z-index:2;
   }
-  .po-detail h3 {
-    font-family:var(--font-display); font-size:22px; font-weight:700;
-    line-height:1.2; color:#111114; margin:0 0 10px; letter-spacing:-0.01em;
-  }
-  .po-detail-sub {
-    font-family:var(--font-sans); font-size:11px; font-weight:700;
-    color:#2E3192; letter-spacing:0.4px; text-transform:uppercase;
-    margin:0 0 6px;
-  }
-  .po-detail p { font-size:13.5px; line-height:1.7; color:#4A4A52; margin:0 0 16px; }
-  .po-detail ul { padding:0; margin:0 0 18px; list-style:none; }
-  .po-detail ul li {
-    display:flex; align-items:flex-start; gap:10px;
-    font-size:13px; color:#111114; margin-bottom:8px; line-height:1.5;
-  }
-  .po-detail ul li svg { color:#2E3192; flex-shrink:0; margin-top:3px; }
+  .pop-close:hover { background:#FFFFFF; transform:scale(1.06); }
 
-  .po-nav {
-    display:flex; gap:8px; align-items:center; margin-top:auto; padding-top:8px;
-    border-top:1px solid #F1F1F3;
+  /* When .is-open is applied, a keyframe animation plays once and
+     leaves the card at scale(1) via animation-fill-mode: forwards.
+     A keyframe (not transition) is essential — switching hotspots
+     removes + re-adds the class in the same JS tick; animations
+     restart from 0% on re-application, transitions would carry
+     forward from the current scale. */
+  .pop-card.is-open {
+    pointer-events:auto;
+    animation:pop-emerge .55s cubic-bezier(.34, 1.56, .64, 1) forwards;
   }
-  .po-nav-btn {
-    width:40px; height:40px; border-radius:50%;
-    border:1px solid #E1E3EA; background:#FFFFFF; color:#111114;
-    display:inline-flex; align-items:center; justify-content:center;
-    cursor:pointer; transition:background 200ms ease, color 200ms ease, border-color 200ms ease;
-    margin-top:14px;
-  }
-  .po-nav-btn:hover { background:#2E3192; color:#FFFFFF; border-color:#2E3192; }
-  .po-counter {
-    margin:14px 0 0 8px;
-    font-family:var(--font-sans); font-size:12px; font-weight:600; color:#6B6B73; letter-spacing:0.4px;
+  @keyframes pop-emerge {
+    0%   { opacity:0; transform:scale(0); }
+    55%  { opacity:1;                    }
+    100% { opacity:1; transform:scale(1); }
   }
 
-  .po-detail-img, .po-detail-body { animation:poFadeIn 380ms ease both; }
-  @keyframes poFadeIn {
-    0%   { opacity:0; transform:translateY(8px); }
-    100% { opacity:1; transform:translateY(0); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .po-detail-img, .po-detail-body, .po-hotspot.is-active::after { animation:none; }
-  }
-
-  @media (max-width: 900px) {
-    .po-grid { grid-template-columns:1fr; gap:36px; }
-    .po-detail { min-height:auto; }
-    .po-hotspot { width:24px; height:24px; margin-left:-12px; margin-top:-12px; }
+  @media (max-width: 720px) {
+    .pop-stage { padding:80px 0; }
+    .pop-card { width:220px; height:165px; }
   }
 </style>
 <section style="background:#F4F6FB;padding:96px 0;">
   <div style="max-width:1320px;margin:0 auto;padding:0 32px;">
-    <div style="text-align:center;margin-bottom:48px;">
+    <div style="text-align:center;margin-bottom:24px;">
       <span class="eyebrow">PRODUCT OVERVIEW</span>
       <h2 style="font-family:var(--font-display);font-size:44px;font-weight:700;line-height:1.05;letter-spacing:-0.01em;color:#111114;margin:8px 0 8px;text-wrap:balance;">
         How A <span style="color:#2E3192;">Furutec Busduct System</span><br/>Comes Together.
@@ -2378,163 +2389,158 @@ Solution</h3>
       </p>
     </div>
 
-    <div class="po-grid">
-      <!-- LEFT — image with clickable hotspots -->
-      <div class="po-figure" id="po-figure">
-        <div class="po-image-wrap" id="po-image-wrap">
-          <img src="assets/PRODUCT%20OVERVIEW.png" alt="Furutec busduct system overview"/>
+    <div class="pop-stage" id="po-pop-stage">
+      <div class="pop-figure">
+        <div class="pop-image-wrap" id="po-pop-image-wrap">
+          <img class="pop-bg" src="assets/PRODUCT%20OVERVIEW.png" alt="Furutec busduct system overview"/>
+
+          <!-- Floating popup card (single instance, position computed per click) -->
+          <div class="pop-card" id="po-pop-card">
+            <div class="pop-card-content">
+              <img alt=""/>
+              <button type="button" class="pop-close" aria-label="Close">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-
-      <!-- RIGHT — single detail panel (rendered by JS) -->
-      <div class="po-detail" id="po-detail"></div>
     </div>
   </div>
 </section>
 
 
 <script>
-  (function productOverview() {
+  (function productOverviewPopup() {
     var DATA = [
-      {
-        num: 1,
-        sub: 'Outdoor & Harsh Environment',
-        title: 'Cast Resin Busduct',
-        desc: 'Encapsulated copper conductors sealed against moisture, UV, salt spray, and dust. Direct burial and rooftop installations covered for the lifetime of the project.',
-        bullets: [
-          'IP65 to IP68 environmental sealing',
-          'UV-stable, corrosion-resistant cast resin',
-          'Type-tested up to 6,300 A'
-        ],
-        img: 'photo-1486406146926-c627a92ad1ab',
-        x: 15.5, y: 20.1
-      },
-      {
-        num: 2,
-        sub: 'Indoor Installation',
-        title: 'Compact Sandwich Busduct',
-        desc: 'High-density sandwich-construction busduct that delivers serious power in a fraction of cable footprint. Ideal for vertical risers and horizontal feeders in commercial towers and factories.',
-        bullets: [
-          '250 A – 6,300 A range with low impedance',
-          'Vertical riser, horizontal feeder, and bus drop',
-          'Fire rating up to 120 minutes available'
-        ],
-        img: 'photo-1497366216548-37526070297c',
-        x: 50.0, y: 17.0
-      },
-      {
-        num: 3,
-        sub: 'Lighting & General Power',
-        title: 'LB & PB Busduct',
-        desc: 'The Lighting Busduct system enables efficient installation and easy maintenance with detachable, reusable components, while the Power Busduct system ensures safe, reliable, and efficient power distribution through its wide phase-spacing design.',
-        bullets: [
-          'LB: Copper 16 A – 40 A · PB: Copper 63 A – 400 A / Aluminium 100 A – 630 A',
-          'IP40 / IP54 protection',
-          'Plug-in tap-offs for flexible circuit offtakes'
-        ],
-        img: 'photo-1597733336794-12d05021d510',
-        x: 43.0, y: 78.4
-      },
-      {
-        num: 4,
-        sub: 'Data Hall Application',
-        title: 'Data Centre Busduct',
-        desc: 'Plug-in tap-offs let you reconfigure power without downtime — perfect for hyperscale facilities running 24/7. Engineered for the density and reliability today’s data halls demand.',
-        bullets: [
-          'Hot-swap plug-in tap-offs with safety interlock',
-          'Up to 6,500 A in a fraction of cable footprint',
-          'Dual-feed and N+1 redundant configurations'
-        ],
-        img: 'photo-1558494949-ef010cbdcc31',
-        x: 72.1, y: 23.4
-      },
-      {
-        num: 5,
-        sub: 'Real-Time Monitoring',
-        title: 'BCPM — Branch Circuit Power Monitoring',
-        desc: 'Per-circuit current, voltage, energy, and temperature streamed live into your BMS. Predictive maintenance, anomaly detection, and live load balancing across the entire busduct network.',
-        bullets: [
-          'Up to 84 channels per panel',
-          'Modbus TCP / SNMP / BACnet integration',
-          'Thermal hotspot alerts on every joint'
-        ],
-        img: 'photo-1545324418-cc1a3fa10c00',
-        x: 82.5, y: 70.1
-      }
+      { num:1, x:15.5, y:20.1, img:'photo-1486406146926-c627a92ad1ab' },
+      { num:2, x:50.0, y:17.0, img:'photo-1497366216548-37526070297c' },
+      { num:3, x:43.0, y:78.4, img:'photo-1597733336794-12d05021d510' },
+      { num:4, x:72.1, y:23.4, img:'photo-1558494949-ef010cbdcc31' },
+      { num:5, x:82.5, y:70.1, img:'photo-1545324418-cc1a3fa10c00' }
     ];
 
     function imgUrl(id) {
       return 'https://images.unsplash.com/' + id + '?w=900&q=80&auto=format&fit=crop';
     }
 
-    var fig = document.getElementById('po-figure');
-    var detail = document.getElementById('po-detail');
-    if (!fig || !detail) return;
+    var stage      = document.getElementById('po-pop-stage');
+    if (!stage) return;
+    var figureWrap = document.getElementById('po-pop-image-wrap');
+    var card       = document.getElementById('po-pop-card');
+    var cardImg    = card.querySelector('img');
 
-    // Hotspots are injected into the aspect-ratio wrap, so their %s map
-    // directly onto the image (no letterbox math needed).
-    var wrap = document.getElementById('po-image-wrap') || fig;
-    var hotspotsHtml = DATA.map(function (d, i) {
-      return '<button type="button" class="po-hotspot" data-idx="' + i + '" '
-        + 'style="left:' + d.x + '%;top:' + d.y + '%;" '
-        + 'aria-label="' + d.title + '">'
-        + '<span class="po-hotspot-ring"></span>'
-        + '</button>';
-    }).join('');
-    wrap.insertAdjacentHTML('beforeend', hotspotsHtml);
-    var hotspots = wrap.querySelectorAll('.po-hotspot');
+    var activeNum = null;
 
-    var current = 0;
+    var HOTSPOT_R = 19;   // half of 38px diameter
+    var GAP       = 10;   // pixels between hotspot edge and card edge
+    var MARGIN    = 8;    // safety margin from figure edges (horizontal only)
 
-    function render(idx) {
-      var d = DATA[idx];
-      var bullets = d.bullets.map(function (b) {
-        return '<li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>' + b + '</li>';
-      }).join('');
-      var counter = '0' + (idx + 1) + ' / 0' + DATA.length;
-      detail.innerHTML =
-        '<div class="po-detail-img" style="background-image:url(' + imgUrl(d.img) + ');"></div>'
-        + '<div class="po-detail-body">'
-        +   '<span class="po-detail-num">' + d.num + '</span>'
-        +   '<p class="po-detail-sub">' + d.sub + '</p>'
-        +   '<h3>' + d.title + '</h3>'
-        +   '<p>' + d.desc + '</p>'
-        +   '<ul>' + bullets + '</ul>'
-        +   '<div class="po-nav">'
-        +     '<button type="button" class="po-nav-btn" data-dir="-1" aria-label="Previous">'
-        +       '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>'
-        +     '</button>'
-        +     '<button type="button" class="po-nav-btn" data-dir="1" aria-label="Next">'
-        +       '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>'
-        +     '</button>'
-        +     '<span class="po-counter">' + counter + '</span>'
-        +   '</div>'
-        + '</div>';
-
-      hotspots.forEach(function (h, i) { h.classList.toggle('is-active', i === idx); });
-
-      detail.querySelectorAll('.po-nav-btn').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var dir = Number(btn.getAttribute('data-dir'));
-          go(current + dir);
-        });
-      });
-    }
-
-    function go(idx) {
-      if (idx < 0) idx = DATA.length - 1;
-      if (idx >= DATA.length) idx = 0;
-      current = idx;
-      render(idx);
-    }
-
-    hotspots.forEach(function (h) {
-      h.addEventListener('click', function () {
-        go(Number(h.getAttribute('data-idx')));
-      });
+    // Build hotspot dots
+    DATA.forEach(function (d) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'pop-pt';
+      btn.dataset.num = d.num;
+      btn.style.left = d.x + '%';
+      btn.style.top  = d.y + '%';
+      btn.textContent = d.num;
+      btn.setAttribute('aria-label', 'Show product ' + d.num);
+      figureWrap.appendChild(btn);
     });
 
-    render(0);
+    function closeCard() {
+      activeNum = null;
+      card.classList.remove('is-open');
+      stage.querySelectorAll('.pop-pt').forEach(function (b) {
+        b.classList.remove('is-active');
+      });
+    }
+
+    function openHotspot(d) {
+      var wrapW = figureWrap.clientWidth;
+      var wrapH = figureWrap.clientHeight;
+      var cardW = card.offsetWidth  || 300;
+      var cardH = card.offsetHeight || 220;
+
+      var hsX = (d.x / 100) * wrapW;
+      var hsY = (d.y / 100) * wrapH;
+
+      // Horizontal: centre on hotspot, clamp to figure edges
+      var left = Math.max(MARGIN, Math.min(wrapW - cardW - MARGIN, hsX - cardW / 2));
+
+      // Vertical: above (top-half hotspots) or below (bottom-half)
+      var isAbove = d.y < 50;
+      var top = isAbove
+        ? hsY - HOTSPOT_R - GAP - cardH
+        : hsY + HOTSPOT_R + GAP;
+
+      // Transform-origin anchors the scale animation to the number
+      var originXpct = Math.max(0, Math.min(100, ((hsX - left) / cardW) * 100));
+      var originYpct = Math.max(0, Math.min(100, ((hsY - top)  / cardH) * 100));
+
+      // Image swap (only if changing)
+      var url = imgUrl(d.img);
+      if (cardImg.getAttribute('src') !== url) {
+        cardImg.src = url;
+        cardImg.alt = 'Product ' + d.num + ' detail';
+      }
+
+      // Reset animation by removing class + forcing reflow before re-adding.
+      // CSS @keyframes restart from 0% on re-application; transitions would
+      // continue from the current value.
+      card.classList.remove('is-open');
+      // eslint-disable-next-line no-unused-expressions
+      card.offsetHeight;
+
+      card.style.left = left + 'px';
+      card.style.top  = top  + 'px';
+      card.style.transformOrigin = originXpct.toFixed(1) + '% ' + originYpct.toFixed(1) + '%';
+
+      stage.querySelectorAll('.pop-pt').forEach(function (b) {
+        b.classList.toggle('is-active', String(d.num) === b.dataset.num);
+      });
+      activeNum = d.num;
+
+      requestAnimationFrame(function () {
+        card.classList.add('is-open');
+      });
+    }
+
+    // Delegated click — hotspots + close button
+    stage.addEventListener('click', function (e) {
+      if (e.target.closest('.pop-close')) {
+        e.stopPropagation();
+        closeCard();
+        return;
+      }
+      var pt = e.target.closest('.pop-pt');
+      if (!pt) return;
+      e.stopPropagation();
+      var num = Number(pt.dataset.num);
+      if (activeNum === num) { closeCard(); return; }
+      var d = DATA.find(function (x) { return x.num === num; });
+      if (d) openHotspot(d);
+    });
+
+    // Click outside the stage closes
+    document.addEventListener('click', function (e) {
+      if (!activeNum) return;
+      if (stage.contains(e.target)) return;
+      closeCard();
+    });
+
+    // ESC closes
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && activeNum) closeCard();
+    });
+
+    // Re-position on resize while open
+    window.addEventListener('resize', function () {
+      if (!activeNum) return;
+      var d = DATA.find(function (x) { return x.num === activeNum; });
+      if (d) openHotspot(d);
+    });
   })();
 </script>
 
@@ -4562,7 +4568,7 @@ window.parent.postMessage({ type: "__edit_mode_available" }, "*");
     '.ps-features-list > li',
 
     /* === Product Overview interactive diagram (homepage) === */
-    '.po-figure', '.po-detail', '.po-grid > div',
+    '.pop-figure', '.pop-stage > div',
 
     /* === Homepage section columns (Company Profile + R&D split) === */
     '.cp-grid > div',
