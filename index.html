@@ -758,15 +758,17 @@ header {
   .ft-hero-btn-primary {
     display:inline-flex; align-items:center; gap:14px;
     padding:0 32px; height:56px; cursor:pointer;
-    background:#2E3192; color:#FFFFFF;
-    border:1.5px solid transparent;
+    background:#F58220; color:#FFFFFF;
+    border:1.5px solid #F58220;
     font-family:var(--font-sans); font-size:14px; font-weight:600;
     transition:background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    box-shadow:0 4px 14px rgba(245,130,32,0.30);
   }
   .ft-hero-btn-primary:hover {
     background:transparent;
     color:#FFFFFF;
     border-color:#FFFFFF;
+    box-shadow:none;
   }
   @media (max-width: 720px) {
     .ft-hero { padding:120px 0 64px; }
@@ -841,7 +843,6 @@ header {
 
   <div id="hero-title" class="ft-hero-inner" style="will-change:opacity,transform;">
     <div class="ft-hero-content">
-      <span class="ft-hero-eyebrow">Unlocking Busduct Innovation</span>
       <h1>
         Your Path To<br/>
         <span class="accent">Efficiency &amp; Reliability</span>
