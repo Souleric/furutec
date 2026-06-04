@@ -470,7 +470,16 @@
     <div class="toolbar-left">
       <span class="crumb">← Furutec Electric</span>
       <select class="page-select" id="pageSelect">
-        <option value="/">Homepage (/)</option>
+        <optgroup label="Live website">
+          <option value="./index.html">Homepage</option>
+          <option value="./product.html">Our Products</option>
+          <option value="./portfolio.html">Portfolio — Certifications</option>
+          <option value="./portfolio-track-record.html">Portfolio — Track Record</option>
+          <option value="./quote.html">Get a Quote</option>
+        </optgroup>
+        <optgroup label="Internal — editor only">
+          <option value="./uikit.html">UI Kit (pattern library)</option>
+        </optgroup>
       </select>
     </div>
 
@@ -623,6 +632,19 @@
   });
 
   applyDevice('desktop');
+
+  // ========== Page selector — swap iframe + reset scan state ==========
+  var pageSelect = document.getElementById('pageSelect');
+  pageSelect.addEventListener('change', function () {
+    var url = pageSelect.value;
+    iframeReady = false;
+    ITEMS = [];
+    GROUPS = [];
+    OPEN_GROUPS.clear();
+    document.getElementById('groupsHost').innerHTML =
+      '<div class="empty-hint">Loading page…</div>';
+    document.getElementById('previewIframe').src = url;
+  });
 
   // ========== Iframe + edit protocol (postMessage-based, works over file://) ==========
   var iframe = document.getElementById('previewIframe');
