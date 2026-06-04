@@ -512,13 +512,13 @@ html { scroll-padding-top: 80px; }
   transform: translateX(0);
 }
 </style>
-<!-- nav-blue v3 -->
-<style id="nav-blue-v3">
+<!-- nav-blue v4 -->
+<style id="nav-blue-v4">
 /* ============================================================
    Nav bar — brand blue background, white type, white CTA pill
-   v3: simplified selector to `header`. The site has exactly one
-   <header>, and v2's body>header missed because it's wrapped
-   inside a <main>.
+   v4: logo swapped to assets/Logo-white.png (true white-on-
+   transparent PNG), so the white tile that v3 wrapped around
+   the JPEG is no longer needed.
    ============================================================ */
 header {
   background: #2E3192 !important;
@@ -577,13 +577,8 @@ header {
 /* Arrow tracks the button's text colour automatically via currentColor */
 #ft-quote-btn .btn-arrow > span svg { stroke: currentColor !important; }
 
-/* --- Logo: small white tile so the white-bg JPEG sits cleanly on blue --- */
-.ft-logo-img {
-  background: #FFFFFF;
-  padding: 4px 10px;
-  border-radius: 6px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-}
+/* --- Logo: now a true white PNG, so no tile needed --- */
+.ft-logo-img { background: transparent; padding: 0; border-radius: 0; box-shadow: none; }
 
 /* --- Mobile nav drawer panel stays white (readable list) --- */
 #ft-mobile-nav { background: #FFFFFF; border-top: 1px solid rgba(255,255,255,0.10); }
@@ -637,7 +632,7 @@ header {
 <header style="position:sticky;top:0;z-index:40;width:100%;background:#FFFFFF;border-bottom:1px solid #F1F1F3;">
   <div id="ft-header-inner" style="max-width:1320px;margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:32px;padding:16px 32px;">
     <a href="index.html" style="display:inline-flex;align-items:center;text-decoration:none;">
-      <img class="ft-logo-img" src="assets/Logo.jpeg" alt="Furutec — Busduct System"/>
+      <img class="ft-logo-img" src="assets/Logo-white.png" alt="Furutec — Busduct System"/>
     </a>
 
     <nav id="ft-nav" style="display:flex;gap:28px;justify-content:center;">
@@ -967,7 +962,7 @@ header {
   <div style="max-width:1320px;margin:0 auto;padding:64px 32px 40px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr;gap:40px;">
     <div>
       <div style="display:inline-flex;align-items:center;margin-bottom:14px;">
-        <img src="assets/Logo.jpeg" alt="Furutec — Busduct System" style="height:42px;width:auto;display:block;filter:invert(1) grayscale(1) brightness(1.6) contrast(1.4);mix-blend-mode:screen;"/>
+        <img src="assets/Logo-white.png" alt="Furutec — Busduct System" style="height:42px;width:auto;display:block;filter:invert(1) grayscale(1) brightness(1.6) contrast(1.4);mix-blend-mode:screen;"/>
       </div>
       <p style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:#FFFFFF;margin:0 0 4px;line-height:1.4;">Furutec Electrical Sdn Bhd</p>
       <p style="font-size:11px;color:rgba(255,255,255,0.45);margin:0 0 16px;font-style:italic;">Company No. 198001003423 (57207-W)</p>

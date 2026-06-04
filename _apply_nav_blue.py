@@ -18,15 +18,15 @@ PAGES = [
     'portfolio-track-record.html',
     'quote.html',
 ]
-MARKER = '<!-- nav-blue v3 -->'
+MARKER = '<!-- nav-blue v4 -->'
 
-CSS_BLOCK = '''<!-- nav-blue v3 -->
-<style id="nav-blue-v3">
+CSS_BLOCK = '''<!-- nav-blue v4 -->
+<style id="nav-blue-v4">
 /* ============================================================
    Nav bar — brand blue background, white type, white CTA pill
-   v3: simplified selector to `header`. The site has exactly one
-   <header>, and v2's body>header missed because it's wrapped
-   inside a <main>.
+   v4: logo swapped to assets/Logo-white.png (true white-on-
+   transparent PNG), so the white tile that v3 wrapped around
+   the JPEG is no longer needed.
    ============================================================ */
 header {
   background: #2E3192 !important;
@@ -85,13 +85,8 @@ header {
 /* Arrow tracks the button's text colour automatically via currentColor */
 #ft-quote-btn .btn-arrow > span svg { stroke: currentColor !important; }
 
-/* --- Logo: small white tile so the white-bg JPEG sits cleanly on blue --- */
-.ft-logo-img {
-  background: #FFFFFF;
-  padding: 4px 10px;
-  border-radius: 6px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-}
+/* --- Logo: now a true white PNG, so no tile needed --- */
+.ft-logo-img { background: transparent; padding: 0; border-radius: 0; box-shadow: none; }
 
 /* --- Mobile nav drawer panel stays white (readable list) --- */
 #ft-mobile-nav { background: #FFFFFF; border-top: 1px solid rgba(255,255,255,0.10); }
@@ -106,8 +101,8 @@ import re
 
 
 def strip_legacy(text: str) -> str:
-    # Drop any earlier nav-blue blocks so v3 doesn't stack on top of them.
-    for ver in ('v1', 'v2'):
+    # Drop any earlier nav-blue blocks so v4 doesn't stack on top of them.
+    for ver in ('v1', 'v2', 'v3'):
         pattern = re.compile(
             rf'<!--\s*nav-blue {ver}\s*-->\s*<style id="nav-blue-{ver}">.*?</style>\s*',
             re.DOTALL,
