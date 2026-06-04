@@ -347,6 +347,8 @@ button { font-family:inherit; cursor:pointer; }
       <a href="#animations">Animations</a>
       <a href="#sandbox">Sandbox</a>
       <a href="#hotspot-editor">Hotspot editor</a>
+      <a href="#globe-malaysia">Globe — Malaysia</a>
+      <a href="#globe-original-archived">Globe — original (archived)</a>
     </nav>
   </aside>
 
@@ -898,6 +900,56 @@ button { font-family:inherit; cursor:pointer; }
       })();
     </script>
 
+    <!-- ── Globe — Malaysia outreach ────────────────────── -->
+    <section class="uk-section" id="globe-malaysia">
+      <div class="uk-section-head">
+        <span class="uk-section-num">13</span>
+        <h2 class="uk-section-title">Globe — Malaysia outreach</h2>
+      </div>
+      <p class="uk-section-desc">
+        Orthographic globe initially centred on Malaysia (Shah Alam HQ).
+        Malaysia is highlighted in brand orange; every other landmass sits
+        in a muted brand-blue tone. Each "rocket-launch" line draws outward
+        from Shah Alam on a quadratic-bezier arc that lifts above the chord
+        (longer flights arc higher), holds, then fades and re-launches. The
+        animation is staggered so the field constantly fans out. <b>Drag to
+        rotate</b> — animations keep running through the drag (path
+        elements are reused; only the geometry updates per frame). No
+        auto-rotate. Drop-in candidate to replace the spinning globe in the
+        homepage's "Build on expertise" section.
+      </p>
+
+      <div class="sandbox" style="padding:24px;">
+        <div id="uk-globe-malaysia" style="max-width:720px;margin:0 auto;"></div>
+        <p style="font-size:12px;color:var(--ink-500);margin:12px 0 0;text-align:center;line-height:1.6;">
+          Live on the homepage. Draggable. Rocket-line animation continues
+          during drag.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Globe — original rotating world (archived) ────────────── -->
+    <section class="uk-section" id="globe-original-archived">
+      <div class="uk-section-head">
+        <span class="uk-section-num">14</span>
+        <h2 class="uk-section-title">Globe — original rotating world (archived)</h2>
+      </div>
+      <p class="uk-section-desc">
+        Snapshot of the previous homepage globe — auto-rotates, 5 country
+        highlights (Malaysia, Indonesia, Singapore, UAE, Saudi Arabia),
+        labelled pin leaders for Middle East / Malaysia / Singapore /
+        Indonesia, drag to rotate. Kept here so we can swap it back into
+        <code>index.html</code> if the Malaysia rocket-line version doesn't
+        land. To restore: replace the body of the IIFE in <code>index.html</code>'s
+        WORLD MAP / DRAGGABLE GLOBE script with the body of the IIFE just
+        below this section.
+      </p>
+
+      <div class="sandbox" style="padding:24px;">
+        <div id="uk-globe-archived" style="max-width:720px;margin:0 auto;"></div>
+      </div>
+    </section>
+
   </main>
 
 </div>
@@ -967,6 +1019,488 @@ button { font-family:inherit; cursor:pointer; }
     }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
 
     els.forEach(function(el) { io.observe(el); });
+  })();
+</script>
+
+<!-- ── d3 + topojson for the Malaysia globe ──────────────────────── -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script>
+  /* ============================================================
+     Globe — Malaysia outreach
+     Static orthographic globe, Malaysia highlighted, animated
+     great-circle arcs spreading outward.
+     ============================================================ */
+  (function () {
+    function init() {
+      var host = document.getElementById('uk-globe-malaysia');
+      if (!host) return;
+      if (!window.d3 || !window.topojson) { setTimeout(init, 60); return; }
+      var d3 = window.d3;
+      var topojson = window.topojson;
+
+      var W = 720, H = 520, R = 235;
+      var cx = W / 2, cy = H / 2;
+
+      // Shah Alam HQ — centre of the projection
+      var ORIGIN = [101.5, 3.0];   // [lon, lat]
+
+      // Destinations to fan out to. No labels — just the lines + dots.
+      var DESTS = [
+        [103.85,   1.30],   // Singapore
+        [106.85,  -6.20],   // Indonesia (Jakarta)
+        [114.18,  22.30],   // Hong Kong
+        [121.40,  31.20],   // China (Shanghai)
+        [127.00,  37.50],   // South Korea (Seoul)
+        [139.70,  35.70],   // Japan (Tokyo)
+        [120.98,  14.60],   // Philippines (Manila)
+        [105.85,  21.00],   // Vietnam (Hanoi)
+        [100.50,  13.75],   // Thailand (Bangkok)
+        [ 96.16,  16.80],   // Myanmar (Yangon)
+        [ 72.83,  19.08],   // India (Mumbai)
+        [ 90.41,  23.81],   // Bangladesh (Dhaka)
+        [ 67.00,  24.86],   // Pakistan (Karachi)
+        [ 55.30,  25.20],   // UAE (Dubai)
+        [ 46.70,  24.70],   // Saudi Arabia (Riyadh)
+        [ 51.42,  35.69],   // Iran (Tehran)
+        [151.20, -33.86],   // Australia (Sydney)
+        [174.78, -41.29]    // New Zealand (Wellington)
+      ];
+
+      var projection = d3.geoOrthographic()
+        .scale(R)
+        .translate([cx, cy])
+        .clipAngle(90)
+        .rotate([-ORIGIN[0], -ORIGIN[1], 0]);   // centre on Shah Alam
+
+      var pathGen = d3.geoPath(projection);
+
+      // Initial SVG shell
+      host.innerHTML =
+        '<svg id="ukg-svg" viewBox="0 0 ' + W + ' ' + H + '" width="100%" ' +
+        'style="display:block;cursor:grab;user-select:none;touch-action:none;">' +
+          '<defs>' +
+            '<radialGradient id="ukg-shade" cx="35%" cy="35%" r="80%">' +
+              '<stop offset="0%"   stop-color="#FFFFFF" stop-opacity="1"/>' +
+              '<stop offset="60%"  stop-color="#F4F4F8" stop-opacity="1"/>' +
+              '<stop offset="100%" stop-color="#DCDEF2" stop-opacity="1"/>' +
+            '</radialGradient>' +
+            '<radialGradient id="ukg-glow" cx="50%" cy="50%" r="50%">' +
+              '<stop offset="60%"  stop-color="#2E3192" stop-opacity="0"/>' +
+              '<stop offset="100%" stop-color="#2E3192" stop-opacity="0.12"/>' +
+            '</radialGradient>' +
+          '</defs>' +
+          '<circle cx="' + cx + '" cy="' + cy + '" r="' + (R + 16) + '" fill="url(#ukg-glow)" pointer-events="none"/>' +
+          '<path id="ukg-sphere"    fill="url(#ukg-shade)" stroke="#2E3192" stroke-opacity="0.22" stroke-width="1"/>' +
+          '<path id="ukg-graticule" fill="none" stroke="#2E3192" stroke-opacity="0.08" stroke-width="0.5" pointer-events="none"/>' +
+          '<path id="ukg-land"      fill="#2E3192" fill-opacity="0.20" stroke="#FFFFFF" stroke-width="0.4" stroke-opacity="0.55" pointer-events="none"/>' +
+          '<path id="ukg-malaysia"  fill="#F37021" fill-opacity="0.95" stroke="#7A3F00" stroke-width="0.6" stroke-opacity="0.55" pointer-events="none"/>' +
+          '<g id="ukg-arcs"></g>' +
+          '<g id="ukg-pulses"></g>' +
+          '<g id="ukg-origin-pin"></g>' +
+        '</svg>';
+
+      var spherePath   = host.querySelector('#ukg-sphere');
+      var gratPath     = host.querySelector('#ukg-graticule');
+      var landPath     = host.querySelector('#ukg-land');
+      var malaysiaPath = host.querySelector('#ukg-malaysia');
+      var arcsG        = host.querySelector('#ukg-arcs');
+      var pulsesG      = host.querySelector('#ukg-pulses');
+      var originG      = host.querySelector('#ukg-origin-pin');
+
+      var graticule = d3.geoGraticule10();
+      var sphere    = { type: 'Sphere' };
+      var world     = null;
+
+      function isVisible(lonlat) {
+        // Dot product with the projection's centre — > 0 means on the near side.
+        var rot = projection.rotate();
+        var lambda = (lonlat[0] + rot[0]) * Math.PI / 180;
+        var phi    = (lonlat[1] + rot[1]) * Math.PI / 180;
+        return Math.cos(phi) * Math.cos(lambda) > 0;
+      }
+
+      var SVG_NS = 'http://www.w3.org/2000/svg';
+      // Virtual path length used for stroke-dasharray math. We set
+      // `pathLength` on every arc to this value so the SMIL dashoffset
+      // animation keeps working when the path geometry changes during
+      // drag (the browser scales the dash pattern to the real length).
+      var ARC_PATH_LENGTH = 1000;
+      var CYCLE = 4.0;          // seconds per draw → hold → fade cycle
+
+      // Quadratic-bezier "rocket launch" path string: starts at Malaysia,
+      // control point lifted above the chord midpoint, ends at the
+      // destination. Longer flights arc higher (lift is 40% of chord,
+      // capped at 160 px).
+      function rocketPath(srcXY, dstXY) {
+        var sx = srcXY[0], sy = srcXY[1];
+        var ex = dstXY[0], ey = dstXY[1];
+        var dx = ex - sx, dy = ey - sy;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        var midX = (sx + ex) / 2;
+        var midY = (sy + ey) / 2;
+        var lift = Math.min(160, dist * 0.40);
+        return 'M ' + sx.toFixed(2) + ',' + sy.toFixed(2) +
+               ' Q ' + midX.toFixed(2) + ',' + (midY - lift).toFixed(2) +
+               ' ' + ex.toFixed(2) + ',' + ey.toFixed(2);
+      }
+
+      // Pre-build one path element per destination, with its SMIL
+      // animations attached once. During render we only update the `d`
+      // attribute so the animations continue uninterrupted across drag
+      // frames.
+      var arcEls = [];
+      var dotEls = [];
+
+      function buildArcSlots() {
+        DESTS.forEach(function (_target, i) {
+          var p = document.createElementNS(SVG_NS, 'path');
+          p.setAttribute('d', 'M 0,0');                  // placeholder
+          p.setAttribute('pathLength', ARC_PATH_LENGTH);
+          p.setAttribute('fill', 'none');
+          p.setAttribute('stroke', '#F37021');
+          p.setAttribute('stroke-width', '1.6');
+          p.setAttribute('stroke-linecap', 'round');
+          p.setAttribute('stroke-dasharray', ARC_PATH_LENGTH);
+          p.setAttribute('stroke-dashoffset', ARC_PATH_LENGTH);
+          p.setAttribute('visibility', 'hidden');        // hidden until geometry computed
+
+          var delay = (i * 0.32).toFixed(2);
+
+          // dashoffset: full → 0 (draw) → 0 (hold) → full (snap reset)
+          var dashAnim = document.createElementNS(SVG_NS, 'animate');
+          dashAnim.setAttribute('attributeName', 'stroke-dashoffset');
+          dashAnim.setAttribute('values', ARC_PATH_LENGTH + ';0;0;' + ARC_PATH_LENGTH);
+          dashAnim.setAttribute('keyTimes', '0;0.45;0.85;1');
+          dashAnim.setAttribute('dur', CYCLE + 's');
+          dashAnim.setAttribute('begin', delay + 's');
+          dashAnim.setAttribute('repeatCount', 'indefinite');
+          dashAnim.setAttribute('calcMode', 'spline');
+          dashAnim.setAttribute('keySplines', '0.22 1 0.36 1; 0 0 1 1; 0.4 0 1 1');
+          p.appendChild(dashAnim);
+
+          // stroke-opacity: fade out at the end so the snap-reset hides
+          var opAnim = document.createElementNS(SVG_NS, 'animate');
+          opAnim.setAttribute('attributeName', 'stroke-opacity');
+          opAnim.setAttribute('values', '0.85;0.85;0.85;0');
+          opAnim.setAttribute('keyTimes', '0;0.45;0.80;1');
+          opAnim.setAttribute('dur', CYCLE + 's');
+          opAnim.setAttribute('begin', delay + 's');
+          opAnim.setAttribute('repeatCount', 'indefinite');
+          p.appendChild(opAnim);
+
+          arcsG.appendChild(p);
+          arcEls.push(p);
+
+          // Matching destination dot — position updated each frame.
+          var c = document.createElementNS(SVG_NS, 'circle');
+          c.setAttribute('r', '2.4');
+          c.setAttribute('fill', '#F37021');
+          c.setAttribute('opacity', '0.85');
+          c.setAttribute('visibility', 'hidden');
+          pulsesG.appendChild(c);
+          dotEls.push(c);
+        });
+      }
+
+      buildArcSlots();
+
+      function updateMarkers() {
+        var src = projection(ORIGIN);
+        var srcVisible = src && isVisible(ORIGIN);
+        DESTS.forEach(function (target, i) {
+          var p = arcEls[i];
+          var c = dotEls[i];
+          if (!srcVisible || !isVisible(target)) {
+            p.setAttribute('visibility', 'hidden');
+            c.setAttribute('visibility', 'hidden');
+            return;
+          }
+          var dst = projection(target);
+          if (!dst) {
+            p.setAttribute('visibility', 'hidden');
+            c.setAttribute('visibility', 'hidden');
+            return;
+          }
+          p.setAttribute('d', rocketPath(src, dst));
+          p.setAttribute('visibility', 'visible');
+          c.setAttribute('cx', dst[0]);
+          c.setAttribute('cy', dst[1]);
+          c.setAttribute('visibility', 'visible');
+        });
+      }
+
+      function render() {
+        spherePath.setAttribute('d', pathGen(sphere) || '');
+        gratPath.setAttribute('d', pathGen(graticule) || '');
+        if (world) {
+          landPath.setAttribute('d', pathGen(world.land) || '');
+          // ISO 3166-1 numeric for Malaysia = 458
+          var my = {
+            type: 'FeatureCollection',
+            features: world.countries.features.filter(function (f) {
+              return String(f.id) === '458';
+            })
+          };
+          malaysiaPath.setAttribute('d', pathGen(my) || '');
+        }
+        updateMarkers();
+      }
+
+      render();
+
+      fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+        .then(function (r) { return r.json(); })
+        .then(function (topo) {
+          world = {
+            land:      topojson.feature(topo, topo.objects.land),
+            countries: topojson.feature(topo, topo.objects.countries)
+          };
+          render();
+        })
+        .catch(function () { /* offline — sphere + graticule still show */ });
+
+      // Drag rotation. Animations stay running because arc elements
+      // are reused (only the `d` attribute changes per frame).
+      var svgEl = host.querySelector('#ukg-svg');
+      var sel = d3.select(svgEl);
+      var dragStart = null, startRot = null;
+      var sensitivity = 0.40;
+      var rafPending = false;
+      function scheduleRender() {
+        if (rafPending) return;
+        rafPending = true;
+        requestAnimationFrame(function () {
+          rafPending = false;
+          render();
+        });
+      }
+      var drag = d3.drag()
+        .on('start', function (event) {
+          dragStart = [event.x, event.y];
+          startRot = projection.rotate();
+          svgEl.style.cursor = 'grabbing';
+        })
+        .on('drag', function (event) {
+          var dx = event.x - dragStart[0];
+          var dy = event.y - dragStart[1];
+          projection.rotate([
+            startRot[0] + dx * sensitivity,
+            Math.max(-60, Math.min(60, startRot[1] - dy * sensitivity)),
+            startRot[2]
+          ]);
+          scheduleRender();
+        })
+        .on('end', function () {
+          svgEl.style.cursor = 'grab';
+        });
+      sel.call(drag);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+</script>
+
+<script>
+  /* ============================================================
+     Archived: original homepage globe — auto-rotating, with
+     labelled pin leaders and 5 highlighted countries. Identical
+     to the WORLD MAP / DRAGGABLE GLOBE script in index.html
+     before it was replaced by the Malaysia rocket-line version.
+     ============================================================ */
+  (function () {
+    function initGlobe() {
+      var host = document.getElementById('uk-globe-archived');
+      if (!host) return;
+      if (!window.d3 || !window.topojson) { setTimeout(initGlobe, 60); return; }
+      var d3 = window.d3;
+      var topojson = window.topojson;
+
+      var W = 750, H = 480, R = 225;
+      var cx = W / 2, cy = H / 2;
+
+      var markets = [
+        { name: 'Middle East', lat: 25.2, lon: 55.3,  side: 'left',  sub: 'Dubai · Riyadh', labelDy: 0,   leaderDx: 0  },
+        { name: 'Malaysia',    lat: 3.0,  lon: 101.5, side: 'right', sub: 'Shah Alam HQ', primary: true, labelDy: -32, leaderDx: 60 },
+        { name: 'Singapore',   lat: 1.3,  lon: 103.8, side: 'right', sub: 'Jurong',                      labelDy: 10,  leaderDx: 60 },
+        { name: 'Indonesia',   lat: -6.2, lon: 106.8, side: 'right', sub: 'Jakarta',                     labelDy: 52,  leaderDx: 60 }
+      ];
+
+      var rotation = [-95, -10, 0];
+      var projection = d3.geoOrthographic()
+        .scale(R).translate([cx, cy]).clipAngle(90).rotate(rotation);
+      var pathGen = d3.geoPath(projection);
+      var world = null;
+
+      host.innerHTML =
+        '<svg id="arch-globe-svg" viewBox="0 0 ' + W + ' ' + H + '" width="100%" ' +
+        'style="cursor:grab;user-select:none;touch-action:none;display:block;">' +
+          '<defs>' +
+            '<radialGradient id="arch-globeShade" cx="35%" cy="35%" r="80%">' +
+              '<stop offset="0%"  stop-color="#FFFFFF" stop-opacity="1"/>' +
+              '<stop offset="60%" stop-color="#F4F4F8" stop-opacity="1"/>' +
+              '<stop offset="100%" stop-color="#DCDEF2" stop-opacity="1"/>' +
+            '</radialGradient>' +
+            '<radialGradient id="arch-globeGlow" cx="50%" cy="50%" r="50%">' +
+              '<stop offset="60%" stop-color="#2E3192" stop-opacity="0"/>' +
+              '<stop offset="100%" stop-color="#2E3192" stop-opacity="0.10"/>' +
+            '</radialGradient>' +
+          '</defs>' +
+          '<circle cx="' + cx + '" cy="' + cy + '" r="' + (R + 14) + '" fill="url(#arch-globeGlow)" pointer-events="none"/>' +
+          '<path id="arch-globe-sphere"     fill="url(#arch-globeShade)" stroke="#2E3192" stroke-opacity="0.25" stroke-width="1"/>' +
+          '<path id="arch-globe-graticule"  fill="none" stroke="#2E3192" stroke-opacity="0.12" stroke-width="0.5" pointer-events="none"/>' +
+          '<path id="arch-globe-land"       fill="#2E3192" fill-opacity="0.85" stroke="#FFFFFF" stroke-width="0.4" stroke-opacity="0.6" pointer-events="none"/>' +
+          '<path id="arch-globe-highlights" fill="#F9A825" fill-opacity="0.95" stroke="#7A3F00" stroke-width="0.5" stroke-opacity="0.55" pointer-events="none"/>' +
+          '<path id="arch-globe-countries"  fill="none" stroke="#FFFFFF" stroke-width="0.3" stroke-opacity="0.4" pointer-events="none"/>' +
+          '<g id="arch-globe-pins"></g>' +
+          '<g transform="translate(' + (W - 14) + ', ' + (H - 12) + ')" pointer-events="none">' +
+            '<text text-anchor="end" style="font-family:Inter,sans-serif;font-size:9px;font-weight:600;fill:#9A9AA2;letter-spacing:0.5px;text-transform:uppercase;">↻ Drag to rotate</text>' +
+          '</g>' +
+        '</svg>';
+
+      var svgEl        = host.querySelector('#arch-globe-svg');
+      var spherePath   = host.querySelector('#arch-globe-sphere');
+      var gratPath     = host.querySelector('#arch-globe-graticule');
+      var landPath     = host.querySelector('#arch-globe-land');
+      var highlight    = host.querySelector('#arch-globe-highlights');
+      var countries    = host.querySelector('#arch-globe-countries');
+      var pinsG        = host.querySelector('#arch-globe-pins');
+
+      var HIGHLIGHT_IDS = { '458': 1, '702': 1, '360': 1, '784': 1, '682': 1 };
+
+      function isVisible(lat, lon) {
+        var rot = projection.rotate();
+        var lambda = (lon + rot[0]) * Math.PI / 180;
+        var phi    = (lat + rot[1]) * Math.PI / 180;
+        var cosC = Math.sin(phi) * Math.sin(0) + Math.cos(phi) * Math.cos(0) * Math.cos(lambda);
+        return cosC > 0;
+      }
+
+      var graticule = d3.geoGraticule10();
+      var sphere    = { type: 'Sphere' };
+
+      function render() {
+        spherePath.setAttribute('d', pathGen(sphere) || '');
+        gratPath.setAttribute('d', pathGen(graticule) || '');
+        if (world) {
+          landPath.setAttribute('d', pathGen(world.land) || '');
+          countries.setAttribute('d', pathGen(world.countries) || '');
+          var hl = { type: 'FeatureCollection', features: world.countries.features.filter(function (f) { return HIGHLIGHT_IDS[String(f.id)]; }) };
+          highlight.setAttribute('d', pathGen(hl) || '');
+        }
+
+        var pinsSvg = '';
+        for (var i = 0; i < markets.length; i++) {
+          var m = markets[i];
+          var proj = projection([m.lon, m.lat]);
+          if (!proj) continue;
+          var visible = isVisible(m.lat, m.lon);
+          var x = proj[0], y = proj[1];
+          var isLeft = m.side === 'left';
+          var ldx = m.leaderDx || 0;
+          var ldy = m.labelDy || 0;
+          var ax = isLeft ? (x - 10 - ldx) : (x + 10 + ldx);
+          var ay = y + ldy;
+          var labelX = isLeft ? (ax - 4) : (ax + 4);
+          var anchor = isLeft ? 'end' : 'start';
+          var opacity = visible ? 1 : 0.18;
+          var dotR = m.primary ? 6 : 4.5;
+          var innerR = m.primary ? 2.5 : 2;
+
+          pinsSvg += '<g opacity="' + opacity + '" pointer-events="none">';
+          if (visible) {
+            pinsSvg += '<circle cx="' + x + '" cy="' + y + '" r="14" fill="#2E3192" opacity="0.12">' +
+              '<animate attributeName="r" values="6;18;6" dur="2.6s" begin="' + (i * 0.4) + 's" repeatCount="indefinite"/>' +
+              '<animate attributeName="opacity" values="0.25;0;0.25" dur="2.6s" begin="' + (i * 0.4) + 's" repeatCount="indefinite"/>' +
+            '</circle>';
+          }
+          pinsSvg += '<circle cx="' + x + '" cy="' + y + '" r="' + dotR + '" fill="#2E3192"/>';
+          pinsSvg += '<circle cx="' + x + '" cy="' + y + '" r="' + innerR + '" fill="#FFFFFF"/>';
+          if (visible) {
+            pinsSvg += '<polyline points="' + x + ',' + y + ' ' + (isLeft ? (x - 10) : (x + 10)) + ',' + y + ' ' + ax + ',' + ay + '" fill="none" stroke="#2E3192" stroke-width="1" stroke-opacity="' + (m.primary ? 0.7 : 0.45) + '"/>';
+            pinsSvg += '<circle cx="' + ax + '" cy="' + ay + '" r="2" fill="#2E3192"/>';
+            pinsSvg += '<text x="' + labelX + '" y="' + (ay - 3) + '" text-anchor="' + anchor + '" style="font-family:Saira Condensed, sans-serif;font-size:14px;font-weight:700;letter-spacing:0.3px;fill:#111114;text-transform:uppercase;">' + m.name + '</text>';
+            pinsSvg += '<text x="' + labelX + '" y="' + (ay + 11) + '" text-anchor="' + anchor + '" style="font-family:Inter, sans-serif;font-size:10px;font-weight:500;fill:#6B6B73;letter-spacing:0.2px;">' + m.sub + '</text>';
+          }
+          pinsSvg += '</g>';
+        }
+        pinsG.innerHTML = pinsSvg;
+      }
+
+      render();
+
+      var autoRotate = true;
+      var prefersReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduce) autoRotate = false;
+      var lastTs = 0;
+      function autoTick(ts) {
+        if (autoRotate && lastTs) {
+          var dt = ts - lastTs;
+          var rot = projection.rotate();
+          rot[0] += 0.05 * (dt / 16.67);
+          projection.rotate(rot);
+          render();
+        }
+        lastTs = ts;
+        requestAnimationFrame(autoTick);
+      }
+      requestAnimationFrame(autoTick);
+
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          if (prefersReduce) return;
+          entries.forEach(function (e) { autoRotate = e.isIntersecting; });
+        }, { threshold: 0.1 });
+        io.observe(svgEl);
+      }
+
+      fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+        .then(function (r) { return r.json(); })
+        .then(function (topo) {
+          world = {
+            land:      topojson.feature(topo, topo.objects.land),
+            countries: topojson.feature(topo, topo.objects.countries)
+          };
+          render();
+        })
+        .catch(function () { /* offline — graticule still shows */ });
+
+      var sel = d3.select(svgEl);
+      var start, startRot;
+      var sensitivity = 0.4;
+      var drag = d3.drag()
+        .on('start', function (event) {
+          start = [event.x, event.y];
+          startRot = projection.rotate();
+          svgEl.style.cursor = 'grabbing';
+          autoRotate = false;
+        })
+        .on('drag', function (event) {
+          var dx = event.x - start[0];
+          var dy = event.y - start[1];
+          projection.rotate([
+            startRot[0] + dx * sensitivity,
+            Math.max(-60, Math.min(60, startRot[1] - dy * sensitivity)),
+            startRot[2]
+          ]);
+          render();
+        })
+        .on('end', function () {
+          svgEl.style.cursor = 'grab';
+          if (!prefersReduce) autoRotate = true;
+        });
+      sel.call(drag);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initGlobe);
+    } else {
+      initGlobe();
+    }
   })();
 </script>
 

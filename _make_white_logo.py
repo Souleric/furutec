@@ -19,26 +19,37 @@ DST = Path('/Users/ericcheah/Furutec/Furutec website 3/assets/Logo-white.png')
 
 
 def convert() -> None:
+    """
+    Convert to PLAIN white:
+      - Any pixel that's clearly part of the logo (brightness < INK_CUT)
+        becomes fully opaque white #FFFFFFFF.
+      - Any pixel that's clearly background (brightness >= BG_CUT)
+        becomes fully transparent.
+      - Pixels between those two thresholds keep a partial alpha so the
+        anti-aliased letter edges stay smooth.
+    Result: solid white logo, no grey/translucent tint in the body.
+    """
+    INK_CUT = 180   # below this → solid white
+    BG_CUT  = 235   # above this → transparent
     img = Image.open(SRC).convert('RGBA')
     px = img.load()
     w, h = img.size
+    span = BG_CUT - INK_CUT
     for y in range(h):
         for x in range(w):
             r, g, b, _ = px[x, y]
-            # Brightness on 0..255 — used to decide how "ink" the pixel is.
-            # Pure white ≈ 255 → alpha 0 (transparent), pure black → alpha 255.
             brightness = (r + g + b) / 3
-            if brightness >= 248:
-                # Treat as background — fully transparent.
+            if brightness < INK_CUT:
+                # Inside the letterforms — pure opaque white.
+                px[x, y] = (255, 255, 255, 255)
+            elif brightness >= BG_CUT:
+                # Background — fully transparent.
                 px[x, y] = (255, 255, 255, 0)
             else:
-                # Anti-aliased edge — keep partial alpha proportional to darkness.
-                alpha = int(round(255 * (1 - brightness / 255)))
-                # Clamp very faint pixels so we don't keep JPEG noise.
-                if alpha < 8:
-                    px[x, y] = (255, 255, 255, 0)
-                else:
-                    px[x, y] = (255, 255, 255, alpha)
+                # Anti-aliased edge — smooth fade from solid to transparent.
+                t = (brightness - INK_CUT) / span      # 0 = ink edge, 1 = bg edge
+                alpha = int(round(255 * (1 - t)))
+                px[x, y] = (255, 255, 255, alpha)
     img.save(DST, 'PNG', optimize=True)
     print(f'wrote {DST.relative_to(SRC.parent.parent)} ({DST.stat().st_size} bytes)')
 
