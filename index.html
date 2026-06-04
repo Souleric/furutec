@@ -1398,7 +1398,7 @@ header {
 <style>
   #engineered-section {
     position:relative; overflow:hidden;
-    background:#FFFFFF;
+    background:#F4F6FB;
     min-height:100vh;
     display:flex; align-items:center; justify-content:center;
   }
@@ -1412,7 +1412,7 @@ header {
   }
   .es-bg-veil {
     position:absolute; inset:0; z-index:1;
-    background:#FFFFFF;
+    background:#F4F6FB;
     opacity:0;
     transition:opacity 500ms cubic-bezier(.22,1,.36,1);
     pointer-events:none;
@@ -1650,7 +1650,7 @@ header {
   @media (max-width: 800px)  { .rp-grid { grid-template-columns:repeat(3,1fr); } }
   @media (max-width: 560px)  { .rp-grid { grid-template-columns:repeat(2,1fr); } }
 </style>
-<section style="background:#F4F6FB;padding:96px 0;">
+<section style="background:#F4F6FB;padding:96px 0;display:none;">
   <div style="max-width:1320px;margin:0 auto;padding:0 32px;">
     <div style="text-align:center;margin-bottom:32px;">
       <span class="eyebrow">OUR PROJECTS</span>
@@ -2790,14 +2790,18 @@ Monitoring</h3>
   <div style="position:relative;z-index:2;max-width:880px;">
     <h2 style="font-family:var(--font-display);font-size:72px;font-weight:700;line-height:1.02;letter-spacing:-0.01em;margin:0 0 18px;color:#FFFFFF;text-wrap:balance;text-shadow:0 4px 32px rgba(0,0,0,0.45);">
       Credential <span style="color:#FFFFFF;">&amp;</span><br/>
-      <span style="color:#8E94FF;">Track Record</span>
+      <span style="color:#8E94FF;">Portfolio</span>
     </h2>
     <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,0.88);margin:0 0 36px;text-shadow:0 2px 16px rgba(0,0,0,0.45);">
       Where Credential Meets Capability.
     </p>
-    <div style="display:flex;justify-content:center;">
+    <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
       <a href="portfolio.html" class="btn-white-outline" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
-        Learn More
+        Credential
+        <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
+      </a>
+      <a href="portfolio-track-record.html" class="btn-white-outline" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
+        Portfolio
         <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
       </a>
     </div>
@@ -2952,7 +2956,7 @@ Monitoring</h3>
 <!-- ============================================================
      BRANDS STRIP
      ============================================================ -->
-<section style="background:#FFFFFF;border-top:1px solid #F1F1F3;padding:28px 0;">
+<section style="background:#FFFFFF;border-top:1px solid #F1F1F3;padding:28px 0;display:none;">
   <div style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 2fr;align-items:center;gap:32px;">
     <p style="font-size:12px;line-height:1.7;color:#6B6B73;margin:0;max-width:360px;">
       Serving an impressive list of clients across data‑centre, healthcare,
@@ -3326,11 +3330,11 @@ Monitoring</h3>
 <!-- ============================================================
      FOOTER
      ============================================================ -->
-<footer style="background:#0F0F12;color:#FFFFFF;">
+<footer style="background:linear-gradient(180deg,#2E3192 0%,#1A1C56 40%,#0A0A0B 100%);color:#FFFFFF;">
   <div style="max-width:1320px;margin:0 auto;padding:64px 32px 40px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr;gap:40px;">
     <div>
-      <div style="display:inline-flex;align-items:center;margin-bottom:14px;">
-        <img src="assets/Logo-white.png" alt="Furutec — Busduct System" style="height:42px;width:auto;display:block;filter:invert(1) grayscale(1) brightness(1.6) contrast(1.4);mix-blend-mode:screen;"/>
+      <div style="display:inline-flex;align-items:center;margin-bottom:18px;">
+        <img src="assets/Logo-white.png" alt="Furutec — Busduct System" style="height:54px;width:auto;display:block;"/>
       </div>
       <p style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:#FFFFFF;margin:0 0 4px;line-height:1.4;">Furutec Electrical Sdn Bhd</p>
       <p style="font-size:11px;color:rgba(255,255,255,0.45);margin:0 0 16px;font-style:italic;">Company No. 198001003423 (57207-W)</p>
