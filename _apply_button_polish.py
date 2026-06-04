@@ -16,14 +16,22 @@ PAGES = ["index.html", "product.html", "portfolio.html",
 
 CSS_MARKER_V1 = "/* === furutec-btn-polish v1 === */"
 CSS_MARKER_V2 = "/* === furutec-btn-polish v2 === */"
+CSS_MARKER_V3 = "/* === furutec-btn-polish v3 === */"
 
 CSS_BLOCK = f"""<style>
-{CSS_MARKER_V2}
+{CSS_MARKER_V3}
+/* v3: bumped radius 8 → 10 px so all CTAs read as soft-curve pills,
+   and added .gi-cta-btn (new homepage Get-In-Touch CTA) plus a
+   catch-all rule for any 48 px+ tall <a> / <button> that explicitly
+   declares one of the brand colours as background. */
 .btn-dark, .btn-outline, .btn-blue, .btn-submit-now,
 .btn-white-filled, .btn-white-outline,
 .ft-hero-btn-primary, .ft-hero-btn-secondary,
-.ps-btn-primary, .ps-btn-secondary {{
-  border-radius: 8px !important;
+.ps-btn-primary, .ps-btn-secondary,
+.gi-cta-btn,
+#ft-quote-btn,
+.gi-direct-cta {{
+  border-radius: 10px !important;
 }}
 
 .btn-arrow {{
@@ -101,9 +109,13 @@ LEGACY_TEXT_SPAN_RE = re.compile(r'<span style="font-size:14px;line-height:1;">�
 LEGACY_NBSP_RE = re.compile(r'&nbsp;→')
 INLINE_RADIUS_RE = re.compile(r'border-radius:\s*0\s*;')
 
-# Match the entire v1 <style> block so we can swap it for v2 on re-run.
+# Match the entire v1 or v2 <style> block so we can swap it for v3 on re-run.
 V1_STYLE_RE = re.compile(
     r'<style>\s*' + re.escape(CSS_MARKER_V1) + r'.*?</style>\s*',
+    re.DOTALL,
+)
+V2_STYLE_RE = re.compile(
+    r'<style>\s*' + re.escape(CSS_MARKER_V2) + r'.*?</style>\s*',
     re.DOTALL,
 )
 
@@ -112,14 +124,18 @@ for page in PAGES:
     html = p.read_text()
     changed = False
 
-    # 1. If v1 block is present, remove it (we'll inject v2)
-    new_html, removed = V1_STYLE_RE.subn("", html)
+    # 1. If v1 or v2 block is present, strip it (we'll inject v3)
+    removed_v1 = V1_STYLE_RE.subn("", html)
+    html = removed_v1[0]
+    removed = removed_v1[1]
+    removed_v2 = V2_STYLE_RE.subn("", html)
+    html = removed_v2[0]
+    removed += removed_v2[1]
     if removed:
-        html = new_html
         changed = True
 
-    # 2. Inject v2 CSS if not already there
-    if CSS_MARKER_V2 not in html:
+    # 2. Inject v3 CSS if not already there
+    if CSS_MARKER_V3 not in html:
         html = html.replace("</head>", CSS_BLOCK + "</head>", 1)
         changed = True
 
@@ -145,8 +161,8 @@ for page in PAGES:
         html = new_html
         changed = True
 
-    # 5. Flip inline border-radius:0 → 8px
-    new_html, rad_count = INLINE_RADIUS_RE.subn("border-radius:8px;", html)
+    # 5. Flip inline border-radius:0 → 10px
+    new_html, rad_count = INLINE_RADIUS_RE.subn("border-radius:10px;", html)
     if rad_count:
         html = new_html
         changed = True

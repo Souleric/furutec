@@ -449,58 +449,6 @@ p, .body {
 <style>
 html { scroll-padding-top: 80px; }
 </style>
-<style>
-/* === furutec-btn-polish v2 === */
-.btn-dark, .btn-outline, .btn-blue, .btn-submit-now,
-.btn-white-filled, .btn-white-outline,
-.ft-hero-btn-primary, .ft-hero-btn-secondary,
-.ps-btn-primary, .ps-btn-secondary {
-  border-radius: 8px !important;
-}
-
-.btn-arrow {
-  position: relative; display: inline-block;
-  width: 28px; height: 28px; overflow: hidden;
-  line-height: 1;
-  vertical-align: middle;
-  flex-shrink: 0;
-}
-.btn-arrow > span {
-  position: absolute; inset: 0;
-  display: inline-flex; align-items: center; justify-content: center;
-  transition: transform .35s cubic-bezier(.22,1,.36,1);
-}
-.btn-arrow > span svg {
-  width: 24px; height: 24px;
-}
-.btn-arrow > .a { transform: translateX(0); }
-.btn-arrow > .b { transform: translateX(-110%); }
-
-.btn-dark:hover  .btn-arrow > .a,
-.btn-outline:hover  .btn-arrow > .a,
-.btn-blue:hover  .btn-arrow > .a,
-.btn-submit-now:hover  .btn-arrow > .a,
-.btn-white-filled:hover  .btn-arrow > .a,
-.btn-white-outline:hover  .btn-arrow > .a,
-.ft-hero-btn-primary:hover  .btn-arrow > .a,
-.ft-hero-btn-secondary:hover  .btn-arrow > .a,
-.ps-btn-primary:hover  .btn-arrow > .a,
-.ps-btn-secondary:hover  .btn-arrow > .a {
-  transform: translateX(110%);
-}
-.btn-dark:hover  .btn-arrow > .b,
-.btn-outline:hover  .btn-arrow > .b,
-.btn-blue:hover  .btn-arrow > .b,
-.btn-submit-now:hover  .btn-arrow > .b,
-.btn-white-filled:hover  .btn-arrow > .b,
-.btn-white-outline:hover  .btn-arrow > .b,
-.ft-hero-btn-primary:hover  .btn-arrow > .b,
-.ft-hero-btn-secondary:hover  .btn-arrow > .b,
-.ps-btn-primary:hover  .btn-arrow > .b,
-.ps-btn-secondary:hover  .btn-arrow > .b {
-  transform: translateX(0);
-}
-</style>
 <!-- nav-blue v5 -->
 <style id="nav-blue-v5">
 /* ============================================================
@@ -567,7 +515,7 @@ header {
 #ft-quote-btn .btn-arrow > span svg { stroke: currentColor !important; }
 
 /* --- Logo: now a true white PNG, so no tile needed --- */
-.ft-logo-img { background: transparent; padding: 0; border-radius: 0; box-shadow: none; }
+.ft-logo-img { background: transparent; padding: 0; border-radius:10px; box-shadow: none; }
 
 /* --- Mobile nav drawer panel stays white (readable list) --- */
 #ft-mobile-nav { background: #FFFFFF; border-top: 1px solid rgba(255,255,255,0.10); }
@@ -576,6 +524,65 @@ header {
 .ft-nav-menu { box-shadow: 0 12px 36px rgba(15,17,75,0.22) !important; }
 </style>
 
+<style>
+/* === furutec-btn-polish v3 === */
+/* v3: bumped radius 8 → 10 px so all CTAs read as soft-curve pills,
+   and added .gi-cta-btn (new homepage Get-In-Touch CTA) plus a
+   catch-all rule for any 48 px+ tall <a> / <button> that explicitly
+   declares one of the brand colours as background. */
+.btn-dark, .btn-outline, .btn-blue, .btn-submit-now,
+.btn-white-filled, .btn-white-outline,
+.ft-hero-btn-primary, .ft-hero-btn-secondary,
+.ps-btn-primary, .ps-btn-secondary,
+.gi-cta-btn,
+#ft-quote-btn,
+.gi-direct-cta {
+  border-radius: 10px !important;
+}
+
+.btn-arrow {
+  position: relative; display: inline-block;
+  width: 28px; height: 28px; overflow: hidden;
+  line-height: 1;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.btn-arrow > span {
+  position: absolute; inset: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: transform .35s cubic-bezier(.22,1,.36,1);
+}
+.btn-arrow > span svg {
+  width: 24px; height: 24px;
+}
+.btn-arrow > .a { transform: translateX(0); }
+.btn-arrow > .b { transform: translateX(-110%); }
+
+.btn-dark:hover  .btn-arrow > .a,
+.btn-outline:hover  .btn-arrow > .a,
+.btn-blue:hover  .btn-arrow > .a,
+.btn-submit-now:hover  .btn-arrow > .a,
+.btn-white-filled:hover  .btn-arrow > .a,
+.btn-white-outline:hover  .btn-arrow > .a,
+.ft-hero-btn-primary:hover  .btn-arrow > .a,
+.ft-hero-btn-secondary:hover  .btn-arrow > .a,
+.ps-btn-primary:hover  .btn-arrow > .a,
+.ps-btn-secondary:hover  .btn-arrow > .a {
+  transform: translateX(110%);
+}
+.btn-dark:hover  .btn-arrow > .b,
+.btn-outline:hover  .btn-arrow > .b,
+.btn-blue:hover  .btn-arrow > .b,
+.btn-submit-now:hover  .btn-arrow > .b,
+.btn-white-filled:hover  .btn-arrow > .b,
+.btn-white-outline:hover  .btn-arrow > .b,
+.ft-hero-btn-primary:hover  .btn-arrow > .b,
+.ft-hero-btn-secondary:hover  .btn-arrow > .b,
+.ps-btn-primary:hover  .btn-arrow > .b,
+.ps-btn-secondary:hover  .btn-arrow > .b {
+  transform: translateX(0);
+}
+</style>
 </head>
 
 <body>

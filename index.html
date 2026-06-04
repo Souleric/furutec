@@ -460,58 +460,6 @@ p, .body {
 <style>
 html { scroll-padding-top: 80px; }
 </style>
-<style>
-/* === furutec-btn-polish v2 === */
-.btn-dark, .btn-outline, .btn-blue, .btn-submit-now,
-.btn-white-filled, .btn-white-outline,
-.ft-hero-btn-primary, .ft-hero-btn-secondary,
-.ps-btn-primary, .ps-btn-secondary {
-  border-radius: 8px !important;
-}
-
-.btn-arrow {
-  position: relative; display: inline-block;
-  width: 28px; height: 28px; overflow: hidden;
-  line-height: 1;
-  vertical-align: middle;
-  flex-shrink: 0;
-}
-.btn-arrow > span {
-  position: absolute; inset: 0;
-  display: inline-flex; align-items: center; justify-content: center;
-  transition: transform .35s cubic-bezier(.22,1,.36,1);
-}
-.btn-arrow > span svg {
-  width: 24px; height: 24px;
-}
-.btn-arrow > .a { transform: translateX(0); }
-.btn-arrow > .b { transform: translateX(-110%); }
-
-.btn-dark:hover  .btn-arrow > .a,
-.btn-outline:hover  .btn-arrow > .a,
-.btn-blue:hover  .btn-arrow > .a,
-.btn-submit-now:hover  .btn-arrow > .a,
-.btn-white-filled:hover  .btn-arrow > .a,
-.btn-white-outline:hover  .btn-arrow > .a,
-.ft-hero-btn-primary:hover  .btn-arrow > .a,
-.ft-hero-btn-secondary:hover  .btn-arrow > .a,
-.ps-btn-primary:hover  .btn-arrow > .a,
-.ps-btn-secondary:hover  .btn-arrow > .a {
-  transform: translateX(110%);
-}
-.btn-dark:hover  .btn-arrow > .b,
-.btn-outline:hover  .btn-arrow > .b,
-.btn-blue:hover  .btn-arrow > .b,
-.btn-submit-now:hover  .btn-arrow > .b,
-.btn-white-filled:hover  .btn-arrow > .b,
-.btn-white-outline:hover  .btn-arrow > .b,
-.ft-hero-btn-primary:hover  .btn-arrow > .b,
-.ft-hero-btn-secondary:hover  .btn-arrow > .b,
-.ps-btn-primary:hover  .btn-arrow > .b,
-.ps-btn-secondary:hover  .btn-arrow > .b {
-  transform: translateX(0);
-}
-</style>
 <!-- nav-blue v5 -->
 <style id="nav-blue-v5">
 /* ============================================================
@@ -578,7 +526,7 @@ header {
 #ft-quote-btn .btn-arrow > span svg { stroke: currentColor !important; }
 
 /* --- Logo: now a true white PNG, so no tile needed --- */
-.ft-logo-img { background: transparent; padding: 0; border-radius: 0; box-shadow: none; }
+.ft-logo-img { background: transparent; padding: 0; border-radius:10px; box-shadow: none; }
 
 /* --- Mobile nav drawer panel stays white (readable list) --- */
 #ft-mobile-nav { background: #FFFFFF; border-top: 1px solid rgba(255,255,255,0.10); }
@@ -587,6 +535,65 @@ header {
 .ft-nav-menu { box-shadow: 0 12px 36px rgba(15,17,75,0.22) !important; }
 </style>
 
+<style>
+/* === furutec-btn-polish v3 === */
+/* v3: bumped radius 8 → 10 px so all CTAs read as soft-curve pills,
+   and added .gi-cta-btn (new homepage Get-In-Touch CTA) plus a
+   catch-all rule for any 48 px+ tall <a> / <button> that explicitly
+   declares one of the brand colours as background. */
+.btn-dark, .btn-outline, .btn-blue, .btn-submit-now,
+.btn-white-filled, .btn-white-outline,
+.ft-hero-btn-primary, .ft-hero-btn-secondary,
+.ps-btn-primary, .ps-btn-secondary,
+.gi-cta-btn,
+#ft-quote-btn,
+.gi-direct-cta {
+  border-radius: 10px !important;
+}
+
+.btn-arrow {
+  position: relative; display: inline-block;
+  width: 28px; height: 28px; overflow: hidden;
+  line-height: 1;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.btn-arrow > span {
+  position: absolute; inset: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: transform .35s cubic-bezier(.22,1,.36,1);
+}
+.btn-arrow > span svg {
+  width: 24px; height: 24px;
+}
+.btn-arrow > .a { transform: translateX(0); }
+.btn-arrow > .b { transform: translateX(-110%); }
+
+.btn-dark:hover  .btn-arrow > .a,
+.btn-outline:hover  .btn-arrow > .a,
+.btn-blue:hover  .btn-arrow > .a,
+.btn-submit-now:hover  .btn-arrow > .a,
+.btn-white-filled:hover  .btn-arrow > .a,
+.btn-white-outline:hover  .btn-arrow > .a,
+.ft-hero-btn-primary:hover  .btn-arrow > .a,
+.ft-hero-btn-secondary:hover  .btn-arrow > .a,
+.ps-btn-primary:hover  .btn-arrow > .a,
+.ps-btn-secondary:hover  .btn-arrow > .a {
+  transform: translateX(110%);
+}
+.btn-dark:hover  .btn-arrow > .b,
+.btn-outline:hover  .btn-arrow > .b,
+.btn-blue:hover  .btn-arrow > .b,
+.btn-submit-now:hover  .btn-arrow > .b,
+.btn-white-filled:hover  .btn-arrow > .b,
+.btn-white-outline:hover  .btn-arrow > .b,
+.ft-hero-btn-primary:hover  .btn-arrow > .b,
+.ft-hero-btn-secondary:hover  .btn-arrow > .b,
+.ps-btn-primary:hover  .btn-arrow > .b,
+.ps-btn-secondary:hover  .btn-arrow > .b {
+  transform: translateX(0);
+}
+</style>
 </head>
 
 <body>
@@ -2808,213 +2815,100 @@ Monitoring</h3>
 </section>
 
 <!-- ============================================================
-     GET IN TOUCH — Contact form + locations + map
+     GET IN TOUCH — Simple CTA with industrial background
      ============================================================ -->
 <style>
-  .gi-grid { display:grid; grid-template-columns:1.05fr 1fr; gap:24px; align-items:stretch; }
-  .gi-card { background:#FFFFFF; padding:36px 36px; box-shadow:0 14px 40px rgba(17,17,20,0.08); display:flex; flex-direction:column; }
-  .gi-input, .gi-textarea, .gi-select {
-    width:100%; border:1px solid #E1E3EA; padding:0 16px; box-sizing:border-box;
-    font-family:var(--font-sans); font-size:16px; color:#111114; background:#FFFFFF;
-    outline:none; height:48px; appearance:none;
+  .gi-cta-section {
+    position:relative;
+    min-height:540px;
+    color:#FFFFFF;
+    overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center;
+    padding:120px 32px;
   }
-  .gi-textarea { padding:14px 16px; height:96px; resize:vertical; }
-  .gi-input:focus, .gi-textarea:focus, .gi-select:focus { border-color:#2E3192; }
-  .gi-label { display:block; font-family:var(--font-sans); font-size:12px; font-weight:600; color:#4A4A52; margin-bottom:6px; letter-spacing:0.2px; }
-  .gi-field { margin-bottom:16px; }
-  .gi-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  .gi-loc { display:grid; grid-template-columns:1fr auto; align-items:start; gap:16px; padding:16px 0; border-bottom:1px solid #ECECF1; }
-  .gi-loc:last-of-type { border-bottom:none; }
-  .gi-pill {
-    display:inline-flex; align-items:center; gap:6px; padding:8px 14px;
-    background:#F4F6FB; color:#2E3192; border-radius:999px;
-    font-family:var(--font-sans); font-size:12px; font-weight:600; text-decoration:none;
-    transition:background 200ms ease;
+  .gi-cta-bg {
+    position:absolute; inset:0; z-index:0;
+    width:100%; height:100%;
+    object-fit:cover; display:block;
   }
-  .gi-pill:hover { background:#E4E7F4; }
-  .gi-direct { display:grid; grid-template-columns:repeat(3,1fr); gap:0; background:#FFFFFF; box-shadow:0 14px 40px rgba(17,17,20,0.08); margin-top:24px; }
-  .gi-direct-cell { padding:24px 28px; border-right:1px solid #ECECF1; display:flex; align-items:center; gap:14px; }
-  .gi-direct-cell:last-child { border-right:none; }
-  .gi-direct-icon {
-    width:40px; height:40px; border-radius:50%; background:#F4F6FB; color:#2E3192;
-    display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;
+  .gi-cta-veil {
+    position:absolute; inset:0; z-index:1;
+    background:linear-gradient(180deg, rgba(10,10,30,0.55) 0%, rgba(10,10,30,0.80) 100%);
   }
-  .gi-direct-label { font-family:var(--font-sans); font-size:11px; font-weight:600; color:#6B6B73; letter-spacing:0.4px; text-transform:uppercase; margin:0 0 2px; }
-  .gi-direct-value { font-family:var(--font-sans); font-size:13px; font-weight:600; color:#111114; line-height:1.35; margin:0; }
-  @media (max-width: 900px) {
-    .gi-grid { grid-template-columns:1fr; }
-    .gi-direct { grid-template-columns:1fr 1fr; }
-    .gi-direct-cell:nth-child(2) { border-right:none; }
-    .gi-direct-cell:nth-child(1), .gi-direct-cell:nth-child(2) { border-bottom:1px solid #ECECF1; }
+  .gi-cta-inner {
+    position:relative; z-index:2;
+    max-width:880px; margin:0 auto;
   }
-  @media (max-width: 600px) {
-    .gi-row { grid-template-columns:1fr; }
-    .gi-direct { grid-template-columns:1fr; }
-    .gi-direct-cell { border-right:none; border-bottom:1px solid #ECECF1; }
-    .gi-direct-cell:last-child { border-bottom:none; }
+  .gi-cta-eyebrow {
+    display:inline-block;
+    font-family:var(--font-sans); font-size:12px; font-weight:600;
+    letter-spacing:0.6px; text-transform:uppercase;
+    color:rgba(255,255,255,0.85);
+    margin-bottom:18px;
+  }
+  .gi-cta-title {
+    font-family:var(--font-display);
+    font-size:clamp(40px, 5.5vw, 72px); font-weight:700;
+    line-height:1.05; letter-spacing:-0.01em;
+    color:#FFFFFF; margin:0 0 18px;
+    text-wrap:balance;
+    text-shadow:0 4px 32px rgba(0,0,0,0.45);
+  }
+  .gi-cta-title .accent {
+    color:#9CA0F0;
+    font-family:'Big Shoulders Display','Saira Condensed','Oswald',sans-serif;
+    font-weight:900; font-style:italic;
+  }
+  .gi-cta-lede {
+    font-size:16px; line-height:1.65;
+    color:rgba(255,255,255,0.88);
+    margin:0 0 36px; max-width:620px;
+    margin-left:auto; margin-right:auto;
+    text-shadow:0 2px 16px rgba(0,0,0,0.45);
+  }
+  .gi-cta-btn {
+    display:inline-flex; align-items:center; gap:14px;
+    padding:0 36px; height:60px;
+    background:#F58220; color:#FFFFFF;
+    border:1.5px solid #F58220;
+    font-family:var(--font-sans); font-size:14px; font-weight:600;
+    letter-spacing:0.3px;
+    text-decoration:none; cursor:pointer;
+    transition:background .3s ease, color .3s ease, border-color .3s ease;
+    box-shadow:0 6px 18px rgba(245,130,32,0.35);
+  }
+  .gi-cta-btn:hover {
+    background:transparent; color:#FFFFFF; border-color:#FFFFFF;
+    box-shadow:none;
+  }
+  @media (max-width: 720px) {
+    .gi-cta-section { padding:88px 24px; min-height:460px; }
   }
 </style>
-<section id="quote" style="background:#F4F6FB;padding:96px 0;">
-  <div style="max-width:1200px;margin:0 auto;padding:0 32px;">
-    <div style="text-align:center;margin-bottom:48px;">
-      <span class="eyebrow">GET IN TOUCH</span>
-      <h2 style="font-family:var(--font-display);font-size:56px;font-weight:700;line-height:1.04;letter-spacing:-0.01em;color:#111114;margin:8px 0 0;text-wrap:balance;">
-        Ready to specify your<br/>
-        <span style="color:#2E3192;">next busduct project?</span>
-      </h2>
-    </div>
+<section id="quote" class="gi-cta-section">
+  <!-- Industrial workers from Unsplash. Free, CC0, no attribution required. -->
+  <img class="gi-cta-bg"
+       src="https://images.unsplash.com/photo-1581094288338-2314dddb7ece?w=2000&q=80&auto=format&fit=crop"
+       alt="Industrial engineers on a busduct installation site"
+       loading="lazy"/>
+  <div class="gi-cta-veil" aria-hidden="true"></div>
 
-    <div class="gi-grid">
-      <!-- LEFT — Form -->
-      <form class="gi-card" onsubmit="event.preventDefault();">
-        <h3 style="font-family:var(--font-display);font-size:22px;font-weight:700;color:#111114;margin:0 0 20px;">Furutec Busduct System</h3>
-
-        <div class="gi-field">
-          <label class="gi-label">Select Topic *</label>
-          <div style="position:relative;">
-            <select class="gi-select" required>
-              <option value="">Choose one</option>
-              <option>Indoor Solution</option>
-              <option>Outdoor Solution</option>
-              <option>Data Centre Solution</option>
-              <option>Power Monitoring Solution</option>
-              <option>Others</option>
-            </select>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B6B73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);pointer-events:none;"><path d="M6 9l6 6 6-6"/></svg>
-          </div>
-        </div>
-
-        <div class="gi-field">
-          <label class="gi-label">Full Name *</label>
-          <input class="gi-input" placeholder="Your full name" required/>
-        </div>
-
-        <div class="gi-row">
-          <div class="gi-field">
-            <label class="gi-label">Corporate Email *</label>
-            <input class="gi-input" type="email" placeholder="name@company.com" required/>
-          </div>
-          <div class="gi-field">
-            <label class="gi-label">Phone Number *</label>
-            <input class="gi-input" type="tel" placeholder="+60 …" required/>
-          </div>
-        </div>
-
-        <div class="gi-field">
-          <label class="gi-label">Country *</label>
-          <div style="position:relative;">
-            <select class="gi-select" required>
-              <option value="">Select country</option>
-              <option>Malaysia</option>
-              <option>Singapore</option>
-              <option>Indonesia</option>
-              <option>Thailand</option>
-              <option>Vietnam</option>
-              <option>Philippines</option>
-              <option>Brunei</option>
-              <option>India</option>
-              <option>United Arab Emirates</option>
-              <option>Saudi Arabia</option>
-              <option>Qatar</option>
-              <option>Australia</option>
-              <option>Other</option>
-            </select>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B6B73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);pointer-events:none;"><path d="M6 9l6 6 6-6"/></svg>
-          </div>
-        </div>
-
-        <div class="gi-field">
-          <label class="gi-label">Project Description *</label>
-          <textarea class="gi-textarea" placeholder="Load, location, schedule, project type…" required></textarea>
-        </div>
-
-        <button type="submit" class="btn-submit-now" style="width:100%;background:#2E3192;color:#FFFFFF;border:1.5px solid #2E3192;height:52px;font-family:var(--font-sans);font-size:14px;font-weight:600;letter-spacing:0.3px;cursor:pointer;margin-top:8px;">
-          Submit Now
-        </button>
-
-        <p style="font-size:11.5px;line-height:1.6;color:#6B6B73;margin:18px 0 0;text-align:center;letter-spacing:0.2px;">
-          Response within 24 hours · No Spam · Dedicated Engineering Support
-        </p>
-      </form>
-
-      <!-- RIGHT — Locations + map -->
-      <div class="gi-card" style="padding:0;overflow:hidden;">
-        <div style="padding:32px 36px 8px;">
-          <h3 style="font-family:var(--font-display);font-size:22px;font-weight:700;color:#111114;margin:0 0 8px;">Furutec Electrical Sdn Bhd</h3>
-          <div class="gi-loc">
-            <div>
-              <div style="font-family:var(--font-sans);font-size:11px;font-weight:600;color:#6B6B73;letter-spacing:0.4px;text-transform:uppercase;margin-bottom:4px;">Headquarters</div>
-              <div style="font-size:13px;line-height:1.55;color:#111114;">
-                Subang Jaya, Selangor.
-              </div>
-            </div>
-            <a class="gi-pill" href="https://www.google.com/maps/dir/?api=1&amp;destination=Subang+Jaya+Selangor" target="_blank" rel="noopener">
-              Directions
-              <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
-            </a>
-          </div>
-          <div class="gi-loc">
-            <div>
-              <div style="font-family:var(--font-sans);font-size:11px;font-weight:600;color:#6B6B73;letter-spacing:0.4px;text-transform:uppercase;margin-bottom:4px;">Manufacturing Plant</div>
-              <div style="font-size:13px;line-height:1.55;color:#111114;">
-                Penang, Malaysia.
-              </div>
-            </div>
-            <a class="gi-pill" href="https://www.google.com/maps/dir/?api=1&amp;destination=Penang+Malaysia" target="_blank" rel="noopener">
-              Directions
-              <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
-            </a>
-          </div>
-
-          <!-- Map tabs -->
-          <div id="gi-map-tabs" style="display:flex;gap:0;border-bottom:1px solid #ECECF1;margin:18px 0 0;">
-            <button type="button" data-map="subang" class="gi-map-tab is-active" style="background:none;border:none;padding:12px 20px 14px;font-family:var(--font-sans);font-size:12px;font-weight:600;letter-spacing:0.4px;text-transform:uppercase;color:#2E3192;cursor:pointer;border-bottom:2px solid #2E3192;margin-bottom:-1px;">Subang Jaya HQ</button>
-            <button type="button" data-map="penang" class="gi-map-tab" style="background:none;border:none;padding:12px 20px 14px;font-family:var(--font-sans);font-size:12px;font-weight:600;letter-spacing:0.4px;text-transform:uppercase;color:#6B6B73;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;">Penang Plant</button>
-          </div>
-        </div>
-
-        <div style="flex:1;min-height:240px;">
-          <iframe
-            id="gi-map-frame"
-            src="https://www.google.com/maps?q=Subang+Jaya+Selangor&amp;output=embed"
-            style="width:100%;height:100%;min-height:260px;border:0;display:block;"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            title="Furutec Location Map"></iframe>
-        </div>
-      </div>
-    </div>
-
-    <!-- Contact Us Directly strip -->
-    <div class="gi-direct">
-      <div class="gi-direct-cell">
-        <span class="gi-direct-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
-        </span>
-        <div>
-          <p class="gi-direct-label">Email</p>
-          <p class="gi-direct-value">info@furutec.com.my</p>
-        </div>
-      </div>
-      <div class="gi-direct-cell">
-        <span class="gi-direct-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2 1a12 12 0 0 0 5 5l1-2 5 2v4a1 1 0 0 1-1 1A17 17 0 0 1 4 5a1 1 0 0 1 1-1Z"/></svg>
-        </span>
-        <div>
-          <p class="gi-direct-label">Phone</p>
-          <p class="gi-direct-value">+603-5635 0538</p>
-        </div>
-      </div>
-      <div class="gi-direct-cell">
-        <span class="gi-direct-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-        </span>
-        <div>
-          <p class="gi-direct-label">Working Hours</p>
-          <p class="gi-direct-value">8:30 AM – 6:00 PM<br/>Monday to Friday</p>
-        </div>
-      </div>
-    </div>
+  <div class="gi-cta-inner">
+    <span class="gi-cta-eyebrow">Get In Touch</span>
+    <h2 class="gi-cta-title">
+      Ready to specify your<br/>
+      <span class="accent">next busduct project?</span>
+    </h2>
+    <p class="gi-cta-lede">
+      Tell us about your load, location and timeline. Our engineering
+      team will scope a busduct configuration tailored to your project
+      and respond within 24 hours.
+    </p>
+    <a href="quote.html" class="gi-cta-btn">
+      Get In Touch
+      <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
+    </a>
   </div>
 </section>
 
