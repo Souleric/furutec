@@ -474,81 +474,6 @@ p, .body {
 <style>
 html { scroll-padding-top: 80px; }
 </style>
-<!-- nav-blue v5 -->
-<style id="nav-blue-v5">
-/* ============================================================
-   Nav bar — brand blue background, white type, orange CTA pill
-   v5: "Get A Quote" pill goes from white to brand orange
-   (#F58220) with white label. Hover inverts to transparent
-   with white border.
-   ============================================================ */
-header {
-  background: #2E3192 !important;
-  border-bottom: 1px solid rgba(255,255,255,0.10) !important;
-  box-shadow: 0 2px 12px rgba(15,17,75,0.10) !important;
-}
-
-/* --- Nav links: default + hover + active --- */
-#ft-nav > a,
-#ft-nav .ft-nav-dropdown > a {
-  color: rgba(255,255,255,0.82) !important;
-  transition: color 180ms ease !important;
-}
-#ft-nav > a:hover,
-#ft-nav .ft-nav-dropdown > a:hover,
-#ft-nav .ft-nav-dropdown:hover > a {
-  color: #FFFFFF !important;
-}
-/* Existing "current page" underline used Furutec blue — recolour to white */
-#ft-nav > a > span[style*="background:#2E3192"] {
-  background: #FFFFFF !important;
-}
-/* And the current-page text itself */
-#ft-nav > a[style*="color:#2E3192"] {
-  color: #FFFFFF !important;
-}
-
-/* Dropdown chevron strokes (currentColor on white now reads as muted on blue) */
-#ft-nav .ft-nav-dropdown > a svg { stroke: currentColor !important; }
-
-/* --- Phone number block --- */
-#ft-phone { color: #FFFFFF !important; }
-#ft-phone svg { stroke: #FFFFFF !important; }
-
-/* --- Burger (mobile) goes white --- */
-#ft-burger span,
-#ft-burger span::before,
-#ft-burger span::after {
-  background: #FFFFFF !important;
-}
-
-/* --- Get A Quote — brand-orange pill on blue --- */
-#ft-quote-btn {
-  background: #F58220 !important;
-  color: #FFFFFF !important;
-  border: 1.5px solid #F58220 !important;
-  transition: background .25s ease, color .25s ease, border-color .25s ease !important;
-  box-shadow: 0 4px 14px rgba(245,130,32,0.30);
-}
-#ft-quote-btn:hover {
-  background: transparent !important;
-  color: #FFFFFF !important;
-  border-color: #FFFFFF !important;
-  box-shadow: none;
-}
-/* Arrow tracks the button's text colour automatically via currentColor */
-#ft-quote-btn .btn-arrow > span svg { stroke: currentColor !important; }
-
-/* --- Logo: now a true white PNG, so no tile needed --- */
-.ft-logo-img { background: transparent; padding: 0; border-radius:10px; box-shadow: none; }
-
-/* --- Mobile nav drawer panel stays white (readable list) --- */
-#ft-mobile-nav { background: #FFFFFF; border-top: 1px solid rgba(255,255,255,0.10); }
-
-/* --- Dropdown menu panels stay white (already are) but bump shadow contrast --- */
-.ft-nav-menu { box-shadow: 0 12px 36px rgba(15,17,75,0.22) !important; }
-</style>
-
 <style>
 /* === furutec-btn-polish v4 === */
 /* v4: added .btn-orange to both the radius rule and the arrow
@@ -690,6 +615,33 @@ header {
        overrides needed. */
   }
 </style>
+<!-- nav-blue v6 -->
+<style id="nav-blue-v6">
+/* ============================================================
+   White top nav — restores the default white background, dark
+   text, blue Furutec logo, and only KEEPS the orange Get A Quote
+   CTA as the persistent override.  v1-v5 brand-blue treatment is
+   stripped by the polish script before this block is injected.
+   ============================================================ */
+
+/* Get A Quote — brand-orange pill (kept consistent with the
+   orange CTAs used elsewhere on the homepage). */
+#ft-quote-btn {
+  background: #F58220 !important;
+  color: #FFFFFF !important;
+  border: 1.5px solid #F58220 !important;
+  transition: background .25s ease, color .25s ease, border-color .25s ease !important;
+  box-shadow: 0 4px 14px rgba(245,130,32,0.30);
+}
+#ft-quote-btn:hover {
+  background: transparent !important;
+  color: #F58220 !important;
+  border-color: #F58220 !important;
+  box-shadow: none;
+}
+#ft-quote-btn .btn-arrow > span svg { stroke: currentColor !important; }
+</style>
+
 </head>
 
 <body>
@@ -743,7 +695,7 @@ header {
 <header style="position:sticky;top:0;z-index:40;width:100%;background:#FFFFFF;border-bottom:1px solid #F1F1F3;">
   <div id="ft-header-inner" style="max-width:1320px;margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:32px;padding:16px 32px;">
     <a href="index.html" style="display:inline-flex;align-items:center;text-decoration:none;">
-      <img class="ft-logo-img" src="assets/Logo-white.png" alt="Furutec — Busduct System"/>
+      <img class="ft-logo-img" src="assets/Logo.jpeg" alt="Furutec — Busduct System"/>
     </a>
 
     <nav id="ft-nav" style="display:flex;gap:28px;justify-content:center;">
