@@ -776,7 +776,7 @@
       OPEN_GROUPS.add(key);
       el.classList.add('open');
     }
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    el.scrollIntoView({ block: 'start' });   // instant teleport
     el.classList.remove('flash');
     void el.offsetWidth; // restart anim
     el.classList.add('flash');
