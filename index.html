@@ -674,6 +674,9 @@ header {
         Home
         <span style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:24px;height:3px;background:#2E3192;"></span>
       </a>
+      <a href="index.html#about" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
+        Company
+      </a>
       <div class="ft-nav-dropdown">
         <a href="product.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
           Our Products
@@ -710,6 +713,7 @@ header {
   </div>
   <nav id="ft-mobile-nav" aria-label="Mobile">
     <a href="index.html" class="active">Home</a>
+    <a href="index.html#about">Company</a>
     <a href="product.html">Our Products</a>
     <a href="portfolio.html">Certificates</a>
     <a href="portfolio-track-record.html">Portfolio</a>
@@ -1856,236 +1860,6 @@ header {
 </script>
 
 <!-- ============================================================
-     OUR PRODUCTS — services-style card grid
-     ============================================================ -->
-<style>
-  .prod-grid {
-    display:grid; grid-template-columns:repeat(5, 1fr); gap:0;
-    border:1px solid #F1F1F3;
-  }
-  .prod-card {
-    position:relative; overflow:hidden; padding:36px 24px 24px;
-    border-right:1px solid #F1F1F3; background:#FFFFFF;
-    transition:background 200ms ease;
-    text-align:left; font-family:inherit; cursor:pointer;
-    border-top:none; border-bottom:none; border-left:none;
-    width:100%;
-    display:flex; flex-direction:column;
-  }
-  .prod-card:last-child { border-right:none; }
-  .prod-card:hover { background:#F4F6FB; }
-  .prod-card-icon { margin-bottom:24px; }
-  .prod-card h3 {
-    font-family:var(--font-display); font-size:20px; font-weight:600;
-    line-height:1.15; color:#111114; margin:0 0 12px;
-    white-space:pre-line;
-  }
-  .prod-card p {
-    font-size:13px; line-height:1.7; color:#6B6B73; margin:0 0 28px;
-  }
-  .prod-card-cta {
-    display:inline-flex; align-items:center; gap:10px;
-    padding-top:16px; border-top:1px solid rgba(128,128,128,0.15);
-    font-size:13px; font-weight:600; color:#111114;
-    text-decoration:none; width:100%;
-    margin-top:auto;
-  }
-  .prod-card-cta-circle {
-    width:22px; height:22px; border-radius:50%;
-    background:#2E3192; display:inline-flex; align-items:center; justify-content:center;
-    transition:transform 200ms ease;
-  }
-  .prod-card:hover .prod-card-cta-circle { transform:translateX(2px); }
-  @media (max-width: 1100px) {
-    .prod-grid { grid-template-columns:repeat(3, 1fr); }
-    .prod-card:nth-child(3n) { border-right:none; }
-    .prod-card:nth-child(n+4) { border-top:1px solid #F1F1F3; }
-    .prod-card:last-child { border-right:1px solid #F1F1F3; }
-    .prod-card:nth-last-child(-n+1) { border-right:none; }
-  }
-  @media (max-width: 720px) {
-    .prod-grid { grid-template-columns:1fr 1fr; }
-    .prod-card:nth-child(n) { border-right:1px solid #F1F1F3; }
-    .prod-card:nth-child(2n) { border-right:none; }
-    .prod-card:nth-child(n+3) { border-top:1px solid #F1F1F3; }
-  }
-</style>
-<section style="background:#FFFFFF;padding:96px 0 64px;">
-  <div style="max-width:1320px;margin:0 auto;padding:0 32px;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;margin-bottom:48px;">
-      <div style="max-width:560px;">
-        <span class="eyebrow">OUR PRODUCTS</span>
-        <h2 style="font-family:var(--font-display);font-size:44px;font-weight:700;line-height:1.1;color:#111114;margin:6px 0 0;text-wrap:balance;">
-          Complete busduct solutions,<br/>
-          <span style="color:#2E3192;">for every environment.</span>
-        </h2>
-      </div>
-      <div style="padding-top:20px;">
-        <p style="font-size:14px;line-height:1.8;color:#6B6B73;margin:0 0 24px;max-width:520px;">
-          From standard indoor installations to intelligent data centre
-          distribution — Furutec has the right system for your project.
-        </p>
-        <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
-          <a href="product.html" class="btn-dark" style="display:inline-flex;align-items:center;gap:12px;border:none;padding:0 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;background:#141414;color:#FFFFFF;text-decoration:none;">
-            View All Products  <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
-          </a>
-          <a href="quote.html" class="btn-dark" style="display:inline-flex;align-items:center;gap:12px;border:none;padding:0 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;background:#141414;color:#FFFFFF;text-decoration:none;">
-            Request A Spec  <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="prod-grid" id="prod-grid">
-      <!-- Indoor Solution -->
-      <a class="prod-card" href="product.html#indoor" style="text-decoration:none;color:inherit;">
-        <div class="prod-card-icon">
-          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h.01"/><path d="M9 13h.01"/><path d="M9 17h.01"/></svg>
-        </div>
-        <h3>Indoor
-Solution</h3>
-        <p>Compact sandwich busduct from 250 A to 6,300 A for commercial towers, factories, and infrastructure builds — type-tested to IEC 61439-6.</p>
-        <span class="prod-card-cta">
-          <span class="prod-card-cta-circle">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-          </span>
-          Explore More
-        </span>
-      </a>
-
-      <!-- Outdoor Solution -->
-      <a class="prod-card" href="product.html#outdoor" style="text-decoration:none;color:inherit;">
-        <div class="prod-card-icon">
-          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M4.93 19.07l1.41-1.41"/><path d="M17.66 6.34l1.41-1.41"/></svg>
-        </div>
-        <h3>Outdoor
-Solution</h3>
-        <p>IP65 – IP68 cast-resin busduct built for sun, rain, salt, dust, and heavy industrial exposure — sealed for the project lifetime.</p>
-        <span class="prod-card-cta">
-          <span class="prod-card-cta-circle">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-          </span>
-          Explore More
-        </span>
-      </a>
-
-      <!-- Data Centre Solution -->
-      <a class="prod-card" href="product.html#datacenter" style="text-decoration:none;color:inherit;">
-        <div class="prod-card-icon">
-          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="6" rx="1"/><rect x="2" y="15" width="20" height="6" rx="1"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
-        </div>
-        <h3>Data Centre
-Solution</h3>
-        <p>Hot-pluggable tap-offs and high-density distribution engineered for hyperscale uptime in 24/7 data hall environments.</p>
-        <span class="prod-card-cta">
-          <span class="prod-card-cta-circle">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-          </span>
-          Explore More
-        </span>
-      </a>
-
-      <!-- Power Monitoring Solution -->
-      <a class="prod-card" href="product.html#power" style="text-decoration:none;color:inherit;">
-        <div class="prod-card-icon">
-          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        </div>
-        <h3>Power Monitoring
-Solution</h3>
-        <p>Per-circuit current, voltage and temperature streamed live into your BMS for predictive maintenance and live load balancing.</p>
-        <span class="prod-card-cta">
-          <span class="prod-card-cta-circle">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-          </span>
-          Explore More
-        </span>
-      </a>
-
-      <!-- Lighting Solution -->
-      <a class="prod-card" href="product.html#lighting" style="text-decoration:none;color:inherit;">
-        <div class="prod-card-icon">
-          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
-        </div>
-        <h3>Lighting
-Solution</h3>
-        <p>Lighting and power busduct for general distribution runs — compact ceiling and perimeter installation with plug-in tap-off flexibility.</p>
-        <span class="prod-card-cta">
-          <span class="prod-card-cta-circle">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-          </span>
-          Explore More
-        </span>
-      </a>
-    </div>
-
-  </div>
-</section>
-
-
-
-<!-- ============================================================
-     ENV ORANGE (blue panel)
-     ============================================================ -->
-<section style="display:none;grid-template-columns:1fr 1fr;min-height:560px;">
-  <div class="reveal reveal-image" style="background-image:url(https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1600&amp;q=80&amp;auto=format&amp;fit=crop);background-size:cover;background-position:center;"></div>
-  <div style="background:#2E3192;color:#FFFFFF;position:relative;padding:64px 80px 64px 64px;display:flex;align-items:center;">
-    <div style="position:relative;z-index:1;width:100%;max-width:520px;">
-      <div style="margin-bottom:12px;">
-        <span style="font-family:var(--font-sans);font-size:12px;font-weight:600;letter-spacing:0.4px;color:#FFFFFF;">Quality Assurance &amp; Testing Excellence</span>
-      </div>
-      <div style="height:1px;background:rgba(255,255,255,0.45);margin-bottom:28px;"></div>
-      <h2 style="font-family:var(--font-display);font-size:64px;font-weight:700;line-height:1.02;letter-spacing:-0.01em;color:#FFFFFF;margin:0 0 32px;">Certified<br/>Performance.</h2>
-      <div style="position:absolute;top:100px;right:80px;display:flex;gap:10px;">
-        <button style="width:44px;height:44px;border-radius:50%;background:#FFFFFF;color:#111114;border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:transform 200ms ease, background 200ms ease;">
-          <svg width="16.72" height="16.72" viewBox="0 0 24 24" fill="none" stroke="#111114" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M15 6l-6 6 6 6"/></svg>
-        </button>
-        <button style="width:44px;height:44px;border-radius:50%;background:#FFFFFF;color:#111114;border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:transform 200ms ease, background 200ms ease;">
-          <svg width="16.72" height="16.72" viewBox="0 0 24 24" fill="none" stroke="#111114" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M9 6l6 6-6 6"/></svg>
-        </button>
-      </div>
-      <p style="font-size:14px;line-height:1.75;color:rgba(255,255,255,0.9);margin:0 0 14px;max-width:480px;">
-        Every Furutec busduct is type‑tested to IEC 61439‑6 at independent
-        laboratories including ASTA (UK) and KEMA (Netherlands). Temperature
-        rise, short‑circuit withstand, and IP ratings are verified before
-        a single unit leaves our Shah Alam floor.
-      </p>
-      <p style="font-size:14px;line-height:1.75;color:rgba(255,255,255,0.9);margin:0 0 14px;max-width:480px;">
-        Full traceability — from copper bar lot number to site
-        commissioning sign‑off — is delivered with every project.
-      </p>
-      <div style="display:flex;gap:12px;margin-top:24px;">
-        <button style="display:inline-flex;align-items:center;gap:10px;border:none;padding:6px 24px 6px 6px;font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:transform 200ms ease, opacity 200ms ease;background:#FFFFFF;color:#111114;">
-          <span style="width:36px;height:36px;border-radius:50%;background:#2E3192;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
-          </span>
-          <span style="font-family:var(--font-sans);font-size:13px;font-weight:600;text-transform:none;">Download Test Reports</span>
-        </button>
-        <button style="background:transparent;color:#FFFFFF;border:1.5px solid #FFFFFF;height:48px;padding:0 24px;font-family:var(--font-sans);font-size:13px;font-weight:600;cursor:pointer;">Contact Engineering</button>
-      </div>
-      <svg viewBox="0 0 240 240" width="240" height="240" style="position:absolute;bottom:-20px;right:-30px;opacity:0.7;pointer-events:none;" aria-hidden="true">
-        <g fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.2">
-          <circle cx="120" cy="120" r="80"/>
-          <circle cx="120" cy="120" r="56"/>
-          <circle cx="120" cy="120" r="30"/>
-          <line x1="200" y1="120" x2="216" y2="120"/>
-          <line x1="189.28" y1="160" x2="203.14" y2="168"/>
-          <line x1="160" y1="189.28" x2="168" y2="203.14"/>
-          <line x1="120" y1="200" x2="120" y2="216"/>
-          <line x1="80" y1="189.28" x2="72" y2="203.14"/>
-          <line x1="50.72" y1="160" x2="36.86" y2="168"/>
-          <line x1="40" y1="120" x2="24" y2="120"/>
-          <line x1="50.72" y1="80" x2="36.86" y2="72"/>
-          <line x1="80" y1="50.72" x2="72" y2="36.86"/>
-          <line x1="120" y1="40" x2="120" y2="24"/>
-          <line x1="160" y1="50.72" x2="168" y2="36.86"/>
-          <line x1="189.28" y1="80" x2="203.14" y2="72"/>
-        </g>
-      </svg>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
      PRODUCT OVERVIEW — interactive diagram with image-pop hotspots
      Promoted from uikit.html "Product Overview — popup" prototype.
      ============================================================ -->
@@ -2389,6 +2163,236 @@ Solution</h3>
     });
   })();
 </script>
+
+<!-- ============================================================
+     OUR PRODUCTS — services-style card grid
+     ============================================================ -->
+<style>
+  .prod-grid {
+    display:grid; grid-template-columns:repeat(5, 1fr); gap:0;
+    border:1px solid #F1F1F3;
+  }
+  .prod-card {
+    position:relative; overflow:hidden; padding:36px 24px 24px;
+    border-right:1px solid #F1F1F3; background:#FFFFFF;
+    transition:background 200ms ease;
+    text-align:left; font-family:inherit; cursor:pointer;
+    border-top:none; border-bottom:none; border-left:none;
+    width:100%;
+    display:flex; flex-direction:column;
+  }
+  .prod-card:last-child { border-right:none; }
+  .prod-card:hover { background:#F4F6FB; }
+  .prod-card-icon { margin-bottom:24px; }
+  .prod-card h3 {
+    font-family:var(--font-display); font-size:20px; font-weight:600;
+    line-height:1.15; color:#111114; margin:0 0 12px;
+    white-space:pre-line;
+  }
+  .prod-card p {
+    font-size:13px; line-height:1.7; color:#6B6B73; margin:0 0 28px;
+  }
+  .prod-card-cta {
+    display:inline-flex; align-items:center; gap:10px;
+    padding-top:16px; border-top:1px solid rgba(128,128,128,0.15);
+    font-size:13px; font-weight:600; color:#111114;
+    text-decoration:none; width:100%;
+    margin-top:auto;
+  }
+  .prod-card-cta-circle {
+    width:22px; height:22px; border-radius:50%;
+    background:#2E3192; display:inline-flex; align-items:center; justify-content:center;
+    transition:transform 200ms ease;
+  }
+  .prod-card:hover .prod-card-cta-circle { transform:translateX(2px); }
+  @media (max-width: 1100px) {
+    .prod-grid { grid-template-columns:repeat(3, 1fr); }
+    .prod-card:nth-child(3n) { border-right:none; }
+    .prod-card:nth-child(n+4) { border-top:1px solid #F1F1F3; }
+    .prod-card:last-child { border-right:1px solid #F1F1F3; }
+    .prod-card:nth-last-child(-n+1) { border-right:none; }
+  }
+  @media (max-width: 720px) {
+    .prod-grid { grid-template-columns:1fr 1fr; }
+    .prod-card:nth-child(n) { border-right:1px solid #F1F1F3; }
+    .prod-card:nth-child(2n) { border-right:none; }
+    .prod-card:nth-child(n+3) { border-top:1px solid #F1F1F3; }
+  }
+</style>
+<section style="background:#FFFFFF;padding:96px 0 64px;">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;margin-bottom:48px;">
+      <div style="max-width:560px;">
+        <span class="eyebrow">OUR PRODUCTS</span>
+        <h2 style="font-family:var(--font-display);font-size:44px;font-weight:700;line-height:1.1;color:#111114;margin:6px 0 0;text-wrap:balance;">
+          Complete busduct solutions,<br/>
+          <span style="color:#2E3192;">for every environment.</span>
+        </h2>
+      </div>
+      <div style="padding-top:20px;">
+        <p style="font-size:14px;line-height:1.8;color:#6B6B73;margin:0 0 24px;max-width:520px;">
+          From standard indoor installations to intelligent data centre
+          distribution — Furutec has the right system for your project.
+        </p>
+        <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
+          <a href="product.html" class="btn-dark" style="display:inline-flex;align-items:center;gap:12px;border:none;padding:0 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;background:#141414;color:#FFFFFF;text-decoration:none;">
+            View All Products  <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
+          </a>
+          <a href="quote.html" class="btn-dark" style="display:inline-flex;align-items:center;gap:12px;border:none;padding:0 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;background:#141414;color:#FFFFFF;text-decoration:none;">
+            Request A Spec  <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="prod-grid" id="prod-grid">
+      <!-- Indoor Solution -->
+      <a class="prod-card" href="product.html#indoor" style="text-decoration:none;color:inherit;">
+        <div class="prod-card-icon">
+          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h.01"/><path d="M9 13h.01"/><path d="M9 17h.01"/></svg>
+        </div>
+        <h3>Indoor
+Solution</h3>
+        <p>Compact sandwich busduct from 250 A to 6,300 A for commercial towers, factories, and infrastructure builds — type-tested to IEC 61439-6.</p>
+        <span class="prod-card-cta">
+          <span class="prod-card-cta-circle">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </span>
+          Explore More
+        </span>
+      </a>
+
+      <!-- Outdoor Solution -->
+      <a class="prod-card" href="product.html#outdoor" style="text-decoration:none;color:inherit;">
+        <div class="prod-card-icon">
+          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M4.93 19.07l1.41-1.41"/><path d="M17.66 6.34l1.41-1.41"/></svg>
+        </div>
+        <h3>Outdoor
+Solution</h3>
+        <p>IP65 – IP68 cast-resin busduct built for sun, rain, salt, dust, and heavy industrial exposure — sealed for the project lifetime.</p>
+        <span class="prod-card-cta">
+          <span class="prod-card-cta-circle">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </span>
+          Explore More
+        </span>
+      </a>
+
+      <!-- Data Centre Solution -->
+      <a class="prod-card" href="product.html#datacenter" style="text-decoration:none;color:inherit;">
+        <div class="prod-card-icon">
+          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="6" rx="1"/><rect x="2" y="15" width="20" height="6" rx="1"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+        </div>
+        <h3>Data Centre
+Solution</h3>
+        <p>Hot-pluggable tap-offs and high-density distribution engineered for hyperscale uptime in 24/7 data hall environments.</p>
+        <span class="prod-card-cta">
+          <span class="prod-card-cta-circle">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </span>
+          Explore More
+        </span>
+      </a>
+
+      <!-- Power Monitoring Solution -->
+      <a class="prod-card" href="product.html#power" style="text-decoration:none;color:inherit;">
+        <div class="prod-card-icon">
+          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <h3>Power Monitoring
+Solution</h3>
+        <p>Per-circuit current, voltage and temperature streamed live into your BMS for predictive maintenance and live load balancing.</p>
+        <span class="prod-card-cta">
+          <span class="prod-card-cta-circle">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </span>
+          Explore More
+        </span>
+      </a>
+
+      <!-- Lighting Solution -->
+      <a class="prod-card" href="product.html#lighting" style="text-decoration:none;color:inherit;">
+        <div class="prod-card-icon">
+          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+        </div>
+        <h3>Lighting
+Solution</h3>
+        <p>Lighting and power busduct for general distribution runs — compact ceiling and perimeter installation with plug-in tap-off flexibility.</p>
+        <span class="prod-card-cta">
+          <span class="prod-card-cta-circle">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </span>
+          Explore More
+        </span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- ============================================================
+     ENV ORANGE (blue panel)
+     ============================================================ -->
+<section style="display:none;grid-template-columns:1fr 1fr;min-height:560px;">
+  <div class="reveal reveal-image" style="background-image:url(https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1600&amp;q=80&amp;auto=format&amp;fit=crop);background-size:cover;background-position:center;"></div>
+  <div style="background:#2E3192;color:#FFFFFF;position:relative;padding:64px 80px 64px 64px;display:flex;align-items:center;">
+    <div style="position:relative;z-index:1;width:100%;max-width:520px;">
+      <div style="margin-bottom:12px;">
+        <span style="font-family:var(--font-sans);font-size:12px;font-weight:600;letter-spacing:0.4px;color:#FFFFFF;">Quality Assurance &amp; Testing Excellence</span>
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,0.45);margin-bottom:28px;"></div>
+      <h2 style="font-family:var(--font-display);font-size:64px;font-weight:700;line-height:1.02;letter-spacing:-0.01em;color:#FFFFFF;margin:0 0 32px;">Certified<br/>Performance.</h2>
+      <div style="position:absolute;top:100px;right:80px;display:flex;gap:10px;">
+        <button style="width:44px;height:44px;border-radius:50%;background:#FFFFFF;color:#111114;border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:transform 200ms ease, background 200ms ease;">
+          <svg width="16.72" height="16.72" viewBox="0 0 24 24" fill="none" stroke="#111114" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+        <button style="width:44px;height:44px;border-radius:50%;background:#FFFFFF;color:#111114;border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:transform 200ms ease, background 200ms ease;">
+          <svg width="16.72" height="16.72" viewBox="0 0 24 24" fill="none" stroke="#111114" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+      <p style="font-size:14px;line-height:1.75;color:rgba(255,255,255,0.9);margin:0 0 14px;max-width:480px;">
+        Every Furutec busduct is type‑tested to IEC 61439‑6 at independent
+        laboratories including ASTA (UK) and KEMA (Netherlands). Temperature
+        rise, short‑circuit withstand, and IP ratings are verified before
+        a single unit leaves our Shah Alam floor.
+      </p>
+      <p style="font-size:14px;line-height:1.75;color:rgba(255,255,255,0.9);margin:0 0 14px;max-width:480px;">
+        Full traceability — from copper bar lot number to site
+        commissioning sign‑off — is delivered with every project.
+      </p>
+      <div style="display:flex;gap:12px;margin-top:24px;">
+        <button style="display:inline-flex;align-items:center;gap:10px;border:none;padding:6px 24px 6px 6px;font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:transform 200ms ease, opacity 200ms ease;background:#FFFFFF;color:#111114;">
+          <span style="width:36px;height:36px;border-radius:50%;background:#2E3192;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
+          </span>
+          <span style="font-family:var(--font-sans);font-size:13px;font-weight:600;text-transform:none;">Download Test Reports</span>
+        </button>
+        <button style="background:transparent;color:#FFFFFF;border:1.5px solid #FFFFFF;height:48px;padding:0 24px;font-family:var(--font-sans);font-size:13px;font-weight:600;cursor:pointer;">Contact Engineering</button>
+      </div>
+      <svg viewBox="0 0 240 240" width="240" height="240" style="position:absolute;bottom:-20px;right:-30px;opacity:0.7;pointer-events:none;" aria-hidden="true">
+        <g fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.2">
+          <circle cx="120" cy="120" r="80"/>
+          <circle cx="120" cy="120" r="56"/>
+          <circle cx="120" cy="120" r="30"/>
+          <line x1="200" y1="120" x2="216" y2="120"/>
+          <line x1="189.28" y1="160" x2="203.14" y2="168"/>
+          <line x1="160" y1="189.28" x2="168" y2="203.14"/>
+          <line x1="120" y1="200" x2="120" y2="216"/>
+          <line x1="80" y1="189.28" x2="72" y2="203.14"/>
+          <line x1="50.72" y1="160" x2="36.86" y2="168"/>
+          <line x1="40" y1="120" x2="24" y2="120"/>
+          <line x1="50.72" y1="80" x2="36.86" y2="72"/>
+          <line x1="80" y1="50.72" x2="72" y2="36.86"/>
+          <line x1="120" y1="40" x2="120" y2="24"/>
+          <line x1="160" y1="50.72" x2="168" y2="36.86"/>
+          <line x1="189.28" y1="80" x2="203.14" y2="72"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
 
 <!-- ============================================================
      SERVICES CARDS
@@ -2834,131 +2838,6 @@ Monitoring</h3>
 </section>
 
 <!-- ============================================================
-     GET IN TOUCH — Simple CTA with industrial background
-     ============================================================ -->
-<style>
-  .gi-cta-section {
-    position:relative;
-    min-height:540px;
-    color:#FFFFFF;
-    overflow:hidden;
-    display:flex; align-items:center; justify-content:center;
-    text-align:center;
-    padding:120px 32px;
-  }
-  .gi-cta-bg {
-    position:absolute; inset:0; z-index:0;
-    width:100%; height:100%;
-    object-fit:cover; display:block;
-  }
-  .gi-cta-veil {
-    position:absolute; inset:0; z-index:1;
-    background:linear-gradient(180deg, rgba(10,10,30,0.55) 0%, rgba(10,10,30,0.80) 100%);
-  }
-  .gi-cta-inner {
-    position:relative; z-index:2;
-    max-width:880px; margin:0 auto;
-  }
-  .gi-cta-eyebrow {
-    display:inline-block;
-    font-family:var(--font-sans); font-size:12px; font-weight:600;
-    letter-spacing:0.6px; text-transform:uppercase;
-    color:rgba(255,255,255,0.85);
-    margin-bottom:18px;
-  }
-  .gi-cta-title {
-    font-family:var(--font-display);
-    font-size:clamp(40px, 5.5vw, 72px); font-weight:700;
-    line-height:1.05; letter-spacing:-0.01em;
-    color:#FFFFFF; margin:0 0 18px;
-    text-wrap:balance;
-    text-shadow:0 4px 32px rgba(0,0,0,0.45);
-  }
-  .gi-cta-title .accent {
-    color:#9CA0F0;
-    font-family:'Big Shoulders Display','Saira Condensed','Oswald',sans-serif;
-    font-weight:900; font-style:italic;
-  }
-  .gi-cta-lede {
-    font-size:16px; line-height:1.65;
-    color:rgba(255,255,255,0.88);
-    margin:0 0 36px; max-width:620px;
-    margin-left:auto; margin-right:auto;
-    text-shadow:0 2px 16px rgba(0,0,0,0.45);
-  }
-  .gi-cta-btn {
-    display:inline-flex; align-items:center; gap:14px;
-    padding:0 36px; height:60px;
-    background:#F58220; color:#FFFFFF;
-    border:1.5px solid #F58220;
-    font-family:var(--font-sans); font-size:14px; font-weight:600;
-    letter-spacing:0.3px;
-    text-decoration:none; cursor:pointer;
-    transition:background .3s ease, color .3s ease, border-color .3s ease;
-    box-shadow:0 6px 18px rgba(245,130,32,0.35);
-  }
-  .gi-cta-btn:hover {
-    background:transparent; color:#FFFFFF; border-color:#FFFFFF;
-    box-shadow:none;
-  }
-  @media (max-width: 720px) {
-    .gi-cta-section { padding:88px 24px; min-height:460px; }
-  }
-</style>
-<section id="quote" class="gi-cta-section">
-  <!-- Industrial workers from Unsplash. Free, CC0, no attribution required. -->
-  <img class="gi-cta-bg"
-       src="https://images.unsplash.com/photo-1581094288338-2314dddb7ece?w=2000&q=80&auto=format&fit=crop"
-       alt="Industrial engineers on a busduct installation site"
-       loading="lazy"/>
-  <div class="gi-cta-veil" aria-hidden="true"></div>
-
-  <div class="gi-cta-inner">
-    <span class="gi-cta-eyebrow">Get In Touch</span>
-    <h2 class="gi-cta-title">
-      Ready to specify your<br/>
-      <span class="accent">next busduct project?</span>
-    </h2>
-    <p class="gi-cta-lede">
-      Tell us about your load, location and timeline. Our engineering
-      team will scope a busduct configuration tailored to your project
-      and respond within 24 hours.
-    </p>
-    <a href="quote.html" class="gi-cta-btn">
-      Get In Touch
-      <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
-    </a>
-  </div>
-</section>
-
-<script>
-  (function mapTabs() {
-    var frame = document.getElementById('gi-map-frame');
-    var tabs = document.querySelectorAll('#gi-map-tabs .gi-map-tab');
-    if (!frame || !tabs.length) return;
-    var URLS = {
-      subang: 'https://www.google.com/maps?q=Subang+Jaya+Selangor&output=embed',
-      penang: 'https://www.google.com/maps?q=Penang+Malaysia&output=embed'
-    };
-    tabs.forEach(function (t) {
-      t.addEventListener('click', function () {
-        var key = t.getAttribute('data-map');
-        if (!URLS[key]) return;
-        frame.src = URLS[key];
-        tabs.forEach(function (x) {
-          x.classList.remove('is-active');
-          x.style.color = '#6B6B73';
-          x.style.borderBottomColor = 'transparent';
-        });
-        t.classList.add('is-active');
-        t.style.color = '#2E3192';
-        t.style.borderBottomColor = '#2E3192';
-      });
-    });
-  })();
-</script>
-
-<!-- ============================================================
      BLOG GRID
      ============================================================ -->
 <section style="background:#FFFFFF;padding:88px 0 56px;">
@@ -3063,6 +2942,115 @@ Monitoring</h3>
 </section>
 
 <!-- ============================================================
+     GET IN TOUCH — Simple CTA with industrial background
+     ============================================================ -->
+<style>
+  .gi-cta-section {
+    position:relative;
+    min-height:540px;
+    color:#FFFFFF;
+    overflow:hidden;
+    display:flex; align-items:center;
+    padding:120px 0;
+  }
+  .gi-cta-bg {
+    position:absolute; inset:0; z-index:0;
+    width:100%; height:100%;
+    object-fit:cover; display:block;
+  }
+  /* Veil reads stronger on the LEFT half (where the text sits) and
+     fades to almost-clear on the right so the workshop photo can
+     still breathe through. */
+  .gi-cta-veil {
+    position:absolute; inset:0; z-index:1;
+    background:linear-gradient(90deg, rgba(10,10,30,0.78) 0%, rgba(10,10,30,0.55) 55%, rgba(10,10,30,0.30) 100%);
+  }
+  .gi-cta-inner {
+    position:relative; z-index:2;
+    max-width:1320px;
+    width:100%;
+    margin:0 auto;
+    padding:0 32px;
+    text-align:left;
+  }
+  .gi-cta-eyebrow {
+    display:inline-block;
+    font-family:var(--font-sans); font-size:12px; font-weight:600;
+    letter-spacing:0.6px; text-transform:uppercase;
+    color:rgba(255,255,255,0.85);
+    margin-bottom:18px;
+  }
+  .gi-cta-title {
+    font-family:var(--font-display);
+    font-size:clamp(40px, 5.5vw, 72px); font-weight:700;
+    line-height:1.05; letter-spacing:-0.01em;
+    color:#FFFFFF; margin:0 0 18px;
+    max-width:760px;
+    text-wrap:balance;
+    text-shadow:0 4px 32px rgba(0,0,0,0.45);
+  }
+  .gi-cta-title .accent {
+    color:#9CA0F0;
+    font-family:'Big Shoulders Display','Saira Condensed','Oswald',sans-serif;
+    font-weight:900; font-style:italic;
+  }
+  .gi-cta-lede {
+    font-size:16px; line-height:1.65;
+    color:rgba(255,255,255,0.88);
+    margin:0 0 36px;
+    max-width:560px;
+    text-shadow:0 2px 16px rgba(0,0,0,0.45);
+  }
+  .gi-cta-btn {
+    display:inline-flex; align-items:center; gap:14px;
+    padding:0 36px; height:60px;
+    background:#F58220; color:#FFFFFF;
+    border:1.5px solid #F58220;
+    font-family:var(--font-sans); font-size:14px; font-weight:600;
+    letter-spacing:0.3px;
+    text-decoration:none; cursor:pointer;
+    transition:background .3s ease, color .3s ease, border-color .3s ease;
+    box-shadow:0 6px 18px rgba(245,130,32,0.35);
+  }
+  .gi-cta-btn:hover {
+    background:transparent; color:#FFFFFF; border-color:#FFFFFF;
+    box-shadow:none;
+  }
+  @media (max-width: 720px) {
+    .gi-cta-section { padding:88px 0; min-height:460px; }
+    .gi-cta-inner { padding:0 24px; }
+    /* On mobile the veil reads dark across the whole frame for legibility */
+    .gi-cta-veil {
+      background:linear-gradient(180deg, rgba(10,10,30,0.65) 0%, rgba(10,10,30,0.80) 100%);
+    }
+  }
+</style>
+<section id="quote" class="gi-cta-section">
+  <img class="gi-cta-bg"
+       src="assets/1.png"
+       alt="Furutec engineer working on a busduct project drawing"
+       loading="lazy"/>
+  <div class="gi-cta-veil" aria-hidden="true"></div>
+
+  <div class="gi-cta-inner">
+    <span class="gi-cta-eyebrow">Get In Touch</span>
+    <h2 class="gi-cta-title">
+      Ready to specify your<br/>
+      <span class="accent">next busduct project?</span>
+    </h2>
+    <p class="gi-cta-lede">
+      Tell us about your load, location and timeline. Our engineering
+      team will scope a busduct configuration tailored to your project
+      and respond within 24 hours.
+    </p>
+    <a href="quote.html" class="gi-cta-btn">
+      Get In Touch
+      <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
+    </a>
+  </div>
+</section>
+
+<!-- ============================================================
      FOOTER
      ============================================================ -->
 <footer style="background:linear-gradient(180deg,#2E3192 0%,#1A1C56 40%,#0A0A0B 100%);color:#FFFFFF;">
@@ -3072,11 +3060,7 @@ Monitoring</h3>
         <img src="assets/Logo-white.png" alt="Furutec — Busduct System" style="height:54px;width:auto;display:block;"/>
       </div>
       <p style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:#FFFFFF;margin:0 0 4px;line-height:1.4;">Furutec Electrical Sdn Bhd</p>
-      <p style="font-size:11px;color:rgba(255,255,255,0.45);margin:0 0 16px;font-style:italic;">Company No. 198001003423 (57207-W)</p>
-      <p style="font-size:12px;line-height:1.7;color:rgba(255,255,255,0.6);margin:0 0 22px;max-width:260px;">
-        Engineering The Future Of Power Distribution — Reliable, Efficient,
-        And Built For Demanding Environments Worldwide.
-      </p>
+      <p style="font-size:11px;color:rgba(255,255,255,0.45);margin:0 0 14px;font-style:italic;">Company No. 198001003423 (57207-W)</p>
       <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0 0 10px;display:flex;align-items:center;gap:10px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M3 6h18v12H3Z"/><path d="M3 6l9 7 9-7"/></svg>
         <a href="mailto:info@furutec.com.my" style="color:rgba(255,255,255,0.85);font-size:13px;text-decoration:none;">info@furutec.com.my</a>
@@ -4437,6 +4421,62 @@ window.parent.postMessage({ type: "__edit_mode_available" }, "*");
     els.forEach(function (el) { io.observe(el); });
   });
 })();
+</script>
+
+<script>
+  /* Fast smooth-scroll for hash anchor clicks on the homepage.
+     Catches any <a href="#X"> or <a href="index.html#X"> click and
+     animates the scroll over 500 ms with a cubic ease-out curve,
+     respecting each target's CSS scroll-margin-top so the nav doesn't
+     cover the heading. Cross-page nav (e.g. coming from /product.html)
+     falls through to the browser's default instant landing. */
+  (function smoothAnchorScroll() {
+    var DURATION = 500;
+    function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+    function scrollTo(y) {
+      var startY = window.pageYOffset;
+      var distance = y - startY;
+      if (Math.abs(distance) < 2) return;
+      var startTime = performance.now();
+      function step(now) {
+        var t = Math.min((now - startTime) / DURATION, 1);
+        window.scrollTo(0, startY + distance * easeOut(t));
+        if (t < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href]');
+      if (!a) return;
+      var href = a.getAttribute('href');
+      if (!href) return;
+
+      var hash = null;
+      if (href.charAt(0) === '#') {
+        hash = href.slice(1);
+      } else if (href.indexOf('index.html#') === 0) {
+        // Only intercept when we're already on the homepage — otherwise
+        // let the browser navigate normally.
+        var path = location.pathname;
+        if (!(path.endsWith('/index.html') || path.endsWith('/'))) return;
+        hash = href.split('#')[1];
+      }
+      if (!hash) return;
+      var target = document.getElementById(hash);
+      if (!target) return;
+
+      e.preventDefault();
+      var rect = target.getBoundingClientRect();
+      var top = rect.top + window.pageYOffset;
+      var margin = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
+      scrollTo(top - margin);
+
+      // Reflect the hash in the URL without triggering another jump.
+      if (history.replaceState) history.replaceState(null, '', '#' + hash);
+    });
+  })();
 </script>
 
 </body>

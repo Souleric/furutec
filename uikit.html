@@ -8,7 +8,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;800;900&display=swap" rel="stylesheet"/>
 
 <style>
 /* ============================================================
@@ -39,6 +39,7 @@
   --bg-50:    #FAFAFB;
   --white:    #FFFFFF;
   --accent-orange: #F37021;
+  --cta-orange: #F58220;        /* button fill — Get In Touch / Get A Quote / Certs / Portfolio */
 
   --font-display: "Saira Condensed","Barlow Condensed","Oswald","Arial Narrow",Impact,sans-serif;
   --font-sans:    "Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -124,7 +125,7 @@ button { font-family:inherit; cursor:pointer; }
   display:inline-flex; align-items:center; gap:10px; padding:0 22px; height:48px;
   font-family:var(--font-sans); font-size:13px; font-weight:600; letter-spacing:0.3px;
   border:1.5px solid transparent; cursor:pointer; text-decoration:none;
-  border-radius:8px;
+  border-radius:10px;
   transition:background .3s ease, color .3s ease, border-color .3s ease, transform .2s ease;
 }
 
@@ -154,6 +155,8 @@ button { font-family:inherit; cursor:pointer; }
 /* Existing site variants */
 .btn-brand          { background:var(--brand-500); color:#FFFFFF; }
 .btn-brand:hover    { background:transparent; color:var(--brand-500); border-color:var(--brand-500); }
+.btn-orange         { background:#F58220; color:#FFFFFF; border-color:#F58220; box-shadow:0 4px 14px rgba(245,130,32,0.30); }
+.btn-orange:hover   { background:transparent; color:#F58220; border-color:#F58220; box-shadow:none; }
 .btn-dark           { background:#141414; color:#FFFFFF; }
 .btn-dark:hover     { background:transparent; color:#141414; border-color:#141414; }
 .btn-outline        { background:transparent; color:#111114; border-color:#111114; }
@@ -394,6 +397,7 @@ button { font-family:inherit; cursor:pointer; }
       <span class="uk-label" style="margin-top:24px;">Accent</span>
       <div class="uk-grid cols-5">
         <div class="swatch"><div class="swatch-box" style="background:var(--accent-orange);"></div><div class="swatch-meta"><div class="name">accent-orange</div><div class="hex">#F37021</div></div></div>
+        <div class="swatch"><div class="swatch-box" style="background:var(--cta-orange);"></div><div class="swatch-meta"><div class="name">cta-orange ★</div><div class="hex">#F58220</div></div></div>
       </div>
     </section>
 
@@ -406,6 +410,7 @@ button { font-family:inherit; cursor:pointer; }
       <p class="uk-section-desc">Display = Saira Condensed (bold industrial headlines). Body = Inter (geometric neutral).</p>
 
       <div class="spec-row"><span class="key">.spec-h1<br/>64 / 1.02</span><h1 class="spec-h1">Your Path To Efficiency &amp; Reliability</h1></div>
+      <div class="spec-row"><span class="key">accent<br/>BSD 900 italic</span><span style="font-family:'Big Shoulders Display','Saira Condensed','Oswald',sans-serif;font-weight:900;font-style:italic;font-size:64px;line-height:1.02;letter-spacing:-0.005em;color:#9CA0F0;">Efficiency &amp; Reliability</span></div>
       <div class="spec-row"><span class="key">.spec-h2<br/>44 / 1.05</span><h2 class="spec-h2">Build on expertise. Driven by innovation.</h2></div>
       <div class="spec-row"><span class="key">.spec-h3<br/>28 / 1.15</span><h3 class="spec-h3">Our Product Milestones</h3></div>
       <div class="spec-row"><span class="key">.spec-h4<br/>20 / 1.20</span><h4 class="spec-h4">Data Centre Application</h4></div>
@@ -420,11 +425,12 @@ button { font-family:inherit; cursor:pointer; }
         <span class="uk-section-num">03</span>
         <h2 class="uk-section-title">Buttons</h2>
       </div>
-      <p class="uk-section-desc">Hover every button to see its transition state. Default height 48px; small / large variants available.</p>
+      <p class="uk-section-desc">Hover every button to see its transition state. Default height 48px; small / large variants available. Radius is 10 px site-wide (.btn base + polish script v4).</p>
 
       <span class="uk-label">Primary palette</span>
       <div class="uk-row">
         <a class="btn btn-brand">Brand <span class="arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span></a>
+        <a class="btn btn-orange">Orange <span class="arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span></a>
         <a class="btn btn-dark">Dark <span class="arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span></a>
         <a class="btn btn-outline">Outline <span class="arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span></a>
         <a class="btn btn-ghost">Ghost <span class="arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span></a>

@@ -257,7 +257,7 @@ add_table([
     ("Eyebrow — 'PRODUCT OVERVIEW'",                    "Done", ""),
     ("Title — 'How A Furutec Busduct System Comes Together'", "Done", ""),
     ("Isometric drawing displayed on the left",         "Done", ""),
-    ("5 numbered clickable hotspots overlaying the diagram", "Done", "Hotspot 1 = Outdoor (Cast Resin), 2 = Indoor (Compact Sandwich), 3 = Lighting (LB & PB), 4 = Data Centre (i-DC), 5 = Power Monitoring (BCPM)."),
+    ("5 numbered clickable hotspots overlaying the diagram", "Done", "Hotspot 1 = Outdoor (Cast Resin), 2 = Indoor (Compact Sandwich), 3 = Lighting (LB & PB), 4 = Data Centre (i-DC), 5 = Power Monitoring System."),
     ("Detail card on the right updates when a hotspot is clicked", "Done", "Photo + sub-title + main title + description + 3 bullets + counter (01 / 05)."),
     ("Previous / next pagination buttons inside the detail card", "Done", ""),
 ])
@@ -354,19 +354,19 @@ add_table([
     ("Title — 'i-DC BUSDUCT'",                           "Done", ""),
     ("Subtitle — 'High Density Power, Zero Downtime'",   "Done", ""),
     ("Description — AI / Cloud / Edge uptime copy",      "Done", ""),
-    ("10 Key Features (IEC 61439-6 → BCPM integration)", "Done", ""),
+    ("10 Key Features (IEC 61439-6 → Power Monitoring integration)", "Done", ""),
     ("Tech Spec — Busduct 250/400/630/800 A · TOU 16/32/63/100 A · Cu · Extruded Al-Alloy", "Done", ""),
     ("'Contact Us' + 'Request a Catalog' buttons",       "Done", ""),
     ("Component animation video, auto-plays on scroll-into-view", "Done", "assets/products/datacenter-diagram video.mp4."),
 ])
 
-add_section_heading("Section 4 — Power Monitoring  (BCPM System)")
+add_section_heading("Section 4 — Power Monitoring System")
 add_table([
     ("Single centred 820 px column layout (no tech spec per PDF §3.2.4)", "Done", ""),
     ("Section title — 'POWER MONITORING SOLUTION'",      "Done", ""),
     ("Product image — Power Monitoring",                 "Done", ""),
     ("Badge — 'Smart System' (vibrant purple gradient + CPU icon)", "Done", ""),
-    ("Title — 'BCPM SYSTEM'",                            "Done", ""),
+    ("Title — 'POWER MONITORING SYSTEM'",                "Done", ""),
     ("Subtitle — 'Precision Monitoring, Proven Savings'", "Done", ""),
     ("Description — sensor + HMI + energy / overload prevention copy", "Done", ""),
     ("'Contact Us' + 'Request a Catalog' buttons",       "Done", ""),
