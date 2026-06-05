@@ -2053,7 +2053,7 @@ header {
     var activeNum = null;
 
     var HOTSPOT_R = 19;   // half of 38px diameter
-    var GAP       = 10;   // pixels between hotspot edge and card edge
+    var GAP       = 28;   // pixels between hotspot edge and card edge
     var MARGIN    = 8;    // safety margin from figure edges (horizontal only)
 
     // Build hotspot dots
@@ -2124,6 +2124,31 @@ header {
 
       requestAnimationFrame(function () {
         card.classList.add('is-open');
+
+        // After the position is committed, nudge the page so the card is
+        // fully visible.  Cards near the bottom of the figure (hotspot 5,
+        // for instance) otherwise slide off the bottom of the viewport
+        // and feel cut off.  Done after one more rAF so the layout has
+        // settled before measuring.
+        requestAnimationFrame(function () {
+          var STICKY_NAV  = 80;   // sticky header height + small buffer
+          var EDGE_PAD    = 24;   // breathing room above / below the card
+          var figRect     = figureWrap.getBoundingClientRect();
+          var cardTopVP   = figRect.top + top;
+          var cardBottomVP = cardTopVP + cardH;
+          var vh = window.innerHeight;
+
+          var overflowTop    = STICKY_NAV + EDGE_PAD - cardTopVP;     // >0 if clipped above
+          var overflowBottom = cardBottomVP + EDGE_PAD - vh;          // >0 if clipped below
+
+          var delta = 0;
+          if (overflowTop > 0)            delta = -overflowTop;     // scroll page UP
+          else if (overflowBottom > 0)    delta =  overflowBottom;  // scroll page DOWN
+
+          if (Math.abs(delta) > 4) {
+            window.scrollBy({ top: delta, behavior: 'smooth' });
+          }
+        });
       });
     }
 
