@@ -613,6 +613,83 @@ header {
   transform: translateX(0);
 }
 </style>
+<!-- ============================================================
+     scale-down v1 — bring the homepage from "feels too big at 100 %"
+     to the same proportions as 80 % browser zoom.
+     Touches 4 high-impact + 4 medium-impact targets only; everything
+     else is left alone. To revert, delete this entire <style> block.
+     ============================================================ -->
+<style id="hero-center-fit">
+  /* Hero: tighten internal margins AND drop the section padding to 0.
+     Reason: padding-top/-bottom inside a flex `align-items:center`
+     container shifts the centred child off the geometric centre.
+     With padding:0 the whole content group (h1 + lede + button +
+     cert bar) is centred at the exact midline of the 100vh hero.
+     The sticky nav (~80 px tall) overlays the top of the hero with
+     a dark gradient — content stays clear of it since the centred
+     stack is much shorter than the viewport. */
+  .ft-hero {
+    padding: 0 !important;
+    /* Header is in-flow above the hero (~97 px tall on desktop),
+       not an overlay — so 100vh pushes the hero past the viewport
+       bottom by the nav's height.  Subtract it so the hero exactly
+       fills the visible area and align-items:center lands the
+       content group at the geometric centre of WHAT THE USER SEES. */
+    min-height: calc(100vh - 97px) !important;
+  }
+  @media (max-width: 720px) {
+    /* Mobile nav is shorter — adjust subtract accordingly */
+    .ft-hero { min-height: calc(100vh - 64px) !important; }
+  }
+  .ft-hero h1 { margin-bottom: 22px !important; }
+  .ft-hero p.lede { margin-bottom: 28px !important; }
+  .ft-hero-cert-bar { margin-top: 32px !important; }
+</style>
+<style id="scale-down-v1">
+  /* 1. Hero h1 cap 104 → 84 px (= 104 × 0.8) */
+  .ft-hero h1 { font-size: clamp(40px, 5.5vw, 84px) !important; }
+
+  /* 2. Credential banner h2 ("Certificates & / Portfolio") 72 → 58 px.
+        Scoped via the banner section's distinctive black bg + skyline. */
+  section[style*="background:#0A0A0B"] h2 {
+    font-size: clamp(40px, 4vw, 58px) !important;
+  }
+
+  /* 3. Get In Touch title (.gi-cta-title): 72 → 58 px cap */
+  .gi-cta-title { font-size: clamp(36px, 4vw, 58px) !important; }
+
+  /* 4. Engineered section: drop forced 100vh floor so the section
+        is sized by its content, not by the viewport. */
+  #engineered-section { min-height: auto !important; padding: 96px 0 !important; }
+
+  /* 5. Generic section padding 96 → 72 px on the content sections
+        identified in the audit (about / product overview / our products /
+        events & newsletter). Covers all three padding variants found:
+        '96px 0', '96px 0 64px', '96px 0 56px'. */
+  #about,
+  section[style*="background:#F4F6FB;padding:96px 0;"],
+  section[style*="background:#FFFFFF;padding:96px 0;"],
+  section[style*="background:#FFFFFF;padding:96px 0 64px"],
+  section[style*="background:#FFFFFF;padding:88px 0 56px"] {
+    padding-top: 72px !important;
+    padding-bottom: 56px !important;
+  }
+
+  /* 6. Credential banner + Get In Touch sections: 120 → 96 px */
+  .gi-cta-section { padding-top: 96px !important; padding-bottom: 96px !important; }
+  section[style*="min-height:480px"][style*="padding:120px 32px"] {
+    padding-top: 96px !important;
+    padding-bottom: 96px !important;
+  }
+
+  /* 7. Engineered section h2 ("Build on expertise / Driven by innovation") 56 → 44 px */
+  #engineered-section h2 { font-size: 44px !important; }
+
+  @media (max-width: 720px) {
+    /* On mobile the clamp() min already handles small screens — no extra
+       overrides needed. */
+  }
+</style>
 </head>
 
 <body>
@@ -2863,105 +2940,193 @@ Monitoring</h3>
 </section>
 
 <!-- ============================================================
-     BLOG GRID
+     EVENTS & NEWSLETTER — live News + Events feed from eita.com.my
+     Card thumbnails are hot-linked from EITA's WordPress media library.
+     Refresh by re-scraping eita.com.my/news/ and /events/ via the
+     script in the README (or by hand-editing the cards below).
      ============================================================ -->
-<section style="background:#FFFFFF;padding:88px 0 56px;">
-  <div style="max-width:1320px;margin:0 auto;padding:0 32px;">
-    <div style="text-align:center;margin-bottom:40px;">
+<style>
+  .en-section { background:#FFFFFF; padding:88px 0 56px; }
+  .en-section-inner { max-width:1320px; margin:0 auto; padding:0 32px; }
+  .en-section-head { text-align:center; margin-bottom:40px; }
+  .en-section-head h2 {
+    font-family:var(--font-display); font-size:40px; font-weight:700;
+    line-height:1.1; color:#111114; margin:4px 0 0;
+  }
+
+  .en-row { margin-bottom:48px; }
+  .en-row:last-child { margin-bottom:0; }
+  .en-row-head {
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:24px; margin-bottom:20px;
+    padding-bottom:10px; border-bottom:1px solid #ECECF1;
+  }
+  .en-row-label {
+    font-family:var(--font-sans); font-size:11px; font-weight:700;
+    letter-spacing:0.18em; text-transform:uppercase;
+    color:#2E3192;
+    display:inline-flex; align-items:center; gap:10px;
+  }
+  .en-row-label::before {
+    content:''; width:22px; height:2px; background:#2E3192; display:inline-block;
+  }
+  .en-row-viewall {
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--font-sans); font-size:13px; font-weight:600;
+    color:#111114; text-decoration:none;
+    transition:color .2s ease;
+  }
+  .en-row-viewall:hover { color:#2E3192; }
+  .en-row-viewall .en-arrow {
+    width:24px; height:24px; border-radius:50%;
+    background:#2E3192; color:#FFFFFF;
+    display:inline-flex; align-items:center; justify-content:center;
+    transition:transform .2s ease;
+  }
+  .en-row-viewall:hover .en-arrow { transform:translateX(3px); }
+
+  .en-grid {
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px;
+  }
+  .en-card {
+    display:flex; flex-direction:column;
+    background:#FFFFFF;
+    border:1px solid #ECECF1;
+    border-radius:14px;
+    overflow:hidden;
+    text-decoration:none;
+    color:inherit;
+    transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .en-card:hover {
+    transform:translateY(-4px);
+    box-shadow:0 18px 40px rgba(17,17,20,0.10);
+    border-color:#2E3192;
+  }
+  .en-card-thumb {
+    position:relative;
+    aspect-ratio:16/9;
+    background:#F4F6FB;
+    overflow:hidden;
+  }
+  .en-card-thumb img {
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover; display:block;
+    transition:transform .4s ease;
+  }
+  .en-card:hover .en-card-thumb img { transform:scale(1.05); }
+  .en-card-body { padding:20px 22px 24px; flex:1; display:flex; flex-direction:column; }
+  .en-card-date {
+    font-family:var(--font-sans); font-size:11px; font-weight:600;
+    letter-spacing:0.08em; text-transform:uppercase;
+    color:#6B6B73; margin:0 0 10px;
+  }
+  .en-card-title {
+    font-family:var(--font-display); font-size:17px; font-weight:600;
+    line-height:1.3; color:#111114; margin:0 0 16px;
+    /* 3-line clamp */
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  .en-card-cta {
+    margin-top:auto;
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--font-sans); font-size:12.5px; font-weight:600;
+    color:#2E3192;
+  }
+  .en-card-cta svg { transition:transform .2s ease; }
+  .en-card:hover .en-card-cta svg { transform:translateX(3px); }
+
+  @media (max-width: 900px) {
+    .en-grid { grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .en-grid { grid-template-columns:1fr; }
+    .en-row-head { flex-direction:column; align-items:flex-start; gap:12px; }
+  }
+</style>
+<section class="en-section">
+  <div class="en-section-inner">
+    <div class="en-section-head">
       <span class="eyebrow" style="color:#2E3192;">INDUSTRY INSIGHTS &amp; RESOURCES</span>
-      <h2 style="font-family:var(--font-display);font-size:40px;font-weight:700;line-height:1.1;color:#111114;margin:4px 0 0;">Events &amp; Newsletter</h2>
+      <h2>Events &amp; Newsletter</h2>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;">
-      <!-- Post 1 (featured) -->
-      <article style="overflow:hidden;">
-        <div style="height:240px;background-size:cover;background-position:center;position:relative;background-image:linear-gradient(160deg,rgba(0,2,20,0.72) 0%,rgba(0,5,30,0.35) 55%,transparent 100%),url(https://images.unsplash.com/photo-1629904853893-c2c8981a1dc5?w=1600&q=80&auto=format&fit=crop);">
-          <div style="position:absolute;top:20px;left:20px;">
-            <div style="font-family:var(--font-display);font-size:72px;font-weight:400;line-height:1;color:#FFFFFF;letter-spacing:-0.02em;">22</div>
-            <div style="font-family:var(--font-sans);font-size:11px;font-weight:600;color:#FFFFFF;letter-spacing:0.4px;margin-top:4px;">Jan 2024</div>
+
+    <!-- ====== NEWS ROW ====== -->
+    <div class="en-row">
+      <div class="en-row-head">
+        <span class="en-row-label">News</span>
+        <a class="en-row-viewall" href="https://eita.com.my/news/" target="_blank" rel="noopener noreferrer">
+          View all news
+          <span class="en-arrow"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </a>
+      </div>
+      <div class="en-grid">
+        <a class="en-card" href="https://eita.com.my/commemorating-the-first-official-use-of-brancos-platform-lift-by-malaysias-first-lady/" target="_blank" rel="noopener noreferrer">
+          <div class="en-card-thumb"><img src="https://eita.com.my/wp-content/uploads/2026/05/image-13.png" alt="" loading="lazy"/></div>
+          <div class="en-card-body">
+            <p class="en-card-date">May 6, 2026</p>
+            <h3 class="en-card-title">Commemorating the First Official Use of Branco's Platform Lift by Malaysia's First Lady</h3>
+            <span class="en-card-cta">Read on EITA <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l10-10"/><path d="M7 7h10v10"/></svg></span>
           </div>
-        </div>
-        <div style="padding:24px 24px 24px;margin-top:-40px;position:relative;z-index:1;margin-left:20px;margin-right:20px;box-shadow:0 8px 24px rgba(0,0,0,0.08);background:#FFFFFF;color:#111114;">
-          <h3 style="font-family:var(--font-display);font-size:18px;font-weight:600;line-height:1.25;margin:0 0 10px;color:#111114;">Furutec Commissions 6,300 A Busduct Riser At Hyperscale KL‑3 Campus</h3>
-          <div style="display:flex;align-items:center;gap:6px;font-size:11px;margin-bottom:12px;">
-            <span style="color:#2E3192;font-weight:600;">Data Centre, News</span>
-            <span style="color:rgba(0,0,0,0.35);">—</span>
-            <span style="color:#111114;font-weight:600;">W. Tan</span>
+        </a>
+        <a class="en-card" href="https://eita.com.my/30-years-strong-eita-hosts-milestone-agm-at-bukit-raja-headquarters/" target="_blank" rel="noopener noreferrer">
+          <div class="en-card-thumb"><img src="https://eita.com.my/wp-content/uploads/2026/03/image.png" alt="" loading="lazy"/></div>
+          <div class="en-card-body">
+            <p class="en-card-date">Feb 24, 2026</p>
+            <h3 class="en-card-title">30 Years Strong: EITA Hosts Milestone AGM at Bukit Raja Headquarters</h3>
+            <span class="en-card-cta">Read on EITA <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l10-10"/><path d="M7 7h10v10"/></svg></span>
           </div>
-          <p style="font-size:12px;line-height:1.7;margin:0 0 16px;color:#4A4A52;">
-            Furutec engineering stories from the field — system design, site
-            commissioning, monitoring roll‑outs and standards updates across
-            Southeast Asia.
-          </p>
-          <a href="#" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:13px;">
-            <span style="color:#2E3192;font-weight:600;">Read More</span>
-            <span style="width:20px;height:20px;border-radius:50%;background:#2E3192;display:inline-flex;align-items:center;justify-content:center;">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M9 6l6 6-6 6"/></svg>
-            </span>
-          </a>
-        </div>
-      </article>
-      <!-- Post 2 -->
-      <article style="overflow:hidden;">
-        <div style="height:240px;background-size:cover;background-position:center;position:relative;background-image:url(https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1600&amp;q=80&amp;auto=format&amp;fit=crop);">
-          <div style="position:absolute;top:20px;left:20px;">
-            <div style="font-family:var(--font-display);font-size:72px;font-weight:400;line-height:1;color:#FFFFFF;letter-spacing:-0.02em;">25</div>
-            <div style="font-family:var(--font-sans);font-size:11px;font-weight:600;color:#FFFFFF;letter-spacing:0.4px;margin-top:4px;">Feb 2024</div>
+        </a>
+        <a class="en-card" href="https://eita.com.my/sjk-c-damansara-fundraising-star-metro/" target="_blank" rel="noopener noreferrer">
+          <div class="en-card-thumb"><img src="https://eita.com.my/wp-content/uploads/2025/12/SJKC-Damansara-Fundraising.png" alt="" loading="lazy"/></div>
+          <div class="en-card-body">
+            <p class="en-card-date">Nov 12, 2025</p>
+            <h3 class="en-card-title">SJK (C) Damansara Fundraising [STAR METRO]</h3>
+            <span class="en-card-cta">Read on EITA <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l10-10"/><path d="M7 7h10v10"/></svg></span>
           </div>
-        </div>
-        <div style="padding:24px 24px 24px;margin-top:-40px;position:relative;z-index:1;margin-left:20px;margin-right:20px;box-shadow:0 8px 24px rgba(0,0,0,0.08);background:#FFFFFF;color:#111114;">
-          <h3 style="font-family:var(--font-display);font-size:18px;font-weight:600;line-height:1.25;margin:0 0 10px;color:#111114;">Why Type‑Testing Your Busduct To IEC 61439‑6 Matters More Than Ever</h3>
-          <div style="display:flex;align-items:center;gap:6px;font-size:11px;margin-bottom:12px;">
-            <span style="color:#2E3192;font-weight:600;">Engineering, Insight</span>
-            <span style="color:#C8C8CE;">—</span>
-            <span style="color:#111114;font-weight:600;">L. Abdullah</span>
-          </div>
-          <p style="font-size:12px;line-height:1.7;margin:0 0 16px;color:#6B6B73;">
-            Furutec engineering stories from the field — system design, site
-            commissioning, monitoring roll‑outs and standards updates across
-            Southeast Asia.
-          </p>
-          <a href="#" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:13px;">
-            <span style="color:#2E3192;font-weight:600;">Read More</span>
-            <span style="width:20px;height:20px;border-radius:50%;background:#2E3192;display:inline-flex;align-items:center;justify-content:center;">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M9 6l6 6-6 6"/></svg>
-            </span>
-          </a>
-        </div>
-      </article>
-      <!-- Post 3 -->
-      <article style="overflow:hidden;">
-        <div style="height:240px;background-size:cover;background-position:center;position:relative;background-image:url(https://furutec.com.my/wp-content/uploads/2019/07/keyfeatures3.jpg);">
-          <div style="position:absolute;top:20px;left:20px;">
-            <div style="font-family:var(--font-display);font-size:72px;font-weight:400;line-height:1;color:#FFFFFF;letter-spacing:-0.02em;">30</div>
-            <div style="font-family:var(--font-sans);font-size:11px;font-weight:600;color:#FFFFFF;letter-spacing:0.4px;margin-top:4px;">Mar 2024</div>
-          </div>
-        </div>
-        <div style="padding:24px 24px 24px;margin-top:-40px;position:relative;z-index:1;margin-left:20px;margin-right:20px;box-shadow:0 8px 24px rgba(0,0,0,0.08);background:#FFFFFF;color:#111114;">
-          <h3 style="font-family:var(--font-display);font-size:18px;font-weight:600;line-height:1.25;margin:0 0 10px;color:#111114;">Eleven On‑Site Safety Practices Our Jointing Crews Never Skip</h3>
-          <div style="display:flex;align-items:center;gap:6px;font-size:11px;margin-bottom:12px;">
-            <span style="color:#2E3192;font-weight:600;">Safety, Field Ops</span>
-            <span style="color:#C8C8CE;">—</span>
-            <span style="color:#111114;font-weight:600;">R. Krishnan</span>
-          </div>
-          <p style="font-size:12px;line-height:1.7;margin:0 0 16px;color:#6B6B73;">
-            Furutec engineering stories from the field — system design, site
-            commissioning, monitoring roll‑outs and standards updates across
-            Southeast Asia.
-          </p>
-          <a href="#" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:13px;">
-            <span style="color:#2E3192;font-weight:600;">Read More</span>
-            <span style="width:20px;height:20px;border-radius:50%;background:#2E3192;display:inline-flex;align-items:center;justify-content:center;">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M9 6l6 6-6 6"/></svg>
-            </span>
-          </a>
-        </div>
-      </article>
+        </a>
+      </div>
     </div>
-    <div style="margin-top:40px;text-align:center;">
-      <p style="font-size:13px;font-weight:600;color:#111114;margin:0 0 12px;">Check All Blog Posts</p>
-      <button style="width:48px;height:48px;border-radius:50%;background:#2E3192;color:#FFFFFF;border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:transform 200ms ease, background 200ms ease;">
-        <svg width="18.24" height="18.24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-      </button>
+
+    <!-- ====== EVENTS ROW ====== -->
+    <div class="en-row">
+      <div class="en-row-head">
+        <span class="en-row-label">Events</span>
+        <a class="en-row-viewall" href="https://eita.com.my/events/" target="_blank" rel="noopener noreferrer">
+          View all events
+          <span class="en-arrow"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </a>
+      </div>
+      <div class="en-grid">
+        <a class="en-card" href="https://eita.com.my/eita-celebrates-earth-day-with-terrarium-workshop-at-bukit-raja/" target="_blank" rel="noopener noreferrer">
+          <div class="en-card-thumb"><img src="https://eita.com.my/wp-content/uploads/2026/05/image.png" alt="" loading="lazy"/></div>
+          <div class="en-card-body">
+            <p class="en-card-date">Apr 25, 2026</p>
+            <h3 class="en-card-title">EITA Celebrates Earth Day with Terrarium Workshop at Bukit Raja</h3>
+            <span class="en-card-cta">Read on EITA <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l10-10"/><path d="M7 7h10v10"/></svg></span>
+          </div>
+        </a>
+        <a class="en-card" href="https://eita.com.my/eita-elevator-drives-continuous-improvement-through-safety-training/" target="_blank" rel="noopener noreferrer">
+          <div class="en-card-thumb"><img src="https://eita.com.my/wp-content/uploads/2026/04/image-59.png" alt="" loading="lazy"/></div>
+          <div class="en-card-body">
+            <p class="en-card-date">Apr 16, 2026</p>
+            <h3 class="en-card-title">EITA Elevator Drives Continuous Improvement Through Safety Training</h3>
+            <span class="en-card-cta">Read on EITA <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l10-10"/><path d="M7 7h10v10"/></svg></span>
+          </div>
+        </a>
+        <a class="en-card" href="https://eita.com.my/eita-celebrates-hari-raya-and-q3-staff-birthdays-in-a-joyous-gathering/" target="_blank" rel="noopener noreferrer">
+          <div class="en-card-thumb"><img src="https://eita.com.my/wp-content/uploads/2026/04/image-50.png" alt="" loading="lazy"/></div>
+          <div class="en-card-body">
+            <p class="en-card-date">Apr 6, 2026</p>
+            <h3 class="en-card-title">EITA Celebrates Hari Raya and Q3 Staff Birthdays in a Joyous Gathering</h3>
+            <span class="en-card-cta">Read on EITA <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l10-10"/><path d="M7 7h10v10"/></svg></span>
+          </div>
+        </a>
+      </div>
     </div>
   </div>
 </section>
