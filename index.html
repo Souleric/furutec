@@ -2010,8 +2010,9 @@ html { scroll-padding-top: 80px; }
   }
   .pop-card-label {
     position:absolute; left:0; right:0; bottom:0; height:70px;
-    padding:0 18px;
+    padding:0 16px;
     display:flex; flex-direction:column; justify-content:center;
+    gap:4px;
     background:#FFFFFF;
     border-top:3px solid #F58220;
   }
@@ -2019,14 +2020,41 @@ html { scroll-padding-top: 80px; }
     font-family:var(--font-display);
     font-size:11px; font-weight:700; letter-spacing:1.4px;
     color:#F58220; text-transform:uppercase;
-    margin:0 0 2px;
+    margin:0;
+  }
+  /* Title sits left, the "View" CTA sits right on the same row so
+     the whole label still fits inside the existing 70 px band. */
+  .pop-card-label .pop-card-row {
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px;
   }
   .pop-card-label .pop-card-title {
     font-family:var(--font-display);
-    font-size:16px; font-weight:700; line-height:1.2;
+    font-size:16px; font-weight:700; line-height:1.15;
     color:#111114;
     margin:0;
+    flex:1; min-width:0;     /* allow long titles to clip rather than push the CTA */
   }
+  .pop-card-cta {
+    display:inline-flex; align-items:center; gap:5px;
+    padding:6px 11px;
+    background:#F58220; color:#FFFFFF;
+    font-family:var(--font-sans);
+    font-size:11px; font-weight:600; letter-spacing:0.3px;
+    border-radius:6px;
+    text-decoration:none;
+    white-space:nowrap;
+    flex-shrink:0;
+    transition:background .2s ease, transform .15s ease;
+    /* Make sure clicks on the CTA reach the anchor and aren't
+       swallowed by the .pop-card pointer-events / event delegation
+       in the host script. */
+    pointer-events:auto;
+    position:relative; z-index:7;
+  }
+  .pop-card-cta:hover  { background:#E07418; color:#FFFFFF; }
+  .pop-card-cta:active { transform:scale(0.96); }
+  .pop-card-cta svg    { display:block; }
   .pop-close {
     position:absolute; top:10px; right:10px;
     width:32px; height:32px; border-radius:50%;
@@ -2062,9 +2090,10 @@ html { scroll-padding-top: 80px; }
     .pop-stage { padding:140px 0; }
     .pop-card { width:260px; height:230px; }
     .pop-card-content .pop-card-img { height:160px; }
-    .pop-card-label { height:70px; padding:0 14px; }
+    .pop-card-label { height:70px; padding:0 12px; }
     .pop-card-label .pop-card-num { font-size:10px; }
-    .pop-card-label .pop-card-title { font-size:14px; }
+    .pop-card-label .pop-card-title { font-size:13px; }
+    .pop-card-cta { padding:5px 9px; font-size:10px; }
   }
 </style>
 <section style="background:#F4F6FB;padding:96px 0;">
@@ -2090,7 +2119,13 @@ html { scroll-padding-top: 80px; }
               <img class="pop-card-img" alt=""/>
               <div class="pop-card-label">
                 <p class="pop-card-num"></p>
-                <p class="pop-card-title"></p>
+                <div class="pop-card-row">
+                  <p class="pop-card-title"></p>
+                  <a class="pop-card-cta" href="#" aria-label="View product details">
+                    View
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+                  </a>
+                </div>
               </div>
               <button type="button" class="pop-close" aria-label="Close">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
@@ -2113,19 +2148,24 @@ html { scroll-padding-top: 80px; }
     var DATA = [
       { num:1, x:15.5, y:20.1,
         title:'Outdoor Busduct',
-        img:'assets/products/CR%20(OUTDOOR)/cr%201.png' },
+        img:'assets/products/CR%20(OUTDOOR)/cr%201.png',
+        href:'product.html#outdoor' },
       { num:2, x:50.0, y:17.0,
         title:'Indoor Busduct',
-        img:'assets/products/AH%26AH-ES%20(INDOOR)/picture%206.png' },
+        img:'assets/products/AH%26AH-ES%20(INDOOR)/picture%206.png',
+        href:'product.html#indoor' },
       { num:3, x:43.0, y:78.4,
-        title:'Lighting & Power Branches',
-        img:'assets/products/LB%26PB%20(LIGHTING)/pb%203.png' },
+        title:'Lighting & Power Busduct',
+        img:'assets/products/LB%26PB%20(LIGHTING)/pb%203.png',
+        href:'product.html#lighting' },
       { num:4, x:72.1, y:23.4,
         title:'Data Centre Busduct',
-        img:'assets/products/I-DC(DATA%20CENTRE)/i-dc%201.png' },
+        img:'assets/products/I-DC(DATA%20CENTRE)/i-dc%201.png',
+        href:'product.html#datacenter' },
       { num:5, x:82.5, y:70.1,
         title:'Power Monitoring System',
-        img:'assets/products/POWER%20MONITORING%20SYSTEM/pms%201.png' }
+        img:'assets/products/POWER%20MONITORING%20SYSTEM/pms%201.png',
+        href:'product.html#power' }
     ];
 
     var stage      = document.getElementById('po-pop-stage');
@@ -2135,6 +2175,7 @@ html { scroll-padding-top: 80px; }
     var cardImg    = card.querySelector('.pop-card-img');
     var cardNumEl  = card.querySelector('.pop-card-num');
     var cardTitleEl= card.querySelector('.pop-card-title');
+    var cardCtaEl  = card.querySelector('.pop-card-cta');
 
     /* Decode each product photo off the main thread so the first click
        on a given hotspot doesn't briefly stall the UI while the browser
@@ -2202,6 +2243,8 @@ html { scroll-padding-top: 80px; }
       }
       cardNumEl.textContent   = 'No. 0' + d.num;
       cardTitleEl.textContent = d.title;
+      cardCtaEl.setAttribute('href', d.href);
+      cardCtaEl.setAttribute('aria-label', 'View ' + d.title + ' details');
 
       // Reset animation by removing class + forcing reflow before re-adding.
       // CSS @keyframes restart from 0% on re-application; transitions would
