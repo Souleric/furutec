@@ -1902,17 +1902,19 @@ html { scroll-padding-top: 80px; }
 <style>
   .pop-stage {
     position:relative;
-    max-width:1080px;
+    max-width:1240px;
     margin:0 auto;
-    /* The popup card can pop above/below the figure into this padding +
-       into the section's own 96 px padding, so we don't need a huge gap. */
-    padding:32px 0;
+    /* Generous top + bottom padding so the popup card (≈290 px tall)
+       can pop fully above or below the figure without spilling into
+       the section heading above or the next section below.  See
+       MIN_STAGE_PAD in the JS — both must move together. */
+    padding:200px 0;
   }
   .pop-figure {
     position:relative;
-    background:#FFFFFF;
-    border:1px solid #ECECF1;
-    border-radius:20px;
+    background:transparent;
+    border:0;
+    border-radius:0;
     overflow:visible;
   }
   .pop-image-wrap {
@@ -1927,6 +1929,8 @@ html { scroll-padding-top: 80px; }
     display:block;
     user-select:none;
     -webkit-user-drag:none;
+    /* Keep edges crisp when the user zooms the page in. */
+    image-rendering:-webkit-optimize-contrast;
   }
 
   /* Numbered hotspot dots */
@@ -1978,7 +1982,7 @@ html { scroll-padding-top: 80px; }
      so the brand-blue drop shadow can extend cleanly. */
   .pop-card {
     position:absolute;
-    width:300px; height:220px;
+    width:340px; height:290px;
     opacity:0;
     transform:scale(0);
     pointer-events:none;
@@ -1989,28 +1993,54 @@ html { scroll-padding-top: 80px; }
     position:absolute; inset:0;
     background:#FFFFFF;
     border:1px solid #ECECF1;
-    border-radius:12px;
+    border-radius:14px;
     overflow:hidden;
     box-shadow:
       0 24px 60px rgba(46,49,146,0.35),
       0 8px 20px rgba(46,49,146,0.22);
   }
-  .pop-card-content img {
-    position:absolute; inset:0;
-    width:100%; height:100%;
+  /* Image takes the top 220 px of the card; label band sits below. */
+  .pop-card-content .pop-card-img {
+    position:absolute; left:0; right:0; top:0; height:220px;
     object-fit:cover; display:block;
+    width:100%;
+    /* Higher-quality scaling so detail in the source PNG is preserved
+       when a viewer zooms in via the browser. */
+    image-rendering:-webkit-optimize-contrast;
+  }
+  .pop-card-label {
+    position:absolute; left:0; right:0; bottom:0; height:70px;
+    padding:0 18px;
+    display:flex; flex-direction:column; justify-content:center;
+    background:#FFFFFF;
+    border-top:3px solid #F58220;
+  }
+  .pop-card-label .pop-card-num {
+    font-family:var(--font-display);
+    font-size:11px; font-weight:700; letter-spacing:1.4px;
+    color:#F58220; text-transform:uppercase;
+    margin:0 0 2px;
+  }
+  .pop-card-label .pop-card-title {
+    font-family:var(--font-display);
+    font-size:16px; font-weight:700; line-height:1.2;
+    color:#111114;
+    margin:0;
   }
   .pop-close {
-    position:absolute; top:8px; right:8px;
-    width:28px; height:28px; border-radius:50%;
-    background:rgba(255,255,255,0.94); color:#111114;
+    position:absolute; top:10px; right:10px;
+    width:32px; height:32px; border-radius:50%;
+    background:rgba(255,255,255,0.96); color:#111114;
     border:none; cursor:pointer;
     display:inline-flex; align-items:center; justify-content:center;
-    box-shadow:0 4px 12px rgba(0,0,0,0.18);
+    box-shadow:0 4px 12px rgba(0,0,0,0.22);
     transition:background .15s ease, transform .15s ease;
-    z-index:2;
+    /* Raised above pop-card-img + pop-card-label so nothing can ever
+       absorb the click ahead of it. */
+    z-index:6;
   }
-  .pop-close:hover { background:#FFFFFF; transform:scale(1.06); }
+  .pop-close:hover { background:#FFFFFF; transform:scale(1.08); }
+  .pop-close:active { transform:scale(0.96); }
 
   /* When .is-open is applied, a keyframe animation plays once and
      leaves the card at scale(1) via animation-fill-mode: forwards.
@@ -2029,8 +2059,12 @@ html { scroll-padding-top: 80px; }
   }
 
   @media (max-width: 720px) {
-    .pop-stage { padding:24px 0; }
-    .pop-card { width:220px; height:165px; }
+    .pop-stage { padding:140px 0; }
+    .pop-card { width:260px; height:230px; }
+    .pop-card-content .pop-card-img { height:160px; }
+    .pop-card-label { height:70px; padding:0 14px; }
+    .pop-card-label .pop-card-num { font-size:10px; }
+    .pop-card-label .pop-card-title { font-size:14px; }
   }
 </style>
 <section style="background:#F4F6FB;padding:96px 0;">
@@ -2053,7 +2087,11 @@ html { scroll-padding-top: 80px; }
           <!-- Floating popup card (single instance, position computed per click) -->
           <div class="pop-card" id="po-pop-card">
             <div class="pop-card-content">
-              <img alt=""/>
+              <img class="pop-card-img" alt=""/>
+              <div class="pop-card-label">
+                <p class="pop-card-num"></p>
+                <p class="pop-card-title"></p>
+              </div>
               <button type="button" class="pop-close" aria-label="Close">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
               </button>
@@ -2068,23 +2106,45 @@ html { scroll-padding-top: 80px; }
 
 <script>
   (function productOverviewPopup() {
+    /* Each hotspot now points at a real Furutec product PNG (1300–
+       2600 px native) and carries its own caption.  Resolution is
+       2–4× the rendered card width so the card stays sharp even at
+       2× browser zoom. */
     var DATA = [
-      { num:1, x:15.5, y:20.1, img:'photo-1486406146926-c627a92ad1ab' },
-      { num:2, x:50.0, y:17.0, img:'photo-1497366216548-37526070297c' },
-      { num:3, x:43.0, y:78.4, img:'photo-1597733336794-12d05021d510' },
-      { num:4, x:72.1, y:23.4, img:'photo-1558494949-ef010cbdcc31' },
-      { num:5, x:82.5, y:70.1, img:'photo-1545324418-cc1a3fa10c00' }
+      { num:1, x:15.5, y:20.1,
+        title:'Outdoor Busduct',
+        img:'assets/products/CR%20(OUTDOOR)/cr%201.png' },
+      { num:2, x:50.0, y:17.0,
+        title:'Indoor Busduct',
+        img:'assets/products/AH%26AH-ES%20(INDOOR)/picture%206.png' },
+      { num:3, x:43.0, y:78.4,
+        title:'Lighting & Power Branches',
+        img:'assets/products/LB%26PB%20(LIGHTING)/pb%203.png' },
+      { num:4, x:72.1, y:23.4,
+        title:'Data Centre Busduct',
+        img:'assets/products/I-DC(DATA%20CENTRE)/i-dc%201.png' },
+      { num:5, x:82.5, y:70.1,
+        title:'Power Monitoring System',
+        img:'assets/products/POWER%20MONITORING%20SYSTEM/pms%201.png' }
     ];
-
-    function imgUrl(id) {
-      return 'https://images.unsplash.com/' + id + '?w=900&q=80&auto=format&fit=crop';
-    }
 
     var stage      = document.getElementById('po-pop-stage');
     if (!stage) return;
     var figureWrap = document.getElementById('po-pop-image-wrap');
     var card       = document.getElementById('po-pop-card');
-    var cardImg    = card.querySelector('img');
+    var cardImg    = card.querySelector('.pop-card-img');
+    var cardNumEl  = card.querySelector('.pop-card-num');
+    var cardTitleEl= card.querySelector('.pop-card-title');
+
+    /* Decode each product photo off the main thread so the first click
+       on a given hotspot doesn't briefly stall the UI while the browser
+       parses the PNG (these are 350 KB–1.6 MB at native resolution). */
+    cardImg.decoding = 'async';
+    DATA.forEach(function (d) {
+      var pre = new Image();
+      pre.decoding = 'async';
+      pre.src = d.img;
+    });
 
     var activeNum = null;
 
@@ -2135,12 +2195,13 @@ html { scroll-padding-top: 80px; }
       var originXpct = Math.max(0, Math.min(100, ((hsX - left) / cardW) * 100));
       var originYpct = Math.max(0, Math.min(100, ((hsY - top)  / cardH) * 100));
 
-      // Image swap (only if changing)
-      var url = imgUrl(d.img);
-      if (cardImg.getAttribute('src') !== url) {
-        cardImg.src = url;
-        cardImg.alt = 'Product ' + d.num + ' detail';
+      // Image swap (only if changing) + label update
+      if (cardImg.getAttribute('src') !== d.img) {
+        cardImg.src = d.img;
+        cardImg.alt = d.title;
       }
+      cardNumEl.textContent   = 'No. 0' + d.num;
+      cardTitleEl.textContent = d.title;
 
       // Reset animation by removing class + forcing reflow before re-adding.
       // CSS @keyframes restart from 0% on re-application; transitions would
@@ -2160,42 +2221,28 @@ html { scroll-padding-top: 80px; }
 
       requestAnimationFrame(function () {
         card.classList.add('is-open');
-
-        // After the position is committed, nudge the page so the card is
-        // fully visible.  Cards near the bottom of the figure (hotspot 5,
-        // for instance) otherwise slide off the bottom of the viewport
-        // and feel cut off.  Done after one more rAF so the layout has
-        // settled before measuring.
-        requestAnimationFrame(function () {
-          var STICKY_NAV  = 80;   // sticky header height + small buffer
-          var EDGE_PAD    = 24;   // breathing room above / below the card
-          var figRect     = figureWrap.getBoundingClientRect();
-          var cardTopVP   = figRect.top + top;
-          var cardBottomVP = cardTopVP + cardH;
-          var vh = window.innerHeight;
-
-          var overflowTop    = STICKY_NAV + EDGE_PAD - cardTopVP;     // >0 if clipped above
-          var overflowBottom = cardBottomVP + EDGE_PAD - vh;          // >0 if clipped below
-
-          var delta = 0;
-          if (overflowTop > 0)            delta = -overflowTop;     // scroll page UP
-          else if (overflowBottom > 0)    delta =  overflowBottom;  // scroll page DOWN
-
-          if (Math.abs(delta) > 4) {
-            // Instant teleport to seat the popup card cleanly in view.
-            window.scrollBy(0, delta);
-          }
-        });
       });
+      /* The previous build also auto-scrolled the page so the card sat
+         just under the sticky nav.  Removed — the 200 px stage padding
+         already gives every popup a clean home, and the surprise scroll
+         was knocking the X button out from under the user's cursor
+         mid-aim, so taps felt unresponsive and the page felt "frozen"
+         for a beat after each hotspot click. */
     }
 
-    // Delegated click — hotspots + close button
+    /* Direct close-button handler bound in capture phase so the X
+       click fires before any ancestor listener and is guaranteed to
+       close the popup even if nested elements (e.g. the inner SVG)
+       absorb the click target. */
+    var closeBtn = card.querySelector('.pop-close');
+    closeBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      closeCard();
+    }, true);
+
+    // Delegated click — hotspots only (close is handled above)
     stage.addEventListener('click', function (e) {
-      if (e.target.closest('.pop-close')) {
-        e.stopPropagation();
-        closeCard();
-        return;
-      }
+      if (e.target.closest('.pop-close')) return;  // already handled
       var pt = e.target.closest('.pop-pt');
       if (!pt) return;
       e.stopPropagation();
