@@ -1259,14 +1259,22 @@ html { scroll-padding-top: 80px; }
     </div>
     <style>
       .video-showcase {
-        position:relative; display:block; aspect-ratio:16/9;
+        position:relative; display:block;
+        /* Matches the promo video's native 2560×1080 (~21:9) ratio so
+           the whole frame is shown — no left/right crop. */
+        aspect-ratio:2560/1080;
         background:#000;
         box-shadow:0 24px 60px rgba(17,17,20,0.18);
         overflow:hidden; width:100%;
       }
       .video-showcase video {
         position:absolute; inset:0;
-        width:100%; height:100%; object-fit:cover; display:block;
+        width:100%; height:100%;
+        /* `contain` instead of `cover` so a future video with a
+           different ratio still shows full-frame (with black bars
+           top/bottom or left/right if needed) rather than being
+           cropped. */
+        object-fit:contain; display:block;
       }
       .video-showcase-overlay {
         position:absolute; inset:0; z-index:2;
@@ -1387,7 +1395,7 @@ html { scroll-padding-top: 80px; }
         <p style="font-size:14px;line-height:1.8;color:#4A4A52;margin:0 0 16px;max-width:540px;">
           Furutec Electrical Sdn Bhd is a manufacturer of busduct systems,
           specialising in indoor, outdoor, data centre, lighting and power
-          monitoring solutions. With over 31 years in the manufacturing and
+          monitoring solutions. With over 3 decades in the manufacturing and
           R&amp;D of busduct systems in Malaysia, we deliver certified, reliable
           systems trusted by engineers, developers and project owners
           worldwide.
@@ -3403,9 +3411,10 @@ Monitoring</h3>
         '<path id="globe-sphere"    fill="url(#globeShade)" stroke="#2E3192" stroke-opacity="0.22" stroke-width="1"/>' +
         '<path id="globe-graticule" fill="none" stroke="#2E3192" stroke-opacity="0.08" stroke-width="0.5" pointer-events="none"/>' +
         '<path id="globe-land"      fill="#2E3192" fill-opacity="0.20" stroke="#FFFFFF" stroke-width="0.4" stroke-opacity="0.55" pointer-events="none"/>' +
-        '<path id="globe-malaysia"  fill="#F37021" fill-opacity="0.95" stroke="#7A3F00" stroke-width="0.6" stroke-opacity="0.55" pointer-events="none"/>' +
+        '<path id="globe-malaysia"  fill="#2E3192" fill-opacity="0.95" stroke="#1F2270" stroke-width="0.6" stroke-opacity="0.55" pointer-events="none"/>' +
         '<g id="globe-arcs" pointer-events="none"></g>' +
         '<g id="globe-dots" pointer-events="none"></g>' +
+        '<g id="globe-label" pointer-events="none"></g>' +
         '<g transform="translate(' + (W - 14) + ', ' + (H - 12) + ')" pointer-events="none">' +
           '<text text-anchor="end" style="font-family:Inter,sans-serif;font-size:9px;font-weight:600;fill:#9A9AA2;letter-spacing:0.5px;text-transform:uppercase;">↻ Drag to rotate</text>' +
         '</g>' +
@@ -3418,6 +3427,25 @@ Monitoring</h3>
     var malaysiaPath = host.querySelector("#globe-malaysia");
     var arcsG        = host.querySelector("#globe-arcs");
     var dotsG        = host.querySelector("#globe-dots");
+    var labelG       = host.querySelector("#globe-label");
+
+    // Static "MALAYSIA" label that sticks to Shah Alam (the origin point)
+    // — updated per render so it follows the country when the user drags.
+    var malaysiaLabel = document.createElementNS(SVG_NS, 'text');
+    malaysiaLabel.setAttribute('text-anchor', 'middle');
+    malaysiaLabel.setAttribute('font-family', 'Saira Condensed, sans-serif');
+    malaysiaLabel.setAttribute('font-size', '11');
+    malaysiaLabel.setAttribute('font-weight', '700');
+    malaysiaLabel.setAttribute('letter-spacing', '1.4');
+    malaysiaLabel.setAttribute('fill', '#111114');
+    /* White halo around the dark text so it stays readable on the blue
+       country fill, the light sphere, or any draggable rotation. */
+    malaysiaLabel.setAttribute('paint-order', 'stroke');
+    malaysiaLabel.setAttribute('stroke', '#FFFFFF');
+    malaysiaLabel.setAttribute('stroke-width', '3');
+    malaysiaLabel.setAttribute('stroke-linejoin', 'round');
+    malaysiaLabel.textContent = 'MALAYSIA';
+    labelG.appendChild(malaysiaLabel);
 
     var SVG_NS = 'http://www.w3.org/2000/svg';
     var ARC_PATH_LENGTH = 1000;
@@ -3453,7 +3481,7 @@ Monitoring</h3>
       p.setAttribute('d', 'M 0,0');
       p.setAttribute('pathLength', ARC_PATH_LENGTH);
       p.setAttribute('fill', 'none');
-      p.setAttribute('stroke', '#2E3192');
+      p.setAttribute('stroke', '#F58220');
       p.setAttribute('stroke-width', '1.6');
       p.setAttribute('stroke-linecap', 'round');
       p.setAttribute('stroke-dasharray', ARC_PATH_LENGTH);
@@ -3494,7 +3522,7 @@ Monitoring</h3>
 
       var c = document.createElementNS(SVG_NS, 'circle');
       c.setAttribute('r', '2.4');
-      c.setAttribute('fill', '#2E3192');
+      c.setAttribute('fill', '#F58220');
       c.setAttribute('opacity', '0.85');
       c.setAttribute('visibility', 'hidden');
       dotsG.appendChild(c);
@@ -3521,6 +3549,17 @@ Monitoring</h3>
 
       var src = projection(ORIGIN);
       var srcVisible = src && isVisible(ORIGIN);
+
+      // Position the MALAYSIA label just above the country.  Hides when
+      // Malaysia rotates around to the far side of the globe.
+      if (srcVisible && src) {
+        malaysiaLabel.setAttribute('x', src[0]);
+        malaysiaLabel.setAttribute('y', src[1] - 22);
+        malaysiaLabel.setAttribute('visibility', 'visible');
+      } else {
+        malaysiaLabel.setAttribute('visibility', 'hidden');
+      }
+
       DESTS.forEach(function (target, i) {
         var p = arcEls[i];
         var c = dotEls[i];
