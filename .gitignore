@@ -19,6 +19,7 @@ __pycache__/
 assets/banner video 2.mov
 # Temp / debug files generated while diagnosing rendering
 po-hotspots-debug.png
+po-hotspot-*.png
 po-section-debug.png
 po-final-check.png
 viewport-debug.png
