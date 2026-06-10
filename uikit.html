@@ -353,6 +353,7 @@ button { font-family:inherit; cursor:pointer; }
       <a href="#globe-malaysia">Globe — Malaysia</a>
       <a href="#globe-original-archived">Globe — original (archived)</a>
       <a href="#product-overview-popup">Product Overview — popup</a>
+      <a href="#po-video-align">Product Overview — video → image align</a>
     </nav>
   </aside>
 
@@ -958,6 +959,218 @@ button { font-family:inherit; cursor:pointer; }
     </section>
 
     <!-- ── Product Overview — popup hotspots (prototype) ────── -->
+    <section class="uk-section" id="po-video-align">
+      <div class="uk-section-head">
+        <span class="uk-section-num">14b</span>
+        <h2 class="uk-section-title">Product Overview — video → image align</h2>
+      </div>
+      <p class="uk-section-desc">
+        The homepage will open with a short video that ends on a still
+        that matches the <code>PRODUCT&nbsp;OVERVIEW&nbsp;2.png</code> diagram.
+        Use this tool to align the video's <b>last frame</b> with the
+        overview image so the hand-off reads as one continuous shot.
+        The video sits underneath at full opacity and is draggable +
+        resizable;  the product-overview image sits on top at 50%
+        opacity and is fixed — drag/scale the video until its content
+        lines up with the half-transparent reference.  The output
+        <code>x / y / scale</code> values are what we'll use to place
+        the video on the live homepage.
+      </p>
+
+      <!-- Editor toolbar — drag/scale/reset/copy -->
+      <div id="va-bar" style="max-width:826px;margin:0 auto 16px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:#FFF;border:1px solid var(--line-200);border-radius:8px;padding:14px 18px;">
+        <label style="display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#111114;cursor:pointer;">
+          <span style="font-weight:600;">Scale</span>
+          <input id="va-scale" type="range" min="0.3" max="2.5" step="0.01" value="1" style="width:160px;cursor:pointer;"/>
+          <span id="va-scale-val" style="font-family:var(--font-mono);font-size:12px;color:#6B6B73;min-width:38px;">1.00×</span>
+        </label>
+        <label style="display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#111114;cursor:pointer;">
+          <span style="font-weight:600;">Overlay opacity</span>
+          <input id="va-opacity" type="range" min="0" max="100" step="1" value="50" style="width:120px;cursor:pointer;"/>
+          <span id="va-opacity-val" style="font-family:var(--font-mono);font-size:12px;color:#6B6B73;min-width:34px;">50%</span>
+        </label>
+        <label style="display:inline-flex;align-items:center;gap:8px;font-size:13px;color:#111114;cursor:pointer;">
+          <input id="va-show-overlay" type="checkbox" checked style="cursor:pointer;width:16px;height:16px;"/>
+          Show overlay
+        </label>
+        <div style="flex:1;font-size:11.5px;color:#6B6B73;min-width:200px;">
+          Drag the video to pan.  Use the scale slider to resize.
+          The image overlay stays put.  Live values shown below.
+        </div>
+        <button type="button" id="va-copy-btn" style="background:#2E3192;color:#FFF;border:none;border-radius:6px;padding:8px 16px;font-family:var(--font-sans);font-size:12px;font-weight:600;cursor:pointer;">Copy values</button>
+        <button type="button" id="va-reset-btn" style="background:transparent;color:#6B6B73;border:1px solid var(--line-200);border-radius:6px;padding:8px 14px;font-family:var(--font-sans);font-size:12px;font-weight:600;cursor:pointer;">Reset</button>
+      </div>
+
+      <pre id="va-snippet" style="max-width:826px;margin:0 auto 16px;background:#0F1224;color:#E8E9F5;border-radius:8px;padding:14px 18px;font-family:var(--font-mono);font-size:12px;line-height:1.55;overflow:auto;white-space:pre-wrap;"></pre>
+
+      <!-- Alignment stage — same 826×612 dimensions as the live figure -->
+      <div id="va-stage" style="max-width:826px;margin:0 auto;position:relative;aspect-ratio:1080/800;background:#0A0A0B;border:1px solid var(--line-200);overflow:hidden;user-select:none;">
+        <!-- Movable + scalable layer: the video's last frame as a still
+             (extracted from the .mp4 so it loads instantly and never
+             fights browser seek timing).  Original video remains the
+             source of truth — same alignment values will hold when
+             the live homepage plays the full clip and freezes on its
+             last frame. -->
+        <img id="va-video"
+             src="assets/po-video-lastframe.jpg"
+             alt="Video last frame"
+             draggable="false"
+             style="position:absolute;left:50%;top:50%;width:100%;height:100%;object-fit:contain;display:block;transform-origin:0 0;transform:translate(-50%, -50%) scale(1);will-change:transform;cursor:grab;user-select:none;-webkit-user-drag:none;"/>
+        <!-- Reference overlay image (fixed) -->
+        <img id="va-overlay"
+             src="assets/PRODUCT%20OVERVIEW%202.png"
+             alt="Reference"
+             draggable="false"
+             style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;opacity:0.5;pointer-events:none;user-select:none;-webkit-user-drag:none;"/>
+      </div>
+    </section>
+
+    <script>
+      (function videoAlignTool() {
+        var stage    = document.getElementById('va-stage');
+        if (!stage) return;
+        var video    = document.getElementById('va-video');
+        var overlay  = document.getElementById('va-overlay');
+        var scaleEl  = document.getElementById('va-scale');
+        var scaleVal = document.getElementById('va-scale-val');
+        var opacEl   = document.getElementById('va-opacity');
+        var opacVal  = document.getElementById('va-opacity-val');
+        var showEl   = document.getElementById('va-show-overlay');
+        var copyBtn  = document.getElementById('va-copy-btn');
+        var resetBtn = document.getElementById('va-reset-btn');
+        var snippet  = document.getElementById('va-snippet');
+
+        /* Transform state — translate is in % of stage so the layout
+           survives a window resize; scale is unitless. */
+        var DEFAULTS = { tx: 0, ty: 0, scale: 1 };
+        var state    = Object.assign({}, DEFAULTS);
+        var LS_KEY   = 'po-video-align-v1';
+
+        function load() {
+          try {
+            var raw = localStorage.getItem(LS_KEY);
+            if (!raw) return;
+            var s = JSON.parse(raw);
+            if (typeof s.tx    === 'number') state.tx    = s.tx;
+            if (typeof s.ty    === 'number') state.ty    = s.ty;
+            if (typeof s.scale === 'number') state.scale = s.scale;
+          } catch (_e) {}
+        }
+        function persist() {
+          try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (_e) {}
+        }
+        function apply() {
+          /* Video element baseline is centred (left:50%, top:50%,
+             translate -50% -50%).  Append the user-controlled
+             translate (in %) and scale on top of that. */
+          video.style.transform =
+            'translate(calc(-50% + ' + state.tx.toFixed(2) + '%), '
+                    + 'calc(-50% + ' + state.ty.toFixed(2) + '%)) '
+            + 'scale(' + state.scale.toFixed(3) + ')';
+          scaleEl.value = state.scale;
+          scaleVal.textContent = state.scale.toFixed(2) + '×';
+          renderSnippet();
+        }
+        function renderSnippet() {
+          var rect = stage.getBoundingClientRect();
+          var txPx = (state.tx / 100) * rect.width;
+          var tyPx = (state.ty / 100) * rect.height;
+          snippet.textContent =
+            'Video alignment values:\n\n' +
+            '  translate-x:  ' + state.tx.toFixed(2) + '%   (≈ ' + txPx.toFixed(0) + 'px @ ' + Math.round(rect.width) + 'px stage)\n' +
+            '  translate-y:  ' + state.ty.toFixed(2) + '%   (≈ ' + tyPx.toFixed(0) + 'px)\n' +
+            '  scale:        ' + state.scale.toFixed(3) + '\n\n' +
+            'CSS:\n  transform: translate(' + state.tx.toFixed(2) + '%, ' + state.ty.toFixed(2) + '%) scale(' + state.scale.toFixed(3) + ');';
+        }
+
+        load();
+        apply();
+
+        /* ── Drag-to-pan the video ── */
+        var dragging = null;
+        video.addEventListener('pointerdown', function (e) {
+          e.preventDefault();
+          var rect = stage.getBoundingClientRect();
+          dragging = {
+            startX: e.clientX,
+            startY: e.clientY,
+            startTx: state.tx,
+            startTy: state.ty,
+            rect: rect,
+            pointerId: e.pointerId,
+          };
+          video.setPointerCapture && video.setPointerCapture(e.pointerId);
+          video.style.cursor = 'grabbing';
+        });
+        window.addEventListener('pointermove', function (e) {
+          if (!dragging) return;
+          var dxPct = ((e.clientX - dragging.startX) / dragging.rect.width)  * 100;
+          var dyPct = ((e.clientY - dragging.startY) / dragging.rect.height) * 100;
+          state.tx = dragging.startTx + dxPct;
+          state.ty = dragging.startTy + dyPct;
+          apply();
+        });
+        window.addEventListener('pointerup', function () {
+          if (!dragging) return;
+          dragging = null;
+          video.style.cursor = 'grab';
+          persist();
+        });
+        window.addEventListener('pointercancel', function () {
+          if (!dragging) return;
+          dragging = null;
+          video.style.cursor = 'grab';
+          persist();
+        });
+
+        /* ── Wheel-to-zoom (over the stage) ── */
+        stage.addEventListener('wheel', function (e) {
+          if (!e.ctrlKey && !e.metaKey) return;     // require ctrl/cmd so normal scroll still works
+          e.preventDefault();
+          var delta = -e.deltaY * 0.002;
+          state.scale = Math.max(0.3, Math.min(2.5, state.scale + delta));
+          apply();
+          persist();
+        }, { passive: false });
+
+        /* ── Slider controls ── */
+        scaleEl.addEventListener('input', function () {
+          state.scale = parseFloat(scaleEl.value);
+          apply();
+        });
+        scaleEl.addEventListener('change', persist);
+
+        opacEl.addEventListener('input', function () {
+          var v = parseInt(opacEl.value, 10);
+          overlay.style.opacity = (v / 100).toFixed(2);
+          opacVal.textContent = v + '%';
+        });
+
+        showEl.addEventListener('change', function () {
+          overlay.style.display = showEl.checked ? 'block' : 'none';
+        });
+
+        /* ── Copy / Reset ── */
+        copyBtn.addEventListener('click', function () {
+          var payload = 'translate-x: ' + state.tx.toFixed(2) + '%\n'
+                      + 'translate-y: ' + state.ty.toFixed(2) + '%\n'
+                      + 'scale: '       + state.scale.toFixed(3);
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(payload).then(function () {
+              copyBtn.textContent = 'Copied ✓';
+              setTimeout(function () { copyBtn.textContent = 'Copy values'; }, 1500);
+            });
+          }
+        });
+
+        resetBtn.addEventListener('click', function () {
+          state = Object.assign({}, DEFAULTS);
+          apply();
+          try { localStorage.removeItem(LS_KEY); } catch (_e) {}
+        });
+      })();
+    </script>
+
     <section class="uk-section" id="product-overview-popup">
       <div class="uk-section-head">
         <span class="uk-section-num">15</span>

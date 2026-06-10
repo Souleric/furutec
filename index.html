@@ -1911,7 +1911,19 @@ html { scroll-padding-top: 80px; }
        in the JS below), so there's no longer any need for the large
        above/below clearance.  A small breathing margin only. */
     padding:32px 0;
+    /* Magnet behaviour — the figure (not the surrounding heading or
+       paragraph) is what snaps to the centre of the viewport when
+       the user scrolls into range.  Lets the visitor land cleanly on
+       the diagram without the title competing for prime viewport
+       real-estate. */
+    scroll-snap-align:center;
+    scroll-margin-block:32px;
   }
+
+  /* Proximity mode = the snap only kicks in when the user is close
+     to a scroll-snap-align target; no aggressive forcing anywhere
+     else on the page. */
+  html { scroll-snap-type: y proximity; }
   .pop-figure {
     position:relative;
     background:transparent;
@@ -1933,6 +1945,43 @@ html { scroll-padding-top: 80px; }
     -webkit-user-drag:none;
     /* Keep edges crisp when the user zooms the page in. */
     image-rendering:-webkit-optimize-contrast;
+    /* Image starts hidden and cross-fades in when the intro video
+       ends (see .is-revealed below). */
+    opacity:0;
+    transition:opacity .9s ease;
+    z-index:2;
+  }
+
+  /* Intro video — sits behind the image, positioned to match the
+     UIKit alignment output (translate-x:7.56%, translate-y:12.92%,
+     scale:0.85). */
+  .pop-image-wrap .pop-bg-video {
+    position:absolute; left:50%; top:50%;
+    width:100%; height:100%;
+    object-fit:contain;
+    display:block;
+    transform-origin:0 0;
+    transform:translate(calc(-50% + 7.56%), calc(-50% + 12.92%)) scale(0.85);
+    will-change:transform, opacity;
+    pointer-events:none;
+    z-index:1;
+  }
+
+  /* Hotspots stay hidden while the video is playing — they fade in
+     together with the image so they don't float over the video. */
+  .pop-image-wrap .pop-pt {
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .9s ease;
+  }
+
+  /* Reveal state — applied to the wrap once the video has ended (or
+     autoplay is blocked).  Image and hotspots fade to full opacity;
+     video stays in place underneath but is fully covered. */
+  .pop-image-wrap.is-revealed .pop-bg { opacity:1; }
+  .pop-image-wrap.is-revealed .pop-pt {
+    opacity:1;
+    pointer-events:auto;
   }
 
   /* Numbered hotspot dots */
@@ -2098,7 +2147,7 @@ html { scroll-padding-top: 80px; }
     .pop-card-cta { padding:5px 9px; font-size:10px; }
   }
 </style>
-<section style="background:#F4F6FB;padding:96px 0;">
+<section id="product-overview-section" style="background:#FFFFFF;padding:96px 0;">
   <div style="max-width:1320px;margin:0 auto;padding:0 32px;">
     <div style="text-align:center;margin-bottom:24px;">
       <span class="eyebrow">PRODUCT OVERVIEW</span>
@@ -2113,6 +2162,14 @@ html { scroll-padding-top: 80px; }
     <div class="pop-stage" id="po-pop-stage">
       <div class="pop-figure">
         <div class="pop-image-wrap" id="po-pop-image-wrap">
+          <!-- Intro video — plays once, then cross-fades into the static
+               product-overview image.  Transform values came from the
+               UIKit alignment tool so the video's last frame lines up
+               with the diagram precisely. -->
+          <video class="pop-bg-video" id="po-pop-bg-video"
+                 src="assets/hf_20260610_044742_edbe72e8-14d3-4780-9713-1190f38e1b24.mp4"
+                 muted playsinline preload="auto"
+                 poster="assets/po-video-lastframe.jpg"></video>
           <img class="pop-bg" src="assets/PRODUCT%20OVERVIEW%202.png" alt="Furutec busduct system overview"/>
 
           <!-- Floating popup card (single instance, position computed per click) -->
@@ -2183,6 +2240,68 @@ html { scroll-padding-top: 80px; }
     var stage      = document.getElementById('po-pop-stage');
     if (!stage) return;
     var figureWrap = document.getElementById('po-pop-image-wrap');
+
+    /* Intro video → static-image hand-off.  The video starts playing
+       only when the figure scrolls into view (IntersectionObserver) so
+       a returning visitor who lands further down the page doesn't get
+       a soundless animation playing they can't see.  Once it plays,
+       its `ended` event cross-fades the diagram + hotspots in.
+       Guards:
+         • IntersectionObserver disconnects after the first trigger so
+           the video never re-plays if the user scrolls back to it;
+         • if autoplay is blocked (mobile Safari without a gesture),
+           reveal the image immediately;
+         • belt-and-braces timeout in case the `ended` event never
+           fires (some buffering edge cases). */
+    var introVideo = document.getElementById('po-pop-bg-video');
+    var revealed   = false;
+    function revealFigure() {
+      if (revealed) return;
+      revealed = true;
+      figureWrap.classList.add('is-revealed');
+    }
+    /* Skip the first 2 s of the clip — playback begins at this offset.
+       Easy to tune later if the client wants a different start point. */
+    var INTRO_START_SEC = 2.0;
+    function startIntroVideo() {
+      if (!introVideo) { revealFigure(); return; }
+      introVideo.addEventListener('ended', revealFigure);
+
+      var doPlay = function () {
+        try { introVideo.currentTime = INTRO_START_SEC; } catch (_e) {}
+        var playAttempt = introVideo.play();
+        if (playAttempt && typeof playAttempt.catch === 'function') {
+          playAttempt.catch(function () { revealFigure(); });
+        }
+      };
+      if (introVideo.readyState >= 1) {
+        /* Metadata already loaded — safe to seek now. */
+        doPlay();
+      } else {
+        introVideo.addEventListener('loadedmetadata', doPlay, { once: true });
+      }
+
+      /* Fallback — clip is ~4 s, even with the 2 s skip we still need a
+         reveal even if the `ended` event never fires. */
+      setTimeout(revealFigure, 5000);
+    }
+    if (introVideo && 'IntersectionObserver' in window) {
+      var played = false;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && !played) {
+            played = true;
+            io.disconnect();
+            startIntroVideo();
+          }
+        });
+      }, { threshold: 0.25 });   // start playing when at least 25 % of the figure is on screen
+      io.observe(figureWrap);
+    } else {
+      /* No IntersectionObserver (very old browsers) — just play right
+         away, same as the old behaviour. */
+      startIntroVideo();
+    }
     var card       = document.getElementById('po-pop-card');
     var cardImg    = card.querySelector('.pop-card-img');
     var cardNumEl  = card.querySelector('.pop-card-num');
