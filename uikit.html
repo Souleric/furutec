@@ -964,15 +964,18 @@ button { font-family:inherit; cursor:pointer; }
         <h2 class="uk-section-title">Product Overview — popup hotspots (prototype)</h2>
       </div>
       <p class="uk-section-desc">
-        Redesigned interaction for the homepage Product Overview. Clicking a
-        numbered hotspot reveals an image card that sits <b>right next to
-        the number</b>, overlaying the drawing — above the number for
-        hotspots <b>1, 2 and 4</b> (top half), below for <b>3 and 5</b>
-        (bottom half). The card's <code>transform-origin</code> is anchored
-        to the number's column so the scale animation reads as the image
-        "emerging from the number". Click the same hotspot to dismiss,
-        click another to switch, click outside or press <kbd>Esc</kbd> to
-        close. No side info card — just the image.
+        Mirror of the homepage Product Overview as of the
+        <code>PRODUCT&nbsp;OVERVIEW&nbsp;2.png</code> diagram.  Each numbered
+        hotspot opens a card with the real product photo, the
+        <b>NO.&nbsp;0X</b> eyebrow, the solution title, and a
+        <b>View&nbsp;→</b> CTA that anchors straight to the matching
+        section on <code>product.html</code>.  The card sits above the
+        number for top-half hotspots and below for bottom-half hotspots,
+        with the <code>transform-origin</code> anchored to the hotspot so
+        the scale animation reads as the image emerging from the dot.
+        Click the same hotspot to dismiss, click another to switch, click
+        outside or press <kbd>Esc</kbd> to close.  Dot coordinates start
+        at the homepage values — edit <code>DATA</code> below to fine-tune.
       </p>
 
       <div class="sandbox" style="padding:240px 24px;overflow:visible;">
@@ -980,13 +983,23 @@ button { font-family:inherit; cursor:pointer; }
           <!-- Drawing with 5 hotspots + single floating image card -->
           <div class="pop-figure">
             <div class="pop-image-wrap" id="pop-image-wrap">
-              <img class="pop-bg" src="assets/PRODUCT%20OVERVIEW.png" alt="Furutec busduct system overview"/>
+              <img class="pop-bg" src="assets/PRODUCT%20OVERVIEW%202.png" alt="Furutec busduct system overview"/>
               <!-- 5 hotspots injected by JS -->
 
               <!-- Floating popup card (one per stage) -->
               <div class="pop-card" id="pop-card">
                 <div class="pop-card-content">
-                  <img alt=""/>
+                  <img class="pop-card-img" alt=""/>
+                  <div class="pop-card-label">
+                    <p class="pop-card-num"></p>
+                    <div class="pop-card-row">
+                      <p class="pop-card-title"></p>
+                      <a class="pop-card-cta" href="#" aria-label="View product details">
+                        View
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+                      </a>
+                    </div>
+                  </div>
                   <button type="button" class="pop-close" aria-label="Close">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                   </button>
@@ -999,16 +1012,21 @@ button { font-family:inherit; cursor:pointer; }
     </section>
 
     <style>
-      /* ─── Product Overview popup prototype (overlay version) ───── */
+      /* ─── Product Overview popup prototype (homepage parity) ───── */
       #pop-stage {
         position:relative;
-        max-width:1080px;
+        max-width:1240px;
         margin:0 auto;
+        /* Same generous vertical clearance as the homepage — the popup
+           card pops fully outside the figure into this padding so it
+           never spills into the section content above/below. */
+        padding:200px 0;
       }
       .pop-figure {
         position:relative;
-        background:#FFFFFF;
-        border:1px solid var(--line-200);
+        background:transparent;
+        border:0;
+        border-radius:0;
         overflow:visible;
       }
       .pop-image-wrap {
@@ -1023,6 +1041,7 @@ button { font-family:inherit; cursor:pointer; }
         display:block;
         user-select:none;
         -webkit-user-drag:none;
+        image-rendering:-webkit-optimize-contrast;
       }
 
       /* Hotspot dots */
@@ -1069,16 +1088,12 @@ button { font-family:inherit; cursor:pointer; }
         50%     { transform:scale(1.25); opacity:0.3; }
       }
 
-      /* The floating image card that overlays the drawing.
-         The outer .pop-card holds positioning + the scale animation.
-         The visible image-bearing card is .pop-card-content (inside).
-         The animated blue aura is .pop-card-glow (also inside, sits
-         behind the content).  This split lets the aura extend slightly
-         beyond the card edges without being clipped. */
+      /* Floating image card — outer holds position + scale animation,
+         inner .pop-card-content holds the image, label band, and close
+         button. */
       .pop-card {
         position:absolute;
-        width:300px; height:220px;
-        /* Default: collapsed + invisible at the hotspot (origin set by JS) */
+        width:340px; height:290px;
         opacity:0;
         transform:scale(0);
         pointer-events:none;
@@ -1089,77 +1104,147 @@ button { font-family:inherit; cursor:pointer; }
         position:absolute; inset:0;
         background:#FFFFFF;
         border:1px solid var(--line-200);
-        border-radius:12px;
+        border-radius:14px;
         overflow:hidden;
-        /* Brand-blue drop shadow — two layers for soft + tight depth */
         box-shadow:
           0 24px 60px rgba(46,49,146,0.35),
           0 8px 20px rgba(46,49,146,0.22);
       }
-      /* When .is-open is applied, a keyframe animation plays once and
-         leaves the card at scale(1) via animation-fill-mode: forwards.
-         A keyframe animation (not a transition) is critical here — when
-         the user switches hotspots we remove + re-add `.is-open` in the
-         same JS tick; CSS animations restart from 0% on re-application,
-         whereas transitions would continue from their current value. */
+      .pop-card-content .pop-card-img {
+        position:absolute; left:0; right:0; top:0; height:220px;
+        object-fit:cover; display:block;
+        width:100%;
+        image-rendering:-webkit-optimize-contrast;
+      }
+      .pop-card-label {
+        position:absolute; left:0; right:0; bottom:0; height:70px;
+        padding:0 16px;
+        display:flex; flex-direction:column; justify-content:center;
+        gap:4px;
+        background:#FFFFFF;
+        border-top:3px solid #F58220;
+      }
+      .pop-card-label .pop-card-num {
+        font-family:var(--font-display);
+        font-size:11px; font-weight:700; letter-spacing:1.4px;
+        color:#F58220; text-transform:uppercase;
+        margin:0;
+      }
+      .pop-card-label .pop-card-row {
+        display:flex; align-items:center; justify-content:space-between;
+        gap:10px;
+      }
+      .pop-card-label .pop-card-title {
+        font-family:var(--font-display);
+        font-size:16px; font-weight:700; line-height:1.15;
+        color:#111114;
+        margin:0;
+        flex:1; min-width:0;
+      }
+      .pop-card-cta {
+        display:inline-flex; align-items:center; gap:5px;
+        padding:6px 11px;
+        background:#F58220; color:#FFFFFF;
+        font-family:var(--font-sans);
+        font-size:11px; font-weight:600; letter-spacing:0.3px;
+        border-radius:6px;
+        text-decoration:none;
+        white-space:nowrap;
+        flex-shrink:0;
+        transition:background .2s ease, transform .15s ease;
+        pointer-events:auto;
+        position:relative; z-index:7;
+      }
+      .pop-card-cta:hover  { background:#E07418; color:#FFFFFF; }
+      .pop-card-cta:active { transform:scale(0.96); }
+      .pop-card-cta svg    { display:block; }
+
       .pop-card.is-open {
         pointer-events:auto;
         animation:pop-emerge .55s cubic-bezier(.34, 1.56, .64, 1) forwards;
       }
       @keyframes pop-emerge {
-        0%   { opacity:0; transform:scale(0);    }
-        55%  { opacity:1;                       }
-        100% { opacity:1; transform:scale(1);    }
-      }
-      .pop-card img {
-        position:absolute; inset:0;
-        width:100%; height:100%;
-        object-fit:cover; display:block;
+        0%   { opacity:0; transform:scale(0); }
+        55%  { opacity:1;                    }
+        100% { opacity:1; transform:scale(1); }
       }
       .pop-close {
-        position:absolute; top:8px; right:8px;
-        width:28px; height:28px; border-radius:50%;
-        background:rgba(255,255,255,0.94); color:#111114;
+        position:absolute; top:10px; right:10px;
+        width:32px; height:32px; border-radius:50%;
+        background:rgba(255,255,255,0.96); color:#111114;
         border:none; cursor:pointer;
         display:inline-flex; align-items:center; justify-content:center;
-        box-shadow:0 4px 12px rgba(0,0,0,0.18);
+        box-shadow:0 4px 12px rgba(0,0,0,0.22);
         transition:background .15s ease, transform .15s ease;
-        z-index:2;
+        z-index:6;
       }
-      .pop-close:hover { background:#FFFFFF; transform:scale(1.06); }
+      .pop-close:hover  { background:#FFFFFF; transform:scale(1.08); }
+      .pop-close:active { transform:scale(0.96); }
 
       @media (max-width: 720px) {
-        .pop-card { width:220px; height:165px; }
+        #pop-stage { padding:140px 0; }
+        .pop-card { width:260px; height:230px; }
+        .pop-card-content .pop-card-img { height:160px; }
+        .pop-card-label { height:70px; padding:0 12px; }
+        .pop-card-label .pop-card-num { font-size:10px; }
+        .pop-card-label .pop-card-title { font-size:13px; }
+        .pop-card-cta { padding:5px 9px; font-size:10px; }
       }
     </style>
 
     <script>
       (function popupPrototype() {
-        // Same coordinates and image IDs as the homepage DATA array.
+        /* Homepage parity — same DATA shape (num/x/y/title/img/href) and
+           same handler behaviour: preload all 5 product photos, no
+           auto-scroll, direct capture-phase click handler on the X for
+           guaranteed close.  Edit DATA below to fine-tune the dot
+           positions for the new diagram. */
         var DATA = [
-          { num:1, x:15.5, y:20.1, img:'photo-1486406146926-c627a92ad1ab' },
-          { num:2, x:50.0, y:17.0, img:'photo-1497366216548-37526070297c' },
-          { num:3, x:43.0, y:78.4, img:'photo-1597733336794-12d05021d510' },
-          { num:4, x:72.1, y:23.4, img:'photo-1558494949-ef010cbdcc31' },
-          { num:5, x:82.5, y:70.1, img:'photo-1545324418-cc1a3fa10c00' }
+          { num:1, x:7.7,  y:10.8,
+            title:'Outdoor Solution',
+            img:'assets/products/CR%20(OUTDOOR)/cr%202.png',
+            href:'product.html#outdoor' },
+          { num:2, x:38.0, y:7.0,
+            title:'Indoor Solution',
+            img:'assets/products/AH%26AH-ES%20(INDOOR)/picture%206.png',
+            href:'product.html#indoor' },
+          { num:3, x:73.5, y:7.0,
+            title:'Data Centre Solution',
+            img:'assets/products/I-DC(DATA%20CENTRE)/i-dc%201.png',
+            href:'product.html#datacenter' },
+          { num:4, x:48.0, y:88.0,
+            title:'Power Monitoring Solution',
+            img:'assets/products/POWER%20MONITORING%20SYSTEM/pms%201.png',
+            href:'product.html#power' },
+          { num:5, x:86.5, y:85.0,
+            title:'Lighting Solution',
+            img:'assets/products/LB%26PB%20(LIGHTING)/pb%203.png',
+            href:'product.html#lighting' }
         ];
-
-        function imgUrl(id) {
-          return 'https://images.unsplash.com/' + id + '?w=900&q=80&auto=format&fit=crop';
-        }
 
         var stage      = document.getElementById('pop-stage');
         if (!stage) return;
         var figureWrap = document.getElementById('pop-image-wrap');
         var card       = document.getElementById('pop-card');
-        var cardImg    = card.querySelector('img');
+        var cardImg    = card.querySelector('.pop-card-img');
+        var cardNumEl  = card.querySelector('.pop-card-num');
+        var cardTitleEl= card.querySelector('.pop-card-title');
+        var cardCtaEl  = card.querySelector('.pop-card-cta');
+
+        /* Pre-decode each product photo so the first click on a given
+           hotspot doesn't briefly stall the UI on the PNG parse. */
+        cardImg.decoding = 'async';
+        DATA.forEach(function (d) {
+          var pre = new Image();
+          pre.decoding = 'async';
+          pre.src = d.img;
+        });
 
         var activeNum = null;
 
-        // Hotspot constants — keep in sync with the .pop-pt CSS
-        var HOTSPOT_R = 19;     // half of 38px diameter
-        var GAP       = 10;     // pixels of breathing room between hotspot edge and card edge
-        var MARGIN    = 8;      // safety margin from figure edges
+        var HOTSPOT_R = 19;   // half of 38px diameter
+        var GAP       = 28;   // pixels between hotspot edge and card edge
+        var MARGIN    = 8;    // safety margin from figure edges (horizontal only)
 
         // Build hotspot dots
         DATA.forEach(function (d) {
@@ -1185,75 +1270,63 @@ button { font-family:inherit; cursor:pointer; }
         function openHotspot(d) {
           var wrapW = figureWrap.clientWidth;
           var wrapH = figureWrap.clientHeight;
-          var cardW = card.offsetWidth  || 300;
-          var cardH = card.offsetHeight || 220;
+          var cardW = card.offsetWidth  || 340;
+          var cardH = card.offsetHeight || 290;
 
-          // Hotspot's pixel position within the figure
           var hsX = (d.x / 100) * wrapW;
           var hsY = (d.y / 100) * wrapH;
 
-          // Horizontal: centre on hotspot, clamp to figure edges
-          var rawLeft = hsX - cardW / 2;
-          var left = Math.max(MARGIN, Math.min(wrapW - cardW - MARGIN, rawLeft));
+          var left = Math.max(MARGIN, Math.min(wrapW - cardW - MARGIN, hsX - cardW / 2));
 
-          // Vertical: above the hotspot (top-half hotspots) or below
-          // (bottom-half hotspots). Allow the card to extend OUTSIDE the
-          // figure rather than clamping it onto the hotspot.
           var isAbove = d.y < 50;
           var top = isAbove
             ? hsY - HOTSPOT_R - GAP - cardH
             : hsY + HOTSPOT_R + GAP;
 
-          // Transform-origin: anchor scaling at the hotspot's location
-          // relative to the card, so the pop reads as "out of the number".
-          var originXpct = ((hsX - left) / cardW) * 100;
-          var originYpct = ((hsY - top)  / cardH) * 100;
-          originXpct = Math.max(0, Math.min(100, originXpct));
-          originYpct = Math.max(0, Math.min(100, originYpct));
+          var originXpct = Math.max(0, Math.min(100, ((hsX - left) / cardW) * 100));
+          var originYpct = Math.max(0, Math.min(100, ((hsY - top)  / cardH) * 100));
 
-          // Image swap — only swap if changing hotspot to avoid restart flicker
-          var url = imgUrl(d.img);
-          if (cardImg.getAttribute('src') !== url) {
-            cardImg.src = url;
-            cardImg.alt = 'Product ' + d.num + ' detail';
+          // Image swap (only if changing) + label/CTA update
+          if (cardImg.getAttribute('src') !== d.img) {
+            cardImg.src = d.img;
+            cardImg.alt = d.title;
           }
+          cardNumEl.textContent   = 'No. 0' + d.num;
+          cardTitleEl.textContent = d.title;
+          cardCtaEl.setAttribute('href', d.href);
+          cardCtaEl.setAttribute('aria-label', 'View ' + d.title + ' details');
 
-          // Reset to collapsed state so the pop-out animation replays even
-          // when switching from another hotspot. Without this, only `left`,
-          // `top`, and `transform-origin` would tween — scale stays at 1,
-          // so there's no visible "pop". The reflow read forces the browser
-          // to commit the collapsed state before we re-add `is-open`.
+          // Reset animation: remove class + force reflow + reapply
           card.classList.remove('is-open');
-          // Force reflow so the removal takes effect synchronously.
           // eslint-disable-next-line no-unused-expressions
           card.offsetHeight;
 
-          // Apply new geometry while the card is collapsed at scale(0).
           card.style.left = left + 'px';
           card.style.top  = top  + 'px';
           card.style.transformOrigin = originXpct.toFixed(1) + '% ' + originYpct.toFixed(1) + '%';
 
-          // Hotspot active marker (so the user sees which number is selected)
           stage.querySelectorAll('.pop-pt').forEach(function (b) {
             b.classList.toggle('is-active', String(d.num) === b.dataset.num);
           });
           activeNum = d.num;
 
-          // Re-open on next frame — this re-triggers the scale + opacity
-          // transitions with the new transform-origin so the card visibly
-          // pops out of the new hotspot.
           requestAnimationFrame(function () {
             card.classList.add('is-open');
           });
         }
 
-        // Hotspot + close-button click handler (delegated)
+        /* Direct close-button handler bound in capture phase so the X
+           click fires before any ancestor listener and is guaranteed to
+           close. */
+        var closeBtn = card.querySelector('.pop-close');
+        closeBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          closeCard();
+        }, true);
+
+        // Delegated click — hotspots only (close is handled above)
         stage.addEventListener('click', function (e) {
-          if (e.target.closest('.pop-close')) {
-            e.stopPropagation();
-            closeCard();
-            return;
-          }
+          if (e.target.closest('.pop-close')) return;
           var pt = e.target.closest('.pop-pt');
           if (!pt) return;
           e.stopPropagation();
@@ -1263,7 +1336,7 @@ button { font-family:inherit; cursor:pointer; }
           if (d) openHotspot(d);
         });
 
-        // Click outside closes
+        // Click outside the stage closes
         document.addEventListener('click', function (e) {
           if (!activeNum) return;
           if (stage.contains(e.target)) return;
@@ -1275,7 +1348,7 @@ button { font-family:inherit; cursor:pointer; }
           if (e.key === 'Escape' && activeNum) closeCard();
         });
 
-        // Re-position if the window resizes while a card is open
+        // Re-position on resize while open
         window.addEventListener('resize', function () {
           if (!activeNum) return;
           var d = DATA.find(function (x) { return x.num === activeNum; });
