@@ -979,20 +979,31 @@ button { font-family:inherit; cursor:pointer; }
       </p>
 
       <!-- Editor toolbar — only on the UIKit, not the live homepage. -->
-      <div id="po-editor-bar" style="max-width:1240px;margin:0 auto 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:#FFF;border:1px solid var(--line-200);border-radius:8px;padding:14px 18px;">
+      <div id="po-editor-bar" style="max-width:826px;margin:0 auto 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:#FFF;border:1px solid var(--line-200);border-radius:8px;padding:14px 18px;">
         <label style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#111114;cursor:pointer;">
           <input type="checkbox" id="po-editor-toggle" style="width:16px;height:16px;cursor:pointer;"/>
-          Edit mode — drag the dots to reposition
+          Edit mode
         </label>
-        <div style="flex:1;font-size:11.5px;color:#6B6B73;">
-          When edit mode is on, click-to-popup is disabled and the dots
-          become draggable.  Live x/y percentages update below.
+        <div id="po-mode-switch" style="display:none;align-items:center;gap:14px;padding-left:12px;border-left:1px solid var(--line-200);">
+          <label style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#111114;cursor:pointer;">
+            <input type="radio" name="po-mode" value="dots" checked style="cursor:pointer;"/>
+            Drag dots
+          </label>
+          <label style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#111114;cursor:pointer;">
+            <input type="radio" name="po-mode" value="cards" style="cursor:pointer;"/>
+            Drag cards
+          </label>
+        </div>
+        <div style="flex:1;font-size:11.5px;color:#6B6B73;" id="po-mode-help">
+          When Edit mode is on, normal popup interaction is paused so
+          you can reposition.  Toggle between modes to drag the dots
+          or open + drag the cards.  Live values update below.
         </div>
         <button type="button" id="po-copy-btn" style="background:#2E3192;color:#FFF;border:none;border-radius:6px;padding:8px 16px;font-family:var(--font-sans);font-size:12px;font-weight:600;cursor:pointer;">Copy DATA snippet</button>
         <button type="button" id="po-reset-btn" style="background:transparent;color:#6B6B73;border:1px solid var(--line-200);border-radius:6px;padding:8px 14px;font-family:var(--font-sans);font-size:12px;font-weight:600;cursor:pointer;">Reset to defaults</button>
       </div>
 
-      <pre id="po-snippet" style="max-width:1240px;margin:0 auto 16px;background:#0F1224;color:#E8E9F5;border-radius:8px;padding:14px 18px;font-family:var(--font-mono);font-size:12px;line-height:1.55;overflow:auto;display:none;white-space:pre-wrap;"></pre>
+      <pre id="po-snippet" style="max-width:826px;margin:0 auto 16px;background:#0F1224;color:#E8E9F5;border-radius:8px;padding:14px 18px;font-family:var(--font-mono);font-size:12px;line-height:1.55;overflow:auto;display:none;white-space:pre-wrap;"></pre>
 
       <div class="sandbox" style="padding:240px 24px;overflow:visible;">
         <div class="pop-stage" id="pop-stage">
@@ -1217,23 +1228,26 @@ button { font-family:inherit; cursor:pointer; }
            guaranteed close.  Edit DATA below to fine-tune the dot
            positions for the new diagram. */
         var DATA = [
-          { num:1, x:9.6,  y:13.8,
+          /* cardX / cardY = where the popup card centres as a % of the
+             figure.  Default 50,50 = dead centre.  Use the "Drag cards"
+             editor mode to set per-hotspot placement. */
+          { num:1, x:9.6,  y:13.8, cardX:62.6, cardY:50.8,
             title:'Outdoor Solution',
             img:'assets/products/CR%20(OUTDOOR)/cr%202.png',
             href:'product.html#outdoor' },
-          { num:2, x:50.2, y:13.8,
+          { num:2, x:50.2, y:13.8, cardX:71.9, cardY:50.1,
             title:'Indoor Solution',
             img:'assets/products/AH%26AH-ES%20(INDOOR)/picture%206.png',
             href:'product.html#indoor' },
-          { num:3, x:88.3, y:13.9,
+          { num:3, x:88.4, y:14.0, cardX:28.8, cardY:50.5,
             title:'Data Centre Solution',
             img:'assets/products/I-DC(DATA%20CENTRE)/i-dc%201.png',
             href:'product.html#datacenter' },
-          { num:4, x:39.8, y:86.1,
+          { num:4, x:39.8, y:86.1, cardX:72.9, cardY:49.3,
             title:'Power Monitoring Solution',
             img:'assets/products/POWER%20MONITORING%20SYSTEM/pms%201.png',
             href:'product.html#power' },
-          { num:5, x:88.4, y:86.1,
+          { num:5, x:88.4, y:86.1, cardX:43.4, cardY:49.9,
             title:'Lighting Solution',
             img:'assets/products/LB%26PB%20(LIGHTING)/pb%203.png',
             href:'product.html#lighting' }
@@ -1290,10 +1304,12 @@ button { font-family:inherit; cursor:pointer; }
           var cardW = card.offsetWidth  || 340;
           var cardH = card.offsetHeight || 290;
 
-          /* Centred-overlay popup — every card lands at the dead-centre
-             of the diagram, regardless of which hotspot was clicked. */
-          var left = (wrapW - cardW) / 2;
-          var top  = (wrapH - cardH) / 2;
+          /* Card centred at (d.cardX, d.cardY) % of the figure (default
+             50, 50). */
+          var cardCX = (typeof d.cardX === 'number' ? d.cardX : 50) / 100 * wrapW;
+          var cardCY = (typeof d.cardY === 'number' ? d.cardY : 50) / 100 * wrapH;
+          var left = cardCX - cardW / 2;
+          var top  = cardCY - cardH / 2;
 
           /* Transform-origin = clicked hotspot's pixel position in
              card-relative %.  Values can go negative / past 100 since
@@ -1375,16 +1391,19 @@ button { font-family:inherit; cursor:pointer; }
         });
 
         /* ─── Drag-to-position editor (UIKit-only) ──────────────────
-           When the "Edit mode" checkbox is on:
-             • the popup click handlers are short-circuited
-             • each .pop-pt becomes draggable via pointer events
-             • dropping a dot writes its new % coords back into DATA
-             • the snippet panel below the toolbar reflects the new
-               DATA — copy + paste straight into index.html.
-           Persists positions to localStorage so a page reload keeps
-           the work-in-progress; "Reset to defaults" clears it.        */
-        var DEFAULTS = DATA.map(function (d) { return { num: d.num, x: d.x, y: d.y }; });
-        var LS_KEY   = 'po-editor-positions-v2';
+           Edit mode has two sub-modes:
+             • "Drag dots"  — pop-pt elements are draggable; click is
+                              short-circuited so popups don't pop.
+             • "Drag cards" — clicking a dot DOES open its card; the
+                              entire card body is then draggable to
+                              reposition it.  Per-hotspot cardX/cardY
+                              are written into DATA.
+           Both modes persist to localStorage so a page reload keeps
+           the work-in-progress; "Reset to defaults" clears the lot.   */
+        var DEFAULTS = DATA.map(function (d) {
+          return { num: d.num, x: d.x, y: d.y, cardX: d.cardX, cardY: d.cardY };
+        });
+        var LS_KEY   = 'po-editor-positions-v3';   // bumped: now stores cardX/cardY too
 
         function loadPersisted() {
           try {
@@ -1393,23 +1412,31 @@ button { font-family:inherit; cursor:pointer; }
             var saved = JSON.parse(raw);
             saved.forEach(function (s) {
               var d = DATA.find(function (x) { return x.num === s.num; });
-              if (d) { d.x = s.x; d.y = s.y; }
+              if (!d) return;
+              if (typeof s.x === 'number')     d.x     = s.x;
+              if (typeof s.y === 'number')     d.y     = s.y;
+              if (typeof s.cardX === 'number') d.cardX = s.cardX;
+              if (typeof s.cardY === 'number') d.cardY = s.cardY;
             });
           } catch (_e) { /* corrupt LS — ignore */ }
         }
         function persist() {
           try {
             localStorage.setItem(LS_KEY, JSON.stringify(
-              DATA.map(function (d) { return { num: d.num, x: d.x, y: d.y }; })
+              DATA.map(function (d) {
+                return { num: d.num, x: d.x, y: d.y, cardX: d.cardX, cardY: d.cardY };
+              })
             ));
           } catch (_e) {}
         }
 
         var editorToggle = document.getElementById('po-editor-toggle');
+        var modeSwitch   = document.getElementById('po-mode-switch');
         var copyBtn      = document.getElementById('po-copy-btn');
         var resetBtn     = document.getElementById('po-reset-btn');
         var snippetEl    = document.getElementById('po-snippet');
         var editorOn     = false;
+        var editorMode   = 'dots';   // 'dots' | 'cards'
 
         // Apply persisted positions (if any) to the live DOM dots.
         loadPersisted();
@@ -1422,32 +1449,37 @@ button { font-family:inherit; cursor:pointer; }
         });
 
         function renderSnippet() {
-          // Produce a paste-ready JS snippet matching the DATA literal
-          // used in index.html so I can drop it straight in.
           var lines = DATA.map(function (d) {
             return '  { num:' + d.num
-              + ', x:' + d.x.toFixed(1)
-              + ', y:' + d.y.toFixed(1)
+              + ', x:'     + d.x.toFixed(1)
+              + ', y:'     + d.y.toFixed(1)
+              + ', cardX:' + d.cardX.toFixed(1)
+              + ', cardY:' + d.cardY.toFixed(1)
               + ', /* ' + d.title + ' */ }';
           });
-          snippetEl.textContent = 'DATA positions (paste x/y over the matching homepage entries):\n\n[\n'
+          snippetEl.textContent = 'DATA positions — paste x/y/cardX/cardY back into index.html:\n\n[\n'
             + lines.join(',\n') + '\n]';
         }
 
         function setEditorMode(on) {
           editorOn = on;
           stage.classList.toggle('po-editor-on', on);
-          snippetEl.style.display = on ? 'block' : 'none';
+          stage.classList.toggle('po-mode-dots',  on && editorMode === 'dots');
+          stage.classList.toggle('po-mode-cards', on && editorMode === 'cards');
+          modeSwitch.style.display = on ? 'inline-flex' : 'none';
+          snippetEl.style.display  = on ? 'block' : 'none';
           if (on) {
-            closeCard();
+            if (editorMode === 'dots') closeCard();  // hide any open card
             renderSnippet();
+          } else {
+            closeCard();
           }
         }
 
-        // Drag handlers — pointer events for unified mouse + touch.
-        var dragging = null;     // { dot, num, startX, startY, startDotX%, startDotY% }
-        function onPointerDown(e) {
-          if (!editorOn) return;
+        /* ── Drag-dots mode ── */
+        var draggingDot = null;
+        function onDotPointerDown(e) {
+          if (!editorOn || editorMode !== 'dots') return;
           var dot = e.target.closest('.pop-pt');
           if (!dot) return;
           e.preventDefault();
@@ -1455,31 +1487,82 @@ button { font-family:inherit; cursor:pointer; }
           var num = Number(dot.dataset.num);
           var d   = DATA.find(function (x) { return x.num === num; });
           if (!d) return;
-          dragging = { dot: dot, d: d };
+          draggingDot = { dot: dot, d: d };
           dot.setPointerCapture && dot.setPointerCapture(e.pointerId);
           dot.style.cursor = 'grabbing';
         }
-        function onPointerMove(e) {
-          if (!dragging) return;
-          var rect = figureWrap.getBoundingClientRect();
-          var xPct = ((e.clientX - rect.left) / rect.width)  * 100;
-          var yPct = ((e.clientY - rect.top)  / rect.height) * 100;
-          xPct = Math.max(0, Math.min(100, xPct));
-          yPct = Math.max(0, Math.min(100, yPct));
-          dragging.d.x = Math.round(xPct * 10) / 10;
-          dragging.d.y = Math.round(yPct * 10) / 10;
-          dragging.dot.style.left = dragging.d.x + '%';
-          dragging.dot.style.top  = dragging.d.y + '%';
-          renderSnippet();
-        }
-        function onPointerUp(e) {
-          if (!dragging) return;
-          dragging.dot.style.cursor = '';
-          dragging = null;
-          persist();
+
+        /* ── Drag-cards mode ── */
+        var draggingCard = null;
+        function onCardPointerDown(e) {
+          if (!editorOn || editorMode !== 'cards') return;
+          if (!activeNum) return;                       // no open card → nothing to drag
+          if (e.target.closest('.pop-close')) return;   // X still closes
+          if (e.target.closest('.pop-card-cta')) return;// View → still navigates
+          var d = DATA.find(function (x) { return x.num === activeNum; });
+          if (!d) return;
+          e.preventDefault();
+          e.stopPropagation();
+          var rect = card.getBoundingClientRect();
+          draggingCard = {
+            d: d,
+            // remember pointer offset within the card so the drag feels
+            // anchored to where you grabbed
+            offX: e.clientX - rect.left,
+            offY: e.clientY - rect.top,
+          };
+          card.setPointerCapture && card.setPointerCapture(e.pointerId);
+          card.style.cursor = 'grabbing';
         }
 
-        figureWrap.addEventListener('pointerdown', onPointerDown, true);
+        function onPointerMove(e) {
+          if (draggingDot) {
+            var rect = figureWrap.getBoundingClientRect();
+            var xPct = ((e.clientX - rect.left) / rect.width)  * 100;
+            var yPct = ((e.clientY - rect.top)  / rect.height) * 100;
+            xPct = Math.max(0, Math.min(100, xPct));
+            yPct = Math.max(0, Math.min(100, yPct));
+            draggingDot.d.x = Math.round(xPct * 10) / 10;
+            draggingDot.d.y = Math.round(yPct * 10) / 10;
+            draggingDot.dot.style.left = draggingDot.d.x + '%';
+            draggingDot.dot.style.top  = draggingDot.d.y + '%';
+            renderSnippet();
+            return;
+          }
+          if (draggingCard) {
+            var rect = figureWrap.getBoundingClientRect();
+            var cardW = card.offsetWidth, cardH = card.offsetHeight;
+            // new card top-left so the grab point stays under the pointer
+            var newLeft = (e.clientX - rect.left) - draggingCard.offX;
+            var newTop  = (e.clientY - rect.top)  - draggingCard.offY;
+            // card centre in % of figure
+            var cxPct = ((newLeft + cardW / 2) / rect.width)  * 100;
+            var cyPct = ((newTop  + cardH / 2) / rect.height) * 100;
+            cxPct = Math.max(0, Math.min(100, cxPct));
+            cyPct = Math.max(0, Math.min(100, cyPct));
+            draggingCard.d.cardX = Math.round(cxPct * 10) / 10;
+            draggingCard.d.cardY = Math.round(cyPct * 10) / 10;
+            // apply pixel position right now so the drag feels live
+            card.style.left = ((draggingCard.d.cardX / 100) * rect.width  - cardW / 2) + 'px';
+            card.style.top  = ((draggingCard.d.cardY / 100) * rect.height - cardH / 2) + 'px';
+            renderSnippet();
+          }
+        }
+        function onPointerUp(e) {
+          if (draggingDot) {
+            draggingDot.dot.style.cursor = '';
+            draggingDot = null;
+            persist();
+          }
+          if (draggingCard) {
+            card.style.cursor = '';
+            draggingCard = null;
+            persist();
+          }
+        }
+
+        figureWrap.addEventListener('pointerdown', onDotPointerDown,  true);
+        card      .addEventListener('pointerdown', onCardPointerDown, true);
         window.addEventListener('pointermove', onPointerMove);
         window.addEventListener('pointerup', onPointerUp);
         window.addEventListener('pointercancel', onPointerUp);
@@ -1488,11 +1571,19 @@ button { font-family:inherit; cursor:pointer; }
           setEditorMode(editorToggle.checked);
         });
 
+        document.querySelectorAll('input[name="po-mode"]').forEach(function (radio) {
+          radio.addEventListener('change', function () {
+            editorMode = radio.value;
+            // re-apply mode-class so CSS affordances update
+            setEditorMode(editorOn);
+          });
+        });
+
         copyBtn.addEventListener('click', function () {
-          // Copy a clean DATA-snippet (just x/y per num) to clipboard so
-          // it can be pasted straight into the homepage edit conversation.
           var payload = DATA.map(function (d) {
-            return 'HS' + d.num + ': x=' + d.x.toFixed(1) + ', y=' + d.y.toFixed(1);
+            return 'HS' + d.num
+              + ': dot=(' + d.x.toFixed(1) + ', ' + d.y.toFixed(1) + ')'
+              + ', card=(' + d.cardX.toFixed(1) + ', ' + d.cardY.toFixed(1) + ')';
           }).join('\n');
           if (navigator.clipboard) {
             navigator.clipboard.writeText(payload).then(function () {
@@ -1507,6 +1598,7 @@ button { font-family:inherit; cursor:pointer; }
             var d = DATA.find(function (x) { return x.num === def.num; });
             if (!d) return;
             d.x = def.x; d.y = def.y;
+            d.cardX = def.cardX; d.cardY = def.cardY;
             var dot = stage.querySelector('.pop-pt[data-num="' + def.num + '"]');
             if (dot) {
               dot.style.left = def.x + '%';
@@ -1514,6 +1606,7 @@ button { font-family:inherit; cursor:pointer; }
             }
           });
           try { localStorage.removeItem(LS_KEY); } catch (_e) {}
+          closeCard();
           renderSnippet();
         });
       })();
@@ -1521,13 +1614,24 @@ button { font-family:inherit; cursor:pointer; }
 
     <style>
       /* Edit-mode affordances — only visible when the toggle is on. */
-      #pop-stage.po-editor-on .pop-pt {
+      #pop-stage.po-editor-on.po-mode-dots .pop-pt {
         cursor: grab;
         outline: 2px dashed rgba(46,49,146,0.4);
         outline-offset: 4px;
       }
-      #pop-stage.po-editor-on .pop-pt:hover {
+      #pop-stage.po-editor-on.po-mode-dots .pop-pt:hover {
         outline-color: #F58220;
+      }
+      /* In drag-cards mode the open card itself gets the grab cursor /
+         dashed outline; X and View CTA keep their normal pointer. */
+      #pop-stage.po-editor-on.po-mode-cards .pop-card.is-open .pop-card-content {
+        cursor: grab;
+        outline: 2px dashed rgba(46,49,146,0.45);
+        outline-offset: 4px;
+      }
+      #pop-stage.po-editor-on.po-mode-cards .pop-card.is-open .pop-close,
+      #pop-stage.po-editor-on.po-mode-cards .pop-card.is-open .pop-card-cta {
+        cursor: pointer;
       }
     </style>
 

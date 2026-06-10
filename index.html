@@ -2154,23 +2154,27 @@ html { scroll-padding-top: 80px; }
          Numbers 3 and 4 swap sides vs. the previous diagram (3 now
          top-right at the data centre, 4 now bottom-centre at EV
          charging) — content-per-number is unchanged. */
-      { num:1, x:9.6,  y:13.8,
+      /* cardX / cardY = where the popup card lands as a % of the figure
+         (centre of the card lands on these coords).  Default 50,50 = dead
+         centre of the diagram.  Use the UIKit's "Drag cards" mode to set
+         per-hotspot placement — those values get pasted back here. */
+      { num:1, x:9.6,  y:13.8, cardX:62.6, cardY:50.8,
         title:'Outdoor Solution',
         img:'assets/products/CR%20(OUTDOOR)/cr%202.png',
         href:'product.html#outdoor' },
-      { num:2, x:50.2, y:13.8,
+      { num:2, x:50.2, y:13.8, cardX:71.9, cardY:50.1,
         title:'Indoor Solution',
         img:'assets/products/AH%26AH-ES%20(INDOOR)/picture%206.png',
         href:'product.html#indoor' },
-      { num:3, x:88.3, y:13.9,
+      { num:3, x:88.4, y:14.0, cardX:28.8, cardY:50.5,
         title:'Data Centre Solution',
         img:'assets/products/I-DC(DATA%20CENTRE)/i-dc%201.png',
         href:'product.html#datacenter' },
-      { num:4, x:39.8, y:86.1,
+      { num:4, x:39.8, y:86.1, cardX:72.9, cardY:49.3,
         title:'Power Monitoring Solution',
         img:'assets/products/POWER%20MONITORING%20SYSTEM/pms%201.png',
         href:'product.html#power' },
-      { num:5, x:88.4, y:86.1,
+      { num:5, x:88.4, y:86.1, cardX:43.4, cardY:49.9,
         title:'Lighting Solution',
         img:'assets/products/LB%26PB%20(LIGHTING)/pb%203.png',
         href:'product.html#lighting' }
@@ -2228,13 +2232,13 @@ html { scroll-padding-top: 80px; }
       var cardW = card.offsetWidth  || 340;
       var cardH = card.offsetHeight || 290;
 
-      /* Centred-overlay popup — every card lands at the dead-centre
-         of the diagram, regardless of which hotspot was clicked.  No
-         more above/below routing or sideways clamp.  Eliminates the
-         scroll-to-find-the-card problem because the card never lives
-         outside the figure. */
-      var left = (wrapW - cardW) / 2;
-      var top  = (wrapH - cardH) / 2;
+      /* Card centred at (d.cardX, d.cardY) % of the figure (default
+         50, 50 = dead-centre).  Per-hotspot placement is set in the
+         UIKit drag editor and pasted into DATA above. */
+      var cardCX = (typeof d.cardX === 'number' ? d.cardX : 50) / 100 * wrapW;
+      var cardCY = (typeof d.cardY === 'number' ? d.cardY : 50) / 100 * wrapH;
+      var left = cardCX - cardW / 2;
+      var top  = cardCY - cardH / 2;
 
       /* Transform-origin = the clicked hotspot's pixel position
          translated into card-relative %.  Since the card is centred
