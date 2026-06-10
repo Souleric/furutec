@@ -1031,12 +1031,13 @@ button { font-family:inherit; cursor:pointer; }
       /* ─── Product Overview popup prototype (homepage parity) ───── */
       #pop-stage {
         position:relative;
-        max-width:1240px;
+        /* Same 826 px ceiling as the homepage so the editor preview
+           matches the live size. */
+        max-width:826px;
         margin:0 auto;
-        /* Same generous vertical clearance as the homepage — the popup
-           card pops fully outside the figure into this padding so it
-           never spills into the section content above/below. */
-        padding:200px 0;
+        /* Popup cards now overlay the figure at its centre — no above/
+           below clearance needed.  Small breathing margin only. */
+        padding:32px 0;
       }
       .pop-figure {
         position:relative;
@@ -1198,7 +1199,7 @@ button { font-family:inherit; cursor:pointer; }
       .pop-close:active { transform:scale(0.96); }
 
       @media (max-width: 720px) {
-        #pop-stage { padding:140px 0; }
+        #pop-stage { padding:24px 0; }
         .pop-card { width:260px; height:230px; }
         .pop-card-content .pop-card-img { height:160px; }
         .pop-card-label { height:70px; padding:0 12px; }
@@ -1289,18 +1290,20 @@ button { font-family:inherit; cursor:pointer; }
           var cardW = card.offsetWidth  || 340;
           var cardH = card.offsetHeight || 290;
 
+          /* Centred-overlay popup — every card lands at the dead-centre
+             of the diagram, regardless of which hotspot was clicked. */
+          var left = (wrapW - cardW) / 2;
+          var top  = (wrapH - cardH) / 2;
+
+          /* Transform-origin = clicked hotspot's pixel position in
+             card-relative %.  Values can go negative / past 100 since
+             the dots are at the figure's corners while the card sits
+             at the centre — that's valid CSS and produces the "grows
+             out from the number" visual. */
           var hsX = (d.x / 100) * wrapW;
           var hsY = (d.y / 100) * wrapH;
-
-          var left = Math.max(MARGIN, Math.min(wrapW - cardW - MARGIN, hsX - cardW / 2));
-
-          var isAbove = d.y < 50;
-          var top = isAbove
-            ? hsY - HOTSPOT_R - GAP - cardH
-            : hsY + HOTSPOT_R + GAP;
-
-          var originXpct = Math.max(0, Math.min(100, ((hsX - left) / cardW) * 100));
-          var originYpct = Math.max(0, Math.min(100, ((hsY - top)  / cardH) * 100));
+          var originXpct = ((hsX - left) / cardW) * 100;
+          var originYpct = ((hsY - top)  / cardH) * 100;
 
           // Image swap (only if changing) + label/CTA update
           if (cardImg.getAttribute('src') !== d.img) {

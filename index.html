@@ -1902,13 +1902,15 @@ html { scroll-padding-top: 80px; }
 <style>
   .pop-stage {
     position:relative;
-    max-width:1240px;
+    /* Scaled 1.5× smaller from the previous 1240 px so the whole
+       diagram (1.35 aspect ratio → ~612 px tall at this width) fits
+       in a single laptop viewport without scrolling. */
+    max-width:826px;
     margin:0 auto;
-    /* Generous top + bottom padding so the popup card (≈290 px tall)
-       can pop fully above or below the figure without spilling into
-       the section heading above or the next section below.  See
-       MIN_STAGE_PAD in the JS — both must move together. */
-    padding:200px 0;
+    /* Popup cards overlay the figure at its centre (see openHotspot
+       in the JS below), so there's no longer any need for the large
+       above/below clearance.  A small breathing margin only. */
+    padding:32px 0;
   }
   .pop-figure {
     position:relative;
@@ -2087,7 +2089,7 @@ html { scroll-padding-top: 80px; }
   }
 
   @media (max-width: 720px) {
-    .pop-stage { padding:140px 0; }
+    .pop-stage { padding:24px 0; }
     .pop-card { width:260px; height:230px; }
     .pop-card-content .pop-card-img { height:160px; }
     .pop-card-label { height:70px; padding:0 12px; }
@@ -2223,24 +2225,28 @@ html { scroll-padding-top: 80px; }
     function openHotspot(d) {
       var wrapW = figureWrap.clientWidth;
       var wrapH = figureWrap.clientHeight;
-      var cardW = card.offsetWidth  || 300;
-      var cardH = card.offsetHeight || 220;
+      var cardW = card.offsetWidth  || 340;
+      var cardH = card.offsetHeight || 290;
 
+      /* Centred-overlay popup — every card lands at the dead-centre
+         of the diagram, regardless of which hotspot was clicked.  No
+         more above/below routing or sideways clamp.  Eliminates the
+         scroll-to-find-the-card problem because the card never lives
+         outside the figure. */
+      var left = (wrapW - cardW) / 2;
+      var top  = (wrapH - cardH) / 2;
+
+      /* Transform-origin = the clicked hotspot's pixel position
+         translated into card-relative %.  Since the card is centred
+         and the dots are at the corners of the figure, these values
+         go negative / past 100 (e.g. "-48% -26%" for HS1) — that's
+         valid CSS, and what produces the "card grows out from the
+         number" visual: scale(0) sits at the dot, scale(1) is the
+         fully-expanded card at the figure centre. */
       var hsX = (d.x / 100) * wrapW;
       var hsY = (d.y / 100) * wrapH;
-
-      // Horizontal: centre on hotspot, clamp to figure edges
-      var left = Math.max(MARGIN, Math.min(wrapW - cardW - MARGIN, hsX - cardW / 2));
-
-      // Vertical: above (top-half hotspots) or below (bottom-half)
-      var isAbove = d.y < 50;
-      var top = isAbove
-        ? hsY - HOTSPOT_R - GAP - cardH
-        : hsY + HOTSPOT_R + GAP;
-
-      // Transform-origin anchors the scale animation to the number
-      var originXpct = Math.max(0, Math.min(100, ((hsX - left) / cardW) * 100));
-      var originYpct = Math.max(0, Math.min(100, ((hsY - top)  / cardH) * 100));
+      var originXpct = ((hsX - left) / cardW) * 100;
+      var originYpct = ((hsY - top)  / cardH) * 100;
 
       // Image swap (only if changing) + label update
       if (cardImg.getAttribute('src') !== d.img) {
