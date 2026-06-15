@@ -1349,86 +1349,378 @@ html { scroll-padding-top: 80px; }
       })();
     </script>
 
-    <!-- ─── Manufacturing Plant — Bukit Minyak, Penang (mockup) ───
-         Both supplied photos are of the same building (the Penang
-         plant), so the section is a single feature with one write-up
-         and two photo slots side-by-side below.  Replace each
-         `<span class="facility-placeholder">…</span>` with an
-         `<img src="assets/…">` once the real photos drop in.        -->
+    <!-- ─── Manufacturing Plant — Bukit Minyak, Penang ──────────────
+         Two-column hero (text + capability badges on the left, two
+         plant photos on the right) followed by a credentials strip
+         (four stats + a "Quality you can verify" callout).         -->
     <style>
-      .facilities-section {
-        margin-top:80px;
+      /* Section container.  Keeps the existing inside-Furutec
+         indentation so it lines up under the video above it. */
+      .facilities-v2 { margin-top:80px; }
+
+      /* ─── HERO ROW ────────────────────────────────────────────── */
+      .fv2-hero {
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:56px;
+        /* `stretch` so the left column fills the full height of the
+           taller right column (two stacked photos), letting the
+           badges sit at the bottom rather than leaving dead space
+           below them. */
+        align-items:stretch;
       }
-      .facility-head {
-        max-width:780px;
-        margin:0 0 32px;
+      .fv2-left, .fv2-photos {
+        /* Initial state for the scroll-in reveal — see the
+           IntersectionObserver below.  Left column starts shifted off
+           to the left, photos shifted off to the right.  When the
+           section's parent gets .is-revealed, both slide back to
+           translateX(0) and opacity:1 over 0.9 s. */
+        opacity:0;
+        transition:opacity .9s cubic-bezier(.22, 1, .36, 1),
+                   transform .9s cubic-bezier(.22, 1, .36, 1);
       }
-      .facility-tag {
+      .fv2-left  { transform:translateX(-60px); }
+      .fv2-photos{ transform:translateX( 60px); }
+      .facilities-v2.is-revealed .fv2-left,
+      .facilities-v2.is-revealed .fv2-photos {
+        opacity:1;
+        transform:translateX(0);
+      }
+      /* Respect users who prefer reduced motion — show content at rest. */
+      @media (prefers-reduced-motion: reduce) {
+        .fv2-left, .fv2-photos {
+          opacity:1; transform:none; transition:none;
+        }
+      }
+      .fv2-left {
+        display:flex; flex-direction:column;
+      }
+      /* Push the badge row to the bottom of the left column so it
+         aligns with the bottom of the photo stack on the right. */
+      .fv2-left .fv2-badges { margin-top:auto; }
+      .fv2-tag {
         font-family:var(--font-sans);
-        font-size:11px; font-weight:600; letter-spacing:0.5px;
+        font-size:11px; font-weight:700; letter-spacing:1.4px;
         color:#F58220; text-transform:uppercase;
-        margin:0 0 8px;
-      }
-      .facility-name {
-        font-family:var(--font-display);
-        font-size:32px; font-weight:700; line-height:1.15;
-        color:#111114; letter-spacing:-0.01em;
         margin:0 0 14px;
       }
-      .facility-desc {
+      .fv2-name {
+        font-family:var(--font-display);
+        font-size:44px; font-weight:700; line-height:1.05;
+        letter-spacing:-0.01em;
+        color:#111114;
+        margin:0 0 14px;
+      }
+      .fv2-rule {
+        width:64px; height:3px;
+        background:#F58220;
+        margin:0 0 26px;
+      }
+      .fv2-desc {
         font-family:var(--font-sans);
         font-size:14px; line-height:1.75; color:#4A4A52;
+        margin:0 0 16px;
+        max-width:520px;
+      }
+      .fv2-desc strong { color:#111114; font-weight:700; }
+
+      /* Capability-badge row */
+      .fv2-badges {
+        display:grid; grid-template-columns:repeat(4, 1fr);
+        gap:0;
+        margin-top:32px;
+      }
+      .fv2-badge {
+        text-align:center;
+        padding:18px 12px;
+        border-right:1px solid #ECECF1;
+        display:flex; flex-direction:column; align-items:center; gap:10px;
+      }
+      .fv2-badge:last-child { border-right:0; }
+      .fv2-badge-icon {
+        width:44px; height:44px;
+        display:inline-flex; align-items:center; justify-content:center;
+        color:#F58220;
+      }
+      .fv2-badge-icon svg { width:32px; height:32px; }
+      .fv2-badge-label {
+        font-family:var(--font-sans);
+        font-size:11px; font-weight:700; letter-spacing:0.9px;
+        text-transform:uppercase;
+        color:#111114; line-height:1.3;
         margin:0;
       }
-      .facility-photos {
-        display:grid; grid-template-columns:1fr 1fr; gap:24px;
+      .fv2-badge-sub {
+        font-family:var(--font-sans);
+        font-size:11px; font-weight:500; line-height:1.4;
+        color:#6B6B73;
+        margin:4px 0 0;
       }
-      .facility-photo {
+
+      /* Right column — two plant photos stacked top + bottom.
+         Both supplied photos are landscape, so a single-column stack
+         lets each one display in full without portrait-cropping the
+         building out of frame. */
+      .fv2-photos {
         position:relative;
-        width:100%;
-        /* 16:9 matches the aerial drone shot (native 1501×834 ≈ 1.80)
-           almost exactly and crops only a hair off the frontal shot
-           (native 610×378 ≈ 1.61). */
-        aspect-ratio:16/9;
+        display:grid; grid-template-columns:1fr; gap:14px;
+        align-self:stretch;
+      }
+      .fv2-photo {
+        width:100%; aspect-ratio:16/9;
         background:#F4F6FB;
+        border-radius:6px;
         overflow:hidden;
-        box-shadow:0 8px 28px rgba(17,17,20,0.08);
+        box-shadow:0 12px 32px rgba(17,17,20,0.10);
       }
-      .facility-photo img {
-        width:100%; height:100%; object-fit:cover; display:block;
+      .fv2-photo img {
+        width:100%; height:100%;
+        object-fit:cover; display:block;
       }
-      @media (max-width: 760px) {
-        .facilities-section { margin-top:56px; }
-        .facility-photos { grid-template-columns:1fr; gap:18px; }
-        .facility-name { font-size:26px; }
+      /* Four small production-process shots overlaying the gap
+         between the aerial and frontal building photos.  Centred
+         horizontally, vertically straddling the seam.
+         Tiles lift + scale + brighten the shadow on pointer hover. */
+      .fv2-process {
+        position:absolute;
+        left:50%; top:50%;
+        display:grid; grid-template-columns:repeat(4, 1fr); gap:10px;
+        /* Scaled 20 % smaller than the previous 144 % / 960 px to give
+           the body-text column its breathing room back.  At 115 % of
+           the photos column the row bleeds ~41 px past each side —
+           well within the 56 px hero gap, so the heading / paragraphs
+           on the left are never overlaid. */
+        width:115%;
+        max-width:768px;
+        z-index:2;
+        /* Initial state for the staggered slide-in — the row starts
+           120 px to the right of its centred resting position with
+           opacity 0.  Animation kicks in 0.9 s after the section is
+           revealed (waits for the photos column to settle first),
+           then slides into its centred resting state. */
+        opacity:0;
+        transform:translate(calc(-50% + 120px), -50%);
+        transition:opacity   .85s cubic-bezier(.22, 1, .36, 1) .9s,
+                   transform .85s cubic-bezier(.22, 1, .36, 1) .9s;
+      }
+      .facilities-v2.is-revealed .fv2-process {
+        opacity:1;
+        transform:translate(-50%, -50%);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .fv2-process {
+          opacity:1;
+          transform:translate(-50%, -50%);
+          transition:none;
+        }
+      }
+      .fv2-process figure {
+        margin:0;
+        aspect-ratio:4/3;
+        border-radius:4px;
+        overflow:hidden;
+        background:#0A0A0B;
+        border:3px solid #FFFFFF;
+        box-shadow:0 18px 38px rgba(17,17,20,0.35);
+        cursor:pointer;
+        transition:transform .35s cubic-bezier(.22, 1, .36, 1),
+                   box-shadow .35s cubic-bezier(.22, 1, .36, 1),
+                   border-color .25s ease;
+      }
+      .fv2-process figure:hover {
+        transform:translateY(-6px) scale(1.06);
+        box-shadow:0 26px 50px rgba(46,49,146,0.32),
+                   0 8px 18px rgba(17,17,20,0.18);
+        border-color:#F58220;
+        z-index:3;
+      }
+      .fv2-process img {
+        width:100%; height:100%;
+        object-fit:cover; display:block;
+        transition:transform .5s cubic-bezier(.22, 1, .36, 1);
+      }
+      .fv2-process figure:hover img {
+        transform:scale(1.10);   /* small Ken-Burns zoom inside the frame */
+      }
+      @media (max-width: 720px) {
+        .fv2-process { width:96%; gap:6px; }
+        .fv2-process figure { border-width:2px; }
+        .fv2-process figure:hover { transform:translateY(-3px) scale(1.04); }
+      }
+
+      /* ─── RESPONSIVE ──────────────────────────────────────────── */
+      @media (max-width: 1100px) {
+        .fv2-hero { grid-template-columns:1fr; gap:40px; }
+      }
+      @media (max-width: 720px) {
+        .facilities-v2 { margin-top:56px; }
+        .fv2-name { font-size:32px; }
+        .fv2-badges {
+          grid-template-columns:repeat(2, 1fr);
+          gap:0;
+        }
+        .fv2-badge { border-right:0; padding:14px 8px; }
+        .fv2-badge:nth-child(odd) { border-right:1px solid #ECECF1; }
+        .fv2-badge:nth-child(-n+2) { border-bottom:1px solid #ECECF1; }
       }
     </style>
-    <section class="facilities-section">
-      <div class="facility-head">
-        <p class="facility-tag">Our Manufacturing Plant</p>
-        <h3 class="facility-name">Bukit Minyak, Penang</h3>
-        <p class="facility-desc">
-          Our manufacturing site in Bukit Minyak Industrial Park
-          operates from two adjacent buildings — Plant&nbsp;1 and
-          Plant&nbsp;2 — alongside the FURUTEC administrative block.
-          Every busduct system comes together here, from precision-
-          machined components and copper-bar fabrication through full
-          assembly and in-house type-testing to IEC&nbsp;61439-6.
-          Every unit is verified on the floor before it leaves the site.
-        </p>
-      </div>
-      <div class="facility-photos">
-        <div class="facility-photo">
-          <img src="assets/penang-plant-aerial.jpg"
-               alt="Aerial view of the Furutec Manufacturing Plant in Bukit Minyak, Penang showing Plant 1 and Plant 2 buildings"
-               loading="lazy"/>
+
+    <section class="facilities-v2" id="fv2-section">
+      <script>
+        /* Reveal the two columns when the section first enters the
+           viewport.  Observer disconnects after the first trigger so
+           the animation never replays on subsequent scrolls. */
+        (function fv2Reveal() {
+          var section = document.getElementById('fv2-section');
+          if (!section) return;
+          if (!('IntersectionObserver' in window)) {
+            section.classList.add('is-revealed');
+            return;
+          }
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                section.classList.add('is-revealed');
+                io.disconnect();
+              }
+            });
+          }, { threshold: 0.18 });
+          io.observe(section);
+        })();
+      </script>
+      <div class="fv2-hero">
+        <!-- Left: copy + capability badges -->
+        <div class="fv2-left">
+          <p class="fv2-tag">Our Manufacturing Plant</p>
+          <h3 class="fv2-name">Bukit Minyak, Penang</h3>
+          <div class="fv2-rule" aria-hidden="true"></div>
+
+          <p class="fv2-desc">
+            Our manufacturing site in Bukit Minyak Industrial Park
+            operates from two adjacent buildings —
+            <strong>Plant&nbsp;1</strong> and <strong>Plant&nbsp;2</strong>
+            — alongside the FURUTEC administrative block.
+          </p>
+          <p class="fv2-desc">
+            Every busduct system comes together here, from
+            precision-machined components and copper-bar fabrication
+            through full assembly and in-house type-testing to
+            IEC&nbsp;61439-6.  Every unit is verified on the floor
+            before it leaves the site.
+          </p>
+
+          <div class="fv2-badges">
+            <!-- 1 — Two adjacent factory buildings with peaked roofs -->
+            <div class="fv2-badge">
+              <span class="fv2-badge-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <!-- Ground line -->
+                  <path d="M1 21h22"/>
+                  <!-- Left building: peaked roof + body -->
+                  <path d="M2 21V12l4-3 4 3v9"/>
+                  <path d="M5 21v-3h2v3"/>
+                  <!-- Right building (taller, bigger) -->
+                  <path d="M12 21V10l5-3 5 3v11"/>
+                  <path d="M16 21v-3h2v3"/>
+                  <path d="M14.5 14h6"/>
+                </svg>
+              </span>
+              <p class="fv2-badge-label">Two Integrated<br/>Plants</p>
+              <p class="fv2-badge-sub">Plant 1 &amp; Plant 2</p>
+            </div>
+            <!-- 2 — Gauge dial with needle pointing to "OK" zone -->
+            <div class="fv2-badge">
+              <span class="fv2-badge-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <!-- Half-circle dial -->
+                  <path d="M3 19a9 9 0 0 1 18 0"/>
+                  <!-- Base / ground -->
+                  <path d="M2 19h20"/>
+                  <!-- Tick marks: left, top, right -->
+                  <path d="m5 13.5 1.4 1"/>
+                  <path d="M12 10v1.5"/>
+                  <path d="m19 13.5-1.4 1"/>
+                  <!-- Needle pointing up-right (into the "good" zone) -->
+                  <path d="M12 19l5-5"/>
+                  <!-- Pivot -->
+                  <circle cx="12" cy="19" r="1.3" fill="currentColor"/>
+                </svg>
+              </span>
+              <p class="fv2-badge-label">IEC 61439-6<br/>Type-Tested</p>
+              <p class="fv2-badge-sub">In-house verification</p>
+            </div>
+            <!-- 3 — Globe with verified-badge in the corner -->
+            <div class="fv2-badge">
+              <span class="fv2-badge-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <!-- Globe sphere -->
+                  <circle cx="10" cy="10" r="7"/>
+                  <!-- Equator -->
+                  <path d="M3 10h14"/>
+                  <!-- Curved meridians -->
+                  <path d="M10 3a10 10 0 0 1 0 14"/>
+                  <path d="M10 3a10 10 0 0 0 0 14"/>
+                  <!-- Verified badge in bottom-right corner -->
+                  <circle cx="18" cy="18" r="4.5" fill="#FFFFFF"/>
+                  <circle cx="18" cy="18" r="4.5"/>
+                  <path d="m16 18 1.5 1.5 3-3.5" stroke-width="2"/>
+                </svg>
+              </span>
+              <p class="fv2-badge-label">Internationally<br/>Certified</p>
+              <p class="fv2-badge-sub">ASTA · KEMA · SIRIM</p>
+            </div>
+            <!-- 4 — Quincunx: 5 solid dots in dice-5 pattern -->
+            <div class="fv2-badge">
+              <span class="fv2-badge-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <circle cx="5"  cy="5"  r="2.4"/>
+                  <circle cx="19" cy="5"  r="2.4"/>
+                  <circle cx="12" cy="12" r="2.4"/>
+                  <circle cx="5"  cy="19" r="2.4"/>
+                  <circle cx="19" cy="19" r="2.4"/>
+                </svg>
+              </span>
+              <p class="fv2-badge-label">5 Product<br/>Solutions</p>
+              <p class="fv2-badge-sub">Indoor → Power Monitoring</p>
+            </div>
+          </div>
         </div>
-        <div class="facility-photo">
-          <img src="assets/penang-plant-front.jpg"
-               alt="Furutec Electrical Sdn Bhd plant entrance in Bukit Minyak, Penang"
-               loading="lazy"/>
+
+        <!-- Right: two photos + 3 process shots overlaying the seam -->
+        <div class="fv2-photos">
+          <div class="fv2-photo">
+            <img src="assets/penang-plant-aerial.jpg"
+                 alt="Aerial view of the Furutec Manufacturing Plant in Bukit Minyak, Penang showing Plant 1 and Plant 2 buildings"
+                 loading="lazy"/>
+          </div>
+          <div class="fv2-photo">
+            <img src="assets/penang-plant-front.jpg"
+                 alt="Furutec Electrical Sdn Bhd plant entrance in Bukit Minyak, Penang"
+                 loading="lazy"/>
+          </div>
+          <!-- Process shots overlay (centred on the seam between the
+               two building photos above). -->
+          <div class="fv2-process" aria-hidden="true">
+            <figure>
+              <img src="assets/penang-plant-process-1.png"
+                   alt="Robotic arm" loading="lazy"/>
+            </figure>
+            <figure>
+              <img src="assets/penang-plant-process-2.png"
+                   alt="Laser cutting" loading="lazy"/>
+            </figure>
+            <figure>
+              <img src="assets/penang-plant-process-3.png"
+                   alt="CNC drilling" loading="lazy"/>
+            </figure>
+            <figure>
+              <img src="assets/penang-plant-process-4.png"
+                   alt="Busbar machining centre" loading="lazy"/>
+            </figure>
+          </div>
         </div>
       </div>
+
     </section>
   </div>
 </section>
@@ -1993,19 +2285,12 @@ html { scroll-padding-top: 80px; }
        in the JS below), so there's no longer any need for the large
        above/below clearance.  A small breathing margin only. */
     padding:32px 0;
-    /* Magnet behaviour — the figure (not the surrounding heading or
-       paragraph) is what snaps to the centre of the viewport when
-       the user scrolls into range.  Lets the visitor land cleanly on
-       the diagram without the title competing for prime viewport
-       real-estate. */
-    scroll-snap-align:center;
-    scroll-margin-block:32px;
+    /* Magnet scroll-snap removed — Chrome's proximity range was
+       generous enough to start pulling the viewport off the new
+       Manufacturing Plant block sitting just above this section.
+       The product-overview diagram still gets its emphasis from
+       the surrounding section padding and the popup interaction. */
   }
-
-  /* Proximity mode = the snap only kicks in when the user is close
-     to a scroll-snap-align target; no aggressive forcing anywhere
-     else on the page. */
-  html { scroll-snap-type: y proximity; }
   .pop-figure {
     position:relative;
     background:transparent;
@@ -2192,7 +2477,7 @@ html { scroll-padding-top: 80px; }
     .pop-card-cta { padding:5px 9px; font-size:10px; }
   }
 </style>
-<section id="product-overview-section" style="background:#FFFFFF;padding:96px 0;">
+<section id="product-overview-section" style="background:#F4F6FB;padding:96px 0;">
   <div style="max-width:1320px;margin:0 auto;padding:0 32px;">
     <div style="text-align:center;margin-bottom:24px;">
       <span class="eyebrow">PRODUCT OVERVIEW</span>
@@ -3106,7 +3391,7 @@ Monitoring</h3>
      script in the README (or by hand-editing the cards below).
      ============================================================ -->
 <style>
-  .en-section { background:#FFFFFF; padding:88px 0 56px; }
+  .en-section { background:#F4F6FB; padding:88px 0 56px; }
   .en-section-inner { max-width:1320px; margin:0 auto; padding:0 32px; }
   .en-section-head { text-align:center; margin-bottom:40px; }
   .en-section-head h2 {
