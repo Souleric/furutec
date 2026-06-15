@@ -1348,6 +1348,88 @@ html { scroll-padding-top: 80px; }
         });
       })();
     </script>
+
+    <!-- ─── Manufacturing Plant — Bukit Minyak, Penang (mockup) ───
+         Both supplied photos are of the same building (the Penang
+         plant), so the section is a single feature with one write-up
+         and two photo slots side-by-side below.  Replace each
+         `<span class="facility-placeholder">…</span>` with an
+         `<img src="assets/…">` once the real photos drop in.        -->
+    <style>
+      .facilities-section {
+        margin-top:80px;
+      }
+      .facility-head {
+        max-width:780px;
+        margin:0 0 32px;
+      }
+      .facility-tag {
+        font-family:var(--font-sans);
+        font-size:11px; font-weight:600; letter-spacing:0.5px;
+        color:#F58220; text-transform:uppercase;
+        margin:0 0 8px;
+      }
+      .facility-name {
+        font-family:var(--font-display);
+        font-size:32px; font-weight:700; line-height:1.15;
+        color:#111114; letter-spacing:-0.01em;
+        margin:0 0 14px;
+      }
+      .facility-desc {
+        font-family:var(--font-sans);
+        font-size:14px; line-height:1.75; color:#4A4A52;
+        margin:0;
+      }
+      .facility-photos {
+        display:grid; grid-template-columns:1fr 1fr; gap:24px;
+      }
+      .facility-photo {
+        position:relative;
+        width:100%;
+        /* 16:9 matches the aerial drone shot (native 1501×834 ≈ 1.80)
+           almost exactly and crops only a hair off the frontal shot
+           (native 610×378 ≈ 1.61). */
+        aspect-ratio:16/9;
+        background:#F4F6FB;
+        overflow:hidden;
+        box-shadow:0 8px 28px rgba(17,17,20,0.08);
+      }
+      .facility-photo img {
+        width:100%; height:100%; object-fit:cover; display:block;
+      }
+      @media (max-width: 760px) {
+        .facilities-section { margin-top:56px; }
+        .facility-photos { grid-template-columns:1fr; gap:18px; }
+        .facility-name { font-size:26px; }
+      }
+    </style>
+    <section class="facilities-section">
+      <div class="facility-head">
+        <p class="facility-tag">Our Manufacturing Plant</p>
+        <h3 class="facility-name">Bukit Minyak, Penang</h3>
+        <p class="facility-desc">
+          Our manufacturing site in Bukit Minyak Industrial Park
+          operates from two adjacent buildings — Plant&nbsp;1 and
+          Plant&nbsp;2 — alongside the FURUTEC administrative block.
+          Every busduct system comes together here, from precision-
+          machined components and copper-bar fabrication through full
+          assembly and in-house type-testing to IEC&nbsp;61439-6.
+          Every unit is verified on the floor before it leaves the site.
+        </p>
+      </div>
+      <div class="facility-photos">
+        <div class="facility-photo">
+          <img src="assets/penang-plant-aerial.jpg"
+               alt="Aerial view of the Furutec Manufacturing Plant in Bukit Minyak, Penang showing Plant 1 and Plant 2 buildings"
+               loading="lazy"/>
+        </div>
+        <div class="facility-photo">
+          <img src="assets/penang-plant-front.jpg"
+               alt="Furutec Electrical Sdn Bhd plant entrance in Bukit Minyak, Penang"
+               loading="lazy"/>
+        </div>
+      </div>
+    </section>
   </div>
 </section>
 
