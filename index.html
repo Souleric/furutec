@@ -1359,16 +1359,18 @@ html { scroll-padding-top: 80px; }
       .facilities-v2 { margin-top:80px; }
 
       /* ─── HERO ROW ────────────────────────────────────────────── */
+      /* Left column (text + badges) is hidden — the section now shows
+         the building photos + process tiles centred on the page.
+         Single-column grid keeps the photo column anchored at a
+         consistent width regardless of viewport. */
       .fv2-hero {
         display:grid;
-        grid-template-columns:1fr 1fr;
-        gap:56px;
-        /* `stretch` so the left column fills the full height of the
-           taller right column (two stacked photos), letting the
-           badges sit at the bottom rather than leaving dead space
-           below them. */
+        grid-template-columns:minmax(0, 620px);
+        justify-content:center;
+        gap:0;
         align-items:stretch;
       }
+      .fv2-left { display:none; }
       .fv2-left, .fv2-photos {
         /* Initial state for the scroll-in reveal — see the
            IntersectionObserver below.  Left column starts shifted off
@@ -1393,7 +1395,7 @@ html { scroll-padding-top: 80px; }
         }
       }
       .fv2-left {
-        display:flex; flex-direction:column;
+        display:none;   /* hidden — section now shows photos + tiles only, centred */
       }
       /* Push the badge row to the bottom of the left column so it
          aligns with the bottom of the photo stack on the right. */
