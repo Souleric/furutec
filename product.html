@@ -994,7 +994,14 @@ html { scroll-padding-top: 80px; }
   }
   .ps-diagram-video video {
     position:absolute; inset:0; width:100%; height:100%;
-    object-fit:contain; display:block;
+    /* cover (instead of contain) so each video fills its 16:9 stage
+       — Outdoor (1.541:1, the tallest native ratio) loses about 8 %
+       off top + bottom, but the assembly + every label fit cleanly
+       inside the cropped frame; Indoor (2.072:1, the widest) gets
+       ~14 % cropped off the sides, just trimming the empty white
+       margin at the edges.  All three sections now end up the same
+       height in the page. */
+    object-fit:cover; display:block;
   }
   .ps-diagram-replay {
     position:absolute; left:50%; top:50%;
@@ -1164,7 +1171,7 @@ html { scroll-padding-top: 80px; }
     <!-- Bottom: component diagram -->
     <div class="ps-diagram-band">
       <div class="ps-diagram-title"><em>AH &amp; AH-ES — Component Diagram Breakdown</em></div>
-      <div class="ps-diagram-video" data-diagram-video style="aspect-ratio:2072/1000;">
+      <div class="ps-diagram-video" data-diagram-video>
         <video src="assets/products/indoor-diagram%20video.mp4"
                poster="assets/products/indoor-diagram-poster.jpg"
                muted playsinline autoplay preload="auto"></video>
@@ -1267,7 +1274,7 @@ html { scroll-padding-top: 80px; }
     <!-- Bottom: component diagram -->
     <div class="ps-diagram-band">
       <div class="ps-diagram-title"><em>Cast Resin — Component Diagram Breakdown</em></div>
-      <div class="ps-diagram-video" data-diagram-video style="aspect-ratio:3328/2160;">
+      <div class="ps-diagram-video" data-diagram-video>
         <video src="assets/products/CR%20(OUTDOOR)/Furutec_Busduct%20Assembly.mp4"
                poster="assets/products/CR%20(OUTDOOR)/Furutec_Busduct%20Assembly-poster.jpg"
                muted playsinline autoplay preload="auto"></video>
@@ -1375,7 +1382,7 @@ html { scroll-padding-top: 80px; }
     <!-- Bottom: component diagram -->
     <div class="ps-diagram-band">
       <div class="ps-diagram-title"><em>i-DC Busduct — Component Diagram Breakdown</em></div>
-      <div class="ps-diagram-video" data-diagram-video style="aspect-ratio:3840/2160;">
+      <div class="ps-diagram-video" data-diagram-video>
         <video src="assets/products/I-DC(DATA%20CENTRE)/DATA%20CENTRE%20BUSDUCT%20SOLUTION%20video.mp4"
                poster="assets/products/I-DC(DATA%20CENTRE)/DATA%20CENTRE%20BUSDUCT%20SOLUTION-poster.jpg"
                muted playsinline autoplay preload="auto"></video>
