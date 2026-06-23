@@ -1167,7 +1167,7 @@ html { scroll-padding-top: 80px; }
       <div class="ps-diagram-video" data-diagram-video style="aspect-ratio:2072/1000;">
         <video src="assets/products/indoor-diagram%20video.mp4"
                poster="assets/products/indoor-diagram-poster.jpg"
-               muted playsinline preload="auto"></video>
+               muted playsinline autoplay preload="auto"></video>
         <button type="button" class="ps-diagram-replay" aria-label="Replay video">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
           Replay
@@ -1270,7 +1270,7 @@ html { scroll-padding-top: 80px; }
       <div class="ps-diagram-video" data-diagram-video style="aspect-ratio:3328/2160;">
         <video src="assets/products/CR%20(OUTDOOR)/Furutec_Busduct%20Assembly.mp4"
                poster="assets/products/CR%20(OUTDOOR)/Furutec_Busduct%20Assembly-poster.jpg"
-               muted playsinline preload="auto"></video>
+               muted playsinline autoplay preload="auto"></video>
         <button type="button" class="ps-diagram-replay" aria-label="Replay video">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
           Replay
@@ -1378,7 +1378,7 @@ html { scroll-padding-top: 80px; }
       <div class="ps-diagram-video" data-diagram-video style="aspect-ratio:3840/2160;">
         <video src="assets/products/I-DC(DATA%20CENTRE)/DATA%20CENTRE%20BUSDUCT%20SOLUTION%20video.mp4"
                poster="assets/products/I-DC(DATA%20CENTRE)/DATA%20CENTRE%20BUSDUCT%20SOLUTION-poster.jpg"
-               muted playsinline preload="auto"></video>
+               muted playsinline autoplay preload="auto"></video>
         <button type="button" class="ps-diagram-replay" aria-label="Replay video">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
           Replay
@@ -2004,10 +2004,27 @@ html { scroll-padding-top: 80px; }
       function play() {
         if (hasPlayed) return;
         hasPlayed = true;
-        try { video.currentTime = 0; } catch (e) {}
         stage.classList.remove('is-ended');
+        /* Safari rejects programmatic .play() from non-gesture
+           contexts (like IntersectionObserver callbacks) more
+           aggressively than Chrome, even on muted videos.  Mirror
+           the muted/playsinline state onto the property surface,
+           reset, then try play() — on rejection, force the
+           autoplay-attribute path which Safari trusts more. */
+        try {
+          video.muted = true;
+          video.playsInline = true;
+          video.currentTime = 0;
+        } catch (_e) {}
         var p = video.play();
-        if (p && p.catch) p.catch(function () { /* autoplay blocked — overlay button still works */ });
+        if (p && p.catch) {
+          p.catch(function () {
+            try {
+              video.setAttribute('autoplay', '');
+              video.load();
+            } catch (_e) {}
+          });
+        }
       }
       function showReplay() { stage.classList.add('is-ended'); }
       function reset() {
