@@ -2272,52 +2272,41 @@ html { scroll-padding-top: 80px; }
 </script>
 
 <!-- ============================================================
-     PRODUCT OVERVIEW — interactive diagram with image-pop hotspots
-     Promoted from uikit.html "Product Overview — popup" prototype.
+     PRODUCT OVERVIEW — side-panel layout
+     Diagram on the left with 5 numbered hotspots, fixed card panel
+     on the right showing one component at a time.  The card has
+     prev/next navigation at the bottom and defaults to HS 1.
+     Clicking a hotspot OR a nav button updates the panel.
+     The previous centred-overlay build is archived in
+     uikit.html#po-archive-overlay.
      ============================================================ -->
 <style>
-  .pop-stage {
-    position:relative;
-    /* Scaled 1.5× smaller from the previous 1240 px so the whole
-       diagram (1.35 aspect ratio → ~612 px tall at this width) fits
-       in a single laptop viewport without scrolling. */
-    max-width:826px;
+  /* ── Section layout ────────────────────────────────────────── */
+  .pov-layout {
+    display:grid;
+    grid-template-columns:minmax(0, 1.4fr) minmax(0, 1fr);
+    gap:48px;
+    align-items:start;
+    max-width:1180px;
     margin:0 auto;
-    /* Popup cards overlay the figure at its centre (see openHotspot
-       in the JS below), so there's no longer any need for the large
-       above/below clearance.  A small breathing margin only. */
-    padding:32px 0;
-    /* Magnet scroll-snap removed — Chrome's proximity range was
-       generous enough to start pulling the viewport off the new
-       Manufacturing Plant block sitting just above this section.
-       The product-overview diagram still gets its emphasis from
-       the surrounding section padding and the popup interaction. */
   }
-  .pop-figure {
-    position:relative;
-    background:transparent;
-    border:0;
-    border-radius:0;
-    overflow:visible;
-  }
-  .pop-image-wrap {
+  .pov-diagram {
     position:relative;
     width:100%;
     aspect-ratio:1080/800;
   }
-  .pop-image-wrap .pop-bg {
+  .pov-diagram .pov-bg {
     position:absolute; inset:0;
     width:100%; height:100%;
     object-fit:contain;
     display:block;
     user-select:none;
     -webkit-user-drag:none;
-    /* Keep edges crisp when the user zooms the page in. */
     image-rendering:-webkit-optimize-contrast;
   }
 
-  /* Numbered hotspot dots */
-  .pop-pt {
+  /* ── Hotspot dots on the diagram ───────────────────────────── */
+  .pov-hotspot {
     position:absolute;
     width:38px; height:38px;
     border-radius:50%;
@@ -2331,7 +2320,7 @@ html { scroll-padding-top: 80px; }
     transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
     z-index:3;
   }
-  .pop-pt::before {
+  .pov-hotspot::before {
     content:''; position:absolute; inset:-6px;
     border-radius:50%;
     background:rgba(46,49,146,0.15);
@@ -2340,239 +2329,232 @@ html { scroll-padding-top: 80px; }
     transition:opacity .25s ease, transform .25s ease;
     z-index:-1;
   }
-  .pop-pt:hover {
+  .pov-hotspot:hover {
     transform:translate(-50%,-50%) scale(1.08);
     box-shadow:0 8px 22px rgba(46,49,146,0.55);
   }
-  .pop-pt:hover::before { opacity:1; transform:scale(1); }
-  .pop-pt.is-active {
+  .pov-hotspot:hover::before { opacity:1; transform:scale(1); }
+  .pov-hotspot.is-active {
     background:#F37021;
     box-shadow:0 8px 22px rgba(243,112,33,0.50);
     z-index:5;
   }
-  .pop-pt.is-active::before {
+  .pov-hotspot.is-active::before {
     opacity:1; transform:scale(1);
     background:rgba(243,112,33,0.18);
-    animation:pop-pulse 1.6s ease-in-out infinite;
+    animation:pov-pulse 1.6s ease-in-out infinite;
   }
-  @keyframes pop-pulse {
+  @keyframes pov-pulse {
     0%,100% { transform:scale(1);    opacity:0.6; }
     50%     { transform:scale(1.25); opacity:0.3; }
   }
 
-  /* Floating image card.  Outer .pop-card handles position + scale
-     animation; .pop-card-content holds the rounded-corners + clipping
-     so the brand-blue drop shadow can extend cleanly. */
-  .pop-card {
-    position:absolute;
-    width:340px; height:290px;
-    opacity:0;
-    transform:scale(0);
-    pointer-events:none;
-    will-change:transform, opacity, left, top;
-    z-index:4;
+  /* ── Right-side card panel ─────────────────────────────────── */
+  .pov-panel {
+    position:relative;
+    width:100%;
   }
-  .pop-card-content {
-    position:absolute; inset:0;
+  .pov-card {
     background:#FFFFFF;
     border:1px solid #ECECF1;
     border-radius:14px;
     overflow:hidden;
     box-shadow:
-      0 24px 60px rgba(46,49,146,0.35),
-      0 8px 20px rgba(46,49,146,0.22);
+      0 24px 60px rgba(46,49,146,0.18),
+      0 8px 20px rgba(46,49,146,0.12);
   }
-  /* Image takes the top 220 px of the card; label band sits below. */
-  .pop-card-content .pop-card-img {
-    position:absolute; left:0; right:0; top:0; height:220px;
-    object-fit:cover; display:block;
+  .pov-card-img-wrap {
     width:100%;
-    /* Higher-quality scaling so detail in the source PNG is preserved
-       when a viewer zooms in via the browser. */
+    aspect-ratio:4/3;
+    background:#F4F6FB;
+    overflow:hidden;
+    position:relative;
+  }
+  .pov-card-img {
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover; display:block;
     image-rendering:-webkit-optimize-contrast;
+    transition:opacity .25s ease;
   }
-  .pop-card-label {
-    position:absolute; left:0; right:0; bottom:0; height:70px;
-    padding:0 16px;
-    display:flex; flex-direction:column; justify-content:center;
-    gap:4px;
-    background:#FFFFFF;
+  .pov-card-img.is-fading { opacity:0; }
+  .pov-card-label {
+    padding:16px 20px 14px;
     border-top:3px solid #F58220;
+    display:flex; flex-direction:column;
+    gap:6px;
+    transition:opacity .25s ease;
   }
-  .pop-card-label .pop-card-num {
+  .pov-card-label.is-fading { opacity:0; }
+  .pov-card-num {
     font-family:var(--font-display);
-    font-size:11px; font-weight:700; letter-spacing:1.4px;
+    font-size:12px; font-weight:700; letter-spacing:1.4px;
     color:#F58220; text-transform:uppercase;
     margin:0;
   }
-  /* Title sits left, the "View" CTA sits right on the same row so
-     the whole label still fits inside the existing 70 px band. */
-  .pop-card-label .pop-card-row {
+  .pov-card-row {
     display:flex; align-items:center; justify-content:space-between;
-    gap:10px;
+    gap:12px;
   }
-  .pop-card-label .pop-card-title {
+  .pov-card-title {
     font-family:var(--font-display);
-    font-size:16px; font-weight:700; line-height:1.15;
+    font-size:20px; font-weight:700; line-height:1.15;
     color:#111114;
     margin:0;
-    flex:1; min-width:0;     /* allow long titles to clip rather than push the CTA */
+    flex:1; min-width:0;
   }
-  .pop-card-cta {
-    display:inline-flex; align-items:center; gap:5px;
-    padding:6px 11px;
+  .pov-card-cta {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:8px 14px;
     background:#F58220; color:#FFFFFF;
     font-family:var(--font-sans);
-    font-size:11px; font-weight:600; letter-spacing:0.3px;
+    font-size:12px; font-weight:600; letter-spacing:0.3px;
     border-radius:6px;
     text-decoration:none;
     white-space:nowrap;
     flex-shrink:0;
     transition:background .2s ease, transform .15s ease;
-    /* Make sure clicks on the CTA reach the anchor and aren't
-       swallowed by the .pop-card pointer-events / event delegation
-       in the host script. */
-    pointer-events:auto;
-    position:relative; z-index:7;
   }
-  .pop-card-cta:hover  { background:#E07418; color:#FFFFFF; }
-  .pop-card-cta:active { transform:scale(0.96); }
-  .pop-card-cta svg    { display:block; }
-  .pop-close {
-    position:absolute; top:10px; right:10px;
-    width:32px; height:32px; border-radius:50%;
-    background:rgba(255,255,255,0.96); color:#111114;
-    border:none; cursor:pointer;
+  .pov-card-cta:hover  { background:#E07418; color:#FFFFFF; }
+  .pov-card-cta:active { transform:scale(0.96); }
+  .pov-card-cta svg    { display:block; }
+
+  /* ── Nav row at the bottom of the card ─────────────────────── */
+  .pov-card-nav {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 18px;
+    border-top:1px solid #ECECF1;
+    background:#FAFAFB;
+  }
+  .pov-nav-btn {
     display:inline-flex; align-items:center; justify-content:center;
-    box-shadow:0 4px 12px rgba(0,0,0,0.22);
-    transition:background .15s ease, transform .15s ease;
-    /* Raised above pop-card-img + pop-card-label so nothing can ever
-       absorb the click ahead of it. */
-    z-index:6;
+    width:36px; height:36px;
+    border-radius:50%;
+    background:#FFFFFF;
+    border:1px solid #ECECF1;
+    color:#2E3192;
+    cursor:pointer;
+    transition:background .15s ease, border-color .15s ease,
+               color .15s ease, transform .15s ease;
   }
-  .pop-close:hover { background:#FFFFFF; transform:scale(1.08); }
-  .pop-close:active { transform:scale(0.96); }
+  .pov-nav-btn:hover {
+    background:#2E3192;
+    border-color:#2E3192;
+    color:#FFFFFF;
+  }
+  .pov-nav-btn:active { transform:scale(0.94); }
+  .pov-nav-btn svg { width:14px; height:14px; }
+  .pov-nav-counter {
+    font-family:var(--font-display);
+    font-size:13px; font-weight:700; letter-spacing:1.2px;
+    color:#6B6B73;
+  }
+  .pov-nav-counter .pov-nav-current { color:#2E3192; }
 
-  /* When .is-open is applied, a keyframe animation plays once and
-     leaves the card at scale(1) via animation-fill-mode: forwards.
-     A keyframe (not transition) is essential — switching hotspots
-     removes + re-adds the class in the same JS tick; animations
-     restart from 0% on re-application, transitions would carry
-     forward from the current scale. */
-  .pop-card.is-open {
-    pointer-events:auto;
-    animation:pop-emerge .55s cubic-bezier(.34, 1.56, .64, 1) forwards;
+  /* ── Responsive — stack on tablet & below ──────────────────── */
+  @media (max-width: 880px) {
+    .pov-layout { grid-template-columns:1fr; gap:32px; }
+    .pov-panel  { max-width:520px; margin:0 auto; }
   }
-  @keyframes pop-emerge {
-    0%   { opacity:0; transform:scale(0); }
-    55%  { opacity:1;                    }
-    100% { opacity:1; transform:scale(1); }
-  }
-
-  @media (max-width: 720px) {
-    .pop-stage { padding:24px 0; }
-    .pop-card { width:260px; height:230px; }
-    .pop-card-content .pop-card-img { height:160px; }
-    .pop-card-label { height:70px; padding:0 12px; }
-    .pop-card-label .pop-card-num { font-size:10px; }
-    .pop-card-label .pop-card-title { font-size:13px; }
-    .pop-card-cta { padding:5px 9px; font-size:10px; }
+  @media (max-width: 540px) {
+    .pov-card-title { font-size:18px; }
+    .pov-card-img-wrap { aspect-ratio:16/9; }
   }
 </style>
 <section id="product-overview-section" style="background:#F4F6FB;padding:96px 0;">
   <div style="max-width:1320px;margin:0 auto;padding:0 32px;">
-    <div style="text-align:center;margin-bottom:24px;">
+    <div style="text-align:center;margin-bottom:40px;">
       <span class="eyebrow">PRODUCT OVERVIEW</span>
       <h2 style="font-family:var(--font-display);font-size:44px;font-weight:700;line-height:1.05;letter-spacing:-0.01em;color:#111114;margin:8px 0 8px;text-wrap:balance;">
         How A <span style="color:#2E3192;">Furutec Busduct System</span><br/>Comes Together.
       </h2>
       <p style="font-size:13px;line-height:1.7;color:#6B6B73;margin:0 auto;max-width:640px;">
-        Click any number on the diagram to see how the matching component fits into the system.
+        Click any number on the diagram, or use the arrows below the card, to see how each component fits into the system.
       </p>
     </div>
 
-    <div class="pop-stage" id="po-pop-stage">
-      <div class="pop-figure">
-        <div class="pop-image-wrap" id="po-pop-image-wrap">
-          <img class="pop-bg" src="assets/PRODUCT%20OVERVIEW%202.png" alt="Furutec busduct system overview"/>
+    <div class="pov-layout" id="po-pov-layout">
+      <!-- LEFT — diagram with 5 hotspots -->
+      <div class="pov-diagram" id="po-pov-diagram">
+        <img class="pov-bg" src="assets/PRODUCT%20OVERVIEW%202.png" alt="Furutec busduct system overview"/>
+        <!-- numbered .pov-hotspot dots injected by the JS below -->
+      </div>
 
-          <!-- Floating popup card (single instance, position computed per click) -->
-          <div class="pop-card" id="po-pop-card">
-            <div class="pop-card-content">
-              <img class="pop-card-img" alt=""/>
-              <div class="pop-card-label">
-                <p class="pop-card-num"></p>
-                <div class="pop-card-row">
-                  <p class="pop-card-title"></p>
-                  <a class="pop-card-cta" href="#" aria-label="View product details">
-                    View
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-                  </a>
-                </div>
-              </div>
-              <button type="button" class="pop-close" aria-label="Close">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-              </button>
+      <!-- RIGHT — single card panel (content swaps based on selection) -->
+      <div class="pov-panel">
+        <article class="pov-card" id="po-pov-card">
+          <div class="pov-card-img-wrap">
+            <img class="pov-card-img" id="po-pov-card-img" alt=""/>
+          </div>
+          <div class="pov-card-label" id="po-pov-card-label">
+            <p class="pov-card-num"   id="po-pov-card-num"></p>
+            <div class="pov-card-row">
+              <p class="pov-card-title" id="po-pov-card-title"></p>
+              <a class="pov-card-cta"   id="po-pov-card-cta" href="#" aria-label="View product details">
+                View
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+              </a>
             </div>
           </div>
-        </div>
+          <div class="pov-card-nav">
+            <button type="button" class="pov-nav-btn" id="po-pov-prev" aria-label="Previous component">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+            </button>
+            <p class="pov-nav-counter"><span class="pov-nav-current" id="po-pov-counter-current">01</span> / <span id="po-pov-counter-total">05</span></p>
+            <button type="button" class="pov-nav-btn" id="po-pov-next" aria-label="Next component">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </article>
       </div>
     </div>
   </div>
 </section>
 
-
 <script>
-  (function productOverviewPopup() {
-    /* Each hotspot now points at a real Furutec product PNG (1300–
-       2600 px native) and carries its own caption.  Resolution is
-       2–4× the rendered card width so the card stays sharp even at
-       2× browser zoom. */
+  (function productOverviewSidePanel() {
+    /* Five component cards.  The numbered hotspots on the diagram
+       use (x, y) % positions — the card itself sits in the fixed
+       right-hand panel, so cardX/cardY from the previous build
+       are intentionally dropped. */
     var DATA = [
-      /* Hotspot positions tuned to PRODUCT OVERVIEW 2.png — each (x,y)
-         lands on top of the numbered circle baked into the new diagram
-         so the click target sits exactly where the user sees the dot.
-         Numbers 3 and 4 swap sides vs. the previous diagram (3 now
-         top-right at the data centre, 4 now bottom-centre at EV
-         charging) — content-per-number is unchanged. */
-      /* cardX / cardY = where the popup card lands as a % of the figure
-         (centre of the card lands on these coords).  Default 50,50 = dead
-         centre of the diagram.  Use the UIKit's "Drag cards" mode to set
-         per-hotspot placement — those values get pasted back here. */
-      { num:1, x:9.6,  y:13.8, cardX:62.6, cardY:50.8,
+      { num:1, x:9.6,  y:13.8,
         title:'Outdoor Solution',
         img:'assets/products/CR%20(OUTDOOR)/cr%202.png',
         href:'product.html#outdoor' },
-      { num:2, x:50.2, y:13.8, cardX:71.9, cardY:50.1,
+      { num:2, x:50.2, y:13.8,
         title:'Indoor Solution',
         img:'assets/products/AH%26AH-ES%20(INDOOR)/picture%206.png',
         href:'product.html#indoor' },
-      { num:3, x:88.4, y:14.0, cardX:28.8, cardY:50.5,
+      { num:3, x:88.4, y:14.0,
         title:'Data Centre Solution',
         img:'assets/products/I-DC(DATA%20CENTRE)/i-dc%201.png',
         href:'product.html#datacenter' },
-      { num:4, x:39.8, y:86.1, cardX:72.9, cardY:49.3,
+      { num:4, x:39.8, y:86.1,
         title:'Power Monitoring Solution',
         img:'assets/products/POWER%20MONITORING%20SYSTEM/pms%201.png',
         href:'product.html#power' },
-      { num:5, x:88.4, y:86.1, cardX:43.4, cardY:49.9,
+      { num:5, x:88.4, y:86.1,
         title:'Lighting Solution',
         img:'assets/products/LB%26PB%20(LIGHTING)/pb%203.png',
         href:'product.html#lighting' }
     ];
 
-    var stage      = document.getElementById('po-pop-stage');
-    if (!stage) return;
-    var figureWrap = document.getElementById('po-pop-image-wrap');
-    var card       = document.getElementById('po-pop-card');
-    var cardImg    = card.querySelector('.pop-card-img');
-    var cardNumEl  = card.querySelector('.pop-card-num');
-    var cardTitleEl= card.querySelector('.pop-card-title');
-    var cardCtaEl  = card.querySelector('.pop-card-cta');
+    var layout    = document.getElementById('po-pov-layout');
+    if (!layout) return;
+    var diagram   = document.getElementById('po-pov-diagram');
+    var cardImg   = document.getElementById('po-pov-card-img');
+    var cardLabel = document.getElementById('po-pov-card-label');
+    var cardNum   = document.getElementById('po-pov-card-num');
+    var cardTitle = document.getElementById('po-pov-card-title');
+    var cardCta   = document.getElementById('po-pov-card-cta');
+    var prevBtn   = document.getElementById('po-pov-prev');
+    var nextBtn   = document.getElementById('po-pov-next');
+    var counterEl = document.getElementById('po-pov-counter-current');
+    var totalEl   = document.getElementById('po-pov-counter-total');
 
-    /* Decode each product photo off the main thread so the first click
-       on a given hotspot doesn't briefly stall the UI while the browser
-       parses the PNG (these are 350 KB–1.6 MB at native resolution). */
+    /* Decode each product photo off the main thread so swapping the
+       card between hotspots doesn't briefly stall the UI. */
     cardImg.decoding = 'async';
     DATA.forEach(function (d) {
       var pre = new Image();
@@ -2580,135 +2562,86 @@ html { scroll-padding-top: 80px; }
       pre.src = d.img;
     });
 
-    var activeNum = null;
-
-    var HOTSPOT_R = 19;   // half of 38px diameter
-    var GAP       = 28;   // pixels between hotspot edge and card edge
-    var MARGIN    = 8;    // safety margin from figure edges (horizontal only)
-
     // Build hotspot dots
     DATA.forEach(function (d) {
       var btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'pop-pt';
+      btn.className = 'pov-hotspot';
       btn.dataset.num = d.num;
       btn.style.left = d.x + '%';
       btn.style.top  = d.y + '%';
       btn.textContent = d.num;
-      btn.setAttribute('aria-label', 'Show product ' + d.num);
-      figureWrap.appendChild(btn);
+      btn.setAttribute('aria-label', 'Show component ' + d.num);
+      diagram.appendChild(btn);
     });
 
-    function closeCard() {
-      activeNum = null;
-      card.classList.remove('is-open');
-      stage.querySelectorAll('.pop-pt').forEach(function (b) {
-        b.classList.remove('is-active');
-      });
-    }
+    totalEl.textContent = DATA.length.toString().padStart(2, '0');
 
-    function openHotspot(d) {
-      var wrapW = figureWrap.clientWidth;
-      var wrapH = figureWrap.clientHeight;
-      var cardW = card.offsetWidth  || 340;
-      var cardH = card.offsetHeight || 290;
+    var currentIndex = 0;   // default to HS 1
 
-      /* Card centred at (d.cardX, d.cardY) % of the figure (default
-         50, 50 = dead-centre).  Per-hotspot placement is set in the
-         UIKit drag editor and pasted into DATA above. */
-      var cardCX = (typeof d.cardX === 'number' ? d.cardX : 50) / 100 * wrapW;
-      var cardCY = (typeof d.cardY === 'number' ? d.cardY : 50) / 100 * wrapH;
-      var left = cardCX - cardW / 2;
-      var top  = cardCY - cardH / 2;
+    function pad2(n) { return n.toString().padStart(2, '0'); }
 
-      /* Transform-origin = the clicked hotspot's pixel position
-         translated into card-relative %.  Since the card is centred
-         and the dots are at the corners of the figure, these values
-         go negative / past 100 (e.g. "-48% -26%" for HS1) — that's
-         valid CSS, and what produces the "card grows out from the
-         number" visual: scale(0) sits at the dot, scale(1) is the
-         fully-expanded card at the figure centre. */
-      var hsX = (d.x / 100) * wrapW;
-      var hsY = (d.y / 100) * wrapH;
-      var originXpct = ((hsX - left) / cardW) * 100;
-      var originYpct = ((hsY - top)  / cardH) * 100;
+    function setCard(index) {
+      // Wrap around — supports prev from 1 → 5 and next from 5 → 1.
+      currentIndex = ((index % DATA.length) + DATA.length) % DATA.length;
+      var d = DATA[currentIndex];
 
-      // Image swap (only if changing) + label update
-      if (cardImg.getAttribute('src') !== d.img) {
-        cardImg.src = d.img;
-        cardImg.alt = d.title;
-      }
-      cardNumEl.textContent   = 'No. 0' + d.num;
-      cardTitleEl.textContent = d.title;
-      cardCtaEl.setAttribute('href', d.href);
-      cardCtaEl.setAttribute('aria-label', 'View ' + d.title + ' details');
+      // Brief fade-out → swap content → fade back in.  Subtle (250 ms)
+      // so the card feels alive without making the user wait.
+      cardImg.classList.add('is-fading');
+      cardLabel.classList.add('is-fading');
+      setTimeout(function () {
+        if (cardImg.getAttribute('src') !== d.img) {
+          cardImg.src = d.img;
+          cardImg.alt = d.title;
+        }
+        cardNum.textContent   = 'No. ' + pad2(d.num);
+        cardTitle.textContent = d.title;
+        cardCta.setAttribute('href', d.href);
+        cardCta.setAttribute('aria-label', 'View ' + d.title + ' details');
+        counterEl.textContent = pad2(d.num);
+        cardImg.classList.remove('is-fading');
+        cardLabel.classList.remove('is-fading');
+      }, 180);
 
-      // Reset animation by removing class + forcing reflow before re-adding.
-      // CSS @keyframes restart from 0% on re-application; transitions would
-      // continue from the current value.
-      card.classList.remove('is-open');
-      // eslint-disable-next-line no-unused-expressions
-      card.offsetHeight;
-
-      card.style.left = left + 'px';
-      card.style.top  = top  + 'px';
-      card.style.transformOrigin = originXpct.toFixed(1) + '% ' + originYpct.toFixed(1) + '%';
-
-      stage.querySelectorAll('.pop-pt').forEach(function (b) {
+      // Highlight the matching hotspot
+      diagram.querySelectorAll('.pov-hotspot').forEach(function (b) {
         b.classList.toggle('is-active', String(d.num) === b.dataset.num);
       });
-      activeNum = d.num;
-
-      requestAnimationFrame(function () {
-        card.classList.add('is-open');
-      });
-      /* The previous build also auto-scrolled the page so the card sat
-         just under the sticky nav.  Removed — the 200 px stage padding
-         already gives every popup a clean home, and the surprise scroll
-         was knocking the X button out from under the user's cursor
-         mid-aim, so taps felt unresponsive and the page felt "frozen"
-         for a beat after each hotspot click. */
     }
 
-    /* Direct close-button handler bound in capture phase so the X
-       click fires before any ancestor listener and is guaranteed to
-       close the popup even if nested elements (e.g. the inner SVG)
-       absorb the click target. */
-    var closeBtn = card.querySelector('.pop-close');
-    closeBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      closeCard();
-    }, true);
+    // Initial render — no fade
+    (function init() {
+      var d = DATA[0];
+      cardImg.src = d.img;
+      cardImg.alt = d.title;
+      cardNum.textContent   = 'No. ' + pad2(d.num);
+      cardTitle.textContent = d.title;
+      cardCta.setAttribute('href', d.href);
+      counterEl.textContent = pad2(d.num);
+      diagram.querySelectorAll('.pov-hotspot').forEach(function (b) {
+        b.classList.toggle('is-active', String(d.num) === b.dataset.num);
+      });
+    })();
 
-    // Delegated click — hotspots only (close is handled above)
-    stage.addEventListener('click', function (e) {
-      if (e.target.closest('.pop-close')) return;  // already handled
-      var pt = e.target.closest('.pop-pt');
+    // Hotspot clicks
+    diagram.addEventListener('click', function (e) {
+      var pt = e.target.closest('.pov-hotspot');
       if (!pt) return;
-      e.stopPropagation();
       var num = Number(pt.dataset.num);
-      if (activeNum === num) { closeCard(); return; }
-      var d = DATA.find(function (x) { return x.num === num; });
-      if (d) openHotspot(d);
+      var idx = DATA.findIndex(function (x) { return x.num === num; });
+      if (idx >= 0) setCard(idx);
     });
 
-    // Click outside the stage closes
-    document.addEventListener('click', function (e) {
-      if (!activeNum) return;
-      if (stage.contains(e.target)) return;
-      closeCard();
-    });
+    // Prev / Next
+    prevBtn.addEventListener('click', function () { setCard(currentIndex - 1); });
+    nextBtn.addEventListener('click', function () { setCard(currentIndex + 1); });
 
-    // ESC closes
+    // Keyboard arrow nav when the card or any of its descendants is focused
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && activeNum) closeCard();
-    });
-
-    // Re-position on resize while open
-    window.addEventListener('resize', function () {
-      if (!activeNum) return;
-      var d = DATA.find(function (x) { return x.num === activeNum; });
-      if (d) openHotspot(d);
+      if (!layout.contains(document.activeElement)) return;
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); setCard(currentIndex - 1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); setCard(currentIndex + 1); }
     });
   })();
 </script>
@@ -5002,7 +4935,7 @@ window.parent.postMessage({ type: "__edit_mode_available" }, "*");
     '.ps-features-list > li',
 
     /* === Product Overview interactive diagram (homepage) === */
-    '.pop-figure', '.pop-stage > div',
+    '.pov-diagram', '.pov-panel',
 
     /* === Homepage section columns (Company Profile + R&D split) === */
     '.cp-grid > div',

@@ -354,6 +354,7 @@ button { font-family:inherit; cursor:pointer; }
       <a href="#globe-original-archived">Globe — original (archived)</a>
       <a href="#product-overview-popup">Product Overview — popup</a>
       <a href="#po-video-align">Product Overview — video → image align</a>
+      <a href="#po-archive-overlay">Product Overview — centred-overlay (archived)</a>
     </nav>
   </aside>
 
@@ -1847,6 +1848,316 @@ button { font-family:inherit; cursor:pointer; }
         cursor: pointer;
       }
     </style>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         Product Overview — centred-overlay popup (archived snapshot)
+         A frozen copy of the homepage build before it was replaced
+         with the side-panel layout.  All classes are prefixed `arch-`
+         and scoped under #po-archive-overlay so nothing leaks out of
+         this section or fights the live UIKit prototype above.
+         ═════════════════════════════════════════════════════════════ -->
+    <section class="uk-section" id="po-archive-overlay">
+      <div class="uk-section-head">
+        <span class="uk-section-num">16</span>
+        <h2 class="uk-section-title">Product Overview — centred-overlay (archived)</h2>
+      </div>
+      <p class="uk-section-desc">
+        Frozen snapshot of the centred-overlay-popup build that was
+        live on the homepage until we replaced it with the
+        right-side card-panel layout.  Kept here verbatim so the
+        interaction is still reachable if we ever want to revisit it
+        (hover/click pulse on the hotspots, scale-from-dot card animation,
+        per-hotspot cardX/cardY placement, click-outside / Esc / X to
+        close).
+      </p>
+
+      <style>
+        /* All rules scoped under #po-archive-overlay so this archive
+           can never bleed into the live prototype above. */
+        #po-archive-overlay .arch-pop-stage {
+          position:relative;
+          max-width:826px;
+          margin:0 auto;
+          padding:32px 0;
+        }
+        #po-archive-overlay .arch-pop-figure {
+          position:relative;
+          background:transparent;
+          border:0;
+          border-radius:0;
+          overflow:visible;
+        }
+        #po-archive-overlay .arch-pop-image-wrap {
+          position:relative;
+          width:100%;
+          aspect-ratio:1080/800;
+        }
+        #po-archive-overlay .arch-pop-image-wrap .arch-pop-bg {
+          position:absolute; inset:0;
+          width:100%; height:100%;
+          object-fit:contain;
+          display:block;
+          user-select:none;
+          -webkit-user-drag:none;
+          image-rendering:-webkit-optimize-contrast;
+        }
+        #po-archive-overlay .arch-pop-pt {
+          position:absolute;
+          width:38px; height:38px;
+          border-radius:50%;
+          background:#2E3192;
+          color:#FFFFFF;
+          font-family:var(--font-display); font-weight:700; font-size:15px;
+          border:none; cursor:pointer;
+          display:flex; align-items:center; justify-content:center;
+          transform:translate(-50%,-50%);
+          box-shadow:0 6px 16px rgba(46,49,146,0.40);
+          transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+          z-index:3;
+        }
+        #po-archive-overlay .arch-pop-pt::before {
+          content:''; position:absolute; inset:-6px;
+          border-radius:50%;
+          background:rgba(46,49,146,0.15);
+          opacity:0;
+          transform:scale(0.6);
+          transition:opacity .25s ease, transform .25s ease;
+          z-index:-1;
+        }
+        #po-archive-overlay .arch-pop-pt:hover {
+          transform:translate(-50%,-50%) scale(1.08);
+          box-shadow:0 8px 22px rgba(46,49,146,0.55);
+        }
+        #po-archive-overlay .arch-pop-pt:hover::before { opacity:1; transform:scale(1); }
+        #po-archive-overlay .arch-pop-pt.is-active {
+          background:#F37021;
+          box-shadow:0 8px 22px rgba(243,112,33,0.50);
+          z-index:5;
+        }
+        #po-archive-overlay .arch-pop-pt.is-active::before {
+          opacity:1; transform:scale(1);
+          background:rgba(243,112,33,0.18);
+          animation:arch-pop-pulse 1.6s ease-in-out infinite;
+        }
+        @keyframes arch-pop-pulse {
+          0%,100% { transform:scale(1);    opacity:0.6; }
+          50%     { transform:scale(1.25); opacity:0.3; }
+        }
+        #po-archive-overlay .arch-pop-card {
+          position:absolute;
+          width:340px; height:290px;
+          opacity:0;
+          transform:scale(0);
+          pointer-events:none;
+          will-change:transform, opacity, left, top;
+          z-index:4;
+        }
+        #po-archive-overlay .arch-pop-card-content {
+          position:absolute; inset:0;
+          background:#FFFFFF;
+          border:1px solid #ECECF1;
+          border-radius:14px;
+          overflow:hidden;
+          box-shadow:
+            0 24px 60px rgba(46,49,146,0.35),
+            0 8px 20px rgba(46,49,146,0.22);
+        }
+        #po-archive-overlay .arch-pop-card-img {
+          position:absolute; left:0; right:0; top:0; height:220px;
+          object-fit:cover; display:block; width:100%;
+          image-rendering:-webkit-optimize-contrast;
+        }
+        #po-archive-overlay .arch-pop-card-label {
+          position:absolute; left:0; right:0; bottom:0; height:70px;
+          padding:0 16px;
+          display:flex; flex-direction:column; justify-content:center;
+          gap:4px;
+          background:#FFFFFF;
+          border-top:3px solid #F58220;
+        }
+        #po-archive-overlay .arch-pop-card-num {
+          font-family:var(--font-display);
+          font-size:11px; font-weight:700; letter-spacing:1.4px;
+          color:#F58220; text-transform:uppercase;
+          margin:0;
+        }
+        #po-archive-overlay .arch-pop-card-row {
+          display:flex; align-items:center; justify-content:space-between;
+          gap:10px;
+        }
+        #po-archive-overlay .arch-pop-card-title {
+          font-family:var(--font-display);
+          font-size:16px; font-weight:700; line-height:1.15;
+          color:#111114;
+          margin:0;
+          flex:1; min-width:0;
+        }
+        #po-archive-overlay .arch-pop-card-cta {
+          display:inline-flex; align-items:center; gap:5px;
+          padding:6px 11px;
+          background:#F58220; color:#FFFFFF;
+          font-family:var(--font-sans);
+          font-size:11px; font-weight:600; letter-spacing:0.3px;
+          border-radius:6px;
+          text-decoration:none;
+          white-space:nowrap;
+          flex-shrink:0;
+          transition:background .2s ease, transform .15s ease;
+          pointer-events:auto;
+          position:relative; z-index:7;
+        }
+        #po-archive-overlay .arch-pop-card-cta:hover  { background:#E07418; color:#FFFFFF; }
+        #po-archive-overlay .arch-pop-card-cta:active { transform:scale(0.96); }
+        #po-archive-overlay .arch-pop-card-cta svg    { display:block; }
+        #po-archive-overlay .arch-pop-close {
+          position:absolute; top:10px; right:10px;
+          width:32px; height:32px; border-radius:50%;
+          background:rgba(255,255,255,0.96); color:#111114;
+          border:none; cursor:pointer;
+          display:inline-flex; align-items:center; justify-content:center;
+          box-shadow:0 4px 12px rgba(0,0,0,0.22);
+          transition:background .15s ease, transform .15s ease;
+          z-index:6;
+        }
+        #po-archive-overlay .arch-pop-close:hover { background:#FFFFFF; transform:scale(1.08); }
+        #po-archive-overlay .arch-pop-close:active { transform:scale(0.96); }
+        #po-archive-overlay .arch-pop-card.is-open {
+          pointer-events:auto;
+          animation:arch-pop-emerge .55s cubic-bezier(.34, 1.56, .64, 1) forwards;
+        }
+        @keyframes arch-pop-emerge {
+          0%   { opacity:0; transform:scale(0); }
+          55%  { opacity:1;                    }
+          100% { opacity:1; transform:scale(1); }
+        }
+      </style>
+
+      <div class="sandbox" style="padding:96px 24px;overflow:visible;background:#F4F6FB;">
+        <div class="arch-pop-stage" id="po-archive-stage">
+          <div class="arch-pop-figure">
+            <div class="arch-pop-image-wrap" id="po-archive-image-wrap">
+              <img class="arch-pop-bg" src="assets/PRODUCT%20OVERVIEW%202.png" alt="Furutec busduct system overview"/>
+              <div class="arch-pop-card" id="po-archive-card">
+                <div class="arch-pop-card-content">
+                  <img class="arch-pop-card-img" alt=""/>
+                  <div class="arch-pop-card-label">
+                    <p class="arch-pop-card-num"></p>
+                    <div class="arch-pop-card-row">
+                      <p class="arch-pop-card-title"></p>
+                      <a class="arch-pop-card-cta" href="#" aria-label="View product details">
+                        View
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+                      </a>
+                    </div>
+                  </div>
+                  <button type="button" class="arch-pop-close" aria-label="Close">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function archivedProductOverviewPopup() {
+          var DATA = [
+            { num:1, x:9.6,  y:13.8, cardX:62.6, cardY:50.8,
+              title:'Outdoor Solution',
+              img:'assets/products/CR%20(OUTDOOR)/cr%202.png',
+              href:'product.html#outdoor' },
+            { num:2, x:50.2, y:13.8, cardX:71.9, cardY:50.1,
+              title:'Indoor Solution',
+              img:'assets/products/AH%26AH-ES%20(INDOOR)/picture%206.png',
+              href:'product.html#indoor' },
+            { num:3, x:88.4, y:14.0, cardX:28.8, cardY:50.5,
+              title:'Data Centre Solution',
+              img:'assets/products/I-DC(DATA%20CENTRE)/i-dc%201.png',
+              href:'product.html#datacenter' },
+            { num:4, x:39.8, y:86.1, cardX:72.9, cardY:49.3,
+              title:'Power Monitoring Solution',
+              img:'assets/products/POWER%20MONITORING%20SYSTEM/pms%201.png',
+              href:'product.html#power' },
+            { num:5, x:88.4, y:86.1, cardX:43.4, cardY:49.9,
+              title:'Lighting Solution',
+              img:'assets/products/LB%26PB%20(LIGHTING)/pb%203.png',
+              href:'product.html#lighting' }
+          ];
+          var stage      = document.getElementById('po-archive-stage');
+          if (!stage) return;
+          var figureWrap = document.getElementById('po-archive-image-wrap');
+          var card       = document.getElementById('po-archive-card');
+          var cardImg    = card.querySelector('.arch-pop-card-img');
+          var cardNumEl  = card.querySelector('.arch-pop-card-num');
+          var cardTitleEl= card.querySelector('.arch-pop-card-title');
+          var cardCtaEl  = card.querySelector('.arch-pop-card-cta');
+          cardImg.decoding = 'async';
+          DATA.forEach(function (d) { var pre = new Image(); pre.decoding = 'async'; pre.src = d.img; });
+          var activeNum = null;
+          DATA.forEach(function (d) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'arch-pop-pt';
+            btn.dataset.num = d.num;
+            btn.style.left = d.x + '%';
+            btn.style.top  = d.y + '%';
+            btn.textContent = d.num;
+            btn.setAttribute('aria-label', 'Show product ' + d.num);
+            figureWrap.appendChild(btn);
+          });
+          function closeCard() {
+            activeNum = null;
+            card.classList.remove('is-open');
+            stage.querySelectorAll('.arch-pop-pt').forEach(function (b) { b.classList.remove('is-active'); });
+          }
+          function openHotspot(d) {
+            var wrapW = figureWrap.clientWidth;
+            var wrapH = figureWrap.clientHeight;
+            var cardW = card.offsetWidth  || 340;
+            var cardH = card.offsetHeight || 290;
+            var cardCX = (typeof d.cardX === 'number' ? d.cardX : 50) / 100 * wrapW;
+            var cardCY = (typeof d.cardY === 'number' ? d.cardY : 50) / 100 * wrapH;
+            var left = cardCX - cardW / 2;
+            var top  = cardCY - cardH / 2;
+            var hsX = (d.x / 100) * wrapW;
+            var hsY = (d.y / 100) * wrapH;
+            var originXpct = ((hsX - left) / cardW) * 100;
+            var originYpct = ((hsY - top)  / cardH) * 100;
+            if (cardImg.getAttribute('src') !== d.img) {
+              cardImg.src = d.img; cardImg.alt = d.title;
+            }
+            cardNumEl.textContent   = 'No. 0' + d.num;
+            cardTitleEl.textContent = d.title;
+            cardCtaEl.setAttribute('href', d.href);
+            cardCtaEl.setAttribute('aria-label', 'View ' + d.title + ' details');
+            card.classList.remove('is-open');
+            // eslint-disable-next-line no-unused-expressions
+            card.offsetHeight;
+            card.style.left = left + 'px';
+            card.style.top  = top  + 'px';
+            card.style.transformOrigin = originXpct.toFixed(1) + '% ' + originYpct.toFixed(1) + '%';
+            stage.querySelectorAll('.arch-pop-pt').forEach(function (b) {
+              b.classList.toggle('is-active', String(d.num) === b.dataset.num);
+            });
+            activeNum = d.num;
+            requestAnimationFrame(function () { card.classList.add('is-open'); });
+          }
+          var closeBtn = card.querySelector('.arch-pop-close');
+          closeBtn.addEventListener('click', function (e) { e.stopPropagation(); closeCard(); }, true);
+          stage.addEventListener('click', function (e) {
+            if (e.target.closest('.arch-pop-close')) return;
+            var pt = e.target.closest('.arch-pop-pt');
+            if (!pt) return;
+            e.stopPropagation();
+            var num = Number(pt.dataset.num);
+            if (activeNum === num) { closeCard(); return; }
+            var d = DATA.find(function (x) { return x.num === num; });
+            if (d) openHotspot(d);
+          });
+        })();
+      </script>
+    </section>
 
   </main>
 
