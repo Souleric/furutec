@@ -1323,7 +1323,7 @@ html { scroll-padding-top: 80px; }
       <video
         id="factory-video"
         src="assets/Furutec%20promo%20video%201.mp4"
-        playsinline preload="metadata"
+        muted playsinline preload="auto"
         controlslist="nodownload"
         poster="assets/promo%20video%20thumbnail.png"></video>
       <button type="button" class="video-showcase-overlay" aria-label="Play Inside Furutec factory video">
@@ -1338,16 +1338,60 @@ html { scroll-padding-top: 80px; }
         var video = document.getElementById('factory-video');
         var overlay = stage.querySelector('.video-showcase-overlay');
         if (!video || !overlay) return;
-        overlay.addEventListener('click', function () {
+
+        var autoStarted = false;
+
+        function start() {
           stage.classList.add('is-playing');
           video.controls = true;
           var p = video.play();
-          if (p && p.catch) p.catch(function () { /* user gesture present, should not fail */ });
+          if (p && p.catch) {
+            p.catch(function () {
+              /* Autoplay was blocked (rare with muted+playsinline).
+                 Roll back so the overlay's tap-to-play remains visible. */
+              stage.classList.remove('is-playing');
+              video.controls = false;
+            });
+          }
+        }
+
+        /* Manual tap-to-play — used both for the very first autoplay
+           fallback (if the browser blocks) and any time the video has
+           ended and the overlay is showing again. */
+        overlay.addEventListener('click', start);
+
+        /* Click anywhere on the video body toggles pause/play.  Clicks
+           that land on the native controls are absorbed by the browser
+           and never reach this handler, so the controls keep working. */
+        video.addEventListener('click', function () {
+          if (video.paused) {
+            video.play();
+          } else {
+            video.pause();
+          }
         });
+
+        /* When the clip finishes, restore the overlay so the user has a
+           tap-to-replay affordance. */
         video.addEventListener('ended', function () {
           stage.classList.remove('is-playing');
           video.controls = false;
         });
+
+        /* Autoplay the first time the section scrolls into view.
+           Threshold 0.4 fires when ~40 % of the player is on-screen —
+           generous enough to feel responsive without firing while the
+           user is still scrolling past. */
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting && !autoStarted) {
+              autoStarted = true;
+              start();
+              io.disconnect();
+            }
+          });
+        }, { threshold: 0.4 });
+        io.observe(stage);
       })();
     </script>
 
