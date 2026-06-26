@@ -1278,6 +1278,25 @@ html { scroll-padding-top: 80px; }
            cropped. */
         object-fit:contain; display:block;
       }
+      /* Invisible click-catcher that sits above the <video> element.
+         Solves a Safari quirk: clicking the video body fires Safari's
+         own click-to-toggle handler at the target phase *after* our
+         stage bubble handler pauses, which immediately re-plays the
+         clip.  By taking the click here we prevent it from ever
+         reaching the video element, so only our toggle runs.
+
+         Bottom 72 px is left uncovered so clicks on the native control
+         bar (play/pause, scrubber, volume, fullscreen) still reach
+         Safari's shadow-DOM controls untouched. */
+      .video-click-catcher {
+        position:absolute; left:0; right:0; top:0;
+        bottom:72px;
+        z-index:1;
+        cursor:pointer;
+        background:transparent;
+        pointer-events:none;   /* inert until playback starts */
+      }
+      .video-showcase.is-playing .video-click-catcher { pointer-events:auto; }
       .video-showcase-overlay {
         position:absolute; inset:0; z-index:2;
         cursor:pointer; border:0; padding:0; background:transparent;
@@ -1326,6 +1345,10 @@ html { scroll-padding-top: 80px; }
         muted playsinline preload="auto"
         controlslist="nodownload"
         poster="assets/promo%20video%20thumbnail.png"></video>
+      <!-- Catches body clicks during playback so Safari's native
+           click-to-toggle on the <video> element never fires.  See the
+           .video-click-catcher CSS rule for the why. -->
+      <div class="video-click-catcher" id="factory-click-catcher" aria-hidden="true"></div>
       <button type="button" class="video-showcase-overlay" aria-label="Play Inside Furutec factory video">
         <span class="video-showcase-play" aria-hidden="true"></span>
         <span class="video-showcase-caption">Inside Furutec — Manufacturing Facility</span>
@@ -1360,16 +1383,21 @@ html { scroll-padding-top: 80px; }
            ended and the overlay is showing again. */
         overlay.addEventListener('click', start);
 
-        /* Click anywhere on the video body toggles pause/play.  Clicks
-           that land on the native controls are absorbed by the browser
-           and never reach this handler, so the controls keep working. */
-        video.addEventListener('click', function () {
-          if (video.paused) {
-            video.play();
-          } else {
-            video.pause();
-          }
-        });
+        /* Click anywhere on the video body (above the native control
+           bar) toggles pause/play.  The click-catcher div sits on top
+           of the <video> element during playback so the click never
+           reaches the video — that's the only reliable way to stop
+           Safari from re-playing immediately after we pause. */
+        var catcher = document.getElementById('factory-click-catcher');
+        if (catcher) {
+          catcher.addEventListener('click', function () {
+            if (video.paused) {
+              video.play();
+            } else {
+              video.pause();
+            }
+          });
+        }
 
         /* When the clip finishes, restore the overlay so the user has a
            tap-to-replay affordance. */
