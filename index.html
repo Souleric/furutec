@@ -2750,11 +2750,11 @@ html { scroll-padding-top: 80px; }
   .prod-card p {
     font-size:13px; line-height:1.7; color:#6B6B73; margin:0 0 28px;
   }
-  /* Technical specs called out in the card copy — bold + darker so
-     ratings (e.g. 500 A – 6,300 A, IP65 / IP68, Seismic Zone 4)
-     pop out of the descriptive paragraph at a glance. */
+  /* Tech-spec <strong> tags are kept in the HTML for accessibility
+     and SEO, but rendered as normal body text within these cards
+     per client direction — no visual bolding. */
   .prod-card p strong {
-    color:#111114; font-weight:600;
+    color:inherit; font-weight:inherit;
   }
   .prod-card-cta {
     display:inline-flex; align-items:center; gap:10px;
