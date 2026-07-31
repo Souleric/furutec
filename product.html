@@ -1032,6 +1032,24 @@ html { scroll-padding-top: 80px; }
     .ps-diagram-title { font-size:22px; }
   }
 
+  /* Paired videos (used for LB + PB in Lighting section) */
+  .ps-diagram-pair {
+    width:100%; max-width:1100px; margin:0 auto;
+    display:grid; grid-template-columns:1fr 1fr; gap:28px;
+    align-items:start;
+  }
+  .ps-diagram-pair .ps-diagram-video { max-width:none; margin:0; }
+  .ps-diagram-pair-item { display:flex; flex-direction:column; }
+  .ps-diagram-pair-label {
+    font-family:var(--font-display); font-weight:700;
+    font-size:15px; letter-spacing:0.06em; text-transform:uppercase;
+    color:#2E3192; text-align:center; margin-bottom:14px;
+  }
+  @media (max-width: 900px) {
+    .ps-diagram-pair { grid-template-columns:1fr; gap:32px; }
+    .ps-diagram-pair-label { font-size:13px; margin-bottom:10px; }
+  }
+
   /* === Floating in-page nav — hidden at top, slides in on scroll === */
   .prod-nav {
     position:fixed; top:0; left:0; right:0; z-index:5;
@@ -1562,6 +1580,37 @@ html { scroll-padding-top: 80px; }
         </div>
       </div>
 
+    </div>
+
+    <!-- Bottom: paired component diagrams (LB + PB) -->
+    <div class="ps-diagram-band">
+      <div class="ps-diagram-title"><em>LB &amp; PB — Component Diagram Breakdown</em></div>
+      <div class="ps-diagram-pair">
+        <div class="ps-diagram-pair-item">
+          <div class="ps-diagram-pair-label">LB Busduct</div>
+          <div class="ps-diagram-video" data-diagram-video>
+            <video src="assets/products/LB%26PB%20%28LIGHTING%29/LB%20Busduct.mp4"
+                   poster="assets/products/LB%26PB%20%28LIGHTING%29/LB%20Busduct-poster.jpg"
+                   muted playsinline autoplay preload="auto"></video>
+            <button type="button" class="ps-diagram-replay" aria-label="Replay LB Busduct video">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Replay
+            </button>
+          </div>
+        </div>
+        <div class="ps-diagram-pair-item">
+          <div class="ps-diagram-pair-label">PB Busduct</div>
+          <div class="ps-diagram-video" data-diagram-video>
+            <video src="assets/products/LB%26PB%20%28LIGHTING%29/PB%20Busduct.mp4"
+                   poster="assets/products/LB%26PB%20%28LIGHTING%29/PB%20Busduct-poster.jpg"
+                   muted playsinline autoplay preload="auto"></video>
+            <button type="button" class="ps-diagram-replay" aria-label="Replay PB Busduct video">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Replay
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
