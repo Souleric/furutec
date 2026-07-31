@@ -732,13 +732,17 @@ html { scroll-padding-top: 80px; }
 
     <div class="gi-grid">
       <!-- LEFT — Form -->
-      <form class="gi-card" onsubmit="event.preventDefault();">
+      <form class="gi-card" id="quote-form" action="contact.php" method="post" novalidate>
         <h3 style="font-family:var(--font-display);font-size:22px;font-weight:700;color:#111114;margin:0 0 20px;">Furutec Busduct System</h3>
+
+        <div style="position:absolute;left:-9999px;" aria-hidden="true">
+          <label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"/></label>
+        </div>
 
         <div class="gi-field">
           <label class="gi-label">Select Topic *</label>
           <div style="position:relative;">
-            <select class="gi-select" required>
+            <select class="gi-select" name="topic" required>
               <option value="">Choose one</option>
               <option>Indoor Busduct</option>
               <option>Outdoor Busduct</option>
@@ -752,24 +756,24 @@ html { scroll-padding-top: 80px; }
 
         <div class="gi-field">
           <label class="gi-label">Full Name *</label>
-          <input class="gi-input" placeholder="Your full name" required/>
+          <input class="gi-input" name="fullName" placeholder="Your full name" required/>
         </div>
 
         <div class="gi-row">
           <div class="gi-field">
             <label class="gi-label">Corporate Email *</label>
-            <input class="gi-input" type="email" placeholder="name@company.com" required/>
+            <input class="gi-input" name="email" type="email" placeholder="name@company.com" required/>
           </div>
           <div class="gi-field">
             <label class="gi-label">Phone Number *</label>
-            <input class="gi-input" type="tel" placeholder="+60 …" required/>
+            <input class="gi-input" name="phone" type="tel" placeholder="+60 …" required/>
           </div>
         </div>
 
         <div class="gi-field">
           <label class="gi-label">Country *</label>
           <div style="position:relative;">
-            <select class="gi-select" required>
+            <select class="gi-select" name="country" required>
               <option value="">Select country</option>
               <option>Malaysia</option>
               <option>Singapore</option>
@@ -791,17 +795,75 @@ html { scroll-padding-top: 80px; }
 
         <div class="gi-field">
           <label class="gi-label">Project Description *</label>
-          <textarea class="gi-textarea" placeholder="Load, location, schedule, project type…" required></textarea>
+          <textarea class="gi-textarea" name="message" placeholder="Load, location, schedule, project type…" required></textarea>
         </div>
 
-        <button type="submit" class="btn-blue" style="width:100%;background:#2E3192;color:#FFFFFF;height:52px;font-family:var(--font-sans);font-size:14px;font-weight:600;letter-spacing:0.3px;cursor:pointer;margin-top:8px;">
+        <button type="submit" id="quote-submit" class="btn-blue" style="width:100%;background:#2E3192;color:#FFFFFF;height:52px;font-family:var(--font-sans);font-size:14px;font-weight:600;letter-spacing:0.3px;cursor:pointer;margin-top:8px;">
           Submit Now
         </button>
+
+        <div id="quote-status" style="display:none;margin-top:14px;padding:12px 14px;border-radius:6px;font-size:13px;line-height:1.5;"></div>
 
         <p style="font-size:11.5px;line-height:1.6;color:#6B6B73;margin:18px 0 0;text-align:center;letter-spacing:0.2px;">
           Response within 24 hours · No Spam · Dedicated Engineering Support
         </p>
       </form>
+
+      <script>
+        (function () {
+          var form = document.getElementById('quote-form');
+          if (!form) return;
+          var submitBtn = document.getElementById('quote-submit');
+          var status = document.getElementById('quote-status');
+
+          function showStatus(kind, msg) {
+            status.style.display = 'block';
+            status.textContent = msg;
+            if (kind === 'ok') {
+              status.style.background = '#E8F5E9';
+              status.style.color = '#1B5E20';
+              status.style.border = '1px solid #A5D6A7';
+            } else {
+              status.style.background = '#FDECEA';
+              status.style.color = '#B71C1C';
+              status.style.border = '1px solid #F5C6CB';
+            }
+          }
+
+          form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (!form.checkValidity()) { form.reportValidity(); return; }
+
+            submitBtn.disabled = true;
+            var originalLabel = submitBtn.textContent;
+            submitBtn.textContent = 'Sending…';
+            status.style.display = 'none';
+
+            var body = new FormData(form);
+            fetch(form.action, {
+              method: 'POST',
+              body: body,
+              headers: { 'Accept': 'application/json' }
+            })
+              .then(function (r) { return r.json().catch(function () { return { ok: false, error: 'Server returned an unexpected response.' }; }); })
+              .then(function (data) {
+                if (data.ok) {
+                  showStatus('ok', 'Thanks — your enquiry has been sent. Our team will reply within 24 hours.');
+                  form.reset();
+                } else {
+                  showStatus('err', data.error || 'Something went wrong. Please try again or email info@furutec.com.my directly.');
+                }
+              })
+              .catch(function () {
+                showStatus('err', 'Network error. Please check your connection and try again, or email info@furutec.com.my directly.');
+              })
+              .finally(function () {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalLabel;
+              });
+          });
+        })();
+      </script>
 
       <!-- RIGHT — Locations + map -->
       <div class="gi-card" style="padding:0;overflow:hidden;">
