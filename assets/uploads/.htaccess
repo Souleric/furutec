@@ -1,0 +1,15 @@
+# Amy-uploaded media (images, videos).  Publicly readable so the site can serve them,
+# but never execute PHP or CGI in this folder even if someone slips a script through.
+<Files *>
+    SetHandler default-handler
+</Files>
+<FilesMatch "\.(php|phtml|php3|php4|php5|php7|phps|cgi|pl|py|sh|htaccess)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+Options -ExecCGI

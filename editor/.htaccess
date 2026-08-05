@@ -1,0 +1,18 @@
+# /editor — protected by app-level session auth.  These rules are just
+# belt-and-suspenders (block direct access to lib/, keep search engines out).
+
+<IfModule mod_headers.c>
+    Header set X-Robots-Tag "noindex, nofollow"
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
+# Never serve internal helper libraries directly.
+<FilesMatch "\.(php)$">
+    # (leave PHP files servable — the app relies on it)
+</FilesMatch>
+
+# Deny direct access to library folder — only include-from-PHP.
+RewriteEngine On
+RewriteRule ^lib/ - [F,L]
+RewriteRule ^templates/ - [F,L]
