@@ -170,6 +170,67 @@ function fx_build_substitutions($page_id, $content) {
         $s['CS_CTA_LABEL'] = fx_escape(isset($cs['cta_label']) ? $cs['cta_label'] : '');
     }
 
+    // ============================================================
+    // PORTFOLIO page sections (portfolio-track-record.html)
+    // ============================================================
+    if ($page_id === 'portfolio') {
+        $h = isset($page['port_hero']) ? $page['port_hero'] : array();
+        $s['PH_EYEBROW']   = fx_escape(isset($h['eyebrow'])   ? $h['eyebrow']   : '');
+        $s['PH_HEADING_1'] = fx_escape(isset($h['heading_1']) ? $h['heading_1'] : '');
+        $s['PH_HEADING_2'] = fx_escape(isset($h['heading_2']) ? $h['heading_2'] : '');
+        $s['PH_SUBTITLE']  = fx_escape(isset($h['subtitle'])  ? $h['subtitle']  : '');
+
+        $g = isset($page['port_grid']) ? $page['port_grid'] : array();
+        for ($i = 1; $i <= 9; $i++) {
+            $s["PG_CARD_{$i}_IMAGE_URL"] = fx_asset_url(isset($g["card_{$i}_image"]) ? $g["card_{$i}_image"] : '');
+            $s["PG_CARD_{$i}_TAG"]       = fx_escape(isset($g["card_{$i}_tag"])   ? $g["card_{$i}_tag"]   : '');
+            $s["PG_CARD_{$i}_TITLE"]     = fx_escape(isset($g["card_{$i}_title"]) ? $g["card_{$i}_title"] : '');
+            $s["PG_CARD_{$i}_DESC"]      = fx_escape(isset($g["card_{$i}_desc"])  ? $g["card_{$i}_desc"]  : '');
+        }
+    }
+
+    // ============================================================
+    // CONTACT page sections (quote.html)
+    // ============================================================
+    if ($page_id === 'contact') {
+        // Hero
+        $h = isset($page['contact_hero']) ? $page['contact_hero'] : array();
+        $s['CT_HERO_EYEBROW']   = fx_escape(isset($h['eyebrow'])   ? $h['eyebrow']   : '');
+        $s['CT_HERO_HEADING_1'] = fx_escape(isset($h['heading_1']) ? $h['heading_1'] : '');
+        $s['CT_HERO_HEADING_2'] = fx_escape(isset($h['heading_2']) ? $h['heading_2'] : '');
+
+        // Form labels
+        $fm = isset($page['contact_form']) ? $page['contact_form'] : array();
+        $s['CT_FORM_TITLE']    = fx_escape(isset($fm['title'])    ? $fm['title']    : '');
+        $s['CT_FORM_REASSURE'] = fx_escape(isset($fm['reassure']) ? $fm['reassure'] : '');
+
+        // Locations + map
+        $l = isset($page['contact_locations']) ? $page['contact_locations'] : array();
+        $s['CT_COMPANY_NAME'] = fx_escape(isset($l['company_name']) ? $l['company_name'] : '');
+        // Addresses: preserve line breaks as <br/>.
+        for ($n = 1; $n <= 2; $n++) {
+            $s["CT_LOC{$n}_LABEL"] = fx_escape(isset($l["loc_{$n}_label"]) ? $l["loc_{$n}_label"] : '');
+            $addr = isset($l["loc_{$n}_addr"]) ? $l["loc_{$n}_addr"] : '';
+            // Normalise Windows/Mac newlines to \n, then escape, then swap.
+            $addr = str_replace(array("\r\n", "\r"), "\n", $addr);
+            $addr_escaped = fx_escape($addr);
+            $s["CT_LOC{$n}_ADDR_HTML"] = str_replace("\n", "<br/>\n                ", $addr_escaped);
+            $s["CT_LOC{$n}_MAPS_URL"]  = fx_escape(isset($l["loc_{$n}_maps_url"]) ? $l["loc_{$n}_maps_url"] : '#');
+        }
+        $s['CT_MAP_TAB_1_LABEL'] = fx_escape(isset($l['map_tab_1_label']) ? $l['map_tab_1_label'] : '');
+        $s['CT_MAP_TAB_2_LABEL'] = fx_escape(isset($l['map_tab_2_label']) ? $l['map_tab_2_label'] : '');
+
+        // Direct-contact tiles
+        $d = isset($page['contact_direct']) ? $page['contact_direct'] : array();
+        $s['CT_TILE_1_LABEL']        = fx_escape(isset($d['tile_1_label'])        ? $d['tile_1_label']        : '');
+        $s['CT_TILE_1_VALUE']        = fx_escape(isset($d['tile_1_value'])        ? $d['tile_1_value']        : '');
+        $s['CT_TILE_2_LABEL']        = fx_escape(isset($d['tile_2_label'])        ? $d['tile_2_label']        : '');
+        $s['CT_TILE_2_VALUE']        = fx_escape(isset($d['tile_2_value'])        ? $d['tile_2_value']        : '');
+        $s['CT_TILE_3_LABEL']        = fx_escape(isset($d['tile_3_label'])        ? $d['tile_3_label']        : '');
+        $s['CT_TILE_3_VALUE_LINE_1'] = fx_escape(isset($d['tile_3_value_line_1']) ? $d['tile_3_value_line_1'] : '');
+        $s['CT_TILE_3_VALUE_LINE_2'] = fx_escape(isset($d['tile_3_value_line_2']) ? $d['tile_3_value_line_2'] : '');
+    }
+
     return $s;
 }
 

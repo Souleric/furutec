@@ -22,6 +22,18 @@ return array(
             'live_file' => 'portfolio.html',
             'sections'  => array('cert_hero', 'cert_grid', 'cert_stand'),
         ),
+        'portfolio' => array(
+            'label'     => 'Portfolio page',
+            'template'  => 'portfolio.template.html',
+            'live_file' => 'portfolio-track-record.html',
+            'sections'  => array('port_hero', 'port_grid'),
+        ),
+        'contact' => array(
+            'label'     => 'Contact page',
+            'template'  => 'contact.template.html',
+            'live_file' => 'quote.html',
+            'sections'  => array('contact_hero', 'contact_form', 'contact_locations', 'contact_direct'),
+        ),
     ),
 
     'shared_sections' => array('nav', 'footer'),
@@ -265,6 +277,123 @@ return array(
                 'heading'   => array('type'=>'text','label'=>'Heading','max'=>80),
                 'body'      => array('type'=>'textarea','label'=>'Body paragraph','rows'=>4,'max'=>600),
                 'cta_label' => array('type'=>'text','label'=>'CTA link label','help'=>'The link URL (to portfolio-track-record.html) stays fixed.','max'=>40),
+            ),
+        ),
+
+        // ============================================================
+        // PORTFOLIO PAGE SECTIONS (portfolio-track-record.html)
+        // ============================================================
+        'port_hero' => array(
+            'label'   => 'Portfolio hero',
+            'summary' => 'Top of the Portfolio page — eyebrow, 2-line heading, subtitle.',
+            'fields'  => array(
+                'eyebrow'   => array('type'=>'text','label'=>'Eyebrow label','max'=>40),
+                'heading_1' => array('type'=>'text','label'=>'Heading · Line 1','max'=>60),
+                'heading_2' => array('type'=>'text','label'=>'Heading · Line 2 (accent)','max'=>60),
+                'subtitle'  => array('type'=>'textarea','label'=>'Subtitle','rows'=>3,'max'=>400),
+            ),
+        ),
+
+        'port_grid' => array(
+            'label'   => 'Sector grid (9 cards)',
+            'summary' => 'Each sector tile has a background image, a tag pill, a title, and a description.',
+            'fields'  => array(
+                'card_1_image' => array('type'=>'image','group'=>'Card 1 (top-left)','label'=>'Background image','help'=>'4:3 photo works best','max_mb'=>5),
+                'card_1_tag'   => array('type'=>'text', 'group'=>'Card 1 (top-left)','label'=>'Tag pill','max'=>40),
+                'card_1_title' => array('type'=>'text', 'group'=>'Card 1 (top-left)','label'=>'Title','max'=>60),
+                'card_1_desc'  => array('type'=>'textarea','group'=>'Card 1 (top-left)','label'=>'Description','rows'=>3,'max'=>400),
+
+                'card_2_image' => array('type'=>'image','group'=>'Card 2','label'=>'Background image','max_mb'=>5),
+                'card_2_tag'   => array('type'=>'text', 'group'=>'Card 2','label'=>'Tag pill','max'=>40),
+                'card_2_title' => array('type'=>'text', 'group'=>'Card 2','label'=>'Title','max'=>60),
+                'card_2_desc'  => array('type'=>'textarea','group'=>'Card 2','label'=>'Description','rows'=>3,'max'=>400),
+
+                'card_3_image' => array('type'=>'image','group'=>'Card 3','label'=>'Background image','max_mb'=>5),
+                'card_3_tag'   => array('type'=>'text', 'group'=>'Card 3','label'=>'Tag pill','max'=>40),
+                'card_3_title' => array('type'=>'text', 'group'=>'Card 3','label'=>'Title','max'=>60),
+                'card_3_desc'  => array('type'=>'textarea','group'=>'Card 3','label'=>'Description','rows'=>3,'max'=>400),
+
+                'card_4_image' => array('type'=>'image','group'=>'Card 4','label'=>'Background image','max_mb'=>5),
+                'card_4_tag'   => array('type'=>'text', 'group'=>'Card 4','label'=>'Tag pill','max'=>40),
+                'card_4_title' => array('type'=>'text', 'group'=>'Card 4','label'=>'Title','max'=>60),
+                'card_4_desc'  => array('type'=>'textarea','group'=>'Card 4','label'=>'Description','rows'=>3,'max'=>400),
+
+                'card_5_image' => array('type'=>'image','group'=>'Card 5','label'=>'Background image','max_mb'=>5),
+                'card_5_tag'   => array('type'=>'text', 'group'=>'Card 5','label'=>'Tag pill','max'=>40),
+                'card_5_title' => array('type'=>'text', 'group'=>'Card 5','label'=>'Title','max'=>60),
+                'card_5_desc'  => array('type'=>'textarea','group'=>'Card 5','label'=>'Description','rows'=>3,'max'=>400),
+
+                'card_6_image' => array('type'=>'image','group'=>'Card 6','label'=>'Background image','max_mb'=>5),
+                'card_6_tag'   => array('type'=>'text', 'group'=>'Card 6','label'=>'Tag pill','max'=>40),
+                'card_6_title' => array('type'=>'text', 'group'=>'Card 6','label'=>'Title','max'=>60),
+                'card_6_desc'  => array('type'=>'textarea','group'=>'Card 6','label'=>'Description','rows'=>3,'max'=>400),
+
+                'card_7_image' => array('type'=>'image','group'=>'Card 7','label'=>'Background image','max_mb'=>5),
+                'card_7_tag'   => array('type'=>'text', 'group'=>'Card 7','label'=>'Tag pill','max'=>40),
+                'card_7_title' => array('type'=>'text', 'group'=>'Card 7','label'=>'Title','max'=>60),
+                'card_7_desc'  => array('type'=>'textarea','group'=>'Card 7','label'=>'Description','rows'=>3,'max'=>400),
+
+                'card_8_image' => array('type'=>'image','group'=>'Card 8','label'=>'Background image','max_mb'=>5),
+                'card_8_tag'   => array('type'=>'text', 'group'=>'Card 8','label'=>'Tag pill','max'=>40),
+                'card_8_title' => array('type'=>'text', 'group'=>'Card 8','label'=>'Title','max'=>60),
+                'card_8_desc'  => array('type'=>'textarea','group'=>'Card 8','label'=>'Description','rows'=>3,'max'=>400),
+
+                'card_9_image' => array('type'=>'image','group'=>'Card 9','label'=>'Background image','max_mb'=>5),
+                'card_9_tag'   => array('type'=>'text', 'group'=>'Card 9','label'=>'Tag pill','max'=>40),
+                'card_9_title' => array('type'=>'text', 'group'=>'Card 9','label'=>'Title','max'=>60),
+                'card_9_desc'  => array('type'=>'textarea','group'=>'Card 9','label'=>'Description','rows'=>3,'max'=>400),
+            ),
+        ),
+
+        // ============================================================
+        // CONTACT PAGE SECTIONS (quote.html)
+        // ============================================================
+        'contact_hero' => array(
+            'label'   => 'Contact hero',
+            'summary' => 'Top of the Contact page — eyebrow and 2-line heading.',
+            'fields'  => array(
+                'eyebrow'   => array('type'=>'text','label'=>'Eyebrow label','max'=>40),
+                'heading_1' => array('type'=>'text','label'=>'Heading · Line 1','max'=>60),
+                'heading_2' => array('type'=>'text','label'=>'Heading · Line 2 (accent)','max'=>60),
+            ),
+        ),
+
+        'contact_form' => array(
+            'label'   => 'Contact form (labels only)',
+            'summary' => 'Form title and reassurance line. The form fields themselves stay wired to contact.php.',
+            'fields'  => array(
+                'title'     => array('type'=>'text','label'=>'Form title','help'=>'Small heading above the form.','max'=>60),
+                'reassure'  => array('type'=>'text','label'=>'Reassurance line','help'=>'Shown below the submit button. Use · for dot separator.','max'=>200),
+            ),
+        ),
+
+        'contact_locations' => array(
+            'label'   => 'Locations + map',
+            'summary' => 'Company name, two addresses, map tabs.',
+            'fields'  => array(
+                'company_name'    => array('type'=>'text','label'=>'Company name','max'=>80),
+                'loc_1_label'     => array('type'=>'text','group'=>'Location 1','label'=>'Small label','help'=>'Shown above the address (e.g. "Headquarters").','max'=>40),
+                'loc_1_addr'      => array('type'=>'textarea','group'=>'Location 1','label'=>'Address','help'=>'One address line per line. Line breaks show as new lines on the site.','rows'=>3,'max'=>400),
+                'loc_1_maps_url'  => array('type'=>'url','group'=>'Location 1','label'=>'Google Maps directions URL','help'=>'The URL the "Directions" pill links to.','max'=>500),
+                'loc_2_label'     => array('type'=>'text','group'=>'Location 2','label'=>'Small label','max'=>40),
+                'loc_2_addr'      => array('type'=>'textarea','group'=>'Location 2','label'=>'Address','rows'=>3,'max'=>400),
+                'loc_2_maps_url'  => array('type'=>'url','group'=>'Location 2','label'=>'Google Maps directions URL','max'=>500),
+                'map_tab_1_label' => array('type'=>'text','group'=>'Map tabs','label'=>'Tab 1 label','max'=>40),
+                'map_tab_2_label' => array('type'=>'text','group'=>'Map tabs','label'=>'Tab 2 label','max'=>40),
+            ),
+        ),
+
+        'contact_direct' => array(
+            'label'   => 'Contact Us Directly tiles',
+            'summary' => 'Three tiles at the bottom of the section: Email, Phone, Working Hours.',
+            'fields'  => array(
+                'tile_1_label'        => array('type'=>'text','group'=>'Tile 1 · Email','label'=>'Label','max'=>40),
+                'tile_1_value'        => array('type'=>'text','group'=>'Tile 1 · Email','label'=>'Value','max'=>120),
+                'tile_2_label'        => array('type'=>'text','group'=>'Tile 2 · Phone','label'=>'Label','max'=>40),
+                'tile_2_value'        => array('type'=>'text','group'=>'Tile 2 · Phone','label'=>'Value','max'=>120),
+                'tile_3_label'        => array('type'=>'text','group'=>'Tile 3 · Working Hours','label'=>'Label','max'=>40),
+                'tile_3_value_line_1' => array('type'=>'text','group'=>'Tile 3 · Working Hours','label'=>'Value · Line 1','max'=>120),
+                'tile_3_value_line_2' => array('type'=>'text','group'=>'Tile 3 · Working Hours','label'=>'Value · Line 2','max'=>120),
             ),
         ),
 

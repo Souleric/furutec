@@ -205,4 +205,105 @@ return array(
 
     ),
 
+    // ============================================================
+    // PORTFOLIO PAGE (portfolio-track-record.html)
+    // ============================================================
+    'portfolio' => array(
+
+        'port_hero' => array(
+            'eyebrow'   => 'TRACK RECORD',
+            'heading_1' => 'Trusted across',
+            'heading_2' => 'every industry.',
+            'subtitle'  => 'Furutec busduct systems power facilities where reliability is not optional — from heavy industry to mission-critical infrastructure.',
+        ),
+
+        'port_grid' => array(
+            'card_1_image' => 'Portfolio/data centre.png',
+            'card_1_tag'   => 'High Reliability',
+            'card_1_title' => 'Data Centre',
+            'card_1_desc'  => 'High-capacity busduct systems designed for data centres, ensuring reliable power distribution, scalability, and zero downtime with plug-and-play expansion.',
+
+            'card_2_image' => 'Portfolio/infrastructure.png',
+            'card_2_tag'   => 'Heavy Duty',
+            'card_2_title' => 'Infrastructure (MRT & Train Station)',
+            'card_2_desc'  => 'Robust and safe power distribution solutions for MRT and railway infrastructure, supporting continuous operation in high-traffic environments.',
+
+            'card_3_image' => 'Portfolio/medical.png',
+            'card_3_tag'   => 'Mission Critical',
+            'card_3_title' => 'Medical & Healthcare',
+            'card_3_desc'  => 'Ensures uninterrupted and safe power supply for hospitals and healthcare facilities with redundant and low-maintenance systems.',
+
+            'card_4_image' => 'Portfolio/industrial.png',
+            'card_4_tag'   => 'Up to 6,500 A',
+            'card_4_title' => 'Industrial',
+            'card_4_desc'  => 'Reliable high-capacity busduct systems for manufacturing, automotive, and heavy industries with efficient energy distribution.',
+
+            'card_5_image' => 'Portfolio/oil and gas.png',
+            'card_5_tag'   => 'Harsh Environment',
+            'card_5_title' => 'Oil & Gas',
+            'card_5_desc'  => 'Durable and corrosion-resistant systems designed for demanding oil and gas environments, ensuring safety and operational reliability.',
+
+            'card_6_image' => 'Portfolio/commercial.png',
+            'card_6_tag'   => 'Space Efficient',
+            'card_6_title' => 'Commercial',
+            'card_6_desc'  => 'Compact and flexible power solutions for offices, malls, and commercial buildings, optimizing space and reducing installation complexity.',
+
+            'card_7_image' => 'Portfolio/residential.png',
+            'card_7_tag'   => 'Safe & Compact',
+            'card_7_title' => 'Residential',
+            'card_7_desc'  => 'Efficient and safe power distribution for residential developments, supporting modern living with compact design and reliability.',
+
+            'card_8_image' => 'Portfolio/education.png',
+            'card_8_tag'   => 'Energy Efficient',
+            'card_8_title' => 'Education',
+            'card_8_desc'  => 'Cost-effective and efficient systems for schools and universities, ensuring stable power for daily operations and future expansion.',
+
+            'card_9_image' => 'Portfolio/government.png',
+            'card_9_tag'   => 'High Compliance',
+            'card_9_title' => 'Government',
+            'card_9_desc'  => 'Trusted power distribution systems for government facilities, meeting strict regulatory standards and ensuring long-term reliability.',
+        ),
+
+    ),
+
+    // ============================================================
+    // CONTACT PAGE (quote.html)
+    // ============================================================
+    'contact' => array(
+
+        'contact_hero' => array(
+            'eyebrow'   => 'GET IN TOUCH',
+            'heading_1' => 'Ready to specify your',
+            'heading_2' => 'next busduct project?',
+        ),
+
+        'contact_form' => array(
+            'title'    => 'Furutec Busduct System',
+            'reassure' => 'Response within 24 hours · No Spam · Dedicated Engineering Support',
+        ),
+
+        'contact_locations' => array(
+            'company_name'    => 'Furutec Electrical Sdn Bhd',
+            'loc_1_label'     => 'Headquarters',
+            'loc_1_addr'      => "Lot Block A, 4, Jalan SS 13/7,\nSubang Jaya Industrial Estate,\n47500 Subang Jaya, Selangor.",
+            'loc_1_maps_url'  => 'https://www.google.com/maps/dir/?api=1&destination=Lot+Block+A%2C+4%2C+Jalan+SS+13%2F7%2C+Subang+Jaya+Industrial+Estate%2C+47500+Subang+Jaya%2C+Selangor',
+            'loc_2_label'     => 'Manufacturing Plant',
+            'loc_2_addr'      => "MK13, Plot 89, Lorong Perindustrian Bukit Minyak 11,\nKawasan Perindustrian Bukit Minyak,\n14100 Simpang Ampat, Penang.",
+            'loc_2_maps_url'  => 'https://www.google.com/maps/dir/?api=1&destination=MK13%2C+Plot+89%2C+Lorong+Perindustrian+Bukit+Minyak+11%2C+Kawasan+Perindustrian+Bukit+Minyak%2C+14100+Simpang+Ampat%2C+Penang',
+            'map_tab_1_label' => 'Subang Jaya HQ',
+            'map_tab_2_label' => 'Penang Plant',
+        ),
+
+        'contact_direct' => array(
+            'tile_1_label'        => 'Email',
+            'tile_1_value'        => 'info@furutec.com.my',
+            'tile_2_label'        => 'Phone',
+            'tile_2_value'        => '+6012-887 4517',
+            'tile_3_label'        => 'Working Hours',
+            'tile_3_value_line_1' => '8:30 AM – 6:00 PM',
+            'tile_3_value_line_2' => 'Monday to Friday',
+        ),
+
+    ),
+
 );
