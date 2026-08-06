@@ -642,6 +642,52 @@ html { scroll-padding-top: 80px; }
 #ft-quote-btn .btn-arrow > span svg { stroke: currentColor !important; }
 </style>
 
+<!-- Mobile responsive fixes (added 2026-08-06 to eliminate horizontal scroll and stack multi-column layouts on phones) -->
+<style id="fx-mobile-fixes">
+  /* Global safety net: never allow a horizontal scrollbar on mobile */
+  html, body { overflow-x: hidden; }
+
+  /* --- FOOTER: stack the 5-column grid into 2 columns on mobile (all pages) --- */
+  @media (max-width: 720px) {
+    footer > div[style*="grid-template-columns:1.6fr"] {
+      grid-template-columns: 1fr 1fr !important;
+      padding: 40px 20px 28px !important;
+      gap: 28px !important;
+    }
+    /* Logo + contact block spans the full width */
+    footer > div[style*="grid-template-columns:1.6fr"] > div:first-child {
+      grid-column: 1 / -1;
+    }
+    /* Bottom bar (Privacy · Copyright · Social) stacks vertically */
+    footer > div[style*="background:#0A0A0B"] > div {
+      grid-template-columns: 1fr !important;
+      justify-items: center !important;
+      text-align: center !important;
+      gap: 14px !important;
+    }
+    footer > div[style*="background:#0A0A0B"] > div > div:last-child {
+      justify-content: center !important;
+    }
+  }
+
+  /* --- HOMEPAGE: Bukit Minyak Facilities — stack copy over photos --- */
+  @media (max-width: 900px) {
+    .fv2-hero { grid-template-columns: 1fr !important; gap: 32px !important; }
+    .fv2-photos { grid-template-columns: 1fr !important; }
+    .fv2-photos img { width: 100%; height: auto; display: block; }
+    .fv2-process { display: none !important; } /* overlay strip doesn't work at 1-column */
+  }
+
+  /* --- HOMEPAGE: Our Products header — stack heading and CTAs --- */
+  @media (max-width: 720px) {
+    section > div > div[style*="grid-template-columns:1fr 1fr"][style*="align-items:start"][style*="margin-bottom:48px"] {
+      grid-template-columns: 1fr !important;
+      gap: 24px !important;
+      margin-bottom: 32px !important;
+    }
+  }
+</style>
+
 </head>
 
 <body>
