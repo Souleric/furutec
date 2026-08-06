@@ -306,4 +306,219 @@ return array(
 
     ),
 
+    // ============================================================
+    // PRODUCT PAGE (product.html)
+    // ============================================================
+    'product' => array(
+
+        'product_intro' => array(
+            'eyebrow'        => 'OUR PRODUCTS',
+            'heading_1'      => 'Complete busduct solutions',
+            'heading_accent' => 'for every environment.',
+            'subtitle'       => 'From standard indoor installations to intelligent data center distribution. Furutec has the right system for your project.',
+        ),
+
+        'product_nav' => array(
+            'indoor_label'     => '01 · Indoor Busduct',
+            'outdoor_label'    => '02 · Outdoor Busduct',
+            'datacenter_label' => '03 · Data Centre Solution',
+            'power_label'      => '04 · Power Monitoring',
+            'lighting_label'   => '05 · Lighting Busduct',
+        ),
+
+        // ---- 01 · Indoor ----
+        'product_indoor' => array(
+            'section_title' => 'INDOOR BUSDUCT SOLUTION',
+            'tag_label'     => 'Most Popular',
+            'title'         => 'AH & AH-ES BUSDUCT',
+            'subtitle'      => 'Integrated Power Distribution for Every Scale',
+            'desc'          => 'The sandwich-type busduct designed for high-capacity power transmission with minimal voltage drop. Its compact architecture makes it ideal for tight riser shafts in modern architecture.',
+
+            'slide_1_image' => 'Indoor Busduct Solution/picture 4.png',
+            'slide_1_alt'   => 'AH & AH-ES Busduct — insulation and bolt detail',
+            'slide_2_image' => 'Indoor Busduct Solution/Picture 1.png',
+            'slide_2_alt'   => 'AH & AH-ES Busduct — ceiling installation',
+            'slide_3_image' => 'Indoor Busduct Solution/picture 2.png',
+            'slide_3_alt'   => 'AH & AH-ES Busduct — power distribution panels overhead',
+            'slide_4_image' => 'Indoor Busduct Solution/picture 3.png',
+            'slide_4_alt'   => 'AH & AH-ES Busduct — L1 L2 L3 N connection close-up',
+            'slide_5_image' => 'Indoor Busduct Solution/picture 5.jpg',
+            'slide_5_alt'   => 'AH & AH-ES Busduct — ceiling-mounted installation',
+
+            'feature_1' => 'Compact Sandwich Construction',
+            'feature_2' => 'Extruded Aluminium Alloy Housing',
+            'feature_3' => 'Corrosion Resistant',
+            'feature_4' => 'Excellent Heat Dissipation',
+            'feature_5' => '50% Earth Bar or 100% Housing Ground System',
+            'feature_6' => 'Seismic Zone 4 Protection',
+            'feature_7' => 'IK10 Mechanical Impact',
+            'feature_8' => 'Complete IP66',
+
+            'spec_1_label' => 'Current Rating',      'spec_1_value' => '500 A – 6,300 A',
+            'spec_2_label' => 'Voltage',             'spec_2_value' => 'Up to 1,000 V',
+            'spec_3_label' => 'Compliance Standard', 'spec_3_value' => 'IEC 61439-6 & UL 857',
+            'spec_4_label' => 'Insulation Material', 'spec_4_value' => 'Polyester Film / Epoxy (Optional)',
+            'spec_5_label' => 'Conductor',           'spec_5_value' => 'Copper / Aluminium',
+
+            'diagram_title'  => 'AH & AH-ES — Component Diagram Breakdown',
+            'diagram_video'  => 'products/indoor-diagram video.mp4',
+            'diagram_poster' => 'products/indoor-diagram-poster.jpg',
+        ),
+
+        // ---- 02 · Outdoor ----
+        'product_outdoor' => array(
+            'section_title' => 'OUTDOOR BUSDUCT SOLUTION',
+            'tag_label'     => 'Weatherproof',
+            'title'         => 'CAST RESIN BUSDUCT',
+            'subtitle'      => 'Safe by Design, Powered by Resin',
+            'desc'          => 'Built for the most extreme environments. The CR busduct is encapsulated in a specialized cast resin that provides total protection against water, dust, and chemical corrosion.',
+
+            'slide_1_image' => 'products/CR (OUTDOOR)/cr 1.png',
+            'slide_1_alt'   => 'Cast Resin Busduct — view 1',
+            'slide_2_image' => 'products/CR (OUTDOOR)/cr 2.png',
+            'slide_2_alt'   => 'Cast Resin Busduct — view 2',
+            'slide_3_image' => 'products/CR (OUTDOOR)/cr 3.png',
+            'slide_3_alt'   => 'Cast Resin Busduct — view 3',
+            'slide_4_image' => 'products/CR (OUTDOOR)/cr 4.png',
+            'slide_4_alt'   => 'Cast Resin Busduct — view 4',
+            'slide_5_image' => 'products/CR (OUTDOOR)/cr 5.png',
+            'slide_5_alt'   => 'Cast Resin Busduct — view 5',
+
+            'feature_1' => 'Compliant with BS 6387, IEC 60331, JIS C8364 & CNS 14286',
+            'feature_2' => 'Mineral-Insulated Cast Resin Type',
+            'feature_3' => 'Excellent Heat Dissipation',
+            'feature_4' => 'Resistant to Water, Fire & Corrosion',
+            'feature_5' => 'Seismic Zone 4 Protection',
+            'feature_6' => 'IK10 Mechanical Impact',
+            'feature_7' => 'High Degree Protection of IP68',
+
+            'spec_1_label' => 'Current Rating',      'spec_1_value' => '400 A – 6,300 A',
+            'spec_2_label' => 'IP Rating',           'spec_2_value' => 'IP68',
+            'spec_3_label' => 'Compliance Standard', 'spec_3_value' => 'IEC 61439-6 & IEC 61439-1',
+            'spec_4_label' => 'Voltage',             'spec_4_value' => 'Up to 1,000 V',
+            'spec_5_label' => 'Conductor',           'spec_5_value' => 'Copper / Aluminium',
+
+            'diagram_title'  => 'Cast Resin — Component Diagram Breakdown',
+            // Note: original live file has `?v=2` cachebust on these; dropped
+            // because URL-encoding the `?` would break the query. The video
+            // still loads correctly without the cachebust.
+            'diagram_video'  => 'products/CR (OUTDOOR)/Furutec_Busduct Assembly.mp4',
+            'diagram_poster' => 'products/CR (OUTDOOR)/Furutec_Busduct Assembly-poster.jpg',
+        ),
+
+        // ---- 03 · Data Centre ----
+        'product_datacenter' => array(
+            'section_title' => 'DATA CENTRE BUSDUCT SOLUTION',
+            'tag_label'     => 'Featured',
+            'title'         => 'i-DC BUSDUCT',
+            'subtitle'      => 'High Density Power, Zero Downtime',
+            'desc'          => 'In an era where AI, Cloud, and Edge computing define global progress, uptime is the only currency that matters. Furutec i-DC is not just a busduct — it is a high-performance infrastructure solution engineered to eliminate risk and empower scalability.',
+
+            'slide_1_image' => 'products/I-DC(DATA CENTRE)/i-dc 1.png',
+            'slide_1_alt'   => 'i-DC Busduct — view 1',
+            'slide_2_image' => 'products/I-DC(DATA CENTRE)/i-dc 2.png',
+            'slide_2_alt'   => 'i-DC Busduct — view 2',
+            'slide_3_image' => 'products/I-DC(DATA CENTRE)/i dc 3.png',
+            'slide_3_alt'   => 'i-DC Busduct — view 3',
+            'slide_4_image' => 'products/I-DC(DATA CENTRE)/i-dc 4.png',
+            'slide_4_alt'   => 'i-DC Busduct — view 4',
+            'slide_5_image' => 'products/I-DC(DATA CENTRE)/i dc 5.png',
+            'slide_5_alt'   => 'i-DC Busduct — view 5',
+            'slide_6_image' => 'products/I-DC(DATA CENTRE)/idc 6.png',
+            'slide_6_alt'   => 'i-DC Busduct — view 6',
+
+            'feature_1'  => 'Compliant with IEC 61439-6',
+            'feature_2'  => 'Space-Efficient Modular & Compact Design',
+            'feature_3'  => 'Flexibility & Scalability for Future Expansion',
+            'feature_4'  => 'Degree Protection of IP40 / 54',
+            'feature_5'  => 'Quick Installation & Lower Installation Cost',
+            'feature_6'  => 'Maintenance-Free',
+            'feature_7'  => 'Eco-Friendly & Reusable',
+            'feature_8'  => 'Customizable Tap Off Units',
+            'feature_9'  => 'Safe Live Installation of Tap Off Units',
+            'feature_10' => 'Integrated with Branch Circuit Power Monitoring',
+
+            'spec_1_label' => 'Busduct Current Rating', 'spec_1_value' => '250 A · 400 A · 630 A · 800 A',
+            'spec_2_label' => 'TOU Current Rating',     'spec_2_value' => '16 A · 32 A · 63 A · 100 A',
+            'spec_3_label' => 'Compliance Standard',    'spec_3_value' => 'IEC 61439-6 & IEC 61439-1',
+            'spec_4_label' => 'Conductor',              'spec_4_value' => 'Copper',
+            'spec_5_label' => 'Housing Material',       'spec_5_value' => 'Extruded Aluminium-Alloy',
+
+            'diagram_title'  => 'i-DC Busduct — Component Diagram Breakdown',
+            'diagram_video'  => 'products/I-DC(DATA CENTRE)/DATA CENTRE BUSDUCT SOLUTION video.mp4',
+            'diagram_poster' => 'products/I-DC(DATA CENTRE)/DATA CENTRE BUSDUCT SOLUTION-poster.jpg',
+        ),
+
+        // ---- 04 · Power Monitoring (no specs, no diagram) ----
+        'product_power' => array(
+            'section_title' => 'POWER MONITORING SOLUTION',
+            'tag_label'     => 'Smart System',
+            'title'         => 'POWER MONITORING SYSTEM',
+            'subtitle'      => 'Precision Monitoring, Proven Savings',
+            'desc'          => 'Furutec\'s Power Monitoring system uses sensors to collect real-time data on electricity usage and potential issues, then displays everything on a user-friendly HMI screen. This allows you to see exactly where energy is being wasted, prevent power overloads before they cause a blackout, and ensure electricity is distributed evenly and safely across the entire system.',
+
+            'slide_1_image' => 'products/POWER MONITORING SYSTEM/pms 1.png',
+            'slide_1_alt'   => 'Power Monitoring System — view 1',
+            'slide_2_image' => 'products/POWER MONITORING SYSTEM/pms 2.jpg',
+            'slide_2_alt'   => 'Power Monitoring System — view 2',
+            'slide_3_image' => 'products/POWER MONITORING SYSTEM/pms 3.png',
+            'slide_3_alt'   => 'Power Monitoring System — view 3',
+
+            'feature_1' => 'Real-Time Energy Telemetry',
+            'feature_2' => 'Per-Circuit Current & Voltage Sensing',
+            'feature_3' => 'User-Friendly HMI Display',
+            'feature_4' => 'Overload & Anomaly Alerts',
+            'feature_5' => 'Identify Energy Wastage',
+            'feature_6' => 'Even Load Distribution Across Network',
+        ),
+
+        // ---- 05 · Lighting (paired diagram: LB + PB) ----
+        'product_lighting' => array(
+            'section_title' => 'LIGHTING BUSDUCT SOLUTION',
+            'tag_label'     => 'Reliability',
+            'title'         => 'LB&PB BUSDUCT',
+            'subtitle'      => 'Where Light Meets Performance',
+            'desc'          => 'The Lighting Busduct system enables efficient installation and easy maintenance with detachable, reusable components that reduce costs, while the Power Busduct system ensures safe, reliable, and efficient power distribution through its wide phase spacing design, enhancing insulation performance for diverse project needs.',
+
+            'slide_1_image' => 'products/LB&PB (LIGHTING)/lb 1.png',
+            'slide_1_alt'   => 'LB & PB Busduct — view 1',
+            'slide_2_image' => 'products/LB&PB (LIGHTING)/lb 2.png',
+            'slide_2_alt'   => 'LB & PB Busduct — view 2',
+            'slide_3_image' => 'products/LB&PB (LIGHTING)/lb 3.png',
+            'slide_3_alt'   => 'LB & PB Busduct — view 3',
+            'slide_4_image' => 'products/LB&PB (LIGHTING)/lb 4.png',
+            'slide_4_alt'   => 'LB & PB Busduct — view 4',
+            'slide_5_image' => 'products/LB&PB (LIGHTING)/pb 1.png',
+            'slide_5_alt'   => 'LB & PB Busduct — view 5',
+            'slide_6_image' => 'products/LB&PB (LIGHTING)/pb 2.png',
+            'slide_6_alt'   => 'LB & PB Busduct — view 6',
+            'slide_7_image' => 'products/LB&PB (LIGHTING)/pb 3.png',
+            'slide_7_alt'   => 'LB & PB Busduct — view 7',
+
+            'feature_1' => 'Detachable, Reusable Components',
+            'feature_2' => 'Efficient, Low-Cost Installation',
+            'feature_3' => 'Wide Phase-Spacing Design',
+            'feature_4' => 'Enhanced Insulation Performance',
+            'feature_5' => 'Compact Ceiling / Perimeter Profile',
+            'feature_6' => 'Plug-In Tap-Off Flexibility',
+
+            'spec_1_label' => 'LB Current Rating',        'spec_1_value' => 'Copper · 16A ~ 40A',
+            'spec_2_label' => 'PB Current Rating',        'spec_2_value' => 'Copper 63A ~ 400A · Aluminium 100A ~ 630A',
+            'spec_3_label' => 'IP Rating',                'spec_3_value' => 'IP40 / IP54',
+            'spec_4_label' => 'Compliance Standard',      'spec_4_value' => 'IEC 61439-6 & IEC 61439-1',
+            'spec_5_label' => 'Conductor Material',       'spec_5_value' => 'LB Copper · PB Copper & Aluminium',
+            'spec_6_label' => 'System Frequency',         'spec_6_value' => '50 / 60 Hz',
+            'spec_7_label' => 'Operational Voltage (AC)', 'spec_7_value' => '230 / 400 V',
+
+            'diagram_title'    => 'LB & PB — Component Diagram Breakdown',
+            'diagram_1_label'  => 'LB Busduct',
+            'diagram_1_video'  => 'products/LB&PB (LIGHTING)/LB Busduct.mp4',
+            'diagram_1_poster' => 'products/LB&PB (LIGHTING)/LB Busduct-poster.jpg',
+            'diagram_2_label'  => 'PB Busduct',
+            'diagram_2_video'  => 'products/LB&PB (LIGHTING)/PB Busduct.mp4',
+            'diagram_2_poster' => 'products/LB&PB (LIGHTING)/PB Busduct-poster.jpg',
+        ),
+
+    ),
+
 );

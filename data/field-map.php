@@ -7,6 +7,47 @@
 //   accordion in the editor UI.
 // - `sections` is the master map of section definitions (fields).
 
+// ------------------------------------------------------------------
+// Helpers used inside the section definitions below.  Guarded so a
+// re-include (fx_load_fieldmap() re-includes on every call) does not
+// redeclare.  MUST be declared before the `return array(...)` below.
+// ------------------------------------------------------------------
+if (!function_exists('fx_gallery_fields')) {
+    function fx_gallery_fields($count) {
+        $out = array();
+        for ($i = 1; $i <= $count; $i++) {
+            $out["slide_{$i}_image"] = array(
+                'type'=>'image','group'=>"Gallery · Slide $i",'label'=>"Image",'max_mb'=>5,
+            );
+            $out["slide_{$i}_alt"] = array(
+                'type'=>'text','group'=>"Gallery · Slide $i",'label'=>"Alt text (screen readers)",'max'=>120,
+            );
+        }
+        return $out;
+    }
+    function fx_feature_fields($count) {
+        $out = array();
+        for ($i = 1; $i <= $count; $i++) {
+            $out["feature_{$i}"] = array(
+                'type'=>'text','group'=>'Key features / capabilities','label'=>"Item $i",'max'=>200,
+            );
+        }
+        return $out;
+    }
+    function fx_spec_fields($count) {
+        $out = array();
+        for ($i = 1; $i <= $count; $i++) {
+            $out["spec_{$i}_label"] = array(
+                'type'=>'text','group'=>"Spec row $i",'label'=>'Label','max'=>60,
+            );
+            $out["spec_{$i}_value"] = array(
+                'type'=>'text','group'=>"Spec row $i",'label'=>'Value','max'=>200,
+            );
+        }
+        return $out;
+    }
+}
+
 return array(
 
     'pages' => array(
@@ -33,6 +74,16 @@ return array(
             'template'  => 'contact.template.html',
             'live_file' => 'quote.html',
             'sections'  => array('contact_hero', 'contact_form', 'contact_locations', 'contact_direct'),
+        ),
+        'product' => array(
+            'label'     => 'Product page',
+            'template'  => 'product.template.html',
+            'live_file' => 'product.html',
+            'sections'  => array(
+                'product_intro', 'product_nav',
+                'product_indoor', 'product_outdoor', 'product_datacenter',
+                'product_power', 'product_lighting',
+            ),
         ),
     ),
 
@@ -394,6 +445,148 @@ return array(
                 'tile_3_label'        => array('type'=>'text','group'=>'Tile 3 · Working Hours','label'=>'Label','max'=>40),
                 'tile_3_value_line_1' => array('type'=>'text','group'=>'Tile 3 · Working Hours','label'=>'Value · Line 1','max'=>120),
                 'tile_3_value_line_2' => array('type'=>'text','group'=>'Tile 3 · Working Hours','label'=>'Value · Line 2','max'=>120),
+            ),
+        ),
+
+        // ============================================================
+        // PRODUCT PAGE SECTIONS (product.html)
+        // The page has 5 product blocks (indoor, outdoor, datacenter,
+        // power, lighting).  Each has its own section here so counts
+        // (gallery slides, features, spec rows) can differ per product.
+        // ============================================================
+        'product_intro' => array(
+            'label'   => 'Product page — intro banner',
+            'summary' => 'Top strip: eyebrow, 2-line headline, subtitle paragraph.',
+            'fields'  => array(
+                'eyebrow'        => array('type'=>'text','label'=>'Eyebrow label','max'=>40),
+                'heading_1'      => array('type'=>'text','label'=>'Heading · Line 1','help'=>'Black text.','max'=>80),
+                'heading_accent' => array('type'=>'text','label'=>'Heading · Accent (blue)','help'=>'Blue text.','max'=>80),
+                'subtitle'       => array('type'=>'textarea','label'=>'Subtitle','rows'=>3,'max'=>400),
+            ),
+        ),
+
+        'product_nav' => array(
+            'label'   => 'Product page — sticky sub-nav labels',
+            'summary' => 'The five sticky sub-nav labels shown above the product sections.',
+            'fields'  => array(
+                'indoor_label'     => array('type'=>'text','label'=>'01 · Indoor label','max'=>60),
+                'outdoor_label'    => array('type'=>'text','label'=>'02 · Outdoor label','max'=>60),
+                'datacenter_label' => array('type'=>'text','label'=>'03 · Data Centre label','max'=>60),
+                'power_label'      => array('type'=>'text','label'=>'04 · Power Monitoring label','max'=>60),
+                'lighting_label'   => array('type'=>'text','label'=>'05 · Lighting label','max'=>60),
+            ),
+        ),
+
+        'product_indoor' => array(
+            'label'   => '01 · Indoor Busduct',
+            'summary' => 'Section title, gallery (5 images), content panel, spec (5 rows), diagram video.',
+            'fields'  => array_merge(
+                array(
+                    'section_title' => array('type'=>'text','label'=>'Section title (uppercase)','max'=>80),
+                    'tag_label'     => array('type'=>'text','group'=>'Content panel','label'=>'Tag pill label','max'=>30),
+                    'title'         => array('type'=>'text','group'=>'Content panel','label'=>'Product title','max'=>80),
+                    'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
+                    'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','rows'=>4,'max'=>600),
+                ),
+                // Gallery — 5 slides
+                fx_gallery_fields(5),
+                // Features — 8 items
+                fx_feature_fields(8),
+                // Spec rows — 5
+                fx_spec_fields(5),
+                // Diagram — single video
+                array(
+                    'diagram_title'      => array('type'=>'text','group'=>'Diagram band','label'=>'Diagram title','max'=>120),
+                    'diagram_video'      => array('type'=>'video','group'=>'Diagram band','label'=>'Diagram video (MP4)','max_mb'=>30),
+                    'diagram_poster'     => array('type'=>'image','group'=>'Diagram band','label'=>'Diagram video poster','max_mb'=>3),
+                )
+            ),
+        ),
+
+        'product_outdoor' => array(
+            'label'   => '02 · Outdoor Busduct',
+            'summary' => 'Section title, gallery (5 images), content panel, spec (5 rows), diagram video.',
+            'fields'  => array_merge(
+                array(
+                    'section_title' => array('type'=>'text','label'=>'Section title (uppercase)','max'=>80),
+                    'tag_label'     => array('type'=>'text','group'=>'Content panel','label'=>'Tag pill label','max'=>30),
+                    'title'         => array('type'=>'text','group'=>'Content panel','label'=>'Product title','max'=>80),
+                    'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
+                    'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','rows'=>4,'max'=>600),
+                ),
+                fx_gallery_fields(5),
+                fx_feature_fields(7),
+                fx_spec_fields(5),
+                array(
+                    'diagram_title'      => array('type'=>'text','group'=>'Diagram band','label'=>'Diagram title','max'=>120),
+                    'diagram_video'      => array('type'=>'video','group'=>'Diagram band','label'=>'Diagram video (MP4)','max_mb'=>30),
+                    'diagram_poster'     => array('type'=>'image','group'=>'Diagram band','label'=>'Diagram video poster','max_mb'=>3),
+                )
+            ),
+        ),
+
+        'product_datacenter' => array(
+            'label'   => '03 · Data Centre Solution',
+            'summary' => 'Section title, gallery (6 images), content panel, spec (5 rows), diagram video.',
+            'fields'  => array_merge(
+                array(
+                    'section_title' => array('type'=>'text','label'=>'Section title (uppercase)','max'=>80),
+                    'tag_label'     => array('type'=>'text','group'=>'Content panel','label'=>'Tag pill label','max'=>30),
+                    'title'         => array('type'=>'text','group'=>'Content panel','label'=>'Product title','max'=>80),
+                    'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
+                    'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','rows'=>4,'max'=>800),
+                ),
+                fx_gallery_fields(6),
+                fx_feature_fields(10),
+                fx_spec_fields(5),
+                array(
+                    'diagram_title'      => array('type'=>'text','group'=>'Diagram band','label'=>'Diagram title','max'=>120),
+                    'diagram_video'      => array('type'=>'video','group'=>'Diagram band','label'=>'Diagram video (MP4)','max_mb'=>30),
+                    'diagram_poster'     => array('type'=>'image','group'=>'Diagram band','label'=>'Diagram video poster','max_mb'=>3),
+                )
+            ),
+        ),
+
+        'product_power' => array(
+            'label'   => '04 · Power Monitoring',
+            'summary' => 'Gallery (3 images), content panel. No tech-spec table and no diagram band.',
+            'fields'  => array_merge(
+                array(
+                    'section_title' => array('type'=>'text','label'=>'Section title (uppercase)','max'=>80),
+                    'tag_label'     => array('type'=>'text','group'=>'Content panel','label'=>'Tag pill label','max'=>30),
+                    'title'         => array('type'=>'text','group'=>'Content panel','label'=>'Product title','max'=>80),
+                    'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
+                    'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','rows'=>5,'max'=>800),
+                ),
+                fx_gallery_fields(3),
+                fx_feature_fields(6)   // Power section uses "Key Capabilities" label
+            ),
+        ),
+
+        'product_lighting' => array(
+            'label'   => '05 · Lighting Busduct',
+            'summary' => 'Gallery (7 images), content panel, spec (7 rows), PAIRED diagram (LB + PB).',
+            'fields'  => array_merge(
+                array(
+                    'section_title' => array('type'=>'text','label'=>'Section title (uppercase)','max'=>80),
+                    'tag_label'     => array('type'=>'text','group'=>'Content panel','label'=>'Tag pill label','max'=>30),
+                    'title'         => array('type'=>'text','group'=>'Content panel','label'=>'Product title','max'=>80),
+                    'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
+                    'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','rows'=>4,'max'=>800),
+                ),
+                fx_gallery_fields(7),
+                fx_feature_fields(6),
+                fx_spec_fields(7),
+                // Paired diagram: title + two labelled videos
+                array(
+                    'diagram_title'         => array('type'=>'text','group'=>'Diagram band','label'=>'Diagram title','max'=>120),
+                    'diagram_1_label'       => array('type'=>'text','group'=>'Diagram · Left video','label'=>'Label (e.g. LB Busduct)','max'=>40),
+                    'diagram_1_video'       => array('type'=>'video','group'=>'Diagram · Left video','label'=>'Video (MP4)','max_mb'=>30),
+                    'diagram_1_poster'      => array('type'=>'image','group'=>'Diagram · Left video','label'=>'Poster image','max_mb'=>3),
+                    'diagram_2_label'       => array('type'=>'text','group'=>'Diagram · Right video','label'=>'Label (e.g. PB Busduct)','max'=>40),
+                    'diagram_2_video'       => array('type'=>'video','group'=>'Diagram · Right video','label'=>'Video (MP4)','max_mb'=>30),
+                    'diagram_2_poster'      => array('type'=>'image','group'=>'Diagram · Right video','label'=>'Poster image','max_mb'=>3),
+                )
             ),
         ),
 

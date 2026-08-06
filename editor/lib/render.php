@@ -190,6 +190,73 @@ function fx_build_substitutions($page_id, $content) {
     }
 
     // ============================================================
+    // PRODUCT page sections (product.html) — 5 product blocks +
+    // intro banner + sticky sub-nav labels.
+    // ============================================================
+    if ($page_id === 'product') {
+        // Intro banner
+        $i = isset($page['product_intro']) ? $page['product_intro'] : array();
+        $s['PP_INTRO_EYEBROW']        = fx_escape(isset($i['eyebrow'])        ? $i['eyebrow']        : '');
+        $s['PP_INTRO_HEADING_1']      = fx_escape(isset($i['heading_1'])      ? $i['heading_1']      : '');
+        $s['PP_INTRO_HEADING_ACCENT'] = fx_escape(isset($i['heading_accent']) ? $i['heading_accent'] : '');
+        $s['PP_INTRO_SUBTITLE']       = fx_escape(isset($i['subtitle'])       ? $i['subtitle']       : '');
+
+        // Sticky sub-nav labels
+        $nv = isset($page['product_nav']) ? $page['product_nav'] : array();
+        $s['PP_NAV_INDOOR_LABEL']     = fx_escape(isset($nv['indoor_label'])     ? $nv['indoor_label']     : '');
+        $s['PP_NAV_OUTDOOR_LABEL']    = fx_escape(isset($nv['outdoor_label'])    ? $nv['outdoor_label']    : '');
+        $s['PP_NAV_DATACENTER_LABEL'] = fx_escape(isset($nv['datacenter_label']) ? $nv['datacenter_label'] : '');
+        $s['PP_NAV_POWER_LABEL']      = fx_escape(isset($nv['power_label'])      ? $nv['power_label']      : '');
+        $s['PP_NAV_LIGHTING_LABEL']   = fx_escape(isset($nv['lighting_label'])   ? $nv['lighting_label']   : '');
+
+        // Per-section builder: given the section-content array and the
+        // placeholder-prefix (e.g. "PP_IN_"), plus counts, emit into $s.
+        // Placed inline (not a helper) so PHP 5.6 has no closure issue.
+        $product_blocks = array(
+            array('key'=>'product_indoor',     'prefix'=>'PP_IN_',  'slides'=>5, 'features'=>8,  'specs'=>5, 'diagram'=>'single'),
+            array('key'=>'product_outdoor',    'prefix'=>'PP_OUT_', 'slides'=>5, 'features'=>7,  'specs'=>5, 'diagram'=>'single'),
+            array('key'=>'product_datacenter', 'prefix'=>'PP_DC_',  'slides'=>6, 'features'=>10, 'specs'=>5, 'diagram'=>'single'),
+            array('key'=>'product_power',      'prefix'=>'PP_PW_',  'slides'=>3, 'features'=>6,  'specs'=>0, 'diagram'=>'none'),
+            array('key'=>'product_lighting',   'prefix'=>'PP_LT_',  'slides'=>7, 'features'=>6,  'specs'=>7, 'diagram'=>'paired'),
+        );
+        foreach ($product_blocks as $b) {
+            $p  = isset($page[$b['key']]) ? $page[$b['key']] : array();
+            $px = $b['prefix'];
+
+            $s[$px.'SECTION_TITLE'] = fx_escape(isset($p['section_title']) ? $p['section_title'] : '');
+            $s[$px.'TAG_LABEL']     = fx_escape(isset($p['tag_label'])     ? $p['tag_label']     : '');
+            $s[$px.'TITLE']         = fx_escape(isset($p['title'])         ? $p['title']         : '');
+            $s[$px.'SUBTITLE']      = fx_escape(isset($p['subtitle'])      ? $p['subtitle']      : '');
+            $s[$px.'DESC']          = fx_escape(isset($p['desc'])          ? $p['desc']          : '');
+
+            for ($n = 1; $n <= $b['slides']; $n++) {
+                $s[$px.'SLIDE_'.$n.'_URL'] = fx_asset_url(isset($p['slide_'.$n.'_image']) ? $p['slide_'.$n.'_image'] : '');
+                $s[$px.'SLIDE_'.$n.'_ALT'] = fx_escape(isset($p['slide_'.$n.'_alt'])   ? $p['slide_'.$n.'_alt']   : '');
+            }
+            for ($n = 1; $n <= $b['features']; $n++) {
+                $s[$px.'FEATURE_'.$n] = fx_escape(isset($p['feature_'.$n]) ? $p['feature_'.$n] : '');
+            }
+            for ($n = 1; $n <= $b['specs']; $n++) {
+                $s[$px.'SPEC_'.$n.'_LABEL'] = fx_escape(isset($p['spec_'.$n.'_label']) ? $p['spec_'.$n.'_label'] : '');
+                $s[$px.'SPEC_'.$n.'_VALUE'] = fx_escape(isset($p['spec_'.$n.'_value']) ? $p['spec_'.$n.'_value'] : '');
+            }
+            if ($b['diagram'] === 'single') {
+                $s[$px.'DIAGRAM_TITLE']       = fx_escape(isset($p['diagram_title'])   ? $p['diagram_title']   : '');
+                $s[$px.'DIAGRAM_VIDEO_URL']   = fx_asset_url(isset($p['diagram_video'])  ? $p['diagram_video']  : '');
+                $s[$px.'DIAGRAM_POSTER_URL']  = fx_asset_url(isset($p['diagram_poster']) ? $p['diagram_poster'] : '');
+            } elseif ($b['diagram'] === 'paired') {
+                $s[$px.'DIAGRAM_TITLE']          = fx_escape(isset($p['diagram_title'])     ? $p['diagram_title']     : '');
+                $s[$px.'DIAGRAM_1_LABEL']        = fx_escape(isset($p['diagram_1_label'])   ? $p['diagram_1_label']   : '');
+                $s[$px.'DIAGRAM_1_VIDEO_URL']    = fx_asset_url(isset($p['diagram_1_video'])  ? $p['diagram_1_video']  : '');
+                $s[$px.'DIAGRAM_1_POSTER_URL']   = fx_asset_url(isset($p['diagram_1_poster']) ? $p['diagram_1_poster'] : '');
+                $s[$px.'DIAGRAM_2_LABEL']        = fx_escape(isset($p['diagram_2_label'])   ? $p['diagram_2_label']   : '');
+                $s[$px.'DIAGRAM_2_VIDEO_URL']    = fx_asset_url(isset($p['diagram_2_video'])  ? $p['diagram_2_video']  : '');
+                $s[$px.'DIAGRAM_2_POSTER_URL']   = fx_asset_url(isset($p['diagram_2_poster']) ? $p['diagram_2_poster'] : '');
+            }
+        }
+    }
+
+    // ============================================================
     // CONTACT page sections (quote.html)
     // ============================================================
     if ($page_id === 'contact') {
