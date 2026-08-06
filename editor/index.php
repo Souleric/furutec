@@ -116,7 +116,7 @@ $firstPageId = array_keys($pages)[0];
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>Furutec Editor</title>
-    <link rel="stylesheet" href="assets/editor.css?v=3"/>
+    <link rel="stylesheet" href="assets/editor.css?v=4"/>
     <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%232E3192'/><text x='50' y='72' text-anchor='middle' font-family='-apple-system,Arial,sans-serif' font-weight='800' font-size='62' fill='white'>F</text></svg>"/>
     <meta name="robots" content="noindex, nofollow"/>
 </head>
@@ -184,10 +184,23 @@ $firstPageId = array_keys($pages)[0];
     <section class="fx-preview-wrap">
         <div class="fx-preview-bar">
             <span class="fx-preview-label" id="fx-preview-label">Preview · <?= fx_escape($pages[$firstPageId]['label']) ?> (draft)</span>
-            <span class="fx-preview-hint">Updates when you Save.</span>
+            <div class="fx-device-toggle" role="group" aria-label="Preview device size">
+                <button type="button" class="fx-device-btn is-active" data-device="desktop" title="Desktop preview">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    <span>Desktop</span>
+                </button>
+                <button type="button" class="fx-device-btn" data-device="tablet" title="Tablet preview (820 px wide)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                    <span>Tablet</span>
+                </button>
+                <button type="button" class="fx-device-btn" data-device="mobile" title="Mobile preview (390 px wide)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                    <span>Mobile</span>
+                </button>
+            </div>
             <button type="button" class="fx-btn fx-btn-ghost fx-btn-small" id="fx-refresh-preview">Refresh preview</button>
         </div>
-        <div class="fx-preview-frame-wrap">
+        <div class="fx-preview-frame-wrap" id="fx-preview-frame-wrap" data-device="desktop">
             <iframe id="fx-preview" src="preview.php?page=<?= fx_escape($firstPageId) ?>&ts=<?= time() ?>" title="Draft preview"></iframe>
         </div>
     </section>
@@ -203,6 +216,6 @@ window.FX = {
     pageLabels: <?= fx_json_encode($labels) ?>
 };
 </script>
-<script src="assets/editor.js?v=3"></script>
+<script src="assets/editor.js?v=4"></script>
 </body>
 </html>

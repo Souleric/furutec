@@ -13,6 +13,8 @@
     var collapseAll= document.getElementById('fx-collapse-all');
     var pickerBtns = Array.prototype.slice.call(document.querySelectorAll('.fx-picker-btn'));
     var pageBlocks = Array.prototype.slice.call(document.querySelectorAll('.fx-page-sections'));
+    var deviceBtns = Array.prototype.slice.call(document.querySelectorAll('.fx-device-btn'));
+    var frameWrap  = document.getElementById('fx-preview-frame-wrap');
     var dirty      = false;
     var currentPage = pickerBtns.length ? pickerBtns[0].getAttribute('data-page') : 'home';
 
@@ -39,6 +41,15 @@
             var label = (window.FX.pageLabels && window.FX.pageLabels[page]) || page;
             previewLbl.textContent = 'Preview · ' + label + ' (draft)';
             preview.src = 'preview.php?page=' + encodeURIComponent(page) + '&ts=' + Date.now();
+        });
+    });
+
+    // ---- Device toggle (Desktop / Tablet / Mobile preview width) ----
+    deviceBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var device = btn.getAttribute('data-device');
+            deviceBtns.forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+            if (frameWrap) frameWrap.setAttribute('data-device', device);
         });
     });
 
