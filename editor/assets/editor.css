@@ -384,12 +384,16 @@ a:hover { text-decoration: underline; }
     transition: max-width .28s cubic-bezier(.4,0,.2,1), height .28s cubic-bezier(.4,0,.2,1), margin .28s ease, box-shadow .28s ease, border-radius .28s ease, transform .18s ease;
 }
 .fx-preview-frame-wrap[data-device="desktop"] #fx-preview {
-    /* Zoom is a uniform CSS transform applied only in desktop mode.
-       Iframe's logical width/height are inverse-scaled so its content
-       still fills (or overflows) the container as the visual scale changes. */
+    /* Desktop-mode zoom = pure visual scale on top of the iframe's
+       natural desktop viewport.  Iframe width/height stay at 100% of
+       the container so the site's own viewport (and its responsive
+       breakpoints) never change — zooming in just enlarges what you
+       see (overflow scrolls); zooming out shrinks it (empty space
+       appears bottom-right).  Contrast with the previous inverse-width
+       approach, which triggered mobile/tablet layouts whenever the
+       zoom went above 100%. */
     max-width: none;
-    width:  calc(100% / var(--fx-zoom, 1));
-    height: calc(100% / var(--fx-zoom, 1));
+    width: 100%; height: 100%;
     transform: scale(var(--fx-zoom, 1));
     transform-origin: top left;
     margin: 0; box-shadow: none; border-radius: 0;
