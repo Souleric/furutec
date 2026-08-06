@@ -686,6 +686,40 @@ html { scroll-padding-top: 80px; }
       margin-bottom: 32px !important;
     }
   }
+
+  /* --- HOMEPAGE: Company Profile ("Build on expertise") section — mobile layout --- */
+  @media (max-width: 720px) {
+    /* Hide the background logo video and its veil (also saves bandwidth on mobile) */
+    #engineered-section .es-bg-video,
+    #engineered-section .es-bg-veil { display: none !important; }
+
+    /* Force the content visible immediately on mobile (skip the video-driven reveal animation) */
+    #engineered-section .es-content {
+      opacity: 1 !important;
+      transform: none !important;
+      grid-template-columns: 1fr !important;
+      gap: 24px !important;
+    }
+
+    /* Right column (globe wrapper): move above the text, reset absolute positioning */
+    #engineered-section .es-content > div:nth-child(2) {
+      order: -1 !important;
+      min-height: auto !important;
+      justify-content: center !important;
+      display: flex !important;
+    }
+    #engineered-section .es-content > div:nth-child(2) > div {
+      position: static !important;
+      right: auto !important;
+      top: auto !important;
+      transform: none !important;
+      width: 100% !important;
+      max-width: 340px !important;
+      margin: 0 auto !important;
+    }
+    #world-map-dots { width: 100% !important; margin: 0 auto !important; }
+    #world-map-dots svg { width: 100% !important; height: auto !important; }
+  }
 </style>
 
 </head>
