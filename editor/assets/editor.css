@@ -156,32 +156,47 @@ a:hover { text-decoration: underline; }
     background: #FAFAFC;
 }
 
-/* ---- Page picker ---- */
+/* ---- Page picker (vertical list — one page per row) ---- */
 .fx-page-picker {
-    display: flex; align-items: center; gap: 10px;
-    padding: 12px 20px;
+    display: block;
+    padding: 14px 16px 12px;
     background: #fff;
     border-bottom: 1px solid var(--fx-line);
     position: sticky; top: 0; z-index: 3;
 }
 .fx-picker-label {
-    font-size: 11px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.06em;
+    display: block;
+    font-size: 10.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
     color: var(--fx-ink-muted);
+    margin: 0 0 8px 2px;
 }
-.fx-picker-buttons { display: inline-flex; gap: 4px; }
+.fx-picker-buttons {
+    display: flex; flex-direction: column; gap: 2px;
+}
 .fx-picker-btn {
-    padding: 6px 12px; font-size: 13px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+    width: 100%; text-align: left;
+    padding: 9px 12px 9px 11px;
+    font-size: 13px; font-weight: 600;
+    font-family: var(--fx-font);
     color: var(--fx-ink-muted);
     background: transparent;
-    border: 1px solid var(--fx-line-strong);
+    border: 1px solid transparent;
+    border-left: 3px solid transparent;
     border-radius: var(--fx-radius);
-    cursor: pointer; font-family: var(--fx-font);
-    transition: all .12s;
+    cursor: pointer;
+    transition: background .12s, color .12s, border-color .12s;
 }
-.fx-picker-btn:hover { color: var(--fx-ink); border-color: var(--fx-ink-muted); }
+.fx-picker-btn:hover {
+    color: var(--fx-ink);
+    background: #F4F5F8;
+}
 .fx-picker-btn.is-active {
-    color: #fff; background: var(--fx-brand); border-color: var(--fx-brand);
+    color: var(--fx-brand);
+    background: rgba(46, 49, 146, 0.08);
+    border-left-color: var(--fx-brand);
+    font-weight: 700;
 }
 
 /* ---- Shared block header ---- */
