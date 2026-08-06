@@ -15,8 +15,13 @@
     var pageBlocks = Array.prototype.slice.call(document.querySelectorAll('.fx-page-sections'));
     var deviceBtns = Array.prototype.slice.call(document.querySelectorAll('.fx-device-btn'));
     var frameWrap  = document.getElementById('fx-preview-frame-wrap');
+    var previewWrap= frameWrap ? frameWrap.parentNode : null;   // .fx-preview-wrap — carries data-device too so preview-bar controls can react
+    var zoomSelect = document.getElementById('fx-zoom-select');
     var dirty      = false;
     var currentPage = pickerBtns.length ? pickerBtns[0].getAttribute('data-page') : 'home';
+
+    // Initial: mark outer wrap desktop so zoom control shows on load
+    if (previewWrap) previewWrap.setAttribute('data-device', 'desktop');
 
     // ---- Accordion open/close (delegated) ----
     // Also anchors the preview iframe to the corresponding section on the
@@ -86,9 +91,18 @@
         btn.addEventListener('click', function () {
             var device = btn.getAttribute('data-device');
             deviceBtns.forEach(function (b) { b.classList.toggle('is-active', b === btn); });
-            if (frameWrap) frameWrap.setAttribute('data-device', device);
+            if (frameWrap)   frameWrap.setAttribute('data-device', device);
+            if (previewWrap) previewWrap.setAttribute('data-device', device);
         });
     });
+
+    // ---- Desktop zoom (only affects desktop mode — CSS uses --fx-zoom) ----
+    if (zoomSelect && frameWrap) {
+        zoomSelect.addEventListener('change', function () {
+            var z = parseFloat(zoomSelect.value) || 1;
+            frameWrap.style.setProperty('--fx-zoom', String(z));
+        });
+    }
 
     // ---- Expand/collapse all in the CURRENT view (shared + active page) ----
     function currentAccordions() {

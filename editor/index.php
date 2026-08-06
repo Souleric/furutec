@@ -199,6 +199,19 @@ $firstPageId = array_keys($pages)[0];
                     <span>Mobile</span>
                 </button>
             </div>
+            <!-- Zoom (desktop only) -->
+            <label class="fx-zoom-wrap" title="Preview zoom (desktop only)">
+                <select id="fx-zoom-select" class="fx-zoom-select" aria-label="Preview zoom">
+                    <option value="0.5">50%</option>
+                    <option value="0.6">60%</option>
+                    <option value="0.75">75%</option>
+                    <option value="0.9">90%</option>
+                    <option value="1" selected>100%</option>
+                    <option value="1.15">115%</option>
+                    <option value="1.35">135%</option>
+                    <option value="1.5">150%</option>
+                </select>
+            </label>
             <button type="button" class="fx-btn fx-btn-ghost fx-btn-small" id="fx-refresh-preview">Refresh preview</button>
         </div>
         <div class="fx-preview-frame-wrap" id="fx-preview-frame-wrap" data-device="desktop">
@@ -217,6 +230,6 @@ window.FX = {
     pageLabels: <?= fx_json_encode($labels) ?>
 };
 </script>
-<script src="assets/editor.js?v=5"></script>
+<script src="assets/editor.js?v=6"></script>
 </body>
 </html>
