@@ -19,6 +19,9 @@
     var currentPage = pickerBtns.length ? pickerBtns[0].getAttribute('data-page') : 'home';
 
     // ---- Accordion open/close (delegated) ----
+    // Also anchors the preview iframe to the corresponding section on the
+    // rendered page — same-origin, so we directly reach into the iframe's
+    // contentDocument and call scrollIntoView() on the target element.
     document.addEventListener('click', function (e) {
         var head = e.target.closest && e.target.closest('.fx-acc-head');
         if (!head) return;
@@ -27,7 +30,41 @@
         var open = !acc.classList.contains('is-open');
         acc.classList.toggle('is-open', open);
         head.setAttribute('aria-expanded', open ? 'true' : 'false');
+
+        // Scroll the preview to this section — fires on both open and re-close-click,
+        // which is fine (clicking the header re-anchors the preview even if the
+        // section is already open).
+        var target = acc.getAttribute('data-preview-target');
+        if (target) scrollPreviewTo(target);
     });
+
+    // ---- Scroll iframe preview to a selector (same-origin, no postMessage) ----
+    // Silently no-ops if the iframe hasn't loaded yet, the target isn't found,
+    // or a cross-origin exception is thrown.  Adds a subtle flash on the target
+    // to help Amy locate what she's editing.
+    function scrollPreviewTo(selector) {
+        if (!preview) return;
+        try {
+            var doc = preview.contentDocument;
+            if (!doc) return;
+            var el = doc.querySelector(selector);
+            if (!el) return;
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            flashPreviewTarget(el);
+        } catch (err) { /* cross-origin, doc gone, etc. — silent */ }
+    }
+    function flashPreviewTarget(el) {
+        try {
+            var prev = el.style.boxShadow;
+            var prevT = el.style.transition;
+            el.style.transition = 'box-shadow .35s ease';
+            el.style.boxShadow  = 'inset 0 0 0 3px rgba(46, 49, 146, 0.55)';
+            setTimeout(function () {
+                el.style.boxShadow  = prev;
+                setTimeout(function () { el.style.transition = prevT; }, 400);
+            }, 900);
+        } catch (err) { /* silent */ }
+    }
 
     // ---- Page switching ----
     pickerBtns.forEach(function (btn) {

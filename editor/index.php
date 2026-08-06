@@ -31,8 +31,9 @@ function fx_section_field_groups($fields) {
 function fx_render_accordion($section_id, $data_prefix, $section_content, $section_def, $default_open = false) {
     $isOpen = $default_open;
     $groups = fx_section_field_groups($section_def['fields']);
+    $previewTarget = isset($section_def['preview_target']) ? $section_def['preview_target'] : '';
     ?>
-    <section class="fx-acc<?= $isOpen ? ' is-open' : '' ?>">
+    <section class="fx-acc<?= $isOpen ? ' is-open' : '' ?>"<?php if ($previewTarget !== ''): ?> data-preview-target="<?= fx_escape($previewTarget) ?>"<?php endif; ?>>
         <button type="button" class="fx-acc-head" aria-expanded="<?= $isOpen ? 'true' : 'false' ?>">
             <span class="fx-acc-title"><?= fx_escape($section_def['label']) ?></span>
             <?php if (!empty($section_def['summary'])): ?>
@@ -216,6 +217,6 @@ window.FX = {
     pageLabels: <?= fx_json_encode($labels) ?>
 };
 </script>
-<script src="assets/editor.js?v=4"></script>
+<script src="assets/editor.js?v=5"></script>
 </body>
 </html>

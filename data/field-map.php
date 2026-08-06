@@ -98,6 +98,7 @@ return array(
             'label'   => 'Header / Navigation (all pages)',
             'summary' => 'Logo, phone, and Contact button. Appears on every page.',
             'shared'  => true,
+            'preview_target' => 'header',
             'fields'  => array(
                 'logo' => array('type'=>'image','label'=>'Header logo','help'=>'PNG or JPG. Currently 54 px tall on desktop.','max_mb'=>5),
                 'phone' => array('type'=>'text','label'=>'Phone number','help'=>'Shown in the top-right of every page.','max'=>40),
@@ -112,6 +113,7 @@ return array(
             'label'   => 'Footer (all pages)',
             'summary' => 'Logo, contact info, column headings, copyright, social URLs.',
             'shared'  => true,
+            'preview_target' => 'footer',
             'fields'  => array(
                 'logo'    => array('type'=>'image','label'=>'Footer logo (white)','max_mb'=>5),
                 'company_name' => array('type'=>'text','label'=>'Company name','max'=>80),
@@ -138,6 +140,7 @@ return array(
         'hero' => array(
             'label'   => 'Hero (top of homepage)',
             'summary' => 'Big headline over the background video.',
+            'preview_target' => '.ft-hero',
             'fields'  => array(
                 'headline_1' => array('type'=>'text','label'=>'Headline · Line 1','help'=>'Big white text at the top of the hero.','max'=>60),
                 'headline_2' => array('type'=>'text','label'=>'Headline · Line 2 (accent color)','max'=>60),
@@ -149,6 +152,7 @@ return array(
         'origin' => array(
             'label'   => 'Inside Furutec (Origin section)',
             'summary' => 'Origin of Furutec headline, body, and factory video.',
+            'preview_target' => '#about',
             'fields'  => array(
                 'eyebrow' => array('type'=>'text','label'=>'Eyebrow label','max'=>40),
                 'heading' => array('type'=>'text','label'=>'Section heading','max'=>60),
@@ -162,6 +166,7 @@ return array(
         'facilities' => array(
             'label'   => 'Bukit Minyak Facilities',
             'summary' => 'Plant name, description, 4 badges, 6 photos.',
+            'preview_target' => '#fv2-section',
             'fields'  => array(
                 'tag'     => array('type'=>'text','label'=>'Section tag','max'=>60),
                 'name'    => array('type'=>'text','label'=>'Plant name','max'=>60),
@@ -187,6 +192,7 @@ return array(
         'company' => array(
             'label'   => 'Company Profile',
             'summary' => 'Zoom-reveal section with logo video, 3-line heading, body copy, and CTA.',
+            'preview_target' => '#engineered-section',
             'fields'  => array(
                 'bg_video'  => array('type'=>'video','label'=>'Background logo video','max_mb'=>30),
                 'eyebrow'   => array('type'=>'text','label'=>'Eyebrow label','max'=>40),
@@ -203,6 +209,7 @@ return array(
         'product_overview' => array(
             'label'   => 'Product Overview (diagram)',
             'summary' => 'Interactive diagram with 5 hotspots. Card titles editable; positions fixed.',
+            'preview_target' => '#product-overview-section',
             'fields'  => array(
                 'eyebrow'  => array('type'=>'text','label'=>'Eyebrow label','max'=>40),
                 'heading_1'=> array('type'=>'text','label'=>'Heading · Line 1','max'=>60),
@@ -221,6 +228,7 @@ return array(
         'products' => array(
             'label'   => 'Our Products (5 cards)',
             'summary' => 'The 5 product-solution cards on the homepage.',
+            'preview_target' => '#fx-products',
             'fields'  => array(
                 'section_eyebrow'   => array('type'=>'text','label'=>'Section eyebrow','max'=>40),
                 'section_heading_1' => array('type'=>'text','label'=>'Heading · Line 1','max'=>80),
@@ -242,6 +250,7 @@ return array(
         'certs_cta' => array(
             'label'   => 'Certificates & Portfolio CTA',
             'summary' => 'Dark full-width band with background image, headline, and two buttons.',
+            'preview_target' => '#fx-certs-cta',
             'fields'  => array(
                 'bg_image'  => array('type'=>'image','label'=>'Background image','max_mb'=>5),
                 'heading_1' => array('type'=>'text','label'=>'Heading · Line 1','max'=>60),
@@ -255,6 +264,7 @@ return array(
         'quote_cta' => array(
             'label'   => 'Get In Touch CTA (bottom)',
             'summary' => 'Bottom-page CTA that links to the quote form.',
+            'preview_target' => '#quote',
             'fields'  => array(
                 'bg_image'  => array('type'=>'image','label'=>'Background image','max_mb'=>5),
                 'eyebrow'   => array('type'=>'text','label'=>'Eyebrow label','max'=>40),
@@ -271,6 +281,7 @@ return array(
         'cert_hero' => array(
             'label'   => 'Certificates hero',
             'summary' => 'Top of the Certificates page — eyebrow, 2-line heading, subtitle.',
+            'preview_target' => 'main > section:nth-of-type(1)',
             'fields'  => array(
                 'eyebrow'   => array('type'=>'text','label'=>'Eyebrow label','max'=>40),
                 'heading_1' => array('type'=>'text','label'=>'Heading · Line 1','max'=>60),
@@ -282,6 +293,7 @@ return array(
         'cert_grid' => array(
             'label'   => 'Certificate grid (9 cards)',
             'summary' => 'Each of the 9 certificate cards has a logo image, alt text, and caption.',
+            'preview_target' => '.cert-wall',
             'fields'  => array(
                 'card_1_image' => array('type'=>'image','group'=>'Card 1','label'=>'Logo image','max_mb'=>2),
                 'card_1_alt'   => array('type'=>'text','group'=>'Card 1','label'=>'Alt text (screen readers)','max'=>60),
@@ -324,6 +336,7 @@ return array(
         'cert_stand' => array(
             'label'   => 'Cert stand (bottom CTA band)',
             'summary' => '"Where credential meets capability" block at the bottom.',
+            'preview_target' => '.cert-stand',
             'fields'  => array(
                 'heading'   => array('type'=>'text','label'=>'Heading','max'=>80),
                 'body'      => array('type'=>'textarea','label'=>'Body paragraph','rows'=>4,'max'=>600),
@@ -337,6 +350,7 @@ return array(
         'port_hero' => array(
             'label'   => 'Portfolio hero',
             'summary' => 'Top of the Portfolio page — eyebrow, 2-line heading, subtitle.',
+            'preview_target' => 'main > section:nth-of-type(1)',
             'fields'  => array(
                 'eyebrow'   => array('type'=>'text','label'=>'Eyebrow label','max'=>40),
                 'heading_1' => array('type'=>'text','label'=>'Heading · Line 1','max'=>60),
@@ -348,6 +362,7 @@ return array(
         'port_grid' => array(
             'label'   => 'Sector grid (9 cards)',
             'summary' => 'Each sector tile has a background image, a tag pill, a title, and a description.',
+            'preview_target' => '.ind-wall',
             'fields'  => array(
                 'card_1_image' => array('type'=>'image','group'=>'Card 1 (top-left)','label'=>'Background image','help'=>'4:3 photo works best','max_mb'=>5),
                 'card_1_tag'   => array('type'=>'text', 'group'=>'Card 1 (top-left)','label'=>'Tag pill','max'=>40),
@@ -402,6 +417,7 @@ return array(
         'contact_hero' => array(
             'label'   => 'Contact hero',
             'summary' => 'Top of the Contact page — eyebrow and 2-line heading.',
+            'preview_target' => '#quote',
             'fields'  => array(
                 'eyebrow'   => array('type'=>'text','label'=>'Eyebrow label','max'=>40),
                 'heading_1' => array('type'=>'text','label'=>'Heading · Line 1','max'=>60),
@@ -412,6 +428,7 @@ return array(
         'contact_form' => array(
             'label'   => 'Contact form (labels only)',
             'summary' => 'Form title and reassurance line. The form fields themselves stay wired to contact.php.',
+            'preview_target' => '#quote-form',
             'fields'  => array(
                 'title'     => array('type'=>'text','label'=>'Form title','help'=>'Small heading above the form.','max'=>60),
                 'reassure'  => array('type'=>'text','label'=>'Reassurance line','help'=>'Shown below the submit button. Use · for dot separator.','max'=>200),
@@ -421,6 +438,7 @@ return array(
         'contact_locations' => array(
             'label'   => 'Locations + map',
             'summary' => 'Company name, two addresses, map tabs.',
+            'preview_target' => '#gi-map-tabs',
             'fields'  => array(
                 'company_name'    => array('type'=>'text','label'=>'Company name','max'=>80),
                 'loc_1_label'     => array('type'=>'text','group'=>'Location 1','label'=>'Small label','help'=>'Shown above the address (e.g. "Headquarters").','max'=>40),
@@ -437,6 +455,7 @@ return array(
         'contact_direct' => array(
             'label'   => 'Contact Us Directly tiles',
             'summary' => 'Three tiles at the bottom of the section: Email, Phone, Working Hours.',
+            'preview_target' => '.gi-direct',
             'fields'  => array(
                 'tile_1_label'        => array('type'=>'text','group'=>'Tile 1 · Email','label'=>'Label','max'=>40),
                 'tile_1_value'        => array('type'=>'text','group'=>'Tile 1 · Email','label'=>'Value','max'=>120),
@@ -457,6 +476,7 @@ return array(
         'product_intro' => array(
             'label'   => 'Product page — intro banner',
             'summary' => 'Top strip: eyebrow, 2-line headline, subtitle paragraph.',
+            'preview_target' => 'main > section:nth-of-type(1)',
             'fields'  => array(
                 'eyebrow'        => array('type'=>'text','label'=>'Eyebrow label','max'=>40),
                 'heading_1'      => array('type'=>'text','label'=>'Heading · Line 1','help'=>'Black text.','max'=>80),
@@ -468,6 +488,7 @@ return array(
         'product_nav' => array(
             'label'   => 'Product page — sticky sub-nav labels',
             'summary' => 'The five sticky sub-nav labels shown above the product sections.',
+            'preview_target' => '#prod-nav',
             'fields'  => array(
                 'indoor_label'     => array('type'=>'text','label'=>'01 · Indoor label','max'=>60),
                 'outdoor_label'    => array('type'=>'text','label'=>'02 · Outdoor label','max'=>60),
@@ -480,6 +501,7 @@ return array(
         'product_indoor' => array(
             'label'   => '01 · Indoor Busduct',
             'summary' => 'Section title, gallery (5 images), content panel, spec (5 rows), diagram video.',
+            'preview_target' => '#indoor',
             'fields'  => array_merge(
                 array(
                     'section_title' => array('type'=>'text','label'=>'Section title (uppercase)','max'=>80),
@@ -506,6 +528,7 @@ return array(
         'product_outdoor' => array(
             'label'   => '02 · Outdoor Busduct',
             'summary' => 'Section title, gallery (5 images), content panel, spec (5 rows), diagram video.',
+            'preview_target' => '#outdoor',
             'fields'  => array_merge(
                 array(
                     'section_title' => array('type'=>'text','label'=>'Section title (uppercase)','max'=>80),
@@ -528,6 +551,7 @@ return array(
         'product_datacenter' => array(
             'label'   => '03 · Data Centre Solution',
             'summary' => 'Section title, gallery (6 images), content panel, spec (5 rows), diagram video.',
+            'preview_target' => '#datacenter',
             'fields'  => array_merge(
                 array(
                     'section_title' => array('type'=>'text','label'=>'Section title (uppercase)','max'=>80),
@@ -550,6 +574,7 @@ return array(
         'product_power' => array(
             'label'   => '04 · Power Monitoring',
             'summary' => 'Gallery (3 images), content panel. No tech-spec table and no diagram band.',
+            'preview_target' => '#power',
             'fields'  => array_merge(
                 array(
                     'section_title' => array('type'=>'text','label'=>'Section title (uppercase)','max'=>80),
@@ -566,6 +591,7 @@ return array(
         'product_lighting' => array(
             'label'   => '05 · Lighting Busduct',
             'summary' => 'Gallery (7 images), content panel, spec (7 rows), PAIRED diagram (LB + PB).',
+            'preview_target' => '#lighting',
             'fields'  => array_merge(
                 array(
                     'section_title' => array('type'=>'text','label'=>'Section title (uppercase)','max'=>80),
