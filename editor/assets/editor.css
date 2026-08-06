@@ -151,11 +151,50 @@ a:hover { text-decoration: underline; }
 }
 .fx-sidebar-controls {
     display: flex; align-items: center; gap: 6px;
-    padding: 12px 20px;
+    padding: 8px 20px;
     border-bottom: 1px solid var(--fx-line);
-    position: sticky; top: 0;
-    background: #fff; z-index: 2;
+    background: #FAFAFC;
 }
+
+/* ---- Page picker ---- */
+.fx-page-picker {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 20px;
+    background: #fff;
+    border-bottom: 1px solid var(--fx-line);
+    position: sticky; top: 0; z-index: 3;
+}
+.fx-picker-label {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--fx-ink-muted);
+}
+.fx-picker-buttons { display: inline-flex; gap: 4px; }
+.fx-picker-btn {
+    padding: 6px 12px; font-size: 13px; font-weight: 600;
+    color: var(--fx-ink-muted);
+    background: transparent;
+    border: 1px solid var(--fx-line-strong);
+    border-radius: var(--fx-radius);
+    cursor: pointer; font-family: var(--fx-font);
+    transition: all .12s;
+}
+.fx-picker-btn:hover { color: var(--fx-ink); border-color: var(--fx-ink-muted); }
+.fx-picker-btn.is-active {
+    color: #fff; background: var(--fx-brand); border-color: var(--fx-brand);
+}
+
+/* ---- Shared block header ---- */
+.fx-shared-block { }
+.fx-shared-title, .fx-page-title {
+    font-size: 10.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--fx-brand);
+    padding: 14px 20px 6px;
+    background: #FAFAFC;
+}
+.fx-page-sections { display: none; }
+.fx-page-sections.is-active { display: block; }
 
 /* ---- Accordion ---- */
 .fx-acc { border-bottom: 1px solid var(--fx-line); }

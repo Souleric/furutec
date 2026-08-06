@@ -1,45 +1,70 @@
-// Furutec Editor — client-side glue.
+// Furutec Editor — multi-page client glue.
 (function () {
     'use strict';
 
     var status     = document.getElementById('fx-status');
     var preview    = document.getElementById('fx-preview');
+    var previewLbl = document.getElementById('fx-preview-label');
     var saveBtn    = document.getElementById('fx-save');
     var publishBtn = document.getElementById('fx-publish');
     var restoreBtn = document.getElementById('fx-restore');
     var refreshBtn = document.getElementById('fx-refresh-preview');
     var expandAll  = document.getElementById('fx-expand-all');
     var collapseAll= document.getElementById('fx-collapse-all');
-    var accs       = Array.prototype.slice.call(document.querySelectorAll('.fx-acc'));
+    var pickerBtns = Array.prototype.slice.call(document.querySelectorAll('.fx-picker-btn'));
+    var pageBlocks = Array.prototype.slice.call(document.querySelectorAll('.fx-page-sections'));
     var dirty      = false;
+    var currentPage = pickerBtns.length ? pickerBtns[0].getAttribute('data-page') : 'home';
 
-    // ---- Accordion open/close ----
-    accs.forEach(function (acc) {
-        var head = acc.querySelector('.fx-acc-head');
+    // ---- Accordion open/close (delegated) ----
+    document.addEventListener('click', function (e) {
+        var head = e.target.closest && e.target.closest('.fx-acc-head');
         if (!head) return;
-        head.addEventListener('click', function () {
-            var open = !acc.classList.contains('is-open');
-            acc.classList.toggle('is-open', open);
-            head.setAttribute('aria-expanded', open ? 'true' : 'false');
+        var acc = head.closest('.fx-acc');
+        if (!acc) return;
+        var open = !acc.classList.contains('is-open');
+        acc.classList.toggle('is-open', open);
+        head.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    // ---- Page switching ----
+    pickerBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var page = btn.getAttribute('data-page');
+            pickerBtns.forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+            pageBlocks.forEach(function (blk) {
+                blk.classList.toggle('is-active', blk.getAttribute('data-page') === page);
+            });
+            currentPage = page;
+            var label = (window.FX.pageLabels && window.FX.pageLabels[page]) || page;
+            previewLbl.textContent = 'Preview · ' + label + ' (draft)';
+            preview.src = 'preview.php?page=' + encodeURIComponent(page) + '&ts=' + Date.now();
         });
     });
+
+    // ---- Expand/collapse all in the CURRENT view (shared + active page) ----
+    function currentAccordions() {
+        var sharedBlock = document.querySelector('.fx-shared-block');
+        var pageBlock   = document.querySelector('.fx-page-sections.is-active');
+        var out = [];
+        if (sharedBlock) out = out.concat(Array.prototype.slice.call(sharedBlock.querySelectorAll('.fx-acc')));
+        if (pageBlock)   out = out.concat(Array.prototype.slice.call(pageBlock.querySelectorAll('.fx-acc')));
+        return out;
+    }
     expandAll.addEventListener('click', function () {
-        accs.forEach(function (a) { a.classList.add('is-open'); a.querySelector('.fx-acc-head').setAttribute('aria-expanded', 'true'); });
+        currentAccordions().forEach(function (a) { a.classList.add('is-open'); var h = a.querySelector('.fx-acc-head'); if (h) h.setAttribute('aria-expanded', 'true'); });
     });
     collapseAll.addEventListener('click', function () {
-        accs.forEach(function (a) { a.classList.remove('is-open'); a.querySelector('.fx-acc-head').setAttribute('aria-expanded', 'false'); });
+        currentAccordions().forEach(function (a) { a.classList.remove('is-open'); var h = a.querySelector('.fx-acc-head'); if (h) h.setAttribute('aria-expanded', 'false'); });
     });
 
     // ---- Dirty tracking ----
     document.addEventListener('input', function (e) {
-        if (e.target && e.target.classList && e.target.classList.contains('fx-track')) {
-            markDirty();
-        }
+        if (e.target && e.target.classList && e.target.classList.contains('fx-track')) markDirty();
     });
     window.addEventListener('beforeunload', function (e) {
         if (dirty) { e.preventDefault(); e.returnValue = ''; }
     });
-
     function markDirty() { dirty = true; setStatus('Unsaved changes', 'is-dirty'); }
     function markClean() { dirty = false; }
     function setStatus(msg, cls) { status.textContent = msg; status.className = 'fx-status ' + (cls || ''); }
@@ -47,21 +72,22 @@
         [saveBtn, publishBtn, restoreBtn, refreshBtn].forEach(function (b) { if (b) b.disabled = !!busy; });
     }
 
-    // ---- Collect current field values into a nested object ----
+    // ---- Collect current field values into nested object (shared + per page) ----
     function collectContent() {
         var out = {};
         Array.prototype.forEach.call(document.querySelectorAll('.fx-track'), function (el) {
-            var key = el.getAttribute('data-field'); // e.g. "hero.headline_1"
+            var key = el.getAttribute('data-field'); // e.g. "shared.nav.phone" or "home.hero.headline_1"
             if (!key) return;
             var parts = key.split('.');
-            var sect = parts[0], name = parts[1];
-            if (!out[sect]) out[sect] = {};
-            out[sect][name] = el.value;
+            if (parts.length !== 3) return;
+            var top = parts[0], sect = parts[1], name = parts[2];
+            if (!out[top]) out[top] = {};
+            if (!out[top][sect]) out[top][sect] = {};
+            out[top][sect][name] = el.value;
         });
         return out;
     }
 
-    // ---- Post JSON helper ----
     function post(url, body) {
         return fetch(url, {
             method: 'POST',
@@ -75,11 +101,10 @@
         }).then(function (r) { return r.text(); })
           .then(function (txt) {
               try { return JSON.parse(txt); }
-              catch (_) { return { ok: false, error: 'Bad response from server: ' + txt.slice(0, 200) }; }
+              catch (_) { return { ok: false, error: 'Bad server response: ' + txt.slice(0, 200) }; }
           });
     }
 
-    // ---- Save draft ----
     saveBtn.addEventListener('click', function () {
         setBusy(true); setStatus('Saving…', 'is-busy');
         post('save.php', { content: collectContent() }).then(function (r) {
@@ -92,39 +117,39 @@
         });
     });
 
-    // ---- Publish ----
     publishBtn.addEventListener('click', function () {
         if (dirty && !confirm('You have unsaved changes. Save them before publishing?')) return;
         if (dirty) { saveBtn.click(); setTimeout(publish, 1200); }
         else publish();
     });
     function publish() {
-        if (!confirm('Publish the current draft to the live homepage?\n\nThe current live page will be backed up automatically and can be restored in one click.')) return;
+        if (!confirm('Publish the current draft to ALL live pages?\n\nEvery page gets a timestamped backup and can be restored in one click.')) return;
         setBusy(true); setStatus('Publishing…', 'is-busy');
         post('publish.php', {}).then(function (r) {
             setBusy(false);
             if (!r.ok) { setStatus(r.error || 'Publish failed', 'is-err'); return; }
-            setStatus('Published live · backup saved', 'is-ok');
+            var files = r.files ? r.files.length : 0;
+            setStatus('Published ' + files + ' page(s) live · backups saved', 'is-ok');
             refreshPreview();
         });
     }
 
-    // ---- Restore ----
     restoreBtn.addEventListener('click', function () {
-        if (!confirm('Restore the live homepage to the previous published version?\n\nYour current draft will not be lost — only the live page reverts.')) return;
+        if (!confirm('Restore the live pages to the previous published version?\n\nYour current draft will not be lost — only the live pages revert.')) return;
         setBusy(true); setStatus('Restoring…', 'is-busy');
         post('restore.php', {}).then(function (r) {
             setBusy(false);
             if (!r.ok) { setStatus(r.error || 'Restore failed', 'is-err'); return; }
-            setStatus('Live page restored from backup', 'is-ok');
+            var files = r.files ? r.files.length : 0;
+            setStatus('Restored ' + files + ' page(s) from backup', 'is-ok');
         });
     });
 
-    // ---- Refresh preview ----
     refreshBtn.addEventListener('click', function () { refreshPreview(); });
-    function refreshPreview() { preview.src = 'preview.php?ts=' + Date.now(); }
+    function refreshPreview() {
+        preview.src = 'preview.php?page=' + encodeURIComponent(currentPage) + '&ts=' + Date.now();
+    }
 
-    // ---- File upload for image/video fields ----
     document.addEventListener('change', function (e) {
         var input = e.target;
         if (!input.classList || !input.classList.contains('fx-file')) return;

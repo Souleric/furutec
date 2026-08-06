@@ -8,33 +8,65 @@ $csrfHeader = isset($_SERVER['HTTP_X_CSRF']) ? $_SERVER['HTTP_X_CSRF'] : '';
 if (!fx_csrf_check($csrfHeader)) fx_json_response(array('ok' => false, 'error' => 'Session expired.'));
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') fx_json_response(array('ok' => false, 'error' => 'Method not allowed.'));
 
+$fieldmap = fx_load_fieldmap();
 $backupsDir = fx_backups_dir();
-$backups = glob($backupsDir . '/index-*.html');
-if (!is_array($backups) || empty($backups)) {
-    fx_json_response(array('ok' => false, 'error' => 'No backups available yet. First publish will create one.'));
-}
-sort($backups);
-$latest = end($backups);
-if (!is_file($latest)) {
-    fx_json_response(array('ok' => false, 'error' => 'Latest backup file missing.'));
+
+// Group backup files by timestamp.  Filename pattern: {basename}-{ts}.html
+// where basename matches pathinfo of each page's live_file.
+$all = glob($backupsDir . '/*.html');
+if (!is_array($all) || empty($all)) {
+    fx_json_response(array('ok' => false, 'error' => 'No backups available yet. First publish will create them.'));
 }
 
-$live = fx_live_index_path();
-
-// Also back up the CURRENT live file first (in case the user wants to redo).
-if (is_file($live)) {
-    @copy($live, $backupsDir . '/index-pre-restore-' . fx_ts() . '.html');
+// Map filename base -> live_file path.
+$baseToLive = array();
+foreach ($fieldmap['pages'] as $pd) {
+    $b = pathinfo($pd['live_file'], PATHINFO_FILENAME);
+    $baseToLive[$b] = $pd['live_file'];
 }
 
-$tmp = $live . '.tmp';
-if (!@copy($latest, $tmp)) {
-    fx_json_response(array('ok' => false, 'error' => 'Could not copy backup to temp file.'));
+// Group by timestamp suffix, then pick the newest complete set.
+$byTs = array();
+foreach ($all as $path) {
+    $fn = basename($path, '.html');
+    // Match {base}-{Y-m-d_H-i-s}
+    if (!preg_match('/^(.+)-(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})$/', $fn, $m)) continue;
+    $base = $m[1]; $ts = $m[2];
+    if (!isset($baseToLive[$base])) continue;
+    if (!isset($byTs[$ts])) $byTs[$ts] = array();
+    $byTs[$ts][$base] = $path;
 }
-if (!@rename($tmp, $live)) {
-    @unlink($tmp);
-    fx_json_response(array('ok' => false, 'error' => 'Could not atomically replace index.html with backup.'));
+if (empty($byTs)) {
+    fx_json_response(array('ok' => false, 'error' => 'No usable backups found.'));
 }
-fx_json_response(array(
-    'ok' => true,
-    'restored_from' => basename($latest),
-));
+
+// Newest timestamp (whether or not it has ALL pages — we restore what we have).
+krsort($byTs);
+$latestTs   = key($byTs);
+$latestSet  = $byTs[$latestTs];
+
+// Safety copy: back up current live files before restoring (so restore is undoable).
+$preRestoreTs = fx_ts();
+foreach ($fieldmap['pages'] as $pd) {
+    $live = fx_live_path($pd['live_file']);
+    if (is_file($live)) {
+        $b = pathinfo($pd['live_file'], PATHINFO_FILENAME);
+        @copy($live, $backupsDir . '/' . $b . '-pre-restore-' . $preRestoreTs . '.html');
+    }
+}
+
+// Restore each file that has a backup at the chosen ts.
+$restored = array();
+foreach ($latestSet as $base => $backupPath) {
+    if (!isset($baseToLive[$base])) continue;
+    $live = fx_live_path($baseToLive[$base]);
+    $tmp  = $live . '.tmp';
+    if (!@copy($backupPath, $tmp)) continue;
+    if (!@rename($tmp, $live)) { @unlink($tmp); continue; }
+    $restored[] = $baseToLive[$base];
+}
+
+if (empty($restored)) {
+    fx_json_response(array('ok' => false, 'error' => 'Could not restore any file.'));
+}
+fx_json_response(array('ok' => true, 'restored_from_ts' => $latestTs, 'files' => $restored));

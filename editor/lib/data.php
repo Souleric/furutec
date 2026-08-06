@@ -14,8 +14,10 @@ function fx_base_path() {
 }
 function fx_data_path()      { return fx_base_path() . '/data/content.php'; }
 function fx_fieldmap_path()  { return fx_base_path() . '/data/field-map.php'; }
-function fx_template_path()  { return fx_base_path() . '/editor/templates/index.template.html'; }
+function fx_template_dir()   { return fx_base_path() . '/editor/templates'; }
+function fx_template_path()  { return fx_base_path() . '/editor/templates/home.template.html'; } // legacy single-page
 function fx_live_index_path(){ return fx_base_path() . '/index.html'; }
+function fx_live_path($file) { return fx_base_path() . '/' . ltrim($file, '/'); }
 function fx_backups_dir()    { return fx_base_path() . '/backups'; }
 function fx_uploads_dir()    { return fx_base_path() . '/assets/uploads'; }
 function fx_config_path()    { return fx_base_path() . '/config/config.php'; }
