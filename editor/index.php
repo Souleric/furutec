@@ -7,7 +7,7 @@ $content = fx_load_content();
 $map     = fx_load_fieldmap();
 $csrf    = fx_csrf_token();
 
-// Precompute per-field group headers within the products section.
+// Group fields by their `group` key (fields without a group land in "__top__").
 function fx_section_field_groups($fields) {
     $groups = array();
     foreach ($fields as $name => $def) {
@@ -23,7 +23,7 @@ function fx_section_field_groups($fields) {
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>Furutec Editor</title>
-    <link rel="stylesheet" href="assets/editor.css?v=1"/>
+    <link rel="stylesheet" href="assets/editor.css?v=2"/>
     <meta name="robots" content="noindex, nofollow"/>
 </head>
 <body class="fx-body">
@@ -31,11 +31,7 @@ function fx_section_field_groups($fields) {
 <header class="fx-topbar">
     <div class="fx-topbar-left">
         <span class="fx-brand">Furutec Editor</span>
-        <nav class="fx-tabs" id="fx-tabs">
-            <?php $first = true; foreach ($map['sections'] as $sid => $s): ?>
-                <button type="button" class="fx-tab<?= $first ? ' is-active' : '' ?>" data-tab="<?= fx_escape($sid) ?>"><?= fx_escape($s['label']) ?></button>
-            <?php $first = false; endforeach; ?>
-        </nav>
+        <span class="fx-brand-sub">Homepage · <?= count($map['sections']) ?> sections</span>
     </div>
     <div class="fx-topbar-right">
         <span id="fx-status" class="fx-status"></span>
@@ -48,84 +44,95 @@ function fx_section_field_groups($fields) {
 
 <main class="fx-main">
 
-    <!-- LEFT: form fields per section -->
+    <!-- LEFT: accordion sidebar (all sections stacked, click header to expand/collapse) -->
     <aside class="fx-sidebar" id="fx-sidebar">
+        <div class="fx-sidebar-controls">
+            <button type="button" class="fx-linkbtn" id="fx-expand-all">Expand all</button>
+            <span class="fx-sep">·</span>
+            <button type="button" class="fx-linkbtn" id="fx-collapse-all">Collapse all</button>
+        </div>
+
         <?php $panelIdx = 0; foreach ($map['sections'] as $sid => $s):
             $groups = fx_section_field_groups($s['fields']);
             $sectionContent = isset($content[$sid]) ? $content[$sid] : array();
+            $isOpen = ($panelIdx === 0);   // first section open by default
         ?>
-        <section class="fx-panel<?= $panelIdx === 0 ? ' is-active' : '' ?>" data-panel="<?= fx_escape($sid) ?>">
-            <div class="fx-panel-head">
-                <div class="fx-panel-title"><?= fx_escape($s['label']) ?></div>
+        <section class="fx-acc<?= $isOpen ? ' is-open' : '' ?>" data-panel="<?= fx_escape($sid) ?>">
+            <button type="button" class="fx-acc-head" aria-expanded="<?= $isOpen ? 'true' : 'false' ?>">
+                <span class="fx-acc-title"><?= fx_escape($s['label']) ?></span>
                 <?php if (!empty($s['summary'])): ?>
-                    <div class="fx-panel-summary"><?= fx_escape($s['summary']) ?></div>
+                    <span class="fx-acc-summary"><?= fx_escape($s['summary']) ?></span>
                 <?php endif; ?>
-            </div>
+                <svg class="fx-acc-chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="fx-acc-body">
 
-            <?php foreach ($groups as $groupName => $fields):
-                if ($groupName !== '__top__'): ?>
-                    <h3 class="fx-group-head"><?= fx_escape($groupName) ?></h3>
-                <?php endif; ?>
+                <?php foreach ($groups as $groupName => $fields):
+                    if ($groupName !== '__top__'): ?>
+                        <h3 class="fx-group-head"><?= fx_escape($groupName) ?></h3>
+                    <?php endif; ?>
 
-                <?php foreach ($fields as $fname => $fdef):
-                    $val = isset($sectionContent[$fname]) ? $sectionContent[$fname] : '';
-                    $fieldKey = $sid . '.' . $fname;
-                    $type = isset($fdef['type']) ? $fdef['type'] : 'text';
-                    $label = isset($fdef['label']) ? $fdef['label'] : $fname;
-                    $help  = isset($fdef['help']) ? $fdef['help']  : '';
-                    $max   = isset($fdef['max'])  ? (int)$fdef['max'] : 500;
-                    $rows  = isset($fdef['rows']) ? (int)$fdef['rows']: 3;
-                ?>
-                <label class="fx-field" data-field-key="<?= fx_escape($fieldKey) ?>">
-                    <span class="fx-field-label"><?= fx_escape($label) ?></span>
-                    <?php if ($type === 'text'): ?>
-                        <input class="fx-input fx-track" type="text"
-                               data-field="<?= fx_escape($fieldKey) ?>"
-                               value="<?= fx_escape($val) ?>"
-                               maxlength="<?= $max ?>"/>
-                    <?php elseif ($type === 'textarea' || $type === 'markdown'): ?>
-                        <textarea class="fx-textarea fx-track"
-                                  data-field="<?= fx_escape($fieldKey) ?>"
-                                  rows="<?= $rows ?>"
-                                  maxlength="<?= $max ?>"><?= fx_escape($val) ?></textarea>
-                        <?php if ($type === 'markdown'): ?>
-                            <span class="fx-hint">Tip: wrap text in <code>**double asterisks**</code> to make it <strong>bold</strong>.</span>
-                        <?php endif; ?>
-                    <?php elseif ($type === 'image' || $type === 'video'): ?>
-                        <div class="fx-media">
-                            <div class="fx-media-preview">
-                                <?php if ($val !== ''):
-                                    $url = '../assets/' . fx_url_path($val);
-                                    if ($type === 'image'): ?>
-                                        <img src="<?= fx_escape($url) ?>" alt=""/>
+                    <?php foreach ($fields as $fname => $fdef):
+                        $val = isset($sectionContent[$fname]) ? $sectionContent[$fname] : '';
+                        $fieldKey = $sid . '.' . $fname;
+                        $type = isset($fdef['type']) ? $fdef['type'] : 'text';
+                        $label = isset($fdef['label']) ? $fdef['label'] : $fname;
+                        $help  = isset($fdef['help']) ? $fdef['help']  : '';
+                        $max   = isset($fdef['max'])  ? (int)$fdef['max'] : 500;
+                        $rows  = isset($fdef['rows']) ? (int)$fdef['rows']: 3;
+                    ?>
+                    <label class="fx-field" data-field-key="<?= fx_escape($fieldKey) ?>">
+                        <span class="fx-field-label"><?= fx_escape($label) ?></span>
+                        <?php if ($type === 'text' || $type === 'url'): ?>
+                            <input class="fx-input fx-track" type="<?= $type === 'url' ? 'url' : 'text' ?>"
+                                   data-field="<?= fx_escape($fieldKey) ?>"
+                                   value="<?= fx_escape($val) ?>"
+                                   maxlength="<?= $max ?>"/>
+                        <?php elseif ($type === 'textarea' || $type === 'markdown'): ?>
+                            <textarea class="fx-textarea fx-track"
+                                      data-field="<?= fx_escape($fieldKey) ?>"
+                                      rows="<?= $rows ?>"
+                                      maxlength="<?= $max ?>"><?= fx_escape($val) ?></textarea>
+                            <?php if ($type === 'markdown'): ?>
+                                <span class="fx-hint">Tip: wrap text in <code>**double asterisks**</code> to make it <strong>bold</strong>.</span>
+                            <?php endif; ?>
+                        <?php elseif ($type === 'image' || $type === 'video'): ?>
+                            <div class="fx-media">
+                                <div class="fx-media-preview">
+                                    <?php if ($val !== ''):
+                                        $isUrl = preg_match('#^(https?:)?//#i', $val) || (strlen($val) && $val[0] === '/');
+                                        $url = $isUrl ? $val : '../assets/' . fx_url_path($val);
+                                        if ($type === 'image'): ?>
+                                            <img src="<?= fx_escape($url) ?>" alt=""/>
+                                        <?php else: ?>
+                                            <video src="<?= fx_escape($url) ?>" controls muted playsinline preload="metadata"></video>
+                                        <?php endif; ?>
                                     <?php else: ?>
-                                        <video src="<?= fx_escape($url) ?>" controls muted playsinline preload="metadata"></video>
+                                        <span class="fx-media-empty">(no file selected)</span>
                                     <?php endif; ?>
-                                <?php else: ?>
-                                    <span class="fx-media-empty">(no file selected)</span>
-                                <?php endif; ?>
+                                </div>
+                                <div class="fx-media-controls">
+                                    <input type="hidden" class="fx-track" data-field="<?= fx_escape($fieldKey) ?>" value="<?= fx_escape($val) ?>"/>
+                                    <div class="fx-media-filename"><?= $val !== '' ? fx_escape($val) : '' ?></div>
+                                    <label class="fx-btn fx-btn-ghost fx-upload-btn">
+                                        Replace <?= $type === 'video' ? 'video' : 'image' ?>
+                                        <input type="file" class="fx-file"
+                                               data-field-key="<?= fx_escape($fieldKey) ?>"
+                                               data-media-type="<?= fx_escape($type) ?>"
+                                               accept="<?= $type === 'video' ? 'video/mp4' : 'image/jpeg,image/png,image/webp' ?>"
+                                               hidden/>
+                                    </label>
+                                </div>
                             </div>
-                            <div class="fx-media-controls">
-                                <input type="hidden" class="fx-track" data-field="<?= fx_escape($fieldKey) ?>" value="<?= fx_escape($val) ?>"/>
-                                <div class="fx-media-filename"><?= $val !== '' ? fx_escape($val) : '' ?></div>
-                                <label class="fx-btn fx-btn-ghost fx-upload-btn">
-                                    Replace <?= $type === 'video' ? 'video' : 'image' ?>
-                                    <input type="file" class="fx-file"
-                                           data-field-key="<?= fx_escape($fieldKey) ?>"
-                                           data-media-type="<?= fx_escape($type) ?>"
-                                           accept="<?= $type === 'video' ? 'video/mp4' : 'image/jpeg,image/png,image/webp' ?>"
-                                           hidden/>
-                                </label>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                    <?php if ($help !== ''): ?>
-                        <span class="fx-hint"><?= fx_escape($help) ?></span>
-                    <?php endif; ?>
-                </label>
+                        <?php endif; ?>
+                        <?php if ($help !== ''): ?>
+                            <span class="fx-hint"><?= fx_escape($help) ?></span>
+                        <?php endif; ?>
+                    </label>
+                    <?php endforeach; ?>
                 <?php endforeach; ?>
-            <?php endforeach; ?>
 
+            </div>
         </section>
         <?php $panelIdx++; endforeach; ?>
     </aside>
@@ -134,7 +141,7 @@ function fx_section_field_groups($fields) {
     <section class="fx-preview-wrap">
         <div class="fx-preview-bar">
             <span class="fx-preview-label">Preview (unpublished draft)</span>
-            <span class="fx-preview-hint">This is how the homepage would look after publishing. It updates when you Save.</span>
+            <span class="fx-preview-hint">Updates when you Save.  This is what the live homepage would look like after publishing.</span>
             <button type="button" class="fx-btn fx-btn-ghost fx-btn-small" id="fx-refresh-preview">Refresh preview</button>
         </div>
         <div class="fx-preview-frame-wrap">
@@ -144,10 +151,8 @@ function fx_section_field_groups($fields) {
 </main>
 
 <script>
-window.FX = {
-    csrf: <?= fx_json_encode($csrf) ?>
-};
+window.FX = { csrf: <?= fx_json_encode($csrf) ?> };
 </script>
-<script src="assets/editor.js?v=1"></script>
+<script src="assets/editor.js?v=2"></script>
 </body>
 </html>

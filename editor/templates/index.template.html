@@ -695,7 +695,7 @@ html { scroll-padding-top: 80px; }
 <header style="position:sticky;top:0;z-index:40;width:100%;background:#FFFFFF;border-bottom:1px solid #F1F1F3;">
   <div id="ft-header-inner" style="max-width:1320px;margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:32px;padding:16px 32px;">
     <a href="index.html" style="display:inline-flex;align-items:center;text-decoration:none;">
-      <img class="ft-logo-img" src="assets/Logo.jpeg" alt="Furutec — Busduct System"/>
+      <img class="ft-logo-img" src="{{NAV_LOGO_URL}}" alt="Furutec — Busduct System"/>
     </a>
 
     <nav id="ft-nav" style="display:flex;gap:28px;justify-content:center;">
@@ -731,10 +731,10 @@ html { scroll-padding-top: 80px; }
     <div id="ft-utility" style="display:flex;align-items:center;gap:20px;">
       <div id="ft-phone" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-sans);font-size:13px;font-weight:600;color:#111114;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M5 4h4l2 5-2 1a12 12 0 0 0 5 5l1-2 5 2v4a1 1 0 0 1-1 1A17 17 0 0 1 4 5a1 1 0 0 1 1-1Z"/></svg>
-        <span>+6012-887 4517</span>
+        <span>{{NAV_PHONE}}</span>
       </div>
       <a href="quote.html" id="ft-quote-btn" class="btn-dark" style="display:inline-flex;align-items:center;gap:12px;border:none;padding:0 24px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:opacity 200ms ease;background:#141414;color:#FFFFFF;text-decoration:none;">
-        <span id="ft-quote-label" style="font-family:var(--font-sans);font-size:13px;font-weight:600;text-transform:none;">Contact Us</span>
+        <span id="ft-quote-label" style="font-family:var(--font-sans);font-size:13px;font-weight:600;text-transform:none;">{{NAV_CONTACT_BUTTON_LABEL}}</span>
         <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
       </a>
       <button id="ft-burger" aria-label="Open menu" aria-expanded="false"><span></span></button>
@@ -1657,23 +1657,12 @@ html { scroll-padding-top: 80px; }
       <div class="fv2-hero">
         <!-- Left: copy + capability badges -->
         <div class="fv2-left">
-          <p class="fv2-tag">Our Manufacturing Plant</p>
-          <h3 class="fv2-name">Bukit Minyak, Penang</h3>
+          <p class="fv2-tag">{{FAC_TAG}}</p>
+          <h3 class="fv2-name">{{FAC_NAME}}</h3>
           <div class="fv2-rule" aria-hidden="true"></div>
 
-          <p class="fv2-desc">
-            Our manufacturing site in Bukit Minyak Industrial Park
-            operates from two adjacent buildings —
-            <strong>Plant&nbsp;1</strong> and <strong>Plant&nbsp;2</strong>
-            — alongside the FURUTEC administrative block.
-          </p>
-          <p class="fv2-desc">
-            Every busduct system comes together here, from
-            precision-machined components and copper-bar fabrication
-            through full assembly and in-house type-testing to
-            IEC&nbsp;61439-6.  Every unit is verified on the floor
-            before it leaves the site.
-          </p>
+          <p class="fv2-desc">{{FAC_DESC_1}}</p>
+          <p class="fv2-desc">{{FAC_DESC_2}}</p>
 
           <div class="fv2-badges">
             <!-- 1 — Two adjacent factory buildings with peaked roofs -->
@@ -1691,8 +1680,8 @@ html { scroll-padding-top: 80px; }
                   <path d="M14.5 14h6"/>
                 </svg>
               </span>
-              <p class="fv2-badge-label">Two Integrated<br/>Plants</p>
-              <p class="fv2-badge-sub">Plant 1 &amp; Plant 2</p>
+              <p class="fv2-badge-label">{{FAC_BADGE_1_LABEL_HTML}}</p>
+              <p class="fv2-badge-sub">{{FAC_BADGE_1_SUB}}</p>
             </div>
             <!-- 2 — Gauge dial with needle pointing to "OK" zone -->
             <div class="fv2-badge">
@@ -1712,8 +1701,8 @@ html { scroll-padding-top: 80px; }
                   <circle cx="12" cy="19" r="1.3" fill="currentColor"/>
                 </svg>
               </span>
-              <p class="fv2-badge-label">IEC 61439-6<br/>Type-Tested</p>
-              <p class="fv2-badge-sub">In-house verification</p>
+              <p class="fv2-badge-label">{{FAC_BADGE_2_LABEL_HTML}}</p>
+              <p class="fv2-badge-sub">{{FAC_BADGE_2_SUB}}</p>
             </div>
             <!-- 3 — Globe with verified-badge in the corner -->
             <div class="fv2-badge">
@@ -1732,8 +1721,8 @@ html { scroll-padding-top: 80px; }
                   <path d="m16 18 1.5 1.5 3-3.5" stroke-width="2"/>
                 </svg>
               </span>
-              <p class="fv2-badge-label">Internationally<br/>Certified</p>
-              <p class="fv2-badge-sub">ASTA · KEMA · SIRIM</p>
+              <p class="fv2-badge-label">{{FAC_BADGE_3_LABEL_HTML}}</p>
+              <p class="fv2-badge-sub">{{FAC_BADGE_3_SUB}}</p>
             </div>
             <!-- 4 — Quincunx: 5 solid dots in dice-5 pattern -->
             <div class="fv2-badge">
@@ -1746,8 +1735,8 @@ html { scroll-padding-top: 80px; }
                   <circle cx="19" cy="19" r="2.4"/>
                 </svg>
               </span>
-              <p class="fv2-badge-label">5 Product<br/>Solutions</p>
-              <p class="fv2-badge-sub">Indoor → Power Monitoring</p>
+              <p class="fv2-badge-label">{{FAC_BADGE_4_LABEL_HTML}}</p>
+              <p class="fv2-badge-sub">{{FAC_BADGE_4_SUB}}</p>
             </div>
           </div>
         </div>
@@ -1755,12 +1744,12 @@ html { scroll-padding-top: 80px; }
         <!-- Right: two photos + 3 process shots overlaying the seam -->
         <div class="fv2-photos">
           <div class="fv2-photo">
-            <img src="assets/penang-plant-aerial.jpg"
+            <img src="{{FAC_PHOTO_AERIAL_URL}}"
                  alt="Aerial view of the Furutec Manufacturing Plant in Bukit Minyak, Penang showing Plant 1 and Plant 2 buildings"
                  loading="lazy"/>
           </div>
           <div class="fv2-photo">
-            <img src="assets/penang-plant-front.jpg"
+            <img src="{{FAC_PHOTO_FRONT_URL}}"
                  alt="Furutec Electrical Sdn Bhd plant entrance in Bukit Minyak, Penang"
                  loading="lazy"/>
           </div>
@@ -1768,19 +1757,19 @@ html { scroll-padding-top: 80px; }
                two building photos above). -->
           <div class="fv2-process" aria-hidden="true">
             <figure>
-              <img src="assets/penang-plant-process-1.png"
+              <img src="{{FAC_PROCESS_1_URL}}"
                    alt="Robotic arm" loading="lazy"/>
             </figure>
             <figure>
-              <img src="assets/penang-plant-process-2.png"
+              <img src="{{FAC_PROCESS_2_URL}}"
                    alt="Laser cutting" loading="lazy"/>
             </figure>
             <figure>
-              <img src="assets/penang-plant-process-3.png"
+              <img src="{{FAC_PROCESS_3_URL}}"
                    alt="CNC drilling" loading="lazy"/>
             </figure>
             <figure>
-              <img src="assets/penang-plant-process-4.png"
+              <img src="{{FAC_PROCESS_4_URL}}"
                    alt="Busbar machining centre" loading="lazy"/>
             </figure>
           </div>
@@ -1951,37 +1940,23 @@ html { scroll-padding-top: 80px; }
   <!-- Background video (plays once when section enters viewport) -->
   <video
     class="es-bg-video"
-    src="assets/Furutec%20logo%20video%20%202.mp4"
+    src="{{CMP_BG_VIDEO_URL}}"
     muted playsinline preload="auto"></video>
   <!-- Soft veil for text readability -->
   <div class="es-bg-veil" aria-hidden="true"></div>
 
   <div class="es-content" style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 1fr;gap:64px;">
     <div style="padding-top:12px;">
-      <span class="eyebrow" style="margin-bottom:16px;text-transform:uppercase;">
-        Company Profile
-      </span>
+      <span class="eyebrow" style="margin-bottom:16px;text-transform:uppercase;">{{CMP_EYEBROW}}</span>
       <h2 style="font-family:var(--font-display);font-size:56px;font-weight:700;line-height:1.05;letter-spacing:-0.01em;color:#111114;margin:0 0 24px;text-wrap:balance;">
-        Build on expertise.<br/>
-        <span style="color:#2E3192;">Driven by innovation.</span><br/>
-        Committed by passion.
+        {{CMP_HEADING_1}}<br/>
+        <span style="color:#2E3192;">{{CMP_HEADING_2}}</span><br/>
+        {{CMP_HEADING_3}}
       </h2>
-      <p style="font-size:14px;line-height:1.8;color:#4A4A52;margin:0 0 16px;max-width:540px;">
-        Furutec Electrical Sdn Bhd is a manufacturer of busduct systems
-        specializing in indoor, outdoor, data center, lighting, and power
-        monitoring solutions. With over three decades of R&amp;D and
-        manufacturing experience, supported by two production facilities in
-        Malaysia and China, we deliver certified and reliable systems trusted
-        by engineers, developers, and project owners worldwide.
-      </p>
-      <p style="font-size:14px;line-height:1.8;color:#6B6B73;margin:0 0 32px;max-width:540px;">
-        Our products are type-tested and certified by reputable certification
-        bodies to ensure full compliance with international standards. Our
-        comprehensive range of busduct systems is also thoughtfully tailored
-        to meet diverse applications and market segments.
-      </p>
-      <a href="https://www.eita.com.my" target="_blank" rel="noopener" class="btn-outline" style="display:inline-flex;align-items:center;gap:10px;padding:14px 24px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
-        Discover More
+      <p style="font-size:14px;line-height:1.8;color:#4A4A52;margin:0 0 16px;max-width:540px;">{{CMP_BODY_1}}</p>
+      <p style="font-size:14px;line-height:1.8;color:#6B6B73;margin:0 0 32px;max-width:540px;">{{CMP_BODY_2}}</p>
+      <a href="{{CMP_BUTTON_URL}}" target="_blank" rel="noopener" class="btn-outline" style="display:inline-flex;align-items:center;gap:10px;padding:14px 24px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
+        {{CMP_BUTTON_LABEL}}
         <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
       </a>
     </div>
@@ -2530,19 +2505,17 @@ html { scroll-padding-top: 80px; }
 <section id="product-overview-section" style="background:#F4F6FB;padding:96px 0;">
   <div style="max-width:1320px;margin:0 auto;padding:0 32px;">
     <div style="text-align:center;margin-bottom:40px;">
-      <span class="eyebrow">PRODUCT OVERVIEW</span>
+      <span class="eyebrow">{{POV_EYEBROW}}</span>
       <h2 style="font-family:var(--font-display);font-size:44px;font-weight:700;line-height:1.05;letter-spacing:-0.01em;color:#111114;margin:8px 0 8px;text-wrap:balance;">
-        How A <span style="color:#2E3192;">Furutec Busduct System</span><br/>Comes Together.
+        {{POV_HEADING_1}} <span style="color:#2E3192;">{{POV_HEADING_ACCENT}}</span><br/>{{POV_HEADING_2}}
       </h2>
-      <p style="font-size:13px;line-height:1.7;color:#6B6B73;margin:0 auto;max-width:640px;">
-        Click any number on the diagram, or use the arrows below the card, to see how each component fits into the system.
-      </p>
+      <p style="font-size:13px;line-height:1.7;color:#6B6B73;margin:0 auto;max-width:640px;">{{POV_SUBTITLE}}</p>
     </div>
 
     <div class="pov-layout" id="po-pov-layout">
       <!-- LEFT — diagram with 5 hotspots -->
       <div class="pov-diagram" id="po-pov-diagram">
-        <img class="pov-bg" src="assets/PRODUCT%20OVERVIEW%202.png" alt="Furutec busduct system overview"/>
+        <img class="pov-bg" src="{{POV_DIAGRAM_URL}}" alt="Furutec busduct system overview"/>
         <!-- numbered .pov-hotspot dots injected by the JS below -->
       </div>
 
@@ -2585,23 +2558,23 @@ html { scroll-padding-top: 80px; }
        are intentionally dropped. */
     var DATA = [
       { num:1, x:9.6,  y:13.8,
-        title:'Outdoor Busduct',
+        title:{{POV_CARD_1_TITLE_JS}},
         img:'assets/products/CR%20(OUTDOOR)/cr%202.png',
         href:'product.html#outdoor' },
       { num:2, x:50.2, y:13.8,
-        title:'Indoor Busduct',
+        title:{{POV_CARD_2_TITLE_JS}},
         img:'assets/products/AH%26AH-ES%20(INDOOR)/picture%206.png',
         href:'product.html#indoor' },
       { num:3, x:88.4, y:14.0,
-        title:'Data Centre Solution',
+        title:{{POV_CARD_3_TITLE_JS}},
         img:'assets/products/I-DC(DATA%20CENTRE)/i-dc%201.png',
         href:'product.html#datacenter' },
       { num:4, x:39.8, y:86.1,
-        title:'Power Monitoring',
+        title:{{POV_CARD_4_TITLE_JS}},
         img:'assets/products/POWER%20MONITORING%20SYSTEM/pms%201.png',
         href:'product.html#power' },
       { num:5, x:88.4, y:86.1,
-        title:'Lighting Busduct',
+        title:{{POV_CARD_5_TITLE_JS}},
         img:'assets/products/LB%26PB%20(LIGHTING)/pb%203.png',
         href:'product.html#lighting' }
     ];
@@ -3181,25 +3154,23 @@ Monitoring</h3>
      CREDENTIAL & TRACK RECORD — image CTA band
      ============================================================ -->
 <section style="position:relative;min-height:480px;color:#FFFFFF;background:#0A0A0B;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 32px;">
-  <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=2000&amp;q=80&amp;auto=format&amp;fit=crop"
+  <img src="{{CERTS_BG_IMAGE_URL}}"
        alt="Skyscrapers from below"
        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:0;"/>
   <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,30,0.55) 0%,rgba(10,10,30,0.75) 100%);z-index:1;"></div>
   <div style="position:relative;z-index:2;max-width:880px;">
     <h2 style="font-family:var(--font-display);font-size:72px;font-weight:700;line-height:1.02;letter-spacing:-0.01em;margin:0 0 18px;color:#FFFFFF;text-wrap:balance;text-shadow:0 4px 32px rgba(0,0,0,0.45);">
-      Certificates <span style="color:#FFFFFF;">&amp;</span><br/>
-      <span style="color:#8E94FF;">Portfolio</span>
+      {{CERTS_HEADING_1}}<br/>
+      <span style="color:#8E94FF;">{{CERTS_HEADING_2}}</span>
     </h2>
-    <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,0.88);margin:0 0 36px;text-shadow:0 2px 16px rgba(0,0,0,0.45);">
-      Where Credential Meets Capability.
-    </p>
+    <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,0.88);margin:0 0 36px;text-shadow:0 2px 16px rgba(0,0,0,0.45);">{{CERTS_SUBTITLE}}</p>
     <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
       <a href="portfolio.html" class="btn-orange" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
-        Certificates
+        {{CERTS_BUTTON_1_LABEL}}
         <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
       </a>
       <a href="portfolio-track-record.html" class="btn-orange" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
-        Portfolio
+        {{CERTS_BUTTON_2_LABEL}}
         <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
       </a>
     </div>
@@ -3661,23 +3632,20 @@ Monitoring</h3>
 </style>
 <section id="quote" class="gi-cta-section">
   <img class="gi-cta-bg"
-       src="assets/1.png"
+       src="{{QUOTE_BG_IMAGE_URL}}"
        alt="Furutec engineer working on a busduct project drawing"
        loading="lazy"/>
   <div class="gi-cta-veil" aria-hidden="true"></div>
 
   <div class="gi-cta-inner">
-    <span class="gi-cta-eyebrow">Get In Touch</span>
+    <span class="gi-cta-eyebrow">{{QUOTE_EYEBROW}}</span>
     <h2 class="gi-cta-title">
-      Ready to specify your<br/>
-      <span class="accent">next busduct project?</span>
+      {{QUOTE_HEADING_1}}<br/>
+      <span class="accent">{{QUOTE_HEADING_2}}</span>
     </h2>
-    <p class="gi-cta-lede">
-      Tell us about your load, location and timeline. Our engineering
-      team will scope a busduct configuration tailored to your project.
-    </p>
+    <p class="gi-cta-lede">{{QUOTE_LEDE}}</p>
     <a href="quote.html" class="gi-cta-btn">
-      Get In Touch
+      {{QUOTE_BUTTON_LABEL}}
       <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
     </a>
   </div>
@@ -3690,30 +3658,30 @@ Monitoring</h3>
   <div style="max-width:1320px;margin:0 auto;padding:64px 32px 40px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr;gap:40px;">
     <div>
       <div style="display:inline-flex;align-items:center;margin-bottom:18px;">
-        <img src="assets/Logo-white.png" alt="Furutec — Busduct System" style="height:54px;width:auto;display:block;"/>
+        <img src="{{FT_LOGO_URL}}" alt="Furutec — Busduct System" style="height:54px;width:auto;display:block;"/>
       </div>
-      <p style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:#FFFFFF;margin:0 0 4px;line-height:1.4;">Furutec Electrical Sdn Bhd</p>
-      <p style="font-size:11px;color:rgba(255,255,255,0.45);margin:0 0 14px;font-style:italic;">Company No. 198001003423 (57207-W)</p>
+      <p style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:#FFFFFF;margin:0 0 4px;line-height:1.4;">{{FT_COMPANY_NAME}}</p>
+      <p style="font-size:11px;color:rgba(255,255,255,0.45);margin:0 0 14px;font-style:italic;">{{FT_COMPANY_REG}}</p>
       <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0 0 10px;display:flex;align-items:center;gap:10px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M3 6h18v12H3Z"/><path d="M3 6l9 7 9-7"/></svg>
-        <a href="mailto:info@furutec.com.my" style="color:rgba(255,255,255,0.85);font-size:13px;text-decoration:none;">info@furutec.com.my</a>
+        <a href="mailto:{{FT_EMAIL}}" style="color:rgba(255,255,255,0.85);font-size:13px;text-decoration:none;">{{FT_EMAIL}}</a>
       </p>
       <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0 0 10px;display:flex;align-items:center;gap:10px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M5 4h4l2 5-2 1a12 12 0 0 0 5 5l1-2 5 2v4a1 1 0 0 1-1 1A17 17 0 0 1 4 5a1 1 0 0 1 1-1Z"/></svg>
-        <span style="color:rgba(255,255,255,0.85);font-size:13px;">+6012-887 4517</span>
+        <span style="color:rgba(255,255,255,0.85);font-size:13px;">{{FT_PHONE}}</span>
       </p>
       <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0 0 8px;display:flex;align-items:center;gap:10px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M12 22s-8-7-8-13a8 8 0 0 1 16 0c0 6-8 13-8 13Z"/><circle cx="12" cy="9" r="3"/></svg>
-        <span style="color:rgba(255,255,255,0.85);font-size:13px;">Subang Jaya, Selangor</span>
+        <span style="color:rgba(255,255,255,0.85);font-size:13px;">{{FT_LOCATION_1}}</span>
       </p>
       <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0;display:flex;align-items:center;gap:10px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M12 22s-8-7-8-13a8 8 0 0 1 16 0c0 6-8 13-8 13Z"/><circle cx="12" cy="9" r="3"/></svg>
-        <span style="color:rgba(255,255,255,0.85);font-size:13px;">Penang, Malaysia</span>
+        <span style="color:rgba(255,255,255,0.85);font-size:13px;">{{FT_LOCATION_2}}</span>
       </p>
     </div>
 
     <div>
-      <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">Product</h4>
+      <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">{{FT_COL_1_HEADING}}</h4>
       <ul style="list-style:none;padding:0;margin:0;">
         <li style="margin-bottom:10px;"><a href="product.html#indoor" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Indoor Busduct</a></li>
         <li style="margin-bottom:10px;"><a href="product.html#outdoor" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Outdoor Busduct</a></li>
@@ -3723,7 +3691,7 @@ Monitoring</h3>
     </div>
 
     <div>
-      <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">Industries</h4>
+      <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">{{FT_COL_2_HEADING}}</h4>
       <ul style="list-style:none;padding:0;margin:0;">
         <li style="margin-bottom:10px;"><a href="portfolio-track-record.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Data Centres</a></li>
         <li style="margin-bottom:10px;"><a href="portfolio-track-record.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Commercial Buildings</a></li>
@@ -3733,7 +3701,7 @@ Monitoring</h3>
     </div>
 
     <div>
-      <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">Support</h4>
+      <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">{{FT_COL_3_HEADING}}</h4>
       <ul style="list-style:none;padding:0;margin:0;">
         <li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Technical Docs</a></li>
         <li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Product Catalog</a></li>
@@ -3743,7 +3711,7 @@ Monitoring</h3>
     </div>
 
     <div>
-      <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">Company</h4>
+      <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">{{FT_COL_4_HEADING}}</h4>
       <ul style="list-style:none;padding:0;margin:0;">
         <li style="margin-bottom:10px;"><a href="index.html#about" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">About Furutec</a></li>
         <li style="margin-bottom:10px;"><a href="portfolio-track-record.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Key Projects</a></li>
@@ -3764,19 +3732,19 @@ Monitoring</h3>
         <span style="color:rgba(255,255,255,0.3);">·</span>
         <a href="#" style="color:rgba(255,255,255,0.55);text-decoration:none;">Sitemap</a>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="font-size:11px;color:rgba(255,255,255,0.55);text-align:center;">© 2026 Furutec Electrical Sdn Bhd. All Rights Reserved.</div><a href="https://www.betasocial.my" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:10.5px;font-weight:600;letter-spacing:0.3px;color:rgba(255,255,255,0.6);transition:opacity 200ms ease;" onmouseover="this.style.opacity='0.85';" onmouseout="this.style.opacity='1';">Built by<img src="assets/beta-social-logo.png" alt="BETA Social" style="height:22px;width:auto;display:block;filter:invert(1) grayscale(1) brightness(2);opacity:0.82;"/></a></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="font-size:11px;color:rgba(255,255,255,0.55);text-align:center;">{{FT_COPYRIGHT}}</div><a href="https://www.betasocial.my" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:10.5px;font-weight:600;letter-spacing:0.3px;color:rgba(255,255,255,0.6);transition:opacity 200ms ease;" onmouseover="this.style.opacity='0.85';" onmouseout="this.style.opacity='1';">Built by<img src="assets/beta-social-logo.png" alt="BETA Social" style="height:22px;width:auto;display:block;filter:invert(1) grayscale(1) brightness(2);opacity:0.82;"/></a></div>
       <div style="display:flex;align-items:center;gap:10px;justify-content:flex-end;">
         <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.4px;text-transform:uppercase;margin-right:4px;">Social Media</span>
-        <a href="#" aria-label="Facebook" style="width:34px;height:34px;border-radius:50%;background:#1877F2;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <a href="{{FT_SOCIAL_FACEBOOK}}" aria-label="Facebook" style="width:34px;height:34px;border-radius:50%;background:#1877F2;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06c0 5.01 3.66 9.16 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.51 1.49-3.9 3.78-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.45 2.91h-2.33V22c4.78-.78 8.44-4.93 8.44-9.94Z"/></svg>
         </a>
-        <a href="#" aria-label="YouTube" style="width:34px;height:34px;border-radius:50%;background:#FF0000;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <a href="{{FT_SOCIAL_YOUTUBE}}" aria-label="YouTube" style="width:34px;height:34px;border-radius:50%;background:#FF0000;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>
         </a>
-        <a href="#" aria-label="LinkedIn" style="width:34px;height:34px;border-radius:50%;background:#0A66C2;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <a href="{{FT_SOCIAL_LINKEDIN}}" aria-label="LinkedIn" style="width:34px;height:34px;border-radius:50%;background:#0A66C2;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.99 0 1.78-.77 1.78-1.72V1.72C24 .77 23.21 0 22.22 0Z"/></svg>
         </a>
-        <a href="#" aria-label="WhatsApp" style="width:34px;height:34px;border-radius:50%;background:#25D366;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <a href="{{FT_SOCIAL_WHATSAPP}}" aria-label="WhatsApp" style="width:34px;height:34px;border-radius:50%;background:#25D366;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-1 1.1-.2.2-.4.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.5-1.7-1.6-2-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5L9.4 7c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-1 .9-1 2.3 0 1.4 1 2.7 1.2 2.9.2.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.4-.1-.2-.3-.2-.5-.3ZM12 22a10 10 0 0 1-5.1-1.4l-3.6 1 .9-3.6A10 10 0 1 1 12 22Zm0-18a8 8 0 0 0-6.7 12.4l-.5 2 2-.6A8 8 0 1 0 12 4Z"/></svg>
         </a>
       </div>

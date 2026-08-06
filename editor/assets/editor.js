@@ -2,27 +2,32 @@
 (function () {
     'use strict';
 
-    var tabs   = document.getElementById('fx-tabs');
-    var panels = document.querySelectorAll('.fx-panel');
-    var status = document.getElementById('fx-status');
-    var preview = document.getElementById('fx-preview');
+    var status     = document.getElementById('fx-status');
+    var preview    = document.getElementById('fx-preview');
     var saveBtn    = document.getElementById('fx-save');
     var publishBtn = document.getElementById('fx-publish');
     var restoreBtn = document.getElementById('fx-restore');
     var refreshBtn = document.getElementById('fx-refresh-preview');
-    var dirty = false;
+    var expandAll  = document.getElementById('fx-expand-all');
+    var collapseAll= document.getElementById('fx-collapse-all');
+    var accs       = Array.prototype.slice.call(document.querySelectorAll('.fx-acc'));
+    var dirty      = false;
 
-    // ---- Section tab switching ----
-    tabs.addEventListener('click', function (e) {
-        var btn = e.target.closest('.fx-tab');
-        if (!btn) return;
-        var target = btn.getAttribute('data-tab');
-        Array.prototype.forEach.call(tabs.querySelectorAll('.fx-tab'), function (t) {
-            t.classList.toggle('is-active', t === btn);
+    // ---- Accordion open/close ----
+    accs.forEach(function (acc) {
+        var head = acc.querySelector('.fx-acc-head');
+        if (!head) return;
+        head.addEventListener('click', function () {
+            var open = !acc.classList.contains('is-open');
+            acc.classList.toggle('is-open', open);
+            head.setAttribute('aria-expanded', open ? 'true' : 'false');
         });
-        Array.prototype.forEach.call(panels, function (p) {
-            p.classList.toggle('is-active', p.getAttribute('data-panel') === target);
-        });
+    });
+    expandAll.addEventListener('click', function () {
+        accs.forEach(function (a) { a.classList.add('is-open'); a.querySelector('.fx-acc-head').setAttribute('aria-expanded', 'true'); });
+    });
+    collapseAll.addEventListener('click', function () {
+        accs.forEach(function (a) { a.classList.remove('is-open'); a.querySelector('.fx-acc-head').setAttribute('aria-expanded', 'false'); });
     });
 
     // ---- Dirty tracking ----
@@ -35,17 +40,9 @@
         if (dirty) { e.preventDefault(); e.returnValue = ''; }
     });
 
-    function markDirty() {
-        dirty = true;
-        setStatus('Unsaved changes', 'is-dirty');
-    }
-    function markClean() {
-        dirty = false;
-    }
-    function setStatus(msg, cls) {
-        status.textContent = msg;
-        status.className = 'fx-status ' + (cls || '');
-    }
+    function markDirty() { dirty = true; setStatus('Unsaved changes', 'is-dirty'); }
+    function markClean() { dirty = false; }
+    function setStatus(msg, cls) { status.textContent = msg; status.className = 'fx-status ' + (cls || ''); }
     function setBusy(busy) {
         [saveBtn, publishBtn, restoreBtn, refreshBtn].forEach(function (b) { if (b) b.disabled = !!busy; });
     }
@@ -65,8 +62,7 @@
     }
 
     // ---- Post JSON helper ----
-    function post(url, body, opts) {
-        opts = opts || {};
+    function post(url, body) {
         return fetch(url, {
             method: 'POST',
             credentials: 'same-origin',
@@ -85,35 +81,26 @@
 
     // ---- Save draft ----
     saveBtn.addEventListener('click', function () {
-        setBusy(true);
-        setStatus('Saving…', 'is-busy');
-        var content = collectContent();
-        post('save.php', { content: content }).then(function (r) {
+        setBusy(true); setStatus('Saving…', 'is-busy');
+        post('save.php', { content: collectContent() }).then(function (r) {
             setBusy(false);
             if (!r.ok) { setStatus(r.error || 'Save failed', 'is-err'); return; }
-            markClean();
-            setStatus('Draft saved · preview updated', 'is-ok');
+            markClean(); setStatus('Draft saved · preview updated', 'is-ok');
             refreshPreview();
         }).catch(function (e) {
-            setBusy(false);
-            setStatus('Save error: ' + (e && e.message ? e.message : 'unknown'), 'is-err');
+            setBusy(false); setStatus('Save error: ' + (e && e.message ? e.message : 'unknown'), 'is-err');
         });
     });
 
     // ---- Publish ----
     publishBtn.addEventListener('click', function () {
         if (dirty && !confirm('You have unsaved changes. Save them before publishing?')) return;
-        if (dirty) {
-            saveBtn.click();
-            setTimeout(publish, 1200);
-        } else {
-            publish();
-        }
+        if (dirty) { saveBtn.click(); setTimeout(publish, 1200); }
+        else publish();
     });
     function publish() {
         if (!confirm('Publish the current draft to the live homepage?\n\nThe current live page will be backed up automatically and can be restored in one click.')) return;
-        setBusy(true);
-        setStatus('Publishing…', 'is-busy');
+        setBusy(true); setStatus('Publishing…', 'is-busy');
         post('publish.php', {}).then(function (r) {
             setBusy(false);
             if (!r.ok) { setStatus(r.error || 'Publish failed', 'is-err'); return; }
@@ -125,8 +112,7 @@
     // ---- Restore ----
     restoreBtn.addEventListener('click', function () {
         if (!confirm('Restore the live homepage to the previous published version?\n\nYour current draft will not be lost — only the live page reverts.')) return;
-        setBusy(true);
-        setStatus('Restoring…', 'is-busy');
+        setBusy(true); setStatus('Restoring…', 'is-busy');
         post('restore.php', {}).then(function (r) {
             setBusy(false);
             if (!r.ok) { setStatus(r.error || 'Restore failed', 'is-err'); return; }
@@ -136,9 +122,7 @@
 
     // ---- Refresh preview ----
     refreshBtn.addEventListener('click', function () { refreshPreview(); });
-    function refreshPreview() {
-        preview.src = 'preview.php?ts=' + Date.now();
-    }
+    function refreshPreview() { preview.src = 'preview.php?ts=' + Date.now(); }
 
     // ---- File upload for image/video fields ----
     document.addEventListener('change', function (e) {
@@ -149,49 +133,39 @@
         var fieldKey = input.getAttribute('data-field-key');
         var kind     = input.getAttribute('data-media-type');
 
-        // Basic client-side guard.
         var maxMb = (kind === 'video') ? 30 : 5;
         if (file.size > maxMb * 1024 * 1024) {
             setStatus('File too large (max ' + maxMb + ' MB)', 'is-err');
-            input.value = '';
-            return;
+            input.value = ''; return;
         }
 
-        setBusy(true);
-        setStatus('Uploading ' + file.name + '…', 'is-busy');
-
+        setBusy(true); setStatus('Uploading ' + file.name + '…', 'is-busy');
         var form = new FormData();
         form.append('file', file);
         form.append('kind', kind);
         form.append('field_key', fieldKey);
         fetch('upload.php', {
-            method: 'POST',
-            credentials: 'same-origin',
+            method: 'POST', credentials: 'same-origin',
             headers: { 'X-CSRF': window.FX.csrf, 'X-Requested-With': 'fetch' },
             body: form
         }).then(function (r) { return r.text(); })
-          .then(function (txt) {
-              try { return JSON.parse(txt); }
-              catch (_) { return { ok: false, error: 'Bad upload response' }; }
-          })
+          .then(function (txt) { try { return JSON.parse(txt); } catch (_) { return { ok: false, error: 'Bad upload response' }; } })
           .then(function (r) {
-              setBusy(false);
-              input.value = '';
+              setBusy(false); input.value = '';
               if (!r.ok) { setStatus(r.error || 'Upload failed', 'is-err'); return; }
-              // Update the hidden input + preview.
               var wrap = document.querySelector('[data-field-key="' + cssEsc(fieldKey) + '"]');
               if (!wrap) return;
               var hidden = wrap.querySelector('input.fx-track[type="hidden"]');
               if (hidden) hidden.value = r.filename;
               var fname = wrap.querySelector('.fx-media-filename');
               if (fname) fname.textContent = r.filename;
-              var preview = wrap.querySelector('.fx-media-preview');
-              if (preview) {
+              var previewEl = wrap.querySelector('.fx-media-preview');
+              if (previewEl) {
                   var url = '../assets/' + encodePath(r.filename) + '?t=' + Date.now();
                   if (kind === 'video') {
-                      preview.innerHTML = '<video src="' + escAttr(url) + '" controls muted playsinline preload="metadata"></video>';
+                      previewEl.innerHTML = '<video src="' + escAttr(url) + '" controls muted playsinline preload="metadata"></video>';
                   } else {
-                      preview.innerHTML = '<img src="' + escAttr(url) + '" alt=""/>';
+                      previewEl.innerHTML = '<img src="' + escAttr(url) + '" alt=""/>';
                   }
               }
               markDirty();
@@ -206,9 +180,7 @@
     function escAttr(s) {
         return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     }
-    function encodePath(p) {
-        return String(p).split('/').map(encodeURIComponent).join('/');
-    }
+    function encodePath(p) { return String(p).split('/').map(encodeURIComponent).join('/'); }
 
     setStatus('Ready', '');
 })();
