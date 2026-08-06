@@ -71,11 +71,21 @@
         } catch (err) { /* silent */ }
     }
 
-    // ---- Page switching ----
+    // ---- Page switching (collapsible picker) ----
+    // Collapsed state (default): only the active row is visible.
+    // Clicking the active row toggles the expanded state.
+    // Clicking a non-active row switches to that page and collapses again.
+    var pickerButtonsEl = document.querySelector('.fx-picker-buttons');
     pickerBtns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();   // don't let the outside-click handler close us on this click
+            if (btn.classList.contains('is-active')) {
+                if (pickerButtonsEl) pickerButtonsEl.classList.toggle('is-expanded');
+                return;
+            }
             var page = btn.getAttribute('data-page');
             pickerBtns.forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+            if (pickerButtonsEl) pickerButtonsEl.classList.remove('is-expanded');
             pageBlocks.forEach(function (blk) {
                 blk.classList.toggle('is-active', blk.getAttribute('data-page') === page);
             });
@@ -84,6 +94,13 @@
             previewLbl.textContent = 'Preview · ' + label + ' (draft)';
             preview.src = 'preview.php?page=' + encodeURIComponent(page) + '&ts=' + Date.now();
         });
+    });
+    // Collapse on outside click (event bubbles up past picker-btn stopPropagation
+    // above, so this fires only for clicks outside the button group).
+    document.addEventListener('click', function (e) {
+        if (!pickerButtonsEl || !pickerButtonsEl.classList.contains('is-expanded')) return;
+        if (pickerButtonsEl.contains(e.target)) return;
+        pickerButtonsEl.classList.remove('is-expanded');
     });
 
     // ---- Device toggle (Desktop / Tablet / Mobile preview width) ----

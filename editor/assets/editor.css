@@ -173,6 +173,7 @@ a:hover { text-decoration: underline; }
 }
 .fx-picker-buttons {
     display: flex; flex-direction: column; gap: 2px;
+    position: relative;   /* anchors the expanded overlay on tighter viewports */
 }
 .fx-picker-btn {
     display: flex; align-items: center; gap: 8px;
@@ -197,6 +198,26 @@ a:hover { text-decoration: underline; }
     background: rgba(46, 49, 146, 0.08);
     border-left-color: var(--fx-brand);
     font-weight: 700;
+}
+
+/* Chevron on the active button — points down when collapsed, up when
+   expanded.  Clicking the active button toggles between the two states. */
+.fx-picker-btn.is-active::after {
+    content: '';
+    margin-left: auto; flex-shrink: 0;
+    width: 12px; height: 12px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232E3192' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    transition: transform .2s ease;
+}
+.fx-picker-buttons.is-expanded .fx-picker-btn.is-active::after {
+    transform: rotate(180deg);
+}
+/* Collapsed (default): show only the active row */
+.fx-picker-buttons:not(.is-expanded) .fx-picker-btn:not(.is-active) {
+    display: none;
 }
 
 /* ---- Shared block header ---- */

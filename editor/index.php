@@ -230,6 +230,6 @@ window.FX = {
     pageLabels: <?= fx_json_encode($labels) ?>
 };
 </script>
-<script src="assets/editor.js?v=6"></script>
+<script src="assets/editor.js?v=7"></script>
 </body>
 </html>
