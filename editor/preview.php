@@ -24,7 +24,10 @@ if ($rendered === null) {
 }
 
 $ribbon = '<div style="position:fixed;top:0;right:0;z-index:99999;background:#B36B00;color:#fff;padding:5px 12px;font-family:-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;border-bottom-left-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,0.3);pointer-events:none;">Draft preview · ' . fx_escape($page_id) . '</div>';
-$baseTag = '<base href="../"/>';
+// target="_blank" ensures that if Amy clicks any link inside the draft
+// preview, it opens in a new tab instead of hijacking the iframe (which
+// would replace the draft with the actual live page and confuse her).
+$baseTag = '<base href="../" target="_blank"/>';
 $rendered = preg_replace('/(<head[^>]*>)/i', '$1' . $baseTag, $rendered, 1);
 $rendered = preg_replace('/(<body[^>]*>)/i', '$1' . $ribbon, $rendered, 1);
 
