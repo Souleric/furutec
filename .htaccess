@@ -1,0 +1,38 @@
+# =========================================================
+# MAINTENANCE MODE — enabled 2026-08-07
+# To DISABLE the maintenance page and bring the site back live,
+# delete this whole block down to the "END MAINTENANCE" line.
+# =========================================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Do NOT redirect the maintenance page itself
+    RewriteCond %{REQUEST_URI} !^/maintenance\.html$
+    # Do NOT redirect the editor (Amy needs to keep editing)
+    RewriteCond %{REQUEST_URI} !^/editor(/|$)
+    # Do NOT redirect static assets (maintenance page needs the logo)
+    RewriteCond %{REQUEST_URI} !^/assets(/|$)
+    # Do NOT redirect editor data/config/backup dirs
+    RewriteCond %{REQUEST_URI} !^/(data|config|backups)(/|$)
+    # Everything else: return 503 (which ErrorDocument turns into
+    # a maintenance.html body — search engines see 503 = temporary)
+    RewriteRule .* - [R=503,L]
+</IfModule>
+
+# When Apache returns 503, serve maintenance.html as the response body
+ErrorDocument 503 /maintenance.html
+
+# Tell search engines / caches to retry in ~1 hour (soft downtime hint)
+<IfModule mod_headers.c>
+    Header Always Set Retry-After "3600"
+</IfModule>
+# =========================================================
+# END MAINTENANCE
+# =========================================================
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php73” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php73 .php .php7 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit
