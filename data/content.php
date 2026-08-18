@@ -37,7 +37,7 @@ return array(
             'social_facebook' => '#',
             'social_youtube'  => '#',
             'social_linkedin' => '#',
-            'social_whatsapp' => '#',
+            'social_whatsapp' => 'https://wa.me/60128874517',
         ),
 
     ),
