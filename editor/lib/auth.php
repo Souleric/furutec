@@ -46,6 +46,18 @@ function fx_must_change_password() {
 }
 
 /**
+ * Is publishing currently allowed?  Defaults to TRUE if the config key is
+ * missing (backwards compatible with older config.php files).  When FALSE,
+ * both the UI Publish button and publish.php refuse the action.
+ */
+function fx_publishing_enabled() {
+    $cfg = fx_config();
+    // Explicit false only — missing key or any truthy value means enabled.
+    if (!array_key_exists('publishing_enabled', $cfg)) return true;
+    return (bool)$cfg['publishing_enabled'];
+}
+
+/**
  * Enforce login on a page.  If not authed, redirect to /editor/login.php.
  * If authed but must-change-password, redirect to /editor/change-password.php.
  */

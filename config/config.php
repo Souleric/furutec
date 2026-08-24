@@ -14,4 +14,9 @@ return array(
     'csrf_key'              => 'change-this-any-random-string-once-in-production-9k2fZ',
     'max_login_attempts'    => 5,
     'lockout_seconds'       => 300,    // 5 min after too many failures
+
+    // When false, Publish is disabled — the UI button is greyed out and
+    // publish.php refuses even direct API calls. Flip to true to re-enable
+    // publishing (no code deploy needed, just re-save this file).
+    'publishing_enabled'    => false,
 );

@@ -148,7 +148,17 @@
     function markClean() { dirty = false; }
     function setStatus(msg, cls) { status.textContent = msg; status.className = 'fx-status ' + (cls || ''); }
     function setBusy(busy) {
-        [saveBtn, publishBtn, restoreBtn, refreshBtn].forEach(function (b) { if (b) b.disabled = !!busy; });
+        [saveBtn, publishBtn, restoreBtn, refreshBtn].forEach(function (b) {
+            if (!b) return;
+            // Never re-enable the publish button when publishing is disabled
+            // by config — otherwise setBusy(false) would silently un-disable
+            // the server-rendered disabled state.
+            if (b === publishBtn && window.FX && window.FX.publishingEnabled === false) {
+                b.disabled = true;
+                return;
+            }
+            b.disabled = !!busy;
+        });
     }
 
     // ---- Collect current field values into nested object (shared + per page) ----
@@ -197,6 +207,14 @@
     });
 
     publishBtn.addEventListener('click', function () {
+        // Client-side kill-switch: if publishing is disabled at the server
+        // (config.php: publishing_enabled=false), don't even prompt.  The
+        // server refuses too — this just avoids a needless confirm dialog
+        // and a wasted network round-trip.
+        if (window.FX && window.FX.publishingEnabled === false) {
+            setStatus('Publishing is temporarily disabled by the site administrator. Save draft still works.', 'is-err');
+            return;
+        }
         if (dirty && !confirm('You have unsaved changes. Save them before publishing?')) return;
         if (dirty) { saveBtn.click(); setTimeout(publish, 1200); }
         else publish();

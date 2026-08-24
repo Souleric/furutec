@@ -9,6 +9,13 @@ $csrfHeader = isset($_SERVER['HTTP_X_CSRF']) ? $_SERVER['HTTP_X_CSRF'] : '';
 if (!fx_csrf_check($csrfHeader)) fx_json_response(array('ok' => false, 'error' => 'Session expired.'));
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') fx_json_response(array('ok' => false, 'error' => 'Method not allowed.'));
 
+// Global publish kill-switch — controlled by 'publishing_enabled' in
+// config/config.php.  Even if someone bypasses the greyed-out button in
+// the UI (or calls this endpoint directly), the server refuses.
+if (!fx_publishing_enabled()) {
+    fx_json_response(array('ok' => false, 'error' => 'Publishing is temporarily disabled. Save draft is still available — contact the site administrator to re-enable Publish.'));
+}
+
 $fieldmap = fx_load_fieldmap();
 $content  = fx_load_content();
 $backupsDir = fx_backups_dir();

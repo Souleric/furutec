@@ -132,7 +132,12 @@ $firstPageId = array_keys($pages)[0];
         <span id="fx-status" class="fx-status"></span>
         <button type="button" class="fx-btn" id="fx-save">Save draft</button>
         <button type="button" class="fx-btn fx-btn-ghost" id="fx-restore" title="Restore the previous version of the live site">Restore previous</button>
-        <button type="button" class="fx-btn fx-btn-primary" id="fx-publish">Publish</button>
+        <?php $publishingEnabled = fx_publishing_enabled(); ?>
+        <button type="button"
+                class="fx-btn fx-btn-primary<?= $publishingEnabled ? '' : ' is-disabled' ?>"
+                id="fx-publish"
+                <?= $publishingEnabled ? '' : 'disabled aria-disabled="true"' ?>
+                title="<?= $publishingEnabled ? 'Publish drafts to the live site' : 'Publishing is temporarily disabled by the site administrator. Save draft still works — contact Eric to re-enable Publish.' ?>">Publish<?= $publishingEnabled ? '' : ' (disabled)' ?></button>
         <a class="fx-btn fx-btn-link" href="logout.php">Sign out</a>
     </div>
 </header>
@@ -227,9 +232,10 @@ foreach ($pages as $pid => $pdef) $labels[$pid] = $pdef['label'];
 <script>
 window.FX = {
     csrf: <?= fx_json_encode($csrf) ?>,
-    pageLabels: <?= fx_json_encode($labels) ?>
+    pageLabels: <?= fx_json_encode($labels) ?>,
+    publishingEnabled: <?= $publishingEnabled ? 'true' : 'false' ?>
 };
 </script>
-<script src="assets/editor.js?v=8"></script>
+<script src="assets/editor.js?v=9"></script>
 </body>
 </html>
