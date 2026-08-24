@@ -51,6 +51,15 @@ function fx_build_substitutions($page_id, $content) {
     $s['FT_SOCIAL_LINKEDIN']= fx_escape(isset($ft['social_linkedin']) ? $ft['social_linkedin'] : '#');
     $s['FT_SOCIAL_WHATSAPP']= fx_escape(isset($ft['social_whatsapp']) ? $ft['social_whatsapp'] : '#');
 
+    // Shared WhatsApp URL used wherever a phone number is displayed (nav bar
+    // and footer contact block).  Sourced from the same field as the footer
+    // social icon so editing that value updates every phone tap-target too.
+    // Falls back to Furutec's business WhatsApp (12-887 4517) if the field
+    // is blank — better than an inert '#' href on a phone-shaped link.
+    $wa_raw = isset($ft['social_whatsapp']) ? trim((string)$ft['social_whatsapp']) : '';
+    if ($wa_raw === '' || $wa_raw === '#') $wa_raw = 'https://wa.me/60128874517';
+    $s['SHARED_WA_URL'] = fx_escape($wa_raw);
+
     // ============================================================
     // HOME page sections
     // ============================================================
