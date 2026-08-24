@@ -165,21 +165,16 @@ return array(
 
         'facilities' => array(
             'label'   => 'Bukit Minyak Facilities',
-            'summary' => 'Plant name, description, 4 badges, 6 photos.',
+            'summary' => '6 photos of the plant and manufacturing process.',
             'preview_target' => '#fv2-section',
             'fields'  => array(
-                'tag'     => array('type'=>'text','label'=>'Section tag','max'=>60),
-                'name'    => array('type'=>'text','label'=>'Plant name','max'=>60),
-                'desc_1'  => array('type'=>'markdown','label'=>'Description paragraph 1','rows'=>4,'max'=>800),
-                'desc_2'  => array('type'=>'markdown','label'=>'Description paragraph 2','rows'=>4,'max'=>800),
-                'badge_1_label' => array('type'=>'text','group'=>'Badge 1','label'=>'Label','help'=>'Use / for line breaks.','max'=>60),
-                'badge_1_sub'   => array('type'=>'text','group'=>'Badge 1','label'=>'Sublabel','max'=>60),
-                'badge_2_label' => array('type'=>'text','group'=>'Badge 2','label'=>'Label','max'=>60),
-                'badge_2_sub'   => array('type'=>'text','group'=>'Badge 2','label'=>'Sublabel','max'=>60),
-                'badge_3_label' => array('type'=>'text','group'=>'Badge 3','label'=>'Label','max'=>60),
-                'badge_3_sub'   => array('type'=>'text','group'=>'Badge 3','label'=>'Sublabel','max'=>60),
-                'badge_4_label' => array('type'=>'text','group'=>'Badge 4','label'=>'Label','max'=>60),
-                'badge_4_sub'   => array('type'=>'text','group'=>'Badge 4','label'=>'Sublabel','max'=>60),
+                // Note: the copy-side of this section (section tag, plant name,
+                // 2 description paragraphs, 4 capability badges) is CSS-hidden
+                // in home.template.html (`.fv2-left { display:none; }`), so its
+                // fields were removed from the editor on 24 Aug 2026 to avoid
+                // confusing the client (Furutec-Contact-Form-Email-Flow).
+                // If the copy panel is ever brought back, re-add those fields
+                // here and repopulate values in data/content.php.
                 'photo_aerial' => array('type'=>'image','group'=>'Main photos','label'=>'Aerial plant photo','max_mb'=>5),
                 'photo_front'  => array('type'=>'image','group'=>'Main photos','label'=>'Plant entrance photo','max_mb'=>5),
                 'process_1' => array('type'=>'image','group'=>'Process photos','label'=>'Process photo 1','max_mb'=>5),
