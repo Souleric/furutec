@@ -347,6 +347,17 @@ function fx_render_page($page_id, $content, &$errors_out = null) {
     foreach ($subs as $k => $v) $map['{{' . $k . '}}'] = $v;
     $rendered = strtr($template, $map);
 
+    // Strip empty feature/list items so the CSS tick (::before) doesn't render
+    // for placeholders the editor left blank.  The pattern `<li><span></span></li>`
+    // only appears in .ps-feature-grid UL blocks (product page), so a global
+    // sweep is safe.  Also strips a leading newline+indent so the resulting
+    // HTML stays tidy.
+    $rendered = preg_replace(
+        '#\n\s*<li><span>\s*</span></li>#',
+        '',
+        $rendered
+    );
+
     if (preg_match_all('/\{\{[A-Z0-9_]+\}\}/', $rendered, $m)) {
         if (is_array($errors_out)) {
             $errors_out[] = "[$page_id] Unfilled placeholders: " . implode(', ', array_unique($m[0]));
