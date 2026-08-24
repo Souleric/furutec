@@ -18,5 +18,5 @@ return array(
     // When false, Publish is disabled — the UI button is greyed out and
     // publish.php refuses even direct API calls. Flip to true to re-enable
     // publishing (no code deploy needed, just re-save this file).
-    'publishing_enabled'    => false,
+    'publishing_enabled'    => true,
 );
