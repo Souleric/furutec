@@ -5,10 +5,10 @@
 
 return array(
     'admin_user'            => 'admin',
-    // Default password: changeme123
-    // On first login the editor forces a password change and rewrites this file.
-    'admin_pass_hash'       => '$2y$10$XNt7hj5/POtnjkfsA9ENWeCCAzGKaQ.DZad8I0k77zBr.ybH/6Xau',
-    'must_change_password'  => true,
+    // Password rotated on 24 Aug 2026 — bcrypt cost 12.
+    // (Plaintext is not stored in this file; ask Eric if you need it reset.)
+    'admin_pass_hash'       => '$2y$12$baMxnN/gCSWV6kNV2wrhFO5PquiNN31.NaslwIx3GgtjDYpgZndom',
+    'must_change_password'  => false,
     'session_lifetime'      => 3600,   // 1 hour of inactivity
     'session_name'          => 'FURUTEC_EDITOR',
     'csrf_key'              => 'change-this-any-random-string-once-in-production-9k2fZ',
