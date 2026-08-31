@@ -30,3 +30,8 @@ node_modules/
 nav-fixed.png
 gallery-white.png
 # Local-only large videos
+
+# QA / demo scratch files (kept out of git; regenerate with build_test_video.py)
+demo-swap-test.mp4
+furutec-video-swap-demo.mp4
+demo-0*.png
