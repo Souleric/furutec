@@ -36,6 +36,14 @@
         acc.classList.toggle('is-open', open);
         head.setAttribute('aria-expanded', open ? 'true' : 'false');
 
+        // Any manual sidebar click clears the preview-click focus highlight
+        // from every OTHER section — the user is telling us where they're
+        // working, so the persistent orange accent should follow them.
+        var focused = document.querySelectorAll('.fx-acc.is-focused');
+        for (var i = 0; i < focused.length; i++) {
+            if (focused[i] !== acc) focused[i].classList.remove('is-focused');
+        }
+
         // Scroll the preview to this section — fires on both open and re-close-click,
         // which is fine (clicking the header re-anchors the preview even if the
         // section is already open).
@@ -70,6 +78,85 @@
             }, 900);
         } catch (err) { /* silent */ }
     }
+
+    // ---- Reverse anchoring: preview click → sidebar section highlight ----
+    // Same-origin trick again: on every iframe load we attach a single
+    // click listener to the iframe's document, walk up from the click
+    // target to the first ancestor that matches any known section's
+    // preview_target selector, then focus the matching sidebar accordion
+    // (scrolls the sidebar to it + adds the persistent .is-focused class).
+    // Silently no-ops on cross-origin, no matching selector, or no
+    // sidebar section for this page.
+    function focusSidebarSection(acc) {
+        if (!acc) return;
+        // Clear focus from any previously-focused accordion (site-wide, not
+        // just current page — page switches also drop the class naturally).
+        var all = document.querySelectorAll('.fx-acc.is-focused');
+        for (var i = 0; i < all.length; i++) {
+            if (all[i] !== acc) all[i].classList.remove('is-focused');
+        }
+        // Open + focus.  Re-adding the class after a microtask restarts
+        // the CSS pulse animation even when the same section is re-clicked.
+        acc.classList.remove('is-focused');
+        acc.classList.add('is-open');
+        var head = acc.querySelector('.fx-acc-head');
+        if (head) head.setAttribute('aria-expanded', 'true');
+        // Scroll the sidebar so the accordion header is comfortably in view.
+        // block:'center' keeps the whole heading visible without slamming to top.
+        acc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Force reflow before re-adding the class so the animation replays.
+        void acc.offsetWidth;
+        acc.classList.add('is-focused');
+    }
+    function installPreviewClickTracker() {
+        try {
+            var doc = preview && preview.contentDocument;
+            if (!doc || !doc.body) return;
+            // Guard: install at most once per iframe document.
+            if (doc.body.dataset.fxTrackerInstalled === '1') return;
+            doc.body.dataset.fxTrackerInstalled = '1';
+
+            doc.addEventListener('click', function (e) {
+                // Build the list of selectors *currently* active (this page).
+                // Doing it lazily on click keeps things correct even if
+                // Amy switches pages/expands accordions mid-session.
+                var active = document.querySelector('.fx-page-sections.is-active');
+                if (!active) return;
+                var accs = active.querySelectorAll('.fx-acc[data-preview-target]');
+                var pairs = [];
+                for (var i = 0; i < accs.length; i++) {
+                    var sel = accs[i].getAttribute('data-preview-target');
+                    if (sel) pairs.push({ selector: sel, acc: accs[i] });
+                }
+                if (!pairs.length) return;
+
+                // Walk up from the click target; first ancestor that matches
+                // ANY of our selectors wins (deepest = most specific).
+                var node = e.target;
+                var match = null;
+                while (node && node !== doc.documentElement) {
+                    for (var j = 0; j < pairs.length; j++) {
+                        try {
+                            if (node.matches && node.matches(pairs[j].selector)) {
+                                match = pairs[j].acc;
+                                break;
+                            }
+                        } catch (err) { /* bad selector, skip */ }
+                    }
+                    if (match) break;
+                    node = node.parentNode;
+                }
+                if (match) focusSidebarSection(match);
+                // No match → silent no-op (click in nav/footer/etc.)
+            }, true);
+        } catch (err) { /* cross-origin, doc gone — silent */ }
+    }
+    // Install on every iframe navigation.  addEventListener beats onload so
+    // we don't clobber anything else the harness might set up here later.
+    if (preview) preview.addEventListener('load', installPreviewClickTracker);
+    // Also try once on script boot, in case the iframe already finished
+    // loading before this script ran.
+    installPreviewClickTracker();
 
     // ---- Page switching (collapsible picker) ----
     // Collapsed state (default): only the active row is visible.
