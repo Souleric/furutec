@@ -72,6 +72,29 @@ function fx_build_substitutions($page_id, $content) {
         $s['HERO_HEADLINE_2']   = fx_escape(isset($hero['headline_2']) ? $hero['headline_2'] : '');
         $s['HERO_LEDE']         = fx_escape(isset($hero['lede']) ? $hero['lede'] : '');
 
+        // Hero certification bar (7 logo + alt-text pairs, editor-editable).
+        // Fallbacks preserve the original hardcoded values for a safe rollout —
+        // if content.php doesn't yet have `home.hero_certs`, the site renders
+        // exactly the same 7 marks it always has.
+        $hc = isset($page['hero_certs']) ? $page['hero_certs'] : array();
+        $hero_cert_defaults = array(
+            1 => array('img'=>'CERTS LOGOS/UL_Mark (1).svg',              'alt'=>'UL'),
+            2 => array('img'=>'CERTS LOGOS/Dekra.png',                    'alt'=>'DEKRA'),
+            3 => array('img'=>'certs/intertek.svg',                       'alt'=>'Intertek'),
+            4 => array('img'=>'CERTS LOGOS/SGBP.jpg',                     'alt'=>'SGBC'),
+            5 => array('img'=>'CERTS LOGOS/TUV.png',                      'alt'=>'TÜV SÜD'),
+            6 => array('img'=>'CERTS LOGOS/ISO 9001 Certified_col.png',   'alt'=>'ISO 9001 Certified'),
+            7 => array('img'=>'CERTS LOGOS/Malaysian Brand.png',          'alt'=>'Malaysian Brand'),
+        );
+        for ($i = 1; $i <= 7; $i++) {
+            $img = isset($hc["cert_{$i}_image"]) && $hc["cert_{$i}_image"] !== ''
+                ? $hc["cert_{$i}_image"] : $hero_cert_defaults[$i]['img'];
+            $alt = isset($hc["cert_{$i}_alt"]) && $hc["cert_{$i}_alt"] !== ''
+                ? $hc["cert_{$i}_alt"] : $hero_cert_defaults[$i]['alt'];
+            $s["HERO_CERT_{$i}_URL"] = fx_asset_url($img);
+            $s["HERO_CERT_{$i}_ALT"] = fx_escape($alt);
+        }
+
         // Origin
         $o = isset($page['origin']) ? $page['origin'] : array();
         $s['ORIGIN_EYEBROW']    = fx_escape(isset($o['eyebrow']) ? $o['eyebrow'] : '');

@@ -55,7 +55,7 @@ return array(
             'label'     => 'Homepage',
             'template'  => 'home.template.html',
             'live_file' => 'index.html',
-            'sections'  => array('hero', 'origin', 'facilities', 'company', 'product_overview', 'products', 'certs_cta', 'quote_cta'),
+            'sections'  => array('hero', 'hero_certs', 'origin', 'facilities', 'company', 'product_overview', 'products', 'certs_cta', 'quote_cta'),
         ),
         'certificates' => array(
             'label'     => 'Certificates page',
@@ -160,6 +160,28 @@ return array(
                 'video'   => array('type'=>'video','label'=>'Video','max_mb'=>30),
                 'poster'  => array('type'=>'image','label'=>'Video thumbnail','max_mb'=>5),
                 'caption' => array('type'=>'text','label'=>'Video caption','max'=>80),
+            ),
+        ),
+
+        'hero_certs' => array(
+            'label'   => 'Homepage · Certification bar',
+            'summary' => '7 certification-mark logos shown in the white strip below the hero CTA.',
+            'preview_target' => '#hero',
+            'fields'  => array(
+                'cert_1_image' => array('type'=>'image','group'=>'Cert 1','label'=>'Logo','max_mb'=>2),
+                'cert_1_alt'   => array('type'=>'text', 'group'=>'Cert 1','label'=>'Alt text (for screen readers)','max'=>60),
+                'cert_2_image' => array('type'=>'image','group'=>'Cert 2','label'=>'Logo','max_mb'=>2),
+                'cert_2_alt'   => array('type'=>'text', 'group'=>'Cert 2','label'=>'Alt text (for screen readers)','max'=>60),
+                'cert_3_image' => array('type'=>'image','group'=>'Cert 3','label'=>'Logo','max_mb'=>2),
+                'cert_3_alt'   => array('type'=>'text', 'group'=>'Cert 3','label'=>'Alt text (for screen readers)','max'=>60),
+                'cert_4_image' => array('type'=>'image','group'=>'Cert 4','label'=>'Logo','max_mb'=>2),
+                'cert_4_alt'   => array('type'=>'text', 'group'=>'Cert 4','label'=>'Alt text (for screen readers)','max'=>60),
+                'cert_5_image' => array('type'=>'image','group'=>'Cert 5','label'=>'Logo','max_mb'=>2),
+                'cert_5_alt'   => array('type'=>'text', 'group'=>'Cert 5','label'=>'Alt text (for screen readers)','max'=>60),
+                'cert_6_image' => array('type'=>'image','group'=>'Cert 6','label'=>'Logo','max_mb'=>2),
+                'cert_6_alt'   => array('type'=>'text', 'group'=>'Cert 6','label'=>'Alt text (for screen readers)','max'=>60),
+                'cert_7_image' => array('type'=>'image','group'=>'Cert 7','label'=>'Logo','max_mb'=>2),
+                'cert_7_alt'   => array('type'=>'text', 'group'=>'Cert 7','label'=>'Alt text (for screen readers)','max'=>60),
             ),
         ),
 
