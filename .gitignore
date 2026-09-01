@@ -35,3 +35,7 @@ gallery-white.png
 demo-swap-test.mp4
 furutec-video-swap-demo.mp4
 demo-0*.png
+media-swap-proof/
+
+# Editor template scratchpad drafts
+editor/templates/*.tmp
