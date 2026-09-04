@@ -166,7 +166,7 @@ return array(
         'hero_certs' => array(
             'label'   => 'Homepage · Certification bar',
             'summary' => '7 certification-mark logos shown in the white strip below the hero CTA.',
-            'preview_target' => '#hero',
+            'preview_target' => '.ft-hero-cert-bar',
             'fields'  => array(
                 'cert_1_image' => array('type'=>'image','group'=>'Cert 1','label'=>'Logo','max_mb'=>2),
                 'cert_1_alt'   => array('type'=>'text', 'group'=>'Cert 1','label'=>'Alt text (for screen readers)','max'=>60),

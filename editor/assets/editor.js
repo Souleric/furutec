@@ -151,11 +151,20 @@
             }, true);
         } catch (err) { /* cross-origin, doc gone — silent */ }
     }
-    // Install on every iframe navigation.  addEventListener beats onload so
-    // we don't clobber anything else the harness might set up here later.
+    // Arming the tracker.  The iframe 'load' event alone is NOT enough:
+    // 'load' waits for every subresource to finish, and the product page
+    // pulls several multi-MB MP4 diagram videos.  Measured >4s there, and
+    // far worse on a slow connection — during that whole window clicks in
+    // the preview silently did nothing, which read as "the feature only
+    // works on Home" (Home was usually already loaded when it was tried).
+    //
+    // So we poll instead.  installPreviewClickTracker() no-ops once the
+    // flag is set on a document, and a page switch swaps in a fresh
+    // document with no flag — so this re-arms within 400ms of any
+    // navigation, long before the videos have finished downloading.
     if (preview) preview.addEventListener('load', installPreviewClickTracker);
-    // Also try once on script boot, in case the iframe already finished
-    // loading before this script ran.
+    setInterval(installPreviewClickTracker, 400);
+    // And once immediately, in case the iframe is already interactive.
     installPreviewClickTracker();
 
     // ---- Page switching (collapsible picker) ----
