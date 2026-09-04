@@ -102,8 +102,16 @@ function fx_render_accordion($section_id, $data_prefix, $section_content, $secti
                         <?php if ($type === 'markdown'): ?>
                             <span class="fx-hint">Tip: wrap text in <code>**double asterisks**</code> to make it <strong>bold</strong>.</span>
                         <?php endif; ?>
-                    <?php elseif ($type === 'image' || $type === 'video'): ?>
-                        <div class="fx-media">
+                    <?php elseif ($type === 'image' || $type === 'video'):
+                        // Slots whose CSS crops the image (background-size/object-fit
+                        // cover) declare the shape they display at, so the cropper can
+                        // lock to that ratio and output a correctly-sized file.
+                        // Slots without one still get a cropper, just free-form.
+                        $crop  = isset($fdef['crop']) && is_array($fdef['crop']) ? $fdef['crop'] : null;
+                        $cropW = $crop ? (int)$crop['w'] : 0;
+                        $cropH = $crop ? (int)$crop['h'] : 0;
+                    ?>
+                        <div class="fx-media"<?php if ($crop): ?> data-crop-w="<?= $cropW ?>" data-crop-h="<?= $cropH ?>"<?php endif; ?>>
                             <div class="fx-media-preview">
                                 <?php if ($val !== ''):
                                     $isUrl = preg_match('#^(https?:)?//#i', $val) || (strlen($val) && $val[0] === '/');
@@ -135,6 +143,12 @@ function fx_render_accordion($section_id, $data_prefix, $section_content, $secti
                                                accept="<?= $type === 'video' ? 'video/mp4' : 'image/jpeg,image/png,image/webp' ?>"
                                                hidden/>
                                     </label>
+                                    <?php if ($type === 'image'): ?>
+                                    <button type="button" class="fx-btn fx-btn-ghost fx-crop-btn"
+                                            data-field-key="<?= fx_escape($fieldKey) ?>"
+                                            <?php if ($crop): ?>data-crop-w="<?= $cropW ?>" data-crop-h="<?= $cropH ?>"<?php endif; ?>
+                                            title="Crop this image to fit the slot">Crop</button>
+                                    <?php endif; ?>
                                     <?php // Clearing a slot was impossible before this — the only way to
                                           // "remove" a slideshow image was to overwrite it.  Hidden by CSS
                                           // while the field is empty so it doesn't add noise to blank slots. ?>
@@ -163,7 +177,7 @@ $firstPageId = array_keys($pages)[0];
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>Furutec Editor</title>
-    <link rel="stylesheet" href="assets/editor.css?v=16"/>
+    <link rel="stylesheet" href="assets/editor.css?v=17"/>
     <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%232E3192'/><text x='50' y='72' text-anchor='middle' font-family='-apple-system,Arial,sans-serif' font-weight='800' font-size='62' fill='white'>F</text></svg>"/>
     <meta name="robots" content="noindex, nofollow"/>
 </head>
@@ -317,6 +331,47 @@ $firstPageId = array_keys($pages)[0];
     </div>
 </div>
 
+<!-- ============================================================
+     IMAGE CROPPER
+     Opens after a new image is chosen for a slot that declares the
+     shape it displays at, and from the Crop button on any image field.
+     Crops + resizes on a canvas in the browser and uploads the result
+     as a new file — the original is never touched.
+     ============================================================ -->
+<div class="fx-crop-overlay" id="fx-crop-overlay" hidden>
+    <div class="fx-crop" role="dialog" aria-modal="true" aria-labelledby="fx-crop-title">
+        <header class="fx-crop-head">
+            <div>
+                <h2 class="fx-crop-title" id="fx-crop-title">Crop image</h2>
+                <p class="fx-crop-sub" id="fx-crop-sub"></p>
+            </div>
+            <button type="button" class="fx-lib-close" id="fx-crop-close" aria-label="Close cropper">&times;</button>
+        </header>
+
+        <div class="fx-crop-stage" id="fx-crop-stage">
+            <div class="fx-crop-imgwrap" id="fx-crop-imgwrap">
+                <img id="fx-crop-img" alt="" draggable="false"/>
+                <div class="fx-crop-shade" id="fx-crop-shade"></div>
+                <div class="fx-crop-box" id="fx-crop-box">
+                    <span class="fx-crop-handle" data-h="nw"></span>
+                    <span class="fx-crop-handle" data-h="ne"></span>
+                    <span class="fx-crop-handle" data-h="sw"></span>
+                    <span class="fx-crop-handle" data-h="se"></span>
+                </div>
+            </div>
+        </div>
+
+        <footer class="fx-crop-foot">
+            <span class="fx-crop-status" id="fx-crop-status"></span>
+            <div class="fx-crop-foot-actions">
+                <button type="button" class="fx-btn fx-btn-ghost" id="fx-crop-reset">Reset</button>
+                <button type="button" class="fx-btn fx-btn-ghost" id="fx-crop-skip">Use uncropped</button>
+                <button type="button" class="fx-btn fx-btn-primary" id="fx-crop-apply">Apply crop</button>
+            </div>
+        </footer>
+    </div>
+</div>
+
 <?php
 $labels = array();
 foreach ($pages as $pid => $pdef) $labels[$pid] = $pdef['label'];
@@ -328,6 +383,6 @@ window.FX = {
     publishingEnabled: <?= $publishingEnabled ? 'true' : 'false' ?>
 };
 </script>
-<script src="assets/editor.js?v=16"></script>
+<script src="assets/editor.js?v=17"></script>
 </body>
 </html>

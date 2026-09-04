@@ -679,3 +679,97 @@ body.fx-lib-open { overflow: hidden; }
 .fx-clear-btn { color: var(--fx-ink-muted); }
 .fx-clear-btn:hover { color: var(--fx-err); background: rgba(183,28,28,.07); }
 .fx-media-filename:empty ~ .fx-media-btns .fx-clear-btn { display: none; }
+
+/* ======================================================================
+   IMAGE CROPPER
+   ====================================================================== */
+.fx-crop-overlay {
+    position: fixed; inset: 0; z-index: 9500;
+    background: rgba(17,17,20,0.68);
+    display: flex; align-items: center; justify-content: center;
+    padding: 32px;
+}
+.fx-crop-overlay[hidden] { display: none; }
+
+.fx-crop {
+    width: min(1000px, 100%);
+    max-height: 100%;
+    background: var(--fx-panel);
+    border-radius: 10px;
+    box-shadow: 0 24px 64px rgba(17,17,20,0.4);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+}
+.fx-crop-head {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px; padding: 18px 22px 14px;
+    border-bottom: 1px solid var(--fx-line);
+}
+.fx-crop-title { margin: 0; font-size: 17px; font-weight: 700; }
+.fx-crop-sub   { margin: 4px 0 0; font-size: 12.5px; color: var(--fx-ink-muted); max-width: 70ch; line-height: 1.45; }
+
+.fx-crop-stage {
+    flex: 1; min-height: 0; overflow: auto;
+    background: #1A1A1F;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+}
+/* The wrapper is exactly the displayed image box, so crop-box coordinates
+   are in displayed-image pixels and convert to source pixels with one scale
+   factor (naturalWidth / clientWidth). */
+.fx-crop-imgwrap { position: relative; line-height: 0; user-select: none; }
+.fx-crop-imgwrap img {
+    display: block;
+    max-width: 100%;
+    max-height: 58vh;
+    -webkit-user-drag: none;
+}
+.fx-crop-shade {
+    position: absolute; inset: 0;
+    background: rgba(10,10,12,0.62);
+    pointer-events: none;
+}
+.fx-crop-box {
+    position: absolute;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.5);
+    cursor: move;
+}
+/* Rule-of-thirds guides */
+.fx-crop-box::before, .fx-crop-box::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+}
+.fx-crop-box::before {
+    background:
+      linear-gradient(to right, transparent 33.33%, rgba(255,255,255,.35) 33.33%, rgba(255,255,255,.35) calc(33.33% + 1px), transparent calc(33.33% + 1px)),
+      linear-gradient(to right, transparent 66.66%, rgba(255,255,255,.35) 66.66%, rgba(255,255,255,.35) calc(66.66% + 1px), transparent calc(66.66% + 1px));
+}
+.fx-crop-box::after {
+    background:
+      linear-gradient(to bottom, transparent 33.33%, rgba(255,255,255,.35) 33.33%, rgba(255,255,255,.35) calc(33.33% + 1px), transparent calc(33.33% + 1px)),
+      linear-gradient(to bottom, transparent 66.66%, rgba(255,255,255,.35) 66.66%, rgba(255,255,255,.35) calc(66.66% + 1px), transparent calc(66.66% + 1px));
+}
+.fx-crop-handle {
+    position: absolute; width: 14px; height: 14px;
+    background: #fff; border: 1px solid rgba(0,0,0,.4); border-radius: 2px;
+    z-index: 2;
+}
+.fx-crop-handle[data-h="nw"] { left: -8px;  top: -8px;    cursor: nwse-resize; }
+.fx-crop-handle[data-h="ne"] { right: -8px; top: -8px;    cursor: nesw-resize; }
+.fx-crop-handle[data-h="sw"] { left: -8px;  bottom: -8px; cursor: nesw-resize; }
+.fx-crop-handle[data-h="se"] { right: -8px; bottom: -8px; cursor: nwse-resize; }
+
+.fx-crop-foot {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding: 13px 22px; border-top: 1px solid var(--fx-line);
+    background: #FCFCFD;
+}
+.fx-crop-status { font-size: 12.5px; color: var(--fx-ink-muted); }
+.fx-crop-status.is-err { color: var(--fx-err); font-weight: 600; }
+.fx-crop-foot-actions { display: flex; gap: 8px; }
+
+@media (max-width: 720px) {
+    .fx-crop-overlay { padding: 0; }
+    .fx-crop { max-height: 100%; border-radius: 0; }
+    .fx-crop-imgwrap img { max-height: 46vh; }
+}

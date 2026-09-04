@@ -388,6 +388,9 @@
               }
               markDirty();
               setStatus('Uploaded · click Save to store', 'is-ok');
+              // Straight into the cropper if this slot has a fixed shape, so a
+              // freshly uploaded photo gets framed before it ever hits the page.
+              if (kind === 'image') maybeOfferCrop(fieldKey, r.filename);
           });
     });
 
@@ -399,6 +402,288 @@
         return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     }
     function encodePath(p) { return String(p).split('/').map(encodeURIComponent).join('/'); }
+
+    // ======================================================================
+    // IMAGE CROPPER
+    // ----------------------------------------------------------------------
+    // Crops and resizes entirely in the browser (canvas -> toBlob) and
+    // uploads the result through the normal upload endpoint, so it needs no
+    // GD/ImageMagick on the host.  The original file is never modified — the
+    // crop is written as a new file and the field re-pointed at it.
+    //
+    // Slots whose CSS crops with `cover` declare the shape they display at
+    // (data-crop-w/h), and the crop box locks to that ratio so what you frame
+    // is exactly what the site shows.  Slots with no declared shape get a
+    // free-form box.
+    // ======================================================================
+    var cropOverlay = document.getElementById('fx-crop-overlay');
+    var cropImg     = document.getElementById('fx-crop-img');
+    var cropBox     = document.getElementById('fx-crop-box');
+    var cropWrap    = document.getElementById('fx-crop-imgwrap');
+    var cropShade   = document.getElementById('fx-crop-shade');
+    var cropSub     = document.getElementById('fx-crop-sub');
+    var cropStatus  = document.getElementById('fx-crop-status');
+
+    var cropState = {
+        fieldKey: null,
+        ratio: 0,          // 0 = free-form
+        outW: 0, outH: 0,  // target output pixels (0 = keep source scale)
+        box: { x: 0, y: 0, w: 0, h: 0 },   // in displayed-image pixels
+        drag: null,
+    };
+
+    function cropSetStatus(msg, cls) {
+        if (!cropStatus) return;
+        cropStatus.textContent = msg || '';
+        cropStatus.className = 'fx-crop-status' + (cls ? ' ' + cls : '');
+    }
+
+    function openCropper(fieldKey, url, w, h) {
+        cropState.fieldKey = fieldKey;
+        cropState.outW = w || 0;
+        cropState.outH = h || 0;
+        cropState.ratio = (w && h) ? (w / h) : 0;
+
+        cropSub.textContent = cropState.ratio
+            ? 'This slot displays at ' + w + ' x ' + h + ' (' + cropState.ratio.toFixed(2) +
+              ':1). The box is locked to that shape — drag to choose what stays visible.'
+            : 'No fixed shape for this slot — drag any area you want to keep.';
+
+        cropSetStatus('');
+        cropOverlay.hidden = false;
+        document.body.classList.add('fx-lib-open');
+
+        // Reading pixels back off a canvas is blocked if the image was loaded
+        // cross-origin without CORS headers.  Nearly everything here is
+        // same-origin (/assets/), but a couple of fields point at Unsplash.
+        // Requesting anonymous CORS is a no-op for same-origin and lets the
+        // remote ones through when the host allows it.
+        cropImg.crossOrigin = 'anonymous';
+        // Load fresh (cache-bust) so a re-crop doesn't reuse a stale bitmap.
+        cropImg.onload = function () { resetCropBox(); };
+        cropImg.onerror = function () {
+            cropSetStatus('Could not load that image for cropping. If it is hosted on another site, ' +
+                          'download it and upload it here first.', 'is-err');
+        };
+        cropImg.src = url + (url.indexOf('?') === -1 ? '?' : '&') + 'c=' + Date.now();
+    }
+    function closeCropper() {
+        cropOverlay.hidden = true;
+        document.body.classList.remove('fx-lib-open');
+        cropState.fieldKey = null;
+    }
+
+    /** Largest box of the target ratio that fits, centred. */
+    function resetCropBox() {
+        var iw = cropImg.clientWidth, ih = cropImg.clientHeight;
+        if (!iw || !ih) return;
+        var w, h;
+        if (cropState.ratio) {
+            if (iw / ih > cropState.ratio) { h = ih; w = h * cropState.ratio; }
+            else                           { w = iw; h = w / cropState.ratio; }
+        } else {
+            w = iw; h = ih;
+        }
+        cropState.box = { x: (iw - w) / 2, y: (ih - h) / 2, w: w, h: h };
+        drawCropBox();
+    }
+
+    function drawCropBox() {
+        var b = cropState.box;
+        cropBox.style.left   = b.x + 'px';
+        cropBox.style.top    = b.y + 'px';
+        cropBox.style.width  = b.w + 'px';
+        cropBox.style.height = b.h + 'px';
+        // Dim everything outside the box.
+        if (cropShade) {
+            cropShade.style.clipPath =
+                'polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 0,' +
+                b.x + 'px ' + b.y + 'px,' +
+                b.x + 'px ' + (b.y + b.h) + 'px,' +
+                (b.x + b.w) + 'px ' + (b.y + b.h) + 'px,' +
+                (b.x + b.w) + 'px ' + b.y + 'px,' +
+                b.x + 'px ' + b.y + 'px)';
+        }
+        // Live pixel readout — warns when the source can't fill the target.
+        if (cropImg.naturalWidth && cropState.outW) {
+            var scale = cropImg.naturalWidth / cropImg.clientWidth;
+            var srcW = Math.round(b.w * scale);
+            if (srcW < cropState.outW * 0.75) {
+                cropSetStatus('Heads up: this area is only ' + srcW + 'px wide, less than the ' +
+                              cropState.outW + 'px this slot uses — it may look soft.', 'is-err');
+            } else {
+                cropSetStatus('Selected area: ' + srcW + 'px wide', '');
+            }
+        }
+    }
+
+    function clampBox() {
+        var b = cropState.box;
+        var iw = cropImg.clientWidth, ih = cropImg.clientHeight;
+        if (b.w > iw) { b.w = iw; if (cropState.ratio) b.h = b.w / cropState.ratio; }
+        if (b.h > ih) { b.h = ih; if (cropState.ratio) b.w = b.h * cropState.ratio; }
+        if (b.x < 0) b.x = 0;
+        if (b.y < 0) b.y = 0;
+        if (b.x + b.w > iw) b.x = iw - b.w;
+        if (b.y + b.h > ih) b.y = ih - b.h;
+    }
+
+    if (cropOverlay) {
+        // Drag to move, or grab a corner to resize.
+        cropWrap.addEventListener('mousedown', function (e) {
+            if (cropOverlay.hidden) return;
+            var handle = e.target.closest('.fx-crop-handle');
+            var inBox  = e.target.closest('.fx-crop-box');
+            if (!handle && !inBox) return;
+            e.preventDefault();
+            cropState.drag = {
+                mode: handle ? 'resize' : 'move',
+                corner: handle ? handle.getAttribute('data-h') : null,
+                sx: e.clientX, sy: e.clientY,
+                start: { x: cropState.box.x, y: cropState.box.y, w: cropState.box.w, h: cropState.box.h },
+            };
+        });
+        document.addEventListener('mousemove', function (e) {
+            var d = cropState.drag;
+            if (!d) return;
+            var dx = e.clientX - d.sx, dy = e.clientY - d.sy;
+            var b = cropState.box, s = d.start;
+
+            if (d.mode === 'move') {
+                b.x = s.x + dx;
+                b.y = s.y + dy;
+            } else {
+                // Resize from the grabbed corner; the opposite corner is the anchor.
+                var right  = d.corner === 'ne' || d.corner === 'se';
+                var bottom = d.corner === 'sw' || d.corner === 'se';
+                var newW = right ? s.w + dx : s.w - dx;
+                if (newW < 40) newW = 40;
+                var newH = cropState.ratio ? newW / cropState.ratio
+                                           : (bottom ? s.h + dy : s.h - dy);
+                if (newH < 40) { newH = 40; if (cropState.ratio) newW = newH * cropState.ratio; }
+                b.w = newW;
+                b.h = newH;
+                b.x = right  ? s.x : s.x + (s.w - newW);
+                b.y = bottom ? s.y : s.y + (s.h - newH);
+            }
+            clampBox();
+            drawCropBox();
+        });
+        document.addEventListener('mouseup', function () { cropState.drag = null; });
+
+        document.getElementById('fx-crop-close').addEventListener('click', closeCropper);
+        document.getElementById('fx-crop-skip').addEventListener('click', closeCropper);
+        document.getElementById('fx-crop-reset').addEventListener('click', resetCropBox);
+        cropOverlay.addEventListener('click', function (e) { if (e.target === cropOverlay) closeCropper(); });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && !cropOverlay.hidden) closeCropper();
+        });
+
+        // Manual Crop button on any image field.
+        document.addEventListener('click', function (e) {
+            var btn = e.target.closest && e.target.closest('.fx-crop-btn');
+            if (!btn) return;
+            e.preventDefault();
+            var key = btn.getAttribute('data-field-key');
+            var track = document.querySelector('.fx-track[data-field="' + cssEsc(key) + '"]');
+            if (!track || !track.value) { setStatus('Nothing to crop — add an image first.', 'is-err'); return; }
+            openCropper(key, '../assets/' + encodePath(track.value),
+                        parseInt(btn.getAttribute('data-crop-w'), 10) || 0,
+                        parseInt(btn.getAttribute('data-crop-h'), 10) || 0);
+        });
+
+        document.getElementById('fx-crop-apply').addEventListener('click', applyCrop);
+    }
+
+    function applyCrop() {
+        if (!cropState.fieldKey) return;
+        var b = cropState.box;
+        var scale = cropImg.naturalWidth / cropImg.clientWidth;   // displayed -> source px
+        var sx = Math.max(0, Math.round(b.x * scale));
+        var sy = Math.max(0, Math.round(b.y * scale));
+        var sw = Math.round(b.w * scale);
+        var sh = Math.round(b.h * scale);
+        if (sx + sw > cropImg.naturalWidth)  sw = cropImg.naturalWidth  - sx;
+        if (sy + sh > cropImg.naturalHeight) sh = cropImg.naturalHeight - sy;
+        if (sw < 2 || sh < 2) { cropSetStatus('Selection is too small.', 'is-err'); return; }
+
+        // Output at the slot's size, but never upscale beyond what we cut.
+        var outW = cropState.outW || sw;
+        var outH = cropState.outH || sh;
+        if (outW > sw) { outH = Math.round(outH * (sw / outW)); outW = sw; }
+
+        var canvas = document.createElement('canvas');
+        canvas.width = outW; canvas.height = outH;
+        var ctx = canvas.getContext('2d');
+        ctx.imageSmoothingQuality = 'high';
+        // White under the crop so transparent PNGs don't turn black as JPEG.
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, outW, outH);
+        try {
+            ctx.drawImage(cropImg, sx, sy, sw, sh, 0, 0, outW, outH);
+        } catch (err) {
+            cropSetStatus('Could not read that image (it may be cross-origin).', 'is-err');
+            return;
+        }
+
+        cropSetStatus('Saving cropped image…', '');
+        // toBlob — not drawImage — is what throws on a tainted canvas, so the
+        // guard has to sit here.
+        var toBlobOk = true;
+        try {
+            canvas.toBlob(onCropBlob, 'image/jpeg', 0.9);
+        } catch (err) {
+            toBlobOk = false;
+            cropSetStatus('This image is hosted on another site, so it cannot be cropped here. ' +
+                          'Upload a copy to the Library first.', 'is-err');
+        }
+        if (!toBlobOk) return;
+
+        function onCropBlob(blob) {
+            if (!blob) { cropSetStatus('Could not encode the crop.', 'is-err'); return; }
+            var track = document.querySelector('.fx-track[data-field="' + cssEsc(cropState.fieldKey) + '"]');
+            var base  = (track && track.value ? track.value.split('/').pop() : 'image')
+                          .replace(/\.[a-z0-9]+$/i, '');
+            var fd = new FormData();
+            fd.append('file', blob, base + '-crop.jpg');
+            fd.append('kind', 'image');
+            fd.append('dest', 'uploads');
+            fetch('upload.php', {
+                method: 'POST', credentials: 'same-origin',
+                headers: { 'X-CSRF': window.FX.csrf }, body: fd
+            }).then(function (r) { return r.json(); })
+              .then(function (d) {
+                  if (!d.ok) { cropSetStatus(d.error || 'Upload failed.', 'is-err'); return; }
+                  if (track) {
+                      track.value = d.filename;
+                      var media = track.closest('.fx-media');
+                      if (media) {
+                          var nameEl = media.querySelector('.fx-media-filename');
+                          if (nameEl) nameEl.textContent = d.filename;
+                          var prev = media.querySelector('.fx-media-preview');
+                          if (prev) prev.innerHTML = '<img src="../assets/' + encodePath(d.filename) + '" alt=""/>';
+                      }
+                      track.dispatchEvent(new Event('input', { bubbles: true }));
+                  }
+                  markDirty();
+                  setStatus('Cropped · click Save to store', 'is-ok');
+                  closeCropper();
+              })
+              .catch(function () { cropSetStatus('Network error saving the crop.', 'is-err'); });
+        }
+    }
+
+    /** Offered right after a new image lands in a slot that has a fixed shape. */
+    function maybeOfferCrop(fieldKey, filename) {
+        var track = document.querySelector('.fx-track[data-field="' + cssEsc(fieldKey) + '"]');
+        var media = track && track.closest('.fx-media');
+        if (!media) return;
+        var w = parseInt(media.getAttribute('data-crop-w'), 10) || 0;
+        var h = parseInt(media.getAttribute('data-crop-h'), 10) || 0;
+        if (!w || !h) return;                       // no declared shape — don't nag
+        if (/\.svg$/i.test(filename)) return;       // vector: scales cleanly, nothing to crop
+        openCropper(fieldKey, '../assets/' + encodePath(filename), w, h);
+    }
 
     // ---- Clear a media field --------------------------------------------
     // Until now a media slot could only be overwritten, never emptied, so
@@ -862,7 +1147,11 @@
         track.dispatchEvent(new Event('input', { bubbles: true }));
         markDirty();
         setStatus('Picked from library · click Save to store', 'is-ok');
+        var pickedKey = libState.fieldKey;
+        var pickedKind = libState.selected.kind;
         libClose();
+        // Same as after an upload: offer the crop while the choice is fresh.
+        if (pickedKind === 'image') maybeOfferCrop(pickedKey, val);
     }
 
     setStatus('Ready', '');
