@@ -309,6 +309,32 @@
         });
     });
 
+    // ---- Sidebar collapse -------------------------------------------------
+    // Hands the full width to the preview for reviewing, then gives the panel
+    // back for editing.  Remembered per browser; a storage failure just means
+    // it starts expanded, which is the safe default.
+    var sidebarToggle = document.getElementById('fx-sidebar-toggle');
+    var mainEl = document.querySelector('.fx-main');
+    if (sidebarToggle && mainEl) {
+        function setSidebarCollapsed(collapsed) {
+            mainEl.classList.toggle('is-sidebar-collapsed', collapsed);
+            sidebarToggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+            sidebarToggle.setAttribute('aria-label',
+                collapsed ? 'Show the editing panel' : 'Hide the editing panel');
+            sidebarToggle.setAttribute('title',
+                collapsed ? 'Show the editing panel'
+                          : 'Hide the editing panel to see the preview full width');
+            try { localStorage.setItem('fxSidebarCollapsed', collapsed ? '1' : '0'); } catch (e) {}
+        }
+        var startCollapsed = false;
+        try { startCollapsed = localStorage.getItem('fxSidebarCollapsed') === '1'; } catch (e) {}
+        if (startCollapsed) setSidebarCollapsed(true);
+
+        sidebarToggle.addEventListener('click', function () {
+            setSidebarCollapsed(!mainEl.classList.contains('is-sidebar-collapsed'));
+        });
+    }
+
     // ---- First-run explainer --------------------------------------------
     // Draft-vs-live is the concept everything else depends on, and nothing in
     // the UI used to state it.  Shown until dismissed; the flag is per-browser

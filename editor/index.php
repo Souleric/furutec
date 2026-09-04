@@ -193,7 +193,7 @@ $firstPageId = array_keys($pages)[0];
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>Furutec Editor</title>
-    <link rel="stylesheet" href="assets/editor.css?v=19"/>
+    <link rel="stylesheet" href="assets/editor.css?v=20"/>
     <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%232E3192'/><text x='50' y='72' text-anchor='middle' font-family='-apple-system,Arial,sans-serif' font-weight='800' font-size='62' fill='white'>F</text></svg>"/>
     <meta name="robots" content="noindex, nofollow"/>
 </head>
@@ -281,6 +281,17 @@ $firstPageId = array_keys($pages)[0];
 
     <section class="fx-preview-wrap">
         <div class="fx-preview-bar">
+            <?php // Sidebar is a fixed 440px; on a 1024px laptop that leaves the
+                  // preview only 584px, so you end up judging a squeezed version of
+                  // your own page.  This hands the width back when you want to look
+                  // rather than edit.  State is remembered per browser. ?>
+            <button type="button" class="fx-sidebar-toggle" id="fx-sidebar-toggle"
+                    aria-label="Hide the editing panel" aria-expanded="true"
+                    title="Hide the editing panel to see the preview full width">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="16" rx="2"/><line x1="9" y1="4" x2="9" y2="20"/>
+                </svg>
+            </button>
             <span class="fx-preview-label" id="fx-preview-label">Preview · <?= fx_escape($pages[$firstPageId]['label']) ?> (draft)</span>
             <div class="fx-device-toggle" role="group" aria-label="Preview device size">
                 <button type="button" class="fx-device-btn is-active" data-device="desktop" title="Desktop preview">
@@ -466,6 +477,6 @@ window.FX = {
     publishingEnabled: <?= $publishingEnabled ? 'true' : 'false' ?>
 };
 </script>
-<script src="assets/editor.js?v=19"></script>
+<script src="assets/editor.js?v=20"></script>
 </body>
 </html>

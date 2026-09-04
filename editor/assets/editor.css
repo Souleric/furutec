@@ -853,3 +853,31 @@ body.fx-lib-open { overflow: hidden; }
     padding: 2px 5px; border-radius: 4px;
 }
 .fx-intro-x:hover { color: var(--fx-ink); background: rgba(0,0,0,.06); }
+
+/* ---- Sidebar collapse -------------------------------------------------
+   The sidebar is a fixed 440px, which on a 1024px laptop leaves the preview
+   at 584px — you end up judging a squeezed version of your own page.  This
+   hands the full width back for reviewing, then restores it for editing. */
+.fx-sidebar-toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 28px; flex-shrink: 0;
+    margin-right: 4px;
+    background: transparent; border: 1px solid transparent;
+    border-radius: var(--fx-radius);
+    color: var(--fx-ink-muted); cursor: pointer;
+    transition: background .12s, color .12s;
+}
+.fx-sidebar-toggle:hover { background: rgba(0,0,0,.06); color: var(--fx-ink); }
+
+/* Collapse by driving the grid column, so the preview reflows rather than
+   being overlapped. */
+.fx-main.is-sidebar-collapsed { grid-template-columns: 0 1fr; }
+.fx-main.is-sidebar-collapsed .fx-sidebar {
+    overflow: hidden;
+    border-right: 0;
+    /* Keep it out of the tab order and off screen readers while hidden. */
+    visibility: hidden;
+}
+/* Flip the icon to read as "bring the panel back". */
+.fx-main.is-sidebar-collapsed .fx-sidebar-toggle { color: var(--fx-brand); }
+.fx-main.is-sidebar-collapsed .fx-sidebar-toggle svg { transform: scaleX(-1); }
