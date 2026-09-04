@@ -597,3 +597,57 @@ body.fx-lib-open { overflow: hidden; }
     padding-right: 32px;
     cursor: pointer;
 }
+
+/* ---- Compact layout for repeated slide / gallery slots ----------------
+   Hero slideshow slots and product gallery slots are numerous (6 on the
+   hero, 10 per product section).  At the default media-field size each
+   slot is ~209px tall, so six of them run to 1256px — over twice the
+   visible sidebar height, and a 10-slot product gallery is worse.
+
+   These slots get a compact row instead: small thumbnail on the left,
+   filename and buttons stacked on the right.  Targeted by field key, so
+   only the numbered slide_N_ fields are affected — standalone media
+   fields (logos, hero background video, diagram posters) keep the large
+   preview where a big thumbnail actually earns its space. */
+.fx-field[data-field-key*=".slide_"] .fx-media {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+    padding: 8px;
+}
+.fx-field[data-field-key*=".slide_"] .fx-media-preview {
+    min-height: 0;
+    height: 58px;
+    margin-bottom: 0;
+}
+.fx-field[data-field-key*=".slide_"] .fx-media-preview img,
+.fx-field[data-field-key*=".slide_"] .fx-media-preview video {
+    max-height: 58px;
+}
+.fx-field[data-field-key*=".slide_"] .fx-media-empty {
+    padding: 0 4px;
+    font-size: 10px;
+    line-height: 1.25;
+    text-align: center;
+}
+.fx-field[data-field-key*=".slide_"] .fx-media-controls {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: 5px;
+}
+.fx-field[data-field-key*=".slide_"] .fx-media-filename {
+    max-width: 100%;
+    font-size: 11px;
+    line-height: 1.3;
+}
+.fx-field[data-field-key*=".slide_"] .fx-media-btns { gap: 6px; }
+.fx-field[data-field-key*=".slide_"] .fx-media-btns .fx-btn {
+    height: 26px;
+    padding: 0 9px;
+    font-size: 11.5px;
+}
+/* Tighter label + spacing on these slots too */
+.fx-field[data-field-key*=".slide_"] { margin-bottom: 10px; }
+.fx-field[data-field-key*=".slide_"] .fx-field-label { margin-bottom: 4px; }
