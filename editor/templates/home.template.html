@@ -976,17 +976,59 @@ html { scroll-padding-top: 80px; }
     .ft-hero-cert-bar img { height:22px; }
     .ft-hero-cert-bar-label { display:none; }
   }
+
+  /* ---- Hero image slideshow ------------------------------------------
+     Only present when Background type = "Image slideshow".  Slides are
+     stacked and cross-faded via opacity so there's no layout reflow and
+     no flash of background between them.
+
+     NOTE the fxhero- prefix.  A plain `.hero-slide` is already taken by
+     the legacy hidden slider at #hero-track further down this file, whose
+     slides use .is-active.  Un-prefixed rules here would force those to
+     position:absolute; opacity:0 and blank that component the moment
+     anyone un-hides it. */
+  .fxhero-slides { position:absolute; inset:0; }
+  .fxhero-slide {
+    position:absolute; inset:0;
+    background-size:cover; background-position:center; background-repeat:no-repeat;
+    opacity:0; transition:opacity 1.1s ease-in-out;
+    will-change:opacity;
+  }
+  .fxhero-slide.is-on { opacity:1; }
+
+  .fxhero-dots {
+    position:absolute; left:50%; bottom:26px; transform:translateX(-50%);
+    z-index:4; display:flex; gap:9px; align-items:center;
+    pointer-events:auto;
+  }
+  .fxhero-dot {
+    width:9px; height:9px; padding:0; border-radius:50%;
+    border:1px solid rgba(255,255,255,0.75); background:transparent;
+    cursor:pointer; transition:background .25s ease, transform .25s ease, border-color .25s ease;
+  }
+  .fxhero-dot:hover { background:rgba(255,255,255,0.55); }
+  .fxhero-dot.is-on { background:#FFFFFF; border-color:#FFFFFF; transform:scale(1.25); }
+  .fxhero-dot:focus-visible { outline:2px solid #FFFFFF; outline-offset:3px; }
+
+  @media (max-width: 640px) {
+    .fxhero-dots { bottom:16px; gap:7px; }
+    .fxhero-dot  { width:8px; height:8px; }
+  }
+  /* Respect reduced-motion: no cross-fade, and the timer is disabled in JS. */
+  @media (prefers-reduced-motion: reduce) {
+    .fxhero-slide { transition:none; }
+  }
 </style>
 <section class="ft-hero">
-  <!-- Background video — fills entire hero, autoplays on every page load -->
+  <!-- Background — either a single looping video or an image slideshow.
+       Which one is emitted is decided in render.php from the Hero
+       section's "Background type" field. -->
   <div id="hero-video-wrap" style="position:absolute;inset:0;z-index:0;overflow:hidden;background:#0A0A0B;pointer-events:none;">
-    <video id="hero-bg-video"
-           autoplay muted loop playsinline preload="auto"
-           style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;">
-      <source src="assets/{{HERO_BG_VIDEO_URL}}" type="video/mp4"/>
-    </video>
+    {{HERO_BG_HTML}}
     <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.35) 0%,rgba(0,0,0,0.55) 60%,rgba(0,0,0,0.75) 100%);z-index:1;pointer-events:none;"></div>
   </div>
+  <!-- Slideshow dots (empty unless there are 2+ slides) -->
+  {{HERO_SLIDESHOW_HTML}}
 
   <div id="hero-title" class="ft-hero-inner" style="will-change:opacity,transform;">
     <div class="ft-hero-content">
@@ -1019,6 +1061,53 @@ html { scroll-padding-top: 80px; }
     </div>
   </div>
 </section>
+
+<script>
+/* Hero image slideshow — cross-fades slides on a timer set in the editor.
+   No-ops entirely when the hero is in video mode (no .fxhero-slides present)
+   or when there's only one slide. */
+(function () {
+  var wrap = document.querySelector('.fxhero-slides');
+  if (!wrap) return;                                  // video mode
+  var slides = wrap.querySelectorAll('.fxhero-slide');
+  if (slides.length < 2) return;                      // single still image
+
+  var dots  = document.querySelectorAll('.fxhero-dot');
+  var delay = parseInt(wrap.getAttribute('data-interval'), 10) || 5000;
+  var i = 0, timer = null;
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function show(n) {
+    i = (n + slides.length) % slides.length;
+    for (var k = 0; k < slides.length; k++) {
+      slides[k].classList.toggle('is-on', k === i);
+    }
+    for (var d = 0; d < dots.length; d++) {
+      var on = (d === i);
+      dots[d].classList.toggle('is-on', on);
+      dots[d].setAttribute('aria-selected', on ? 'true' : 'false');
+    }
+  }
+  function start() { stop(); if (!reduce) timer = setInterval(function () { show(i + 1); }, delay); }
+  function stop()  { if (timer) { clearInterval(timer); timer = null; } }
+
+  // Manual dot click jumps to that slide and restarts the timer, so the
+  // visitor gets a full interval to look at what they picked.
+  for (var d = 0; d < dots.length; d++) {
+    (function (idx) {
+      dots[idx].addEventListener('click', function () { show(idx); start(); });
+    })(d);
+  }
+
+  // Don't burn cycles (or advance unseen) while the tab is hidden.
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) stop(); else start();
+  });
+
+  start();
+})();
+</script>
 
 <!-- ============================================================
      STATS — animated counters

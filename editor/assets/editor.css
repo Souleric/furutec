@@ -587,3 +587,13 @@ body.fx-lib-open { overflow: hidden; }
     .fx-lib-search { width: 120px; }
     .fx-lib-grid { grid-template-columns: repeat(auto-fill, minmax(108px, 1fr)); }
 }
+
+/* ---- Select field (Background type, etc.) ---- */
+.fx-select {
+    appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235b5b66' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 32px;
+    cursor: pointer;
+}

@@ -72,6 +72,61 @@ function fx_build_substitutions($page_id, $content) {
         $s['HERO_HEADLINE_2']   = fx_escape(isset($hero['headline_2']) ? $hero['headline_2'] : '');
         $s['HERO_LEDE']         = fx_escape(isset($hero['lede']) ? $hero['lede'] : '');
 
+        // ---- Hero background: single looping video, or an image slideshow --
+        // Built here rather than branched in the template because the
+        // template engine is a flat strtr() with no conditionals.  Emits
+        // two placeholders: the background layer itself, and the dots +
+        // timer script (empty string when there's nothing to cycle).
+        $heroMode = isset($hero['bg_mode']) ? $hero['bg_mode'] : 'video';
+        if ($heroMode !== 'slideshow') $heroMode = 'video';
+
+        // Collect the non-empty slide slots, preserving slot order.
+        $heroSlides = array();
+        for ($i = 1; $i <= 6; $i++) {
+            $v = isset($hero["slide_{$i}_image"]) ? trim((string)$hero["slide_{$i}_image"]) : '';
+            if ($v !== '') $heroSlides[] = $v;
+        }
+        // A slideshow with nothing in it would render a black hero — fall
+        // back to the video so a half-configured switch can't blank the page.
+        if ($heroMode === 'slideshow' && empty($heroSlides)) $heroMode = 'video';
+
+        $interval = isset($hero['slide_interval']) ? (int)$hero['slide_interval'] : 5;
+        if ($interval < 2)  $interval = 2;
+        if ($interval > 30) $interval = 30;
+
+        if ($heroMode === 'video') {
+            $s['HERO_BG_HTML'] =
+                '<video id="hero-bg-video" autoplay muted loop playsinline preload="auto"'
+              . ' style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;">'
+              . '<source src="assets/' . $s['HERO_BG_VIDEO_URL'] . '" type="video/mp4"/>'
+              . '</video>';
+            $s['HERO_SLIDESHOW_HTML'] = '';
+        } else {
+            $slidesHtml = '<div class="fxhero-slides" data-interval="' . ($interval * 1000) . '">';
+            foreach ($heroSlides as $idx => $img) {
+                $slidesHtml .= '<div class="fxhero-slide' . ($idx === 0 ? ' is-on' : '')
+                             . '" style="background-image:url(\'assets/' . fx_url_path($img) . '\');"></div>';
+            }
+            $slidesHtml .= '</div>';
+            $s['HERO_BG_HTML'] = $slidesHtml;
+
+            // Dots + auto-advance.  Only when there's more than one slide —
+            // a single image is just a still background.
+            if (count($heroSlides) > 1) {
+                $dots = '<div class="fxhero-dots" role="tablist" aria-label="Hero slides">';
+                foreach ($heroSlides as $idx => $img) {
+                    $dots .= '<button type="button" class="fxhero-dot' . ($idx === 0 ? ' is-on' : '')
+                           . '" data-i="' . $idx . '" role="tab"'
+                           . ' aria-label="Show slide ' . ($idx + 1) . '"'
+                           . ' aria-selected="' . ($idx === 0 ? 'true' : 'false') . '"></button>';
+                }
+                $dots .= '</div>';
+                $s['HERO_SLIDESHOW_HTML'] = $dots;
+            } else {
+                $s['HERO_SLIDESHOW_HTML'] = '';
+            }
+        }
+
         // Hero certification bar (7 logo + alt-text pairs, editor-editable).
         // Fallbacks preserve the original hardcoded values for a safe rollout —
         // if content.php doesn't yet have `home.hero_certs`, the site renders

@@ -38,6 +38,22 @@ function fx_apply_section($sect_id, $incoming_section, &$updated_section, $field
             $val = trim($val);
         } elseif ($type === 'image' || $type === 'video') {
             $val = trim($val);
+        } elseif ($type === 'select') {
+            // Only accept one of the declared option keys.  Anything else
+            // falls back to the first option, so a tampered payload can't
+            // put an arbitrary string into a value the template branches on.
+            $opts = isset($fdef['options']) && is_array($fdef['options']) ? $fdef['options'] : array();
+            $keys = array_keys($opts);
+            $val  = trim($val);
+            if (!in_array($val, $keys, true)) $val = isset($keys[0]) ? $keys[0] : '';
+        } elseif ($type === 'number') {
+            // Clamp into [min, max] and store as a plain integer string.
+            $n   = (int)trim($val);
+            $lo  = isset($fdef['min']) ? (int)$fdef['min'] : 0;
+            $hi  = isset($fdef['max_value']) ? (int)$fdef['max_value'] : 9999;
+            if ($n < $lo) $n = $lo;
+            if ($n > $hi) $n = $hi;
+            $val = (string)$n;
         }
         if ($max > 0 && strlen($val) > $max) $val = substr($val, 0, $max);
         $updated_section[$fname] = $val;

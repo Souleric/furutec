@@ -139,13 +139,52 @@ return array(
         // ============================================================
         'hero' => array(
             'label'   => 'Hero (top of homepage)',
-            'summary' => 'Big headline over the background video.',
+            'summary' => 'Big headline over a background video or image slideshow.',
             'preview_target' => '.ft-hero',
             'fields'  => array(
                 'headline_1' => array('type'=>'text','label'=>'Headline · Line 1','help'=>'Big white text at the top of the hero.','max'=>60),
                 'headline_2' => array('type'=>'text','label'=>'Headline · Line 2 (accent color)','max'=>60),
                 'lede'       => array('type'=>'textarea','label'=>'Subtitle paragraph','rows'=>3,'max'=>400),
-                'bg_video'   => array('type'=>'video','label'=>'Background video','help'=>'Auto-plays behind the hero. Muted, looped. MP4 only.','max_mb'=>30),
+
+                // ---- Background ----------------------------------------
+                // bg_mode decides which of the two blocks below is used.
+                // Switching back and forth is non-destructive: the video and
+                // the image slots keep their values either way.
+                'bg_mode' => array(
+                    'type'    => 'select',
+                    'group'   => 'Background',
+                    'label'   => 'Background type',
+                    'help'    => 'Choose a single looping video, or a slideshow of images.',
+                    'options' => array(
+                        'video'     => 'Video (single, looping)',
+                        'slideshow' => 'Image slideshow',
+                    ),
+                    'max'     => 20,
+                ),
+                'bg_video' => array('type'=>'video','group'=>'Background','label'=>'Background video','help'=>'Used when Background type is "Video". Auto-plays, muted, looped. MP4 only.','max_mb'=>30),
+
+                // ---- Slideshow -----------------------------------------
+                // Up to 6 slots.  Blank slots are skipped, so the client can
+                // use 2 or 6 without touching anything else.  With only one
+                // image filled it renders as a still background (no dots,
+                // no timer).
+                'slide_interval' => array(
+                    'type'      => 'number',
+                    'group'     => 'Image slideshow',
+                    'label'     => 'Seconds per slide',
+                    'help'      => 'How long each image stays before the next one fades in. Between 2 and 30.',
+                    'min'       => 2,
+                    'max_value' => 30,
+                    'step'      => 1,
+                    'default'   => 5,
+                    'max'       => 4,
+                ),
+                'slide_1_image' => array('type'=>'image','group'=>'Image slideshow','label'=>'Slide 1','max_mb'=>5),
+                'slide_2_image' => array('type'=>'image','group'=>'Image slideshow','label'=>'Slide 2','max_mb'=>5),
+                'slide_3_image' => array('type'=>'image','group'=>'Image slideshow','label'=>'Slide 3','max_mb'=>5),
+                'slide_4_image' => array('type'=>'image','group'=>'Image slideshow','label'=>'Slide 4','max_mb'=>5),
+                'slide_5_image' => array('type'=>'image','group'=>'Image slideshow','label'=>'Slide 5','max_mb'=>5),
+                'slide_6_image' => array('type'=>'image','group'=>'Image slideshow','label'=>'Slide 6','max_mb'=>5),
             ),
         ),
 
