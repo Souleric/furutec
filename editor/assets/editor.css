@@ -773,3 +773,28 @@ body.fx-lib-open { overflow: hidden; }
     .fx-crop { max-height: 100%; border-radius: 0; }
     .fx-crop-imgwrap img { max-height: 46vh; }
 }
+
+/* ---- Video focal point picker ---------------------------------------- */
+.fx-focus-wrap { position: relative; line-height: 0; cursor: crosshair; }
+.fx-focus-wrap video {
+    display: block;
+    max-width: 100%;
+    max-height: 58vh;
+}
+.fx-focus-marker {
+    position: absolute;
+    width: 26px; height: 26px;
+    margin: -13px 0 0 -13px;          /* centre on the chosen point */
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(0,0,0,.55), 0 0 12px rgba(0,0,0,.5);
+    pointer-events: none;
+    transition: left .12s ease, top .12s ease;
+}
+/* Crosshair through the marker so the exact point is unambiguous */
+.fx-focus-marker::before, .fx-focus-marker::after {
+    content: ''; position: absolute; background: #fff;
+    box-shadow: 0 0 2px rgba(0,0,0,.8);
+}
+.fx-focus-marker::before { left: 50%; top: -9px; width: 2px; height: 8px; margin-left: -1px; }
+.fx-focus-marker::after  { top: 50%; left: -9px; height: 2px; width: 8px; margin-top: -1px; }

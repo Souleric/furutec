@@ -46,6 +46,13 @@ function fx_apply_section($sect_id, $incoming_section, &$updated_section, $field
             $keys = array_keys($opts);
             $val  = trim($val);
             if (!in_array($val, $keys, true)) $val = isset($keys[0]) ? $keys[0] : '';
+        } elseif ($type === 'hidden') {
+            // Machine-written values.  The only one so far is a video focal
+            // point, which must look exactly like an object-position pair —
+            // anything else is discarded rather than passed through into a
+            // style attribute.
+            $val = trim($val);
+            if ($val !== '' && !preg_match('/^\d{1,3}% \d{1,3}%$/', $val)) $val = '';
         } elseif ($type === 'number') {
             // Clamp into [min, max] and store as a plain integer string.
             $n   = (int)trim($val);

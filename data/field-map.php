@@ -161,7 +161,12 @@ return array(
                     ),
                     'max'     => 20,
                 ),
-                'bg_video' => array('type'=>'video','group'=>'Background','label'=>'Background video','help'=>'Auto-plays, muted, looped. MP4 only.','max_mb'=>30,
+                'bg_video' => array('type'=>'video','group'=>'Background','label'=>'Background video','help'=>'Auto-plays, muted, looped. MP4 only.','max_mb'=>30,'focus'=>true,
+                    'show_when'=>array('field'=>'bg_mode','is'=>'video')),
+                // Where the video stays anchored when it's cropped to fill the
+                // hero.  Stored as an object-position pair; set via the editor's
+                // Focal point picker, never typed by hand.
+                'bg_video_focus' => array('type'=>'hidden','label'=>'Video focal point','max'=>16,
                     'show_when'=>array('field'=>'bg_mode','is'=>'video')),
 
                 // ---- Slideshow -----------------------------------------
@@ -252,7 +257,9 @@ return array(
             'summary' => 'Zoom-reveal section with logo video, 3-line heading, body copy, and CTA.',
             'preview_target' => '#engineered-section',
             'fields'  => array(
-                'bg_video'  => array('type'=>'video','label'=>'Background logo video','max_mb'=>30),
+                'bg_video'  => array('type'=>'video','label'=>'Background logo video','max_mb'=>30,'focus'=>true),
+                // Anchor point for the cover-crop — set via the Focal point picker.
+                'bg_video_focus' => array('type'=>'hidden','label'=>'Video focal point','max'=>16),
                 'eyebrow'   => array('type'=>'text','label'=>'Eyebrow label','max'=>40),
                 'heading_1' => array('type'=>'text','label'=>'Heading · Line 1','max'=>60),
                 'heading_2' => array('type'=>'text','label'=>'Heading · Line 2 (accent)','max'=>60),

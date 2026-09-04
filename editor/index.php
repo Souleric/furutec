@@ -65,6 +65,13 @@ function fx_render_accordion($section_id, $data_prefix, $section_content, $secti
                 $showWhen = isset($fdef['show_when']) && is_array($fdef['show_when']) ? $fdef['show_when'] : null;
                 $showWhenKey = $showWhen ? $data_prefix . '.' . $section_id . '.' . $showWhen['field'] : '';
                 ?>
+                <?php if ($type === 'hidden'):
+                    // Machine-set values (e.g. a video focal point) — saved like any
+                    // other field, but never shown, so there's no meaningless textbox
+                    // for the client to wonder about.
+                    ?>
+                    <input type="hidden" class="fx-track" data-field="<?= fx_escape($fieldKey) ?>" value="<?= fx_escape($val) ?>"/>
+                <?php continue; endif; ?>
                 <label class="fx-field" data-field-key="<?= fx_escape($fieldKey) ?>"<?php
                     if ($showWhen): ?> data-show-when="<?= fx_escape($showWhenKey) ?>" data-show-when-is="<?= fx_escape($showWhen['is']) ?>"<?php endif; ?>>
                     <span class="fx-field-label"><?= fx_escape($label) ?></span>
@@ -149,6 +156,15 @@ function fx_render_accordion($section_id, $data_prefix, $section_content, $secti
                                             <?php if ($crop): ?>data-crop-w="<?= $cropW ?>" data-crop-h="<?= $cropH ?>"<?php endif; ?>
                                             title="Crop this image to fit the slot">Crop</button>
                                     <?php endif; ?>
+                                    <?php if ($type === 'video' && !empty($fdef['focus'])):
+                                        // Only offered on videos the layout actually crops.
+                                        // A focal point on a letterboxed video would do nothing.
+                                        ?>
+                                    <button type="button" class="fx-btn fx-btn-ghost fx-focus-btn"
+                                            data-field-key="<?= fx_escape($fieldKey) ?>"
+                                            data-focus-key="<?= fx_escape($fieldKey . '_focus') ?>"
+                                            title="Choose which part of the video stays visible when it's cropped to fill">Focal point</button>
+                                    <?php endif; ?>
                                     <?php // Clearing a slot was impossible before this — the only way to
                                           // "remove" a slideshow image was to overwrite it.  Hidden by CSS
                                           // while the field is empty so it doesn't add noise to blank slots. ?>
@@ -177,7 +193,7 @@ $firstPageId = array_keys($pages)[0];
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>Furutec Editor</title>
-    <link rel="stylesheet" href="assets/editor.css?v=17"/>
+    <link rel="stylesheet" href="assets/editor.css?v=18"/>
     <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%232E3192'/><text x='50' y='72' text-anchor='middle' font-family='-apple-system,Arial,sans-serif' font-weight='800' font-size='62' fill='white'>F</text></svg>"/>
     <meta name="robots" content="noindex, nofollow"/>
 </head>
@@ -332,6 +348,43 @@ $firstPageId = array_keys($pages)[0];
 </div>
 
 <!-- ============================================================
+     VIDEO FOCAL POINT
+     A video can't be re-cut in the browser, so instead of cropping we
+     choose the anchor point that stays visible when CSS crops it to
+     fill.  Stored as an object-position pair.
+     ============================================================ -->
+<div class="fx-crop-overlay" id="fx-focus-overlay" hidden>
+    <div class="fx-crop" role="dialog" aria-modal="true" aria-labelledby="fx-focus-title">
+        <header class="fx-crop-head">
+            <div>
+                <h2 class="fx-crop-title" id="fx-focus-title">Video focal point</h2>
+                <p class="fx-crop-sub">
+                    This video is cropped to fill its section, so the edges get cut off.
+                    Click the part that must stay visible — the crop is anchored there.
+                </p>
+            </div>
+            <button type="button" class="fx-lib-close" id="fx-focus-close" aria-label="Close">&times;</button>
+        </header>
+
+        <div class="fx-crop-stage">
+            <div class="fx-focus-wrap" id="fx-focus-wrap">
+                <video id="fx-focus-video" muted playsinline preload="metadata"></video>
+                <span class="fx-focus-marker" id="fx-focus-marker"></span>
+            </div>
+        </div>
+
+        <footer class="fx-crop-foot">
+            <span class="fx-crop-status" id="fx-focus-status"></span>
+            <div class="fx-crop-foot-actions">
+                <button type="button" class="fx-btn fx-btn-ghost" id="fx-focus-center">Re-centre</button>
+                <button type="button" class="fx-btn fx-btn-ghost" id="fx-focus-cancel">Cancel</button>
+                <button type="button" class="fx-btn fx-btn-primary" id="fx-focus-apply">Use this point</button>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<!-- ============================================================
      IMAGE CROPPER
      Opens after a new image is chosen for a slot that declares the
      shape it displays at, and from the Crop button on any image field.
@@ -383,6 +436,6 @@ window.FX = {
     publishingEnabled: <?= $publishingEnabled ? 'true' : 'false' ?>
 };
 </script>
-<script src="assets/editor.js?v=17"></script>
+<script src="assets/editor.js?v=18"></script>
 </body>
 </html>

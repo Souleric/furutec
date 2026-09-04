@@ -685,6 +685,99 @@
         openCropper(fieldKey, '../assets/' + encodePath(filename), w, h);
     }
 
+    // ======================================================================
+    // VIDEO FOCAL POINT
+    // ----------------------------------------------------------------------
+    // A video can't be re-encoded in the browser, so where an image gets a
+    // real crop, a video gets an anchor instead: the point that stays visible
+    // when CSS crops it to fill.  Saved as an object-position pair ("50% 30%")
+    // into a companion <name>_focus field and applied by render.php.
+    //
+    // Offered only on the two videos the layout actually crops — the hero and
+    // company backgrounds.  The other six are letterboxed (object-fit:contain)
+    // and already show every pixel, so an anchor there would do nothing.
+    // ======================================================================
+    var focusOverlay = document.getElementById('fx-focus-overlay');
+    var focusVideo   = document.getElementById('fx-focus-video');
+    var focusWrap    = document.getElementById('fx-focus-wrap');
+    var focusMarker  = document.getElementById('fx-focus-marker');
+    var focusStatus  = document.getElementById('fx-focus-status');
+    var focusState   = { storeKey: null, x: 50, y: 50 };
+
+    function focusDraw() {
+        focusMarker.style.left = focusState.x + '%';
+        focusMarker.style.top  = focusState.y + '%';
+        if (focusStatus) {
+            focusStatus.textContent = 'Anchor: ' + Math.round(focusState.x) + '% from left, ' +
+                                      Math.round(focusState.y) + '% from top';
+        }
+    }
+
+    function openFocus(videoKey, storeKey) {
+        var track = document.querySelector('.fx-track[data-field="' + cssEsc(videoKey) + '"]');
+        if (!track || !track.value) { setStatus('Add a video first.', 'is-err'); return; }
+        var store = document.querySelector('.fx-track[data-field="' + cssEsc(storeKey) + '"]');
+        focusState.storeKey = storeKey;
+
+        // Parse any previously saved pair; fall back to dead centre.
+        var cur = (store && store.value ? store.value : '').match(/([\d.]+)%\s+([\d.]+)%/);
+        focusState.x = cur ? parseFloat(cur[1]) : 50;
+        focusState.y = cur ? parseFloat(cur[2]) : 50;
+
+        focusVideo.src = '../assets/' + encodePath(track.value);
+        focusOverlay.hidden = false;
+        document.body.classList.add('fx-lib-open');
+        focusDraw();
+    }
+    function closeFocus() {
+        focusOverlay.hidden = true;
+        document.body.classList.remove('fx-lib-open');
+        try { focusVideo.pause(); } catch (e) {}
+        focusState.storeKey = null;
+    }
+
+    if (focusOverlay) {
+        document.addEventListener('click', function (e) {
+            var btn = e.target.closest && e.target.closest('.fx-focus-btn');
+            if (!btn) return;
+            e.preventDefault();
+            openFocus(btn.getAttribute('data-field-key'), btn.getAttribute('data-focus-key'));
+        });
+
+        // Click anywhere on the frame to move the anchor there.
+        focusWrap.addEventListener('click', function (e) {
+            var r = focusVideo.getBoundingClientRect();
+            if (!r.width || !r.height) return;
+            var x = ((e.clientX - r.left) / r.width) * 100;
+            var y = ((e.clientY - r.top) / r.height) * 100;
+            focusState.x = Math.max(0, Math.min(100, x));
+            focusState.y = Math.max(0, Math.min(100, y));
+            focusDraw();
+        });
+
+        document.getElementById('fx-focus-center').addEventListener('click', function () {
+            focusState.x = 50; focusState.y = 50; focusDraw();
+        });
+        document.getElementById('fx-focus-close').addEventListener('click', closeFocus);
+        document.getElementById('fx-focus-cancel').addEventListener('click', closeFocus);
+        focusOverlay.addEventListener('click', function (e) { if (e.target === focusOverlay) closeFocus(); });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && !focusOverlay.hidden) closeFocus();
+        });
+
+        document.getElementById('fx-focus-apply').addEventListener('click', function () {
+            if (!focusState.storeKey) return;
+            var store = document.querySelector('.fx-track[data-field="' + cssEsc(focusState.storeKey) + '"]');
+            if (store) {
+                store.value = Math.round(focusState.x) + '% ' + Math.round(focusState.y) + '%';
+                store.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            markDirty();
+            setStatus('Focal point set · click Save to store', 'is-ok');
+            closeFocus();
+        });
+    }
+
     // ---- Clear a media field --------------------------------------------
     // Until now a media slot could only be overwritten, never emptied, so
     // there was no way to go from 4 slideshow images back to 3.  This wipes

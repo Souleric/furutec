@@ -95,9 +95,14 @@ function fx_build_substitutions($page_id, $content) {
         if ($interval > 30) $interval = 30;
 
         if ($heroMode === 'video') {
+            // Focal point: which part survives the cover-crop.  Set in the
+            // editor; defaults to centre, and anything that doesn't look like
+            // an object-position pair is ignored rather than injected.
+            $heroFocus = isset($hero['bg_video_focus']) ? trim((string)$hero['bg_video_focus']) : '';
+            if (!preg_match('/^\d{1,3}% \d{1,3}%$/', $heroFocus)) $heroFocus = '50% 50%';
             $s['HERO_BG_HTML'] =
                 '<video id="hero-bg-video" autoplay muted loop playsinline preload="auto"'
-              . ' style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;">'
+              . ' style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;object-position:' . $heroFocus . ';">'
               . '<source src="assets/' . $s['HERO_BG_VIDEO_URL'] . '" type="video/mp4"/>'
               . '</video>';
             $s['HERO_SLIDESHOW_HTML'] = '';
@@ -181,6 +186,10 @@ function fx_build_substitutions($page_id, $content) {
         // Company Profile
         $c = isset($page['company']) ? $page['company'] : array();
         $s['CMP_BG_VIDEO_URL'] = fx_asset_url(isset($c['bg_video']) ? $c['bg_video'] : '');
+        // Same cover-crop anchor as the hero, for the company background video.
+        $cmpFocus = isset($c['bg_video_focus']) ? trim((string)$c['bg_video_focus']) : '';
+        if (!preg_match('/^\d{1,3}% \d{1,3}%$/', $cmpFocus)) $cmpFocus = '50% 50%';
+        $s['CMP_BG_FOCUS'] = $cmpFocus;
         $s['CMP_EYEBROW']      = fx_escape(isset($c['eyebrow'])   ? $c['eyebrow']   : '');
         $s['CMP_HEADING_1']    = fx_escape(isset($c['heading_1']) ? $c['heading_1'] : '');
         $s['CMP_HEADING_2']    = fx_escape(isset($c['heading_2']) ? $c['heading_2'] : '');
