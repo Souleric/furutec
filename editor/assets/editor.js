@@ -400,5 +400,383 @@
     }
     function encodePath(p) { return String(p).split('/').map(encodeURIComponent).join('/'); }
 
+    // ======================================================================
+    // MEDIA LIBRARY
+    // ----------------------------------------------------------------------
+    // Browses /assets/ through editor/library.php.  Two ways to look at the
+    // same files:
+    //   • Folders  — the real directory tree on disk (breadcrumb navigation)
+    //   • Category — a virtual filter ("Homepage", "Product page", …) derived
+    //                server-side from which fields reference each file, so it
+    //                can never drift out of sync with content.php.
+    // Picking a file writes its path into the field that opened the picker,
+    // exactly as an upload would, then marks the draft dirty.
+    // ======================================================================
+    var libOverlay = document.getElementById('fx-lib-overlay');
+    var libBody    = document.getElementById('fx-lib-body');
+    var libCrumbs  = document.getElementById('fx-lib-crumbs');
+    var libCats    = document.getElementById('fx-lib-cats');
+    var libStatus  = document.getElementById('fx-lib-status');
+    var libUseBtn  = document.getElementById('fx-lib-use');
+    var libSearch  = document.getElementById('fx-lib-search');
+    var libUploadIn= document.getElementById('fx-lib-upload');
+    var libSubtitle= document.getElementById('fx-lib-sub');
+
+    var libState = {
+        fieldKey: null,     // which field opened us
+        mediaType: null,    // 'image' | 'video' — filters what we show
+        path: '',           // current folder, '' = library root
+        category: null,     // null = folder browsing; else a category key
+        selected: null,     // { path, kind, name }
+        files: [],
+        folders: [],
+        cats: [],
+        query: ''
+    };
+
+    function libSetStatus(msg, cls) {
+        if (!libStatus) return;
+        libStatus.textContent = msg || '';
+        libStatus.className = 'fx-lib-status' + (cls ? ' ' + cls : '');
+    }
+
+    function libOpen(fieldKey, mediaType) {
+        libState.fieldKey  = fieldKey;
+        libState.mediaType = mediaType;
+        libState.path      = '';
+        libState.category  = null;
+        libState.selected  = null;
+        libState.query     = '';
+        if (libSearch) libSearch.value = '';
+        if (libUploadIn) {
+            libUploadIn.setAttribute('accept',
+                mediaType === 'video' ? 'video/mp4' : 'image/jpeg,image/png,image/webp');
+        }
+        if (libSubtitle) {
+            libSubtitle.textContent = mediaType === 'video'
+                ? 'Showing videos. Choose one, or upload a new MP4.'
+                : 'Showing images. Choose one, or upload a new JPG / PNG / WebP.';
+        }
+        libOverlay.hidden = false;
+        document.body.classList.add('fx-lib-open');
+        libUseBtn.disabled = true;
+        libSetStatus('');
+        libLoad();
+    }
+    function libClose() {
+        libOverlay.hidden = true;
+        document.body.classList.remove('fx-lib-open');
+        libState.fieldKey = null;
+        libState.selected = null;
+    }
+
+    /** Fetch either one folder (browse mode) or the whole tree (category mode). */
+    function libLoad() {
+        libBody.innerHTML = '<p class="fx-lib-empty">Loading…</p>';
+        var url = libState.category
+            ? 'library.php?action=all'
+            : 'library.php?action=list&path=' + encodeURIComponent(libState.path);
+
+        fetch(url, { credentials: 'same-origin', headers: { 'X-CSRF': window.FX.csrf } })
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+                if (!d.ok) { libBody.innerHTML = '<p class="fx-lib-empty">' + escAttr(d.error || 'Could not load.') + '</p>'; return; }
+                libState.files   = d.files || [];
+                libState.folders = d.folders || [];
+                libState.cats    = d.categories || libState.cats;
+                if (typeof d.path === 'string') libState.path = d.path;
+                libRenderCats();
+                libRenderCrumbs(d.breadcrumb || null);
+                libRenderGrid();
+            })
+            .catch(function () {
+                libBody.innerHTML = '<p class="fx-lib-empty">Network error loading the library.</p>';
+            });
+    }
+
+    function libRenderCats() {
+        if (!libCats) return;
+        var html = '<button type="button" class="fx-lib-chip' + (libState.category === null ? ' is-on' : '') + '" data-cat="">Folders</button>';
+        libState.cats.forEach(function (c) {
+            html += '<button type="button" class="fx-lib-chip' + (libState.category === c.key ? ' is-on' : '') +
+                    '" data-cat="' + escAttr(c.key) + '">' + escAttr(c.label) + '</button>';
+        });
+        libCats.innerHTML = html;
+    }
+
+    function libRenderCrumbs(crumbs) {
+        if (!libCrumbs) return;
+        if (libState.category) {
+            var lbl = 'All files';
+            libState.cats.forEach(function (c) { if (c.key === libState.category) lbl = c.label; });
+            libCrumbs.innerHTML = '<span class="fx-lib-crumb is-cur">' + escAttr(lbl) + '</span>';
+            return;
+        }
+        var parts = (crumbs || [{ label: 'Library', path: '' }]).map(function (c, i, arr) {
+            var last = (i === arr.length - 1);
+            return last
+                ? '<span class="fx-lib-crumb is-cur">' + escAttr(c.label) + '</span>'
+                : '<button type="button" class="fx-lib-crumb" data-path="' + escAttr(c.path) + '">' + escAttr(c.label) + '</button>';
+        });
+        libCrumbs.innerHTML = parts.join('<span class="fx-lib-crumb-sep">/</span>');
+    }
+
+    function libRenderGrid() {
+        var q = libState.query.toLowerCase();
+
+        // Only offer files matching the field's media type.
+        var files = libState.files.filter(function (f) {
+            if (libState.mediaType && f.kind !== libState.mediaType) return false;
+            if (libState.category && (f.cats || []).indexOf(libState.category) === -1) return false;
+            if (q && f.name.toLowerCase().indexOf(q) === -1) return false;
+            return true;
+        });
+        var folders = libState.category ? [] : libState.folders.filter(function (fo) {
+            return !q || fo.name.toLowerCase().indexOf(q) !== -1;
+        });
+
+        if (!folders.length && !files.length) {
+            libBody.innerHTML = '<p class="fx-lib-empty">Nothing here' +
+                (libState.mediaType ? ' — no ' + libState.mediaType + 's in this view.' : '.') + '</p>';
+            return;
+        }
+
+        var html = '';
+        if (folders.length) {
+            html += '<div class="fx-lib-grid">';
+            folders.forEach(function (fo) {
+                html += '<div class="fx-lib-card fx-lib-folder" data-folder="' + escAttr(fo.path) + '">' +
+                          '<button type="button" class="fx-lib-del" data-del="' + escAttr(fo.path) + '" title="Delete folder">&times;</button>' +
+                          '<div class="fx-lib-thumb fx-lib-thumb-folder">' +
+                            '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>' +
+                          '</div>' +
+                          '<div class="fx-lib-name">' + escAttr(fo.name) + '</div>' +
+                          '<div class="fx-lib-meta">' + fo.count + ' item' + (fo.count === 1 ? '' : 's') + '</div>' +
+                        '</div>';
+            });
+            html += '</div>';
+        }
+        if (files.length) {
+            if (folders.length) html += '<div class="fx-lib-divider">Files</div>';
+            html += '<div class="fx-lib-grid">';
+            files.forEach(function (f) {
+                var sel = (libState.selected && libState.selected.path === f.path) ? ' is-sel' : '';
+                var thumb = (f.kind === 'video')
+                    ? '<div class="fx-lib-thumb fx-lib-thumb-video"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polygon points="6 4 20 12 6 20 6 4"/></svg></div>'
+                    : '<div class="fx-lib-thumb"><img src="' + escAttr(f.url) + '" alt="" loading="lazy"/></div>';
+                html += '<div class="fx-lib-card fx-lib-file' + sel + '" data-file="' + escAttr(f.path) +
+                          '" data-kind="' + escAttr(f.kind) + '" data-name="' + escAttr(f.name) + '">' +
+                          '<button type="button" class="fx-lib-del" data-del="' + escAttr(f.path) + '" title="Delete file">&times;</button>' +
+                          thumb +
+                          '<div class="fx-lib-name" title="' + escAttr(f.path) + '">' + escAttr(f.name) + '</div>' +
+                          '<div class="fx-lib-meta">' + libFmtBytes(f.bytes) +
+                            (f.uses ? ' · <span class="fx-lib-used">in use</span>' : '') +
+                          '</div>' +
+                        '</div>';
+            });
+            html += '</div>';
+        }
+        libBody.innerHTML = html;
+    }
+
+    function libFmtBytes(b) {
+        b = Number(b) || 0;
+        if (b < 1024) return b + ' B';
+        if (b < 1024 * 1024) return (b / 1024).toFixed(0) + ' KB';
+        return (b / 1024 / 1024).toFixed(1) + ' MB';
+    }
+
+    // ---- Library event wiring (all delegated) ----
+    if (libOverlay) {
+        // Open from any media field's Library button.
+        document.addEventListener('click', function (e) {
+            var btn = e.target.closest && e.target.closest('.fx-lib-btn');
+            if (!btn) return;
+            e.preventDefault();
+            libOpen(btn.getAttribute('data-field-key'), btn.getAttribute('data-media-type'));
+        });
+
+        // Close: X, Cancel, backdrop click, Escape.
+        document.getElementById('fx-lib-close').addEventListener('click', libClose);
+        document.getElementById('fx-lib-cancel').addEventListener('click', libClose);
+        libOverlay.addEventListener('click', function (e) { if (e.target === libOverlay) libClose(); });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && !libOverlay.hidden) libClose();
+        });
+
+        // Category chips.
+        libCats.addEventListener('click', function (e) {
+            var chip = e.target.closest('.fx-lib-chip');
+            if (!chip) return;
+            var cat = chip.getAttribute('data-cat');
+            libState.category = cat === '' ? null : cat;
+            libState.selected = null;
+            libUseBtn.disabled = true;
+            if (libState.category === null) libState.path = '';
+            libLoad();
+        });
+
+        // Breadcrumb navigation.
+        libCrumbs.addEventListener('click', function (e) {
+            var c = e.target.closest('.fx-lib-crumb[data-path]');
+            if (!c) return;
+            libState.path = c.getAttribute('data-path');
+            libState.selected = null;
+            libUseBtn.disabled = true;
+            libLoad();
+        });
+
+        // Grid: open folder / select file / delete.
+        libBody.addEventListener('click', function (e) {
+            var del = e.target.closest('.fx-lib-del');
+            if (del) {
+                e.stopPropagation();
+                libDelete(del.getAttribute('data-del'));
+                return;
+            }
+            var folder = e.target.closest('.fx-lib-folder');
+            if (folder) {
+                libState.path = folder.getAttribute('data-folder');
+                libState.category = null;
+                libState.selected = null;
+                libUseBtn.disabled = true;
+                libLoad();
+                return;
+            }
+            var file = e.target.closest('.fx-lib-file');
+            if (file) {
+                libState.selected = {
+                    path: file.getAttribute('data-file'),
+                    kind: file.getAttribute('data-kind'),
+                    name: file.getAttribute('data-name')
+                };
+                libUseBtn.disabled = false;
+                libRenderGrid();
+                libSetStatus('Selected: ' + libState.selected.name, '');
+            }
+        });
+        // Double-click a file = pick it immediately.
+        libBody.addEventListener('dblclick', function (e) {
+            if (e.target.closest('.fx-lib-file')) libUse();
+        });
+
+        // Search.
+        if (libSearch) {
+            libSearch.addEventListener('input', function () {
+                libState.query = libSearch.value || '';
+                libRenderGrid();
+            });
+        }
+
+        // New folder.
+        document.getElementById('fx-lib-mkdir').addEventListener('click', function () {
+            if (libState.category) { libSetStatus('Switch to Folders view to create a folder.', 'is-err'); return; }
+            var name = window.prompt('New folder name:');
+            if (!name) return;
+            var fd = new FormData();
+            fd.append('path', libState.path);
+            fd.append('name', name);
+            fetch('library.php?action=mkdir', {
+                method: 'POST', credentials: 'same-origin',
+                headers: { 'X-CSRF': window.FX.csrf }, body: fd
+            }).then(function (r) { return r.json(); })
+              .then(function (d) {
+                  if (!d.ok) { libSetStatus(d.error || 'Could not create folder.', 'is-err'); return; }
+                  libSetStatus('Folder created.', 'is-ok');
+                  libLoad();
+              })
+              .catch(function () { libSetStatus('Network error.', 'is-err'); });
+        });
+
+        // Upload into the folder currently being browsed.
+        if (libUploadIn) {
+            libUploadIn.addEventListener('change', function () {
+                var file = libUploadIn.files && libUploadIn.files[0];
+                if (!file) return;
+                if (libState.category) { libSetStatus('Switch to Folders view to choose an upload destination.', 'is-err'); libUploadIn.value = ''; return; }
+                var fd = new FormData();
+                fd.append('file', file);
+                fd.append('kind', libState.mediaType || 'image');
+                fd.append('dest', libState.path);
+                libSetStatus('Uploading…', '');
+                fetch('upload.php', {
+                    method: 'POST', credentials: 'same-origin',
+                    headers: { 'X-CSRF': window.FX.csrf }, body: fd
+                }).then(function (r) { return r.json(); })
+                  .then(function (d) {
+                      libUploadIn.value = '';
+                      if (!d.ok) { libSetStatus(d.error || 'Upload failed.', 'is-err'); return; }
+                      libSetStatus('Uploaded.', 'is-ok');
+                      libState.selected = { path: d.filename, kind: libState.mediaType, name: d.filename };
+                      libLoad();
+                  })
+                  .catch(function () { libUploadIn.value = ''; libSetStatus('Network error.', 'is-err'); });
+            });
+        }
+
+        // Use the selected file.
+        libUseBtn.addEventListener('click', libUse);
+    }
+
+    function libDelete(path) {
+        if (!path) return;
+        if (!window.confirm('Delete "' + path + '"?\n\nThis removes the file from the server permanently.')) return;
+        var fd = new FormData();
+        fd.append('path', path);
+        fetch('library.php?action=delete', {
+            method: 'POST', credentials: 'same-origin',
+            headers: { 'X-CSRF': window.FX.csrf }, body: fd
+        }).then(function (r) { return r.json(); })
+          .then(function (d) {
+              if (!d.ok) {
+                  // In-use refusal comes back with the exact field list.
+                  if (d.in_use && d.in_use.length) {
+                      window.alert(
+                          d.error + '\n\nStill used by:\n\n  • ' + d.in_use.join('\n  • ') +
+                          (d.in_use_total > d.in_use.length ? '\n  … and ' + (d.in_use_total - d.in_use.length) + ' more' : '') +
+                          '\n\nPoint those fields at a different file first, then delete this one.'
+                      );
+                      libSetStatus('Delete blocked — file still in use.', 'is-err');
+                  } else {
+                      libSetStatus(d.error || 'Could not delete.', 'is-err');
+                  }
+                  return;
+              }
+              libSetStatus('Deleted.', 'is-ok');
+              if (libState.selected && libState.selected.path === path) {
+                  libState.selected = null;
+                  libUseBtn.disabled = true;
+              }
+              libLoad();
+          })
+          .catch(function () { libSetStatus('Network error.', 'is-err'); });
+    }
+
+    function libUse() {
+        if (!libState.selected || !libState.fieldKey) return;
+        var val   = libState.selected.path;
+        var track = document.querySelector('.fx-track[data-field="' + cssEsc(libState.fieldKey) + '"]');
+        if (!track) { libClose(); return; }
+
+        track.value = val;
+        var media = track.closest('.fx-media');
+        var nameEl = media && media.querySelector('.fx-media-filename');
+        if (nameEl) nameEl.textContent = val;
+
+        // Swap the little preview next to the field.
+        var previewEl = media && media.querySelector('.fx-media-preview');
+        if (previewEl) {
+            var url = '../assets/' + encodePath(val);
+            previewEl.innerHTML = (libState.selected.kind === 'video')
+                ? '<video src="' + escAttr(url) + '" controls muted playsinline preload="metadata"></video>'
+                : '<img src="' + escAttr(url) + '" alt=""/>';
+        }
+
+        track.dispatchEvent(new Event('input', { bubbles: true }));
+        markDirty();
+        setStatus('Picked from library · click Save to store', 'is-ok');
+        libClose();
+    }
+
     setStatus('Ready', '');
 })();

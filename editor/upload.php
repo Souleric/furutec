@@ -47,22 +47,44 @@ if ($actualMime !== '' && $actualMime !== $allowed[$ext]) {
     }
 }
 
-// Destination filename: uploads/{timestamp}-{sanitized-basename}.{ext}
+// Destination filename: {timestamp}-{sanitized-basename}.{ext}
 $sanitized = fx_sanitize_filename($origName);
 if (!$sanitized) fx_json_response(array('ok' => false, 'error' => 'Invalid filename.'));
 $finalName = fx_ts() . '-' . $sanitized;
 
-// Store under assets/uploads/{finalName} — returned relative to /assets/.
-$uploadsDir = fx_uploads_dir();
-if (!is_dir($uploadsDir)) @mkdir($uploadsDir, 0755, true);
-$targetPath = $uploadsDir . '/' . $finalName;
+// Destination folder.  Default is assets/uploads/ (the original behaviour,
+// still used by the plain "Replace image/video" button).  The Media Library
+// passes `dest` so an upload lands in whichever folder the user is browsing.
+// `dest` is resolved against /assets/ and re-checked with realpath so a
+// crafted "../../config" cannot escape.
+$assetsRoot = realpath(fx_base_path() . '/assets');
+$destRel    = isset($_POST['dest']) ? trim(str_replace('\\', '/', $_POST['dest']), '/') : '';
+
+if ($destRel === '') {
+    $targetDir = fx_uploads_dir();
+    $relPrefix = 'uploads/';
+} else {
+    if (strpos($destRel, '..') !== false || strpos($destRel, "\0") !== false) {
+        fx_json_response(array('ok' => false, 'error' => 'Bad destination folder.'));
+    }
+    $candidate = realpath($assetsRoot . '/' . $destRel);
+    if ($candidate === false || !is_dir($candidate)
+        || strpos($candidate, $assetsRoot . DIRECTORY_SEPARATOR) !== 0) {
+        fx_json_response(array('ok' => false, 'error' => 'Destination folder not found.'));
+    }
+    $targetDir = $candidate;
+    $relPrefix = $destRel . '/';
+}
+
+if (!is_dir($targetDir)) @mkdir($targetDir, 0755, true);
+$targetPath = $targetDir . '/' . $finalName;
 
 if (!move_uploaded_file($file['tmp_name'], $targetPath)) {
-    fx_json_response(array('ok' => false, 'error' => 'Could not save uploaded file. Check /assets/uploads/ permissions.'));
+    fx_json_response(array('ok' => false, 'error' => 'Could not save uploaded file. Check folder permissions.'));
 }
 @chmod($targetPath, 0644);
 
-$relativePath = 'uploads/' . $finalName;
+$relativePath = $relPrefix . $finalName;
 fx_json_response(array(
     'ok' => true,
     'filename' => $relativePath,

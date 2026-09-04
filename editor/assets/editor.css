@@ -438,3 +438,152 @@ a:hover { text-decoration: underline; }
     .fx-sidebar { border-right: 0; border-bottom: 1px solid var(--fx-line); }
     .fx-brand-sub { display: none; }
 }
+
+/* ======================================================================
+   MEDIA LIBRARY  —  modal picker
+   ====================================================================== */
+
+/* Buttons row on a media field (Library + Upload sit side by side) */
+.fx-media-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.fx-lib-btn { display: inline-flex; align-items: center; gap: 6px; }
+
+body.fx-lib-open { overflow: hidden; }
+
+.fx-lib-overlay {
+    position: fixed; inset: 0; z-index: 9000;
+    background: rgba(17, 17, 20, 0.55);
+    display: flex; align-items: center; justify-content: center;
+    padding: 32px;
+}
+.fx-lib-overlay[hidden] { display: none; }
+
+.fx-lib {
+    width: min(1080px, 100%);
+    height: min(760px, 100%);
+    background: var(--fx-panel);
+    border-radius: 10px;
+    box-shadow: 0 24px 64px rgba(17,17,20,0.35);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+}
+
+/* ---- header ---- */
+.fx-lib-head {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px; padding: 18px 22px 14px;
+    border-bottom: 1px solid var(--fx-line);
+}
+.fx-lib-title { margin: 0; font-size: 17px; font-weight: 700; color: var(--fx-ink); }
+.fx-lib-sub   { margin: 4px 0 0; font-size: 12.5px; color: var(--fx-ink-muted); }
+.fx-lib-close {
+    background: none; border: 0; cursor: pointer;
+    font-size: 26px; line-height: 1; color: var(--fx-ink-muted);
+    padding: 0 4px; border-radius: 4px;
+}
+.fx-lib-close:hover { color: var(--fx-ink); background: var(--fx-bg); }
+
+/* ---- category chips ---- */
+.fx-lib-cats {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    padding: 12px 22px; border-bottom: 1px solid var(--fx-line);
+    background: #FCFCFD;
+}
+.fx-lib-chip {
+    border: 1px solid var(--fx-line-strong); background: #fff;
+    border-radius: 999px; padding: 5px 13px;
+    font-family: var(--fx-font); font-size: 12px; font-weight: 600;
+    color: var(--fx-ink-muted); cursor: pointer;
+    transition: background .12s, color .12s, border-color .12s;
+}
+.fx-lib-chip:hover { border-color: var(--fx-brand); color: var(--fx-brand); }
+.fx-lib-chip.is-on { background: var(--fx-brand); border-color: var(--fx-brand); color: #fff; }
+
+/* ---- breadcrumb + actions bar ---- */
+.fx-lib-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding: 11px 22px; border-bottom: 1px solid var(--fx-line);
+    flex-wrap: wrap;
+}
+.fx-lib-crumbs { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; min-width: 0; }
+.fx-lib-crumb {
+    background: none; border: 0; padding: 2px 4px; cursor: pointer;
+    font-family: var(--fx-font); font-size: 12.5px; font-weight: 600;
+    color: var(--fx-brand); border-radius: 3px;
+}
+.fx-lib-crumb:hover { background: var(--fx-bg); text-decoration: underline; }
+.fx-lib-crumb.is-cur { color: var(--fx-ink); cursor: default; font-weight: 700; }
+.fx-lib-crumb-sep { color: var(--fx-line-strong); font-size: 12px; }
+.fx-lib-bar-actions { display: flex; align-items: center; gap: 8px; }
+.fx-lib-search {
+    border: 1px solid var(--fx-line-strong); border-radius: var(--fx-radius);
+    padding: 6px 10px; font-family: var(--fx-font); font-size: 12.5px;
+    width: 180px;
+}
+.fx-lib-search:focus { outline: none; border-color: var(--fx-brand); }
+.fx-lib-upload-btn { cursor: pointer; }
+
+/* ---- grid ---- */
+.fx-lib-body { flex: 1; overflow-y: auto; padding: 18px 22px 24px; background: var(--fx-bg); }
+.fx-lib-empty { text-align: center; color: var(--fx-ink-muted); font-size: 13px; padding: 48px 0; }
+.fx-lib-divider {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--fx-ink-muted);
+    margin: 22px 0 10px; padding-bottom: 4px;
+    border-bottom: 1px dashed var(--fx-line);
+}
+.fx-lib-grid {
+    display: grid; gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+}
+.fx-lib-card {
+    position: relative;
+    background: #fff; border: 2px solid var(--fx-line);
+    border-radius: 8px; padding: 8px; cursor: pointer;
+    transition: border-color .12s, box-shadow .12s, transform .12s;
+}
+.fx-lib-card:hover { border-color: var(--fx-line-strong); box-shadow: var(--fx-shadow-sm); transform: translateY(-1px); }
+.fx-lib-card.is-sel { border-color: var(--fx-brand); box-shadow: 0 0 0 3px rgba(46,49,146,0.18); }
+.fx-lib-thumb {
+    height: 92px; border-radius: 5px; background: var(--fx-bg);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; margin-bottom: 7px;
+}
+.fx-lib-thumb img { width: 100%; height: 100%; object-fit: contain; }
+.fx-lib-thumb-video, .fx-lib-thumb-folder { color: var(--fx-ink-muted); }
+.fx-lib-thumb-video { background: #EEEEF3; }
+.fx-lib-name {
+    font-size: 11.5px; font-weight: 600; color: var(--fx-ink);
+    line-height: 1.3; word-break: break-word;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.fx-lib-meta { font-size: 10.5px; color: var(--fx-ink-muted); margin-top: 3px; }
+.fx-lib-used { color: var(--fx-ok); font-weight: 700; }
+
+/* Delete affordance — only on hover, so it can't be hit by accident */
+.fx-lib-del {
+    position: absolute; top: 4px; right: 4px; z-index: 2;
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 0; background: rgba(17,17,20,0.55); color: #fff;
+    font-size: 15px; line-height: 1; cursor: pointer;
+    opacity: 0; transition: opacity .12s, background .12s;
+}
+.fx-lib-card:hover .fx-lib-del { opacity: 1; }
+.fx-lib-del:hover { background: var(--fx-err); }
+
+/* ---- footer ---- */
+.fx-lib-foot {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding: 13px 22px; border-top: 1px solid var(--fx-line);
+    background: #FCFCFD;
+}
+.fx-lib-status { font-size: 12.5px; color: var(--fx-ink-muted); }
+.fx-lib-status.is-ok  { color: var(--fx-ok); font-weight: 600; }
+.fx-lib-status.is-err { color: var(--fx-err); font-weight: 600; }
+.fx-lib-foot-actions { display: flex; gap: 8px; }
+
+@media (max-width: 720px) {
+    .fx-lib-overlay { padding: 0; }
+    .fx-lib { height: 100%; border-radius: 0; }
+    .fx-lib-search { width: 120px; }
+    .fx-lib-grid { grid-template-columns: repeat(auto-fill, minmax(108px, 1fr)); }
+}

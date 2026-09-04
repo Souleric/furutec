@@ -88,14 +88,22 @@ function fx_render_accordion($section_id, $data_prefix, $section_content, $secti
                             <div class="fx-media-controls">
                                 <input type="hidden" class="fx-track" data-field="<?= fx_escape($fieldKey) ?>" value="<?= fx_escape($val) ?>"/>
                                 <div class="fx-media-filename"><?= $val !== '' ? fx_escape($val) : '' ?></div>
-                                <label class="fx-btn fx-btn-ghost fx-upload-btn">
-                                    Replace <?= $type === 'video' ? 'video' : 'image' ?>
-                                    <input type="file" class="fx-file"
-                                           data-field-key="<?= fx_escape($fieldKey) ?>"
-                                           data-media-type="<?= fx_escape($type) ?>"
-                                           accept="<?= $type === 'video' ? 'video/mp4' : 'image/jpeg,image/png,image/webp' ?>"
-                                           hidden/>
-                                </label>
+                                <div class="fx-media-btns">
+                                    <button type="button" class="fx-btn fx-btn-ghost fx-lib-btn"
+                                            data-field-key="<?= fx_escape($fieldKey) ?>"
+                                            data-media-type="<?= fx_escape($type) ?>">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>
+                                        Library
+                                    </button>
+                                    <label class="fx-btn fx-btn-ghost fx-upload-btn">
+                                        Upload <?= $type === 'video' ? 'video' : 'image' ?>
+                                        <input type="file" class="fx-file"
+                                               data-field-key="<?= fx_escape($fieldKey) ?>"
+                                               data-media-type="<?= fx_escape($type) ?>"
+                                               accept="<?= $type === 'video' ? 'video/mp4' : 'image/jpeg,image/png,image/webp' ?>"
+                                               hidden/>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -117,7 +125,7 @@ $firstPageId = array_keys($pages)[0];
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>Furutec Editor</title>
-    <link rel="stylesheet" href="assets/editor.css?v=11"/>
+    <link rel="stylesheet" href="assets/editor.css?v=12"/>
     <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%232E3192'/><text x='50' y='72' text-anchor='middle' font-family='-apple-system,Arial,sans-serif' font-weight='800' font-size='62' fill='white'>F</text></svg>"/>
     <meta name="robots" content="noindex, nofollow"/>
 </head>
@@ -225,6 +233,52 @@ $firstPageId = array_keys($pages)[0];
     </section>
 </main>
 
+<!-- ============================================================
+     MEDIA LIBRARY  —  modal picker
+     Opened by any "Library" button on a media field.  Browses
+     /assets/ (real folders) with a virtual category filter on top
+     derived live from which fields reference each file.
+     ============================================================ -->
+<div class="fx-lib-overlay" id="fx-lib-overlay" hidden>
+    <div class="fx-lib" role="dialog" aria-modal="true" aria-labelledby="fx-lib-title">
+
+        <header class="fx-lib-head">
+            <div>
+                <h2 class="fx-lib-title" id="fx-lib-title">Media Library</h2>
+                <p class="fx-lib-sub" id="fx-lib-sub">Choose a file, or upload a new one.</p>
+            </div>
+            <button type="button" class="fx-lib-close" id="fx-lib-close" aria-label="Close library">&times;</button>
+        </header>
+
+        <div class="fx-lib-cats" id="fx-lib-cats"><!-- category chips injected --></div>
+
+        <div class="fx-lib-bar">
+            <nav class="fx-lib-crumbs" id="fx-lib-crumbs" aria-label="Folder path"></nav>
+            <div class="fx-lib-bar-actions">
+                <input type="search" class="fx-lib-search" id="fx-lib-search" placeholder="Search files…" autocomplete="off"/>
+                <button type="button" class="fx-btn fx-btn-ghost fx-btn-small" id="fx-lib-mkdir">New folder</button>
+                <label class="fx-btn fx-btn-ghost fx-btn-small fx-lib-upload-btn">
+                    Upload here
+                    <input type="file" id="fx-lib-upload" hidden/>
+                </label>
+            </div>
+        </div>
+
+        <div class="fx-lib-body" id="fx-lib-body">
+            <p class="fx-lib-empty">Loading…</p>
+        </div>
+
+        <footer class="fx-lib-foot">
+            <span class="fx-lib-status" id="fx-lib-status"></span>
+            <div class="fx-lib-foot-actions">
+                <button type="button" class="fx-btn fx-btn-ghost" id="fx-lib-cancel">Cancel</button>
+                <button type="button" class="fx-btn fx-btn-primary" id="fx-lib-use" disabled>Use selected file</button>
+            </div>
+        </footer>
+
+    </div>
+</div>
+
 <?php
 $labels = array();
 foreach ($pages as $pid => $pdef) $labels[$pid] = $pdef['label'];
@@ -236,6 +290,6 @@ window.FX = {
     publishingEnabled: <?= $publishingEnabled ? 'true' : 'false' ?>
 };
 </script>
-<script src="assets/editor.js?v=11"></script>
+<script src="assets/editor.js?v=12"></script>
 </body>
 </html>
