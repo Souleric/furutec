@@ -211,7 +211,7 @@ return array(
 
         'hero_certs' => array(
             'label'   => 'Homepage · Certification bar',
-            'summary' => '7 certification-mark logos shown in the white strip below the hero CTA.',
+            'summary' => '7 certification-mark logos shown in the white strip below the hero button.',
             'preview_target' => '.ft-hero-cert-bar',
             'fields'  => array(
                 'cert_1_image' => array('type'=>'image','group'=>'Cert 1','label'=>'Logo','max_mb'=>2),
@@ -254,7 +254,7 @@ return array(
 
         'company' => array(
             'label'   => 'Company Profile',
-            'summary' => 'Zoom-reveal section with logo video, 3-line heading, body copy, and CTA.',
+            'summary' => 'Section with the logo video behind a 3-line heading, body text and a button.',
             'preview_target' => '#engineered-section',
             'fields'  => array(
                 'bg_video'  => array('type'=>'video','label'=>'Background logo video','max_mb'=>30,'focus'=>true),
@@ -266,14 +266,14 @@ return array(
                 'heading_3' => array('type'=>'text','label'=>'Heading · Line 3','max'=>60),
                 'body_1'    => array('type'=>'textarea','label'=>'Body paragraph 1','rows'=>4,'max'=>800),
                 'body_2'    => array('type'=>'textarea','label'=>'Body paragraph 2','rows'=>4,'max'=>800),
-                'button_label' => array('type'=>'text','group'=>'CTA button','label'=>'Button label','max'=>30),
-                'button_url'   => array('type'=>'url','group'=>'CTA button','label'=>'Button URL','max'=>200),
+                'button_label' => array('type'=>'text','group'=>'Button','label'=>'Button label','max'=>30),
+                'button_url'   => array('type'=>'url','group'=>'Button','label'=>'Button URL','max'=>200),
             ),
         ),
 
         'product_overview' => array(
             'label'   => 'Product Overview (diagram)',
-            'summary' => 'Interactive diagram with 5 hotspots. Card titles editable; positions fixed.',
+            'summary' => 'Diagram with 5 clickable points. You can edit the titles; their positions are fixed.',
             'preview_target' => '#product-overview-section',
             'fields'  => array(
                 'eyebrow'  => array('type'=>'text','label'=>'Eyebrow label','max'=>40),
@@ -313,8 +313,8 @@ return array(
         ),
 
         'certs_cta' => array(
-            'label'   => 'Certificates & Portfolio CTA',
-            'summary' => 'Dark full-width band with background image, headline, and two buttons.',
+            'label'   => 'Certificates & Portfolio band',
+            'summary' => 'Dark full-width strip with a background image, headline and two buttons.',
             'preview_target' => '#fx-certs-cta',
             'fields'  => array(
                 'bg_image'  => array('type'=>'image','label'=>'Background image','max_mb'=>5),
@@ -327,8 +327,8 @@ return array(
         ),
 
         'quote_cta' => array(
-            'label'   => 'Get In Touch CTA (bottom)',
-            'summary' => 'Bottom-page CTA that links to the quote form.',
+            'label'   => 'Get In Touch band (bottom of homepage)',
+            'summary' => 'The band at the bottom of the homepage that links to the contact form.',
             'preview_target' => '#quote',
             'fields'  => array(
                 'bg_image'  => array('type'=>'image','label'=>'Background image','max_mb'=>5),
@@ -399,13 +399,13 @@ return array(
         ),
 
         'cert_stand' => array(
-            'label'   => 'Cert stand (bottom CTA band)',
+            'label'   => 'Certificates page — bottom banner',
             'summary' => '"Where credential meets capability" block at the bottom.',
             'preview_target' => '.cert-stand',
             'fields'  => array(
                 'heading'   => array('type'=>'text','label'=>'Heading','max'=>80),
                 'body'      => array('type'=>'textarea','label'=>'Body paragraph','rows'=>4,'max'=>600),
-                'cta_label' => array('type'=>'text','label'=>'CTA link label','help'=>'The link URL (to portfolio-track-record.html) stays fixed.','max'=>40),
+                'cta_label' => array('type'=>'text','label'=>'Button label','help'=>'The link URL (to portfolio-track-record.html) stays fixed.','max'=>40),
             ),
         ),
 
@@ -491,7 +491,7 @@ return array(
         ),
 
         'contact_form' => array(
-            'label'   => 'Contact form (labels only)',
+            'label'   => 'Contact form — heading and reassurance text',
             'summary' => 'Form title and reassurance line. The form fields themselves stay wired to contact.php.',
             'preview_target' => '#quote-form',
             'fields'  => array(
@@ -551,8 +551,8 @@ return array(
         ),
 
         'product_nav' => array(
-            'label'   => 'Product page — sticky sub-nav labels',
-            'summary' => 'The five sticky sub-nav labels shown above the product sections.',
+            'label'   => 'Product page — section menu labels',
+            'summary' => 'The five menu labels in the bar that stays pinned above the product sections.',
             'preview_target' => '#prod-nav',
             'fields'  => array(
                 'indoor_label'     => array('type'=>'text','label'=>'01 · Indoor label','max'=>60),

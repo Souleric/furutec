@@ -240,8 +240,15 @@
     window.addEventListener('beforeunload', function (e) {
         if (dirty) { e.preventDefault(); e.returnValue = ''; }
     });
-    function markDirty() { dirty = true; setStatus('Unsaved changes', 'is-dirty'); }
-    function markClean() { dirty = false; }
+    // The preview is rendered server-side from the saved file, so it cannot
+    // reflect unsaved edits.  Rather than let the pane silently contradict
+    // what was just typed, say so plainly and offer the fix in the same bar.
+    var staleBar = document.getElementById('fx-stale-bar');
+    function setStale(isStale) {
+        if (staleBar) staleBar.hidden = !isStale;
+    }
+    function markDirty() { dirty = true; setStatus('Unsaved changes', 'is-dirty'); setStale(true); }
+    function markClean() { dirty = false; setStale(false); }
     function setStatus(msg, cls) { status.textContent = msg; status.className = 'fx-status ' + (cls || ''); }
     function setBusy(busy) {
         [saveBtn, publishBtn, restoreBtn, refreshBtn].forEach(function (b) {
@@ -301,6 +308,28 @@
             setBusy(false); setStatus('Save error: ' + (e && e.message ? e.message : 'unknown'), 'is-err');
         });
     });
+
+    // ---- First-run explainer --------------------------------------------
+    // Draft-vs-live is the concept everything else depends on, and nothing in
+    // the UI used to state it.  Shown until dismissed; the flag is per-browser
+    // and failure to read/write it just means the panel shows again, which is
+    // harmless — so localStorage access is wrapped rather than trusted.
+    var introEl = document.getElementById('fx-intro');
+    if (introEl) {
+        var seen = false;
+        try { seen = localStorage.getItem('fxIntroDismissed') === '1'; } catch (e) {}
+        if (!seen) introEl.hidden = false;
+        var introX = document.getElementById('fx-intro-dismiss');
+        if (introX) introX.addEventListener('click', function () {
+            introEl.hidden = true;
+            try { localStorage.setItem('fxIntroDismissed', '1'); } catch (e) {}
+        });
+    }
+
+    // The stale-preview bar carries its own Save so the fix is one click away
+    // from where the problem is noticed, not back up in the toolbar.
+    var staleSaveBtn = document.getElementById('fx-stale-save');
+    if (staleSaveBtn) staleSaveBtn.addEventListener('click', function () { saveBtn.click(); });
 
     publishBtn.addEventListener('click', function () {
         // Client-side kill-switch: if publishing is disabled at the server
@@ -374,6 +403,7 @@
               var wrap = document.querySelector('[data-field-key="' + cssEsc(fieldKey) + '"]');
               if (!wrap) return;
               var hidden = wrap.querySelector('input.fx-track[type="hidden"]');
+              var previousValue = hidden ? hidden.value : '';   // for crop Discard
               if (hidden) hidden.value = r.filename;
               var fname = wrap.querySelector('.fx-media-filename');
               if (fname) fname.textContent = r.filename;
@@ -390,7 +420,7 @@
               setStatus('Uploaded · click Save to store', 'is-ok');
               // Straight into the cropper if this slot has a fixed shape, so a
               // freshly uploaded photo gets framed before it ever hits the page.
-              if (kind === 'image') maybeOfferCrop(fieldKey, r.filename);
+              if (kind === 'image') maybeOfferCrop(fieldKey, r.filename, previousValue);
           });
     });
 
@@ -430,6 +460,10 @@
         outW: 0, outH: 0,  // target output pixels (0 = keep source scale)
         box: { x: 0, y: 0, w: 0, h: 0 },   // in displayed-image pixels
         drag: null,
+        // When the cropper auto-opens after a pick, remember what the field
+        // held before so "Discard" can genuinely undo choosing the wrong file.
+        revertTo: null,
+        revertKind: null,
     };
 
     function cropSetStatus(msg, cls) {
@@ -440,6 +474,8 @@
 
     function openCropper(fieldKey, url, w, h) {
         cropState.fieldKey = fieldKey;
+        cropState.revertTo = null;      // set by maybeOfferCrop on the auto path only
+        showCropDiscard(false);
         cropState.outW = w || 0;
         cropState.outH = h || 0;
         cropState.ratio = (w && h) ? (w / h) : 0;
@@ -593,6 +629,7 @@
         });
 
         document.getElementById('fx-crop-apply').addEventListener('click', applyCrop);
+        document.getElementById('fx-crop-discard').addEventListener('click', discardCropPick);
     }
 
     function applyCrop() {
@@ -674,7 +711,7 @@
     }
 
     /** Offered right after a new image lands in a slot that has a fixed shape. */
-    function maybeOfferCrop(fieldKey, filename) {
+    function maybeOfferCrop(fieldKey, filename, previousValue) {
         var track = document.querySelector('.fx-track[data-field="' + cssEsc(fieldKey) + '"]');
         var media = track && track.closest('.fx-media');
         if (!media) return;
@@ -683,6 +720,40 @@
         if (!w || !h) return;                       // no declared shape — don't nag
         if (/\.svg$/i.test(filename)) return;       // vector: scales cleanly, nothing to crop
         openCropper(fieldKey, '../assets/' + encodePath(filename), w, h);
+        // Auto-opened, so offer a genuine way out: put the field back to what
+        // it held before the pick.  Only meaningful in this path — a manual
+        // Crop on an existing image has nothing to revert to.
+        cropState.revertTo = (typeof previousValue === 'string') ? previousValue : null;
+        showCropDiscard(cropState.revertTo !== null);
+    }
+
+    /** The auto-open path gets a Discard button; the manual Crop path doesn't. */
+    function showCropDiscard(show) {
+        var btn = document.getElementById('fx-crop-discard');
+        if (btn) btn.hidden = !show;
+    }
+
+    /** Undo the pick that triggered an auto-opened cropper. */
+    function discardCropPick() {
+        var key = cropState.fieldKey, prev = cropState.revertTo;
+        closeCropper();
+        if (key === null || prev === null) return;
+        var track = document.querySelector('.fx-track[data-field="' + cssEsc(key) + '"]');
+        if (!track) return;
+        track.value = prev;
+        var media = track.closest('.fx-media');
+        if (media) {
+            var nameEl = media.querySelector('.fx-media-filename');
+            if (nameEl) nameEl.textContent = prev;
+            var prevEl = media.querySelector('.fx-media-preview');
+            if (prevEl) {
+                prevEl.innerHTML = prev
+                    ? '<img src="../assets/' + encodePath(prev) + '" alt=""/>'
+                    : '<span class="fx-media-empty">(no file selected)</span>';
+            }
+        }
+        track.dispatchEvent(new Event('input', { bubbles: true }));
+        setStatus(prev ? 'Reverted to the previous image' : 'Image removed', '');
     }
 
     // ======================================================================
@@ -909,9 +980,16 @@
         libState.fieldKey  = fieldKey;
         libState.mediaType = mediaType;
         libState.path      = '';
-        libState.category  = null;
         libState.selected  = null;
         libState.query     = '';
+        // Open on the images already used by the page being edited, rather
+        // than dumping the user into a raw folder listing.  The field key is
+        // "<page>.<section>.<field>", so its first segment is the category —
+        // except shared sections, which map to the Brand & Shared bucket.
+        // libLoad falls back to Folders if that category turns out empty.
+        var scope = String(fieldKey).split('.')[0];
+        libState.category = (scope === 'shared') ? 'shared' : scope;
+        libState.autoCategory = libState.category;
         if (libSearch) libSearch.value = '';
         if (libUploadIn) {
             libUploadIn.setAttribute('accept',
@@ -950,6 +1028,23 @@
                 libState.folders = d.folders || [];
                 libState.cats    = d.categories || libState.cats;
                 if (typeof d.path === 'string') libState.path = d.path;
+
+                // If we auto-opened on a category that holds nothing of this
+                // media type (e.g. a page with no videos yet), don't strand the
+                // user on an empty grid — drop back to browsing folders.
+                if (libState.autoCategory && libState.category === libState.autoCategory) {
+                    var usable = libState.files.filter(function (f) {
+                        if (libState.mediaType && f.kind !== libState.mediaType) return false;
+                        return (f.cats || []).indexOf(libState.category) !== -1;
+                    });
+                    libState.autoCategory = null;          // only auto-correct once
+                    if (!usable.length) {
+                        libState.category = null;
+                        libLoad();
+                        return;
+                    }
+                }
+
                 libRenderCats();
                 libRenderCrumbs(d.breadcrumb || null);
                 libRenderGrid();
@@ -996,7 +1091,10 @@
             if (q && f.name.toLowerCase().indexOf(q) === -1) return false;
             return true;
         });
+        // Hide folders with nothing the picker can show (e.g. "Isometric PDF",
+        // whose contents are all filtered out) — otherwise they're dead clicks.
         var folders = libState.category ? [] : libState.folders.filter(function (fo) {
+            if (!fo.count) return false;
             return !q || fo.name.toLowerCase().indexOf(q) !== -1;
         });
 
@@ -1223,6 +1321,7 @@
         var track = document.querySelector('.fx-track[data-field="' + cssEsc(libState.fieldKey) + '"]');
         if (!track) { libClose(); return; }
 
+        var previousValue = track.value;   // for Discard, if the cropper auto-opens
         track.value = val;
         var media = track.closest('.fx-media');
         var nameEl = media && media.querySelector('.fx-media-filename');
@@ -1243,8 +1342,9 @@
         var pickedKey = libState.fieldKey;
         var pickedKind = libState.selected.kind;
         libClose();
-        // Same as after an upload: offer the crop while the choice is fresh.
-        if (pickedKind === 'image') maybeOfferCrop(pickedKey, val);
+        // Same as after an upload: offer the crop while the choice is fresh,
+        // carrying the pre-pick value so Discard can undo a wrong choice.
+        if (pickedKind === 'image') maybeOfferCrop(pickedKey, val, previousValue);
     }
 
     setStatus('Ready', '');

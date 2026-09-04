@@ -798,3 +798,58 @@ body.fx-lib-open { overflow: hidden; }
 }
 .fx-focus-marker::before { left: 50%; top: -9px; width: 2px; height: 8px; margin-left: -1px; }
 .fx-focus-marker::after  { top: 50%; left: -9px; height: 2px; width: 8px; margin-top: -1px; }
+
+/* ======================================================================
+   UX FIXES
+   ====================================================================== */
+
+/* ---- Stale-preview bar ------------------------------------------------
+   The preview is server-rendered, so it can only ever show the last SAVED
+   state.  Without this the pane silently contradicts what was just typed.
+   Sits directly above the preview so it's read as being about the preview,
+   and carries Save so the fix is where the problem is noticed. */
+.fx-stale-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 14px; padding: 9px 16px;
+    background: #FFF6E5;
+    border-bottom: 1px solid #F0D69A;
+    color: #7A5300;
+    font-size: 12.5px; font-weight: 600;
+}
+.fx-stale-bar[hidden] { display: none; }
+.fx-stale-text { display: inline-flex; align-items: center; gap: 8px; }
+.fx-stale-save {
+    background: #7A5300; border-color: #7A5300; color: #fff;
+    flex-shrink: 0;
+}
+.fx-stale-save:hover { background: #5E4000; border-color: #5E4000; }
+
+/* ---- First-run explainer --------------------------------------------- */
+.fx-intro {
+    position: relative;
+    margin: 14px 16px 0;
+    padding: 14px 16px 13px;
+    background: #F4F5FB;
+    border: 1px solid #D9DCEF;
+    border-radius: 8px;
+}
+.fx-intro[hidden] { display: none; }
+.fx-intro-title {
+    display: block; font-size: 12.5px; color: var(--fx-brand);
+    margin-bottom: 7px;
+}
+.fx-intro-steps {
+    margin: 0 0 8px; padding-left: 18px;
+    font-size: 12.5px; line-height: 1.6; color: var(--fx-ink);
+}
+.fx-intro-steps li { margin-bottom: 2px; }
+.fx-intro-foot {
+    display: block; font-size: 11.5px; color: var(--fx-ink-muted); line-height: 1.5;
+}
+.fx-intro-x {
+    position: absolute; top: 6px; right: 8px;
+    background: none; border: 0; cursor: pointer;
+    font-size: 19px; line-height: 1; color: var(--fx-ink-muted);
+    padding: 2px 5px; border-radius: 4px;
+}
+.fx-intro-x:hover { color: var(--fx-ink); background: rgba(0,0,0,.06); }

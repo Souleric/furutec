@@ -193,7 +193,7 @@ $firstPageId = array_keys($pages)[0];
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>Furutec Editor</title>
-    <link rel="stylesheet" href="assets/editor.css?v=18"/>
+    <link rel="stylesheet" href="assets/editor.css?v=19"/>
     <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%232E3192'/><text x='50' y='72' text-anchor='middle' font-family='-apple-system,Arial,sans-serif' font-weight='800' font-size='62' fill='white'>F</text></svg>"/>
     <meta name="robots" content="noindex, nofollow"/>
 </head>
@@ -206,20 +206,36 @@ $firstPageId = array_keys($pages)[0];
     </div>
     <div class="fx-topbar-right">
         <span id="fx-status" class="fx-status"></span>
-        <button type="button" class="fx-btn" id="fx-save">Save draft</button>
-        <button type="button" class="fx-btn fx-btn-ghost" id="fx-restore" title="Restore the previous version of the live site">Restore previous</button>
+        <button type="button" class="fx-btn" id="fx-save"
+                title="Save your edits and refresh the preview. Visitors do NOT see them yet — click Publish for that.">Save draft</button>
+        <button type="button" class="fx-btn fx-btn-ghost" id="fx-restore"
+                title="Put the live site back to the previously published version. Your draft is kept.">Restore previous</button>
         <?php $publishingEnabled = fx_publishing_enabled(); ?>
         <button type="button"
                 class="fx-btn fx-btn-primary<?= $publishingEnabled ? '' : ' is-disabled' ?>"
                 id="fx-publish"
                 <?= $publishingEnabled ? '' : 'disabled aria-disabled="true"' ?>
-                title="<?= $publishingEnabled ? 'Publish drafts to the live site' : 'Publishing is temporarily disabled by the site administrator. Save draft still works — contact Eric to re-enable Publish.' ?>">Publish<?= $publishingEnabled ? '' : ' (disabled)' ?></button>
+                title="<?= $publishingEnabled ? 'Push your saved draft to the live website so visitors can see it. Every publish keeps a backup you can undo with Restore previous.' : 'Publishing is temporarily disabled by the site administrator. Save draft still works — contact Eric to re-enable Publish.' ?>">Publish<?= $publishingEnabled ? '' : ' (disabled)' ?></button>
         <a class="fx-btn fx-btn-link" href="logout.php">Sign out</a>
     </div>
 </header>
 
 <main class="fx-main">
     <aside class="fx-sidebar" id="fx-sidebar">
+
+        <?php // Draft-vs-live is the one concept the whole tool rests on, and
+              // nothing used to state it.  Shown until dismissed, then remembered
+              // per browser so it never nags. ?>
+        <div class="fx-intro" id="fx-intro" hidden>
+            <button type="button" class="fx-intro-x" id="fx-intro-dismiss" aria-label="Dismiss">&times;</button>
+            <strong class="fx-intro-title">How editing works</strong>
+            <ol class="fx-intro-steps">
+                <li>Change something below.</li>
+                <li><strong>Save draft</strong> — updates the preview on the right. Visitors still see the old site.</li>
+                <li><strong>Publish</strong> — puts it on the live website for everyone.</li>
+            </ol>
+            <span class="fx-intro-foot">Changed your mind after publishing? <strong>Restore previous</strong> puts the live site back.</span>
+        </div>
 
         <!-- Page picker -->
         <div class="fx-page-picker">
@@ -294,6 +310,17 @@ $firstPageId = array_keys($pages)[0];
                 </select>
             </label>
             <button type="button" class="fx-btn fx-btn-ghost fx-btn-small" id="fx-refresh-preview">Refresh preview</button>
+        </div>
+        <?php // The preview is server-rendered, so it only changes on save.  Without
+              // this the pane silently contradicts whatever you just typed — the single
+              // biggest source of confusion in the tool.  Appears the moment anything
+              // is edited and carries the fix with it. ?>
+        <div class="fx-stale-bar" id="fx-stale-bar" hidden>
+            <span class="fx-stale-text">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+                You have unsaved edits — this preview still shows the last saved version.
+            </span>
+            <button type="button" class="fx-btn fx-btn-small fx-stale-save" id="fx-stale-save">Save &amp; refresh</button>
         </div>
         <div class="fx-preview-frame-wrap" id="fx-preview-frame-wrap" data-device="desktop">
             <iframe id="fx-preview" src="preview.php?page=<?= fx_escape($firstPageId) ?>&ts=<?= time() ?>" title="Draft preview"></iframe>
@@ -417,6 +444,9 @@ $firstPageId = array_keys($pages)[0];
         <footer class="fx-crop-foot">
             <span class="fx-crop-status" id="fx-crop-status"></span>
             <div class="fx-crop-foot-actions">
+                <?php // Only shown when the cropper auto-opened after a pick, where
+                      // there is a previous value to genuinely go back to. ?>
+                <button type="button" class="fx-btn fx-btn-ghost" id="fx-crop-discard" hidden>Discard this image</button>
                 <button type="button" class="fx-btn fx-btn-ghost" id="fx-crop-reset">Reset</button>
                 <button type="button" class="fx-btn fx-btn-ghost" id="fx-crop-skip">Use uncropped</button>
                 <button type="button" class="fx-btn fx-btn-primary" id="fx-crop-apply">Apply crop</button>
@@ -436,6 +466,6 @@ window.FX = {
     publishingEnabled: <?= $publishingEnabled ? 'true' : 'false' ?>
 };
 </script>
-<script src="assets/editor.js?v=18"></script>
+<script src="assets/editor.js?v=19"></script>
 </body>
 </html>
