@@ -457,9 +457,16 @@ body.fx-lib-open { overflow: hidden; }
 }
 .fx-lib-overlay[hidden] { display: none; }
 
+/* Height follows the content up to a cap, rather than always filling 760px.
+   A fixed height left ~150px of empty grey under a short list, which read as
+   "there is more below" and sent people hunting for a scroll that wasn't there.
+   min-height keeps it from collapsing to a sliver for a one-item folder, and
+   both bounds yield to 100% so the footer can never leave the viewport. */
 .fx-lib {
     width: min(1080px, 100%);
-    height: min(760px, 100%);
+    height: auto;
+    max-height: min(760px, 100%);
+    min-height: min(420px, 100%);
     background: var(--fx-panel);
     border-radius: 10px;
     box-shadow: 0 24px 64px rgba(17,17,20,0.35);
@@ -523,7 +530,22 @@ body.fx-lib-open { overflow: hidden; }
 .fx-lib-upload-btn { cursor: pointer; }
 
 /* ---- grid ---- */
-.fx-lib-body { flex: 1; overflow-y: auto; padding: 18px 22px 24px; background: var(--fx-bg); }
+/* flex:0 1 auto (not flex:1) so the body reports its real content height to the
+   auto-height modal above; it still shrinks and scrolls once the cap is hit. */
+.fx-lib-body {
+    flex: 0 1 auto; min-height: 0;
+    overflow-y: auto; padding: 18px 22px 24px; background: var(--fx-bg);
+}
+/* macOS hides overlay scrollbars until you scroll, so a grid with more rows
+   below looked like the whole list. Force a scrollbar that occupies real
+   layout space, so "there is more here" is visible before you touch anything. */
+.fx-lib-body::-webkit-scrollbar { width: 12px; }
+.fx-lib-body::-webkit-scrollbar-track { background: transparent; }
+.fx-lib-body::-webkit-scrollbar-thumb {
+    background: #C7C7D1; border-radius: 6px;
+    border: 3px solid var(--fx-bg);
+}
+.fx-lib-body::-webkit-scrollbar-thumb:hover { background: var(--fx-ink-muted); }
 .fx-lib-empty { text-align: center; color: var(--fx-ink-muted); font-size: 13px; padding: 48px 0; }
 .fx-lib-divider {
     font-size: 11px; font-weight: 700; text-transform: uppercase;

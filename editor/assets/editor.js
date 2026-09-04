@@ -1193,6 +1193,19 @@
             if (e.key === 'Escape' && !libOverlay.hidden) libClose();
         });
 
+        // The grid is the only scrollable part, and the page behind is locked
+        // while the modal is open — so a wheel over the header, the chips or the
+        // footer moved nothing at all and the whole thing felt stuck. Forward
+        // those to the grid so scrolling works anywhere over the modal.
+        libOverlay.addEventListener('wheel', function (e) {
+            if (libBody.contains(e.target)) return;
+            if (libBody.scrollHeight <= libBody.clientHeight) return;
+            // deltaMode 1 = lines, 2 = pages; normalise to roughly pixels.
+            var step = e.deltaMode === 1 ? 16 : (e.deltaMode === 2 ? libBody.clientHeight : 1);
+            libBody.scrollTop += e.deltaY * step;
+            e.preventDefault();
+        }, { passive: false });
+
         // Category chips.
         libCats.addEventListener('click', function (e) {
             var chip = e.target.closest('.fx-lib-chip');
