@@ -299,12 +299,15 @@ function fx_build_substitutions($page_id, $content) {
         // Per-section builder: given the section-content array and the
         // placeholder-prefix (e.g. "PP_IN_"), plus counts, emit into $s.
         // Placed inline (not a helper) so PHP 5.6 has no closure issue.
+        // Every product gallery now offers 10 slots.  Blank ones are skipped
+        // when the gallery HTML is built below, so a section can use 3 images
+        // or 10 without any template change.
         $product_blocks = array(
-            array('key'=>'product_indoor',     'prefix'=>'PP_IN_',  'slides'=>5, 'features'=>8,  'specs'=>5, 'diagram'=>'single'),
-            array('key'=>'product_outdoor',    'prefix'=>'PP_OUT_', 'slides'=>5, 'features'=>7,  'specs'=>5, 'diagram'=>'single'),
-            array('key'=>'product_datacenter', 'prefix'=>'PP_DC_',  'slides'=>6, 'features'=>10, 'specs'=>5, 'diagram'=>'single'),
-            array('key'=>'product_power',      'prefix'=>'PP_PW_',  'slides'=>3, 'features'=>6,  'specs'=>0, 'diagram'=>'none'),
-            array('key'=>'product_lighting',   'prefix'=>'PP_LT_',  'slides'=>7, 'features'=>6,  'specs'=>7, 'diagram'=>'paired'),
+            array('key'=>'product_indoor',     'prefix'=>'PP_IN_',  'slides'=>10, 'features'=>8,  'specs'=>5, 'diagram'=>'single'),
+            array('key'=>'product_outdoor',    'prefix'=>'PP_OUT_', 'slides'=>10, 'features'=>7,  'specs'=>5, 'diagram'=>'single'),
+            array('key'=>'product_datacenter', 'prefix'=>'PP_DC_',  'slides'=>10, 'features'=>10, 'specs'=>5, 'diagram'=>'single'),
+            array('key'=>'product_power',      'prefix'=>'PP_PW_',  'slides'=>10, 'features'=>6,  'specs'=>0, 'diagram'=>'none'),
+            array('key'=>'product_lighting',   'prefix'=>'PP_LT_',  'slides'=>10, 'features'=>6,  'specs'=>7, 'diagram'=>'paired'),
         );
         foreach ($product_blocks as $b) {
             $p  = isset($page[$b['key']]) ? $page[$b['key']] : array();
@@ -316,9 +319,66 @@ function fx_build_substitutions($page_id, $content) {
             $s[$px.'SUBTITLE']      = fx_escape(isset($p['subtitle'])      ? $p['subtitle']      : '');
             $s[$px.'DESC']          = fx_escape(isset($p['desc'])          ? $p['desc']          : '');
 
+            // Per-slot placeholders are still emitted (harmless, and any
+            // template that references one directly keeps working).
             for ($n = 1; $n <= $b['slides']; $n++) {
                 $s[$px.'SLIDE_'.$n.'_URL'] = fx_asset_url(isset($p['slide_'.$n.'_image']) ? $p['slide_'.$n.'_image'] : '');
                 $s[$px.'SLIDE_'.$n.'_ALT'] = fx_escape(isset($p['slide_'.$n.'_alt'])   ? $p['slide_'.$n.'_alt']   : '');
+            }
+
+            // ---- Gallery, built server-side ---------------------------
+            // The markup used to be hardcoded per section, which pinned each
+            // gallery to a fixed slide count and a hardcoded "/ N" counter.
+            // Generating it here means empty slots simply don't appear, the
+            // counter total is always right, and the thumbnail strip always
+            // matches the stage.  The existing [data-gallery] script reads
+            // slides.length at runtime, so it adapts with no changes.
+            $filled = array();
+            for ($n = 1; $n <= $b['slides']; $n++) {
+                $img = isset($p['slide_'.$n.'_image']) ? trim((string)$p['slide_'.$n.'_image']) : '';
+                if ($img === '') continue;
+                $filled[] = array(
+                    'url' => fx_asset_url($img),
+                    'alt' => fx_escape(isset($p['slide_'.$n.'_alt']) ? $p['slide_'.$n.'_alt'] : ''),
+                );
+            }
+            $total = count($filled);
+
+            if ($total === 0) {
+                // Nothing to show — emit an empty gallery rather than a
+                // stage full of broken <img> tags.
+                $s[$px.'GALLERY_HTML'] = '';
+            } else {
+                $g  = '<div class="ps-gallery" data-gallery>';
+                $g .= '<div class="ps-gallery-stage">';
+                foreach ($filled as $idx => $sl) {
+                    $g .= '<div class="ps-gallery-slide' . ($idx === 0 ? ' is-active' : '') . '">'
+                        . '<img src="' . $sl['url'] . '" alt="' . $sl['alt'] . '"'
+                        . ($idx === 0 ? '' : ' loading="lazy"') . '/></div>';
+                }
+                // Arrows and counter only earn their place with 2+ images.
+                if ($total > 1) {
+                    $g .= '<button type="button" class="ps-gallery-nav ps-gallery-prev" aria-label="Previous image">'
+                        . '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>'
+                        . '</button>'
+                        . '<button type="button" class="ps-gallery-nav ps-gallery-next" aria-label="Next image">'
+                        . '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>'
+                        . '</button>'
+                        . '<div class="ps-gallery-counter"><span data-counter-current>1</span> / ' . $total . '</div>';
+                }
+                $g .= '</div>';
+
+                if ($total > 1) {
+                    $g .= '<div class="ps-gallery-thumbs">';
+                    foreach ($filled as $idx => $sl) {
+                        $g .= '<button type="button" class="ps-gallery-thumb' . ($idx === 0 ? ' is-active' : '') . '"'
+                            . ' aria-label="View image ' . ($idx + 1) . '">'
+                            . '<img src="' . $sl['url'] . '" alt="" loading="lazy"/></button>';
+                    }
+                    $g .= '</div>';
+                }
+                $g .= '</div>';
+                $s[$px.'GALLERY_HTML'] = $g;
             }
             for ($n = 1; $n <= $b['features']; $n++) {
                 $s[$px.'FEATURE_'.$n] = fx_escape(isset($p['feature_'.$n]) ? $p['feature_'.$n] : '');

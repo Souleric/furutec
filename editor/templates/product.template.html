@@ -1191,31 +1191,7 @@ html { scroll-padding-top: 80px; }
     <div class="ps-grid ps-grid--gallery">
 
       <!-- LEFT: image slideshow -->
-      <div class="ps-gallery" data-gallery>
-        <div class="ps-gallery-stage">
-          <div class="ps-gallery-slide is-active"><img src="{{PP_IN_SLIDE_1_URL}}" alt="{{PP_IN_SLIDE_1_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_IN_SLIDE_2_URL}}" alt="{{PP_IN_SLIDE_2_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_IN_SLIDE_3_URL}}" alt="{{PP_IN_SLIDE_3_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_IN_SLIDE_4_URL}}" alt="{{PP_IN_SLIDE_4_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_IN_SLIDE_5_URL}}" alt="{{PP_IN_SLIDE_5_ALT}}"/></div>
-
-          <button type="button" class="ps-gallery-nav ps-gallery-prev" aria-label="Previous image">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <button type="button" class="ps-gallery-nav ps-gallery-next" aria-label="Next image">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-          </button>
-          <div class="ps-gallery-counter"><span data-counter-current>1</span> / 5</div>
-        </div>
-
-        <div class="ps-gallery-thumbs">
-          <button type="button" class="ps-gallery-thumb is-active" aria-label="View image 1"><img src="{{PP_IN_SLIDE_1_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 2"><img src="{{PP_IN_SLIDE_2_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 3"><img src="{{PP_IN_SLIDE_3_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 4"><img src="{{PP_IN_SLIDE_4_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 5"><img src="{{PP_IN_SLIDE_5_URL}}" alt=""/></button>
-        </div>
-      </div>
+      {{PP_IN_GALLERY_HTML}}
 
       <!-- RIGHT: consolidated content panel (badge, title, subtitle, desc, key features, tech spec, buttons) -->
       <div class="ps-content">
@@ -1295,31 +1271,7 @@ html { scroll-padding-top: 80px; }
     <div class="ps-grid ps-grid--gallery">
 
       <!-- LEFT: image slideshow -->
-      <div class="ps-gallery" data-gallery>
-        <div class="ps-gallery-stage">
-          <div class="ps-gallery-slide is-active"><img src="{{PP_OUT_SLIDE_1_URL}}" alt="{{PP_OUT_SLIDE_1_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_OUT_SLIDE_2_URL}}" alt="{{PP_OUT_SLIDE_2_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_OUT_SLIDE_3_URL}}" alt="{{PP_OUT_SLIDE_3_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_OUT_SLIDE_4_URL}}" alt="{{PP_OUT_SLIDE_4_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_OUT_SLIDE_5_URL}}" alt="{{PP_OUT_SLIDE_5_ALT}}"/></div>
-
-          <button type="button" class="ps-gallery-nav ps-gallery-prev" aria-label="Previous image">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <button type="button" class="ps-gallery-nav ps-gallery-next" aria-label="Next image">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-          </button>
-          <div class="ps-gallery-counter"><span data-counter-current>1</span> / 5</div>
-        </div>
-
-        <div class="ps-gallery-thumbs">
-          <button type="button" class="ps-gallery-thumb is-active" aria-label="View image 1"><img src="{{PP_OUT_SLIDE_1_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 2"><img src="{{PP_OUT_SLIDE_2_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 3"><img src="{{PP_OUT_SLIDE_3_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 4"><img src="{{PP_OUT_SLIDE_4_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 5"><img src="{{PP_OUT_SLIDE_5_URL}}" alt=""/></button>
-        </div>
-      </div>
+      {{PP_OUT_GALLERY_HTML}}
 
       <!-- RIGHT: consolidated content panel -->
       <div class="ps-content">
@@ -1398,33 +1350,7 @@ html { scroll-padding-top: 80px; }
     <div class="ps-grid ps-grid--gallery">
 
       <!-- LEFT: image slideshow -->
-      <div class="ps-gallery" data-gallery>
-        <div class="ps-gallery-stage">
-          <div class="ps-gallery-slide is-active"><img src="{{PP_DC_SLIDE_1_URL}}" alt="{{PP_DC_SLIDE_1_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_DC_SLIDE_2_URL}}" alt="{{PP_DC_SLIDE_2_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_DC_SLIDE_3_URL}}" alt="{{PP_DC_SLIDE_3_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_DC_SLIDE_4_URL}}" alt="{{PP_DC_SLIDE_4_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_DC_SLIDE_5_URL}}" alt="{{PP_DC_SLIDE_5_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_DC_SLIDE_6_URL}}" alt="{{PP_DC_SLIDE_6_ALT}}"/></div>
-
-          <button type="button" class="ps-gallery-nav ps-gallery-prev" aria-label="Previous image">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <button type="button" class="ps-gallery-nav ps-gallery-next" aria-label="Next image">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-          </button>
-          <div class="ps-gallery-counter"><span data-counter-current>1</span> / 6</div>
-        </div>
-
-        <div class="ps-gallery-thumbs">
-          <button type="button" class="ps-gallery-thumb is-active" aria-label="View image 1"><img src="{{PP_DC_SLIDE_1_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 2"><img src="{{PP_DC_SLIDE_2_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 3"><img src="{{PP_DC_SLIDE_3_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 4"><img src="{{PP_DC_SLIDE_4_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 5"><img src="{{PP_DC_SLIDE_5_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 6"><img src="{{PP_DC_SLIDE_6_URL}}" alt=""/></button>
-        </div>
-      </div>
+      {{PP_DC_GALLERY_HTML}}
 
       <!-- RIGHT: consolidated content panel -->
       <div class="ps-content">
@@ -1506,27 +1432,7 @@ html { scroll-padding-top: 80px; }
     <div class="ps-grid ps-grid--gallery">
 
       <!-- LEFT: image slideshow -->
-      <div class="ps-gallery" data-gallery>
-        <div class="ps-gallery-stage">
-          <div class="ps-gallery-slide is-active"><img src="{{PP_PW_SLIDE_1_URL}}" alt="{{PP_PW_SLIDE_1_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_PW_SLIDE_2_URL}}" alt="{{PP_PW_SLIDE_2_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_PW_SLIDE_3_URL}}" alt="{{PP_PW_SLIDE_3_ALT}}"/></div>
-
-          <button type="button" class="ps-gallery-nav ps-gallery-prev" aria-label="Previous image">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <button type="button" class="ps-gallery-nav ps-gallery-next" aria-label="Next image">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-          </button>
-          <div class="ps-gallery-counter"><span data-counter-current>1</span> / 3</div>
-        </div>
-
-        <div class="ps-gallery-thumbs">
-          <button type="button" class="ps-gallery-thumb is-active" aria-label="View image 1"><img src="{{PP_PW_SLIDE_1_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 2"><img src="{{PP_PW_SLIDE_2_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 3"><img src="{{PP_PW_SLIDE_3_URL}}" alt=""/></button>
-        </div>
-      </div>
+      {{PP_PW_GALLERY_HTML}}
 
       <!-- RIGHT: consolidated content panel
            Power Monitoring has no tech-spec table per PDF §3.2.4 — Key
@@ -1581,35 +1487,7 @@ html { scroll-padding-top: 80px; }
     <div class="ps-grid ps-grid--gallery">
 
       <!-- LEFT: image slideshow -->
-      <div class="ps-gallery" data-gallery>
-        <div class="ps-gallery-stage">
-          <div class="ps-gallery-slide is-active"><img src="{{PP_LT_SLIDE_1_URL}}" alt="{{PP_LT_SLIDE_1_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_LT_SLIDE_2_URL}}" alt="{{PP_LT_SLIDE_2_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_LT_SLIDE_3_URL}}" alt="{{PP_LT_SLIDE_3_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_LT_SLIDE_4_URL}}" alt="{{PP_LT_SLIDE_4_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_LT_SLIDE_5_URL}}" alt="{{PP_LT_SLIDE_5_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_LT_SLIDE_6_URL}}" alt="{{PP_LT_SLIDE_6_ALT}}"/></div>
-          <div class="ps-gallery-slide"><img src="{{PP_LT_SLIDE_7_URL}}" alt="{{PP_LT_SLIDE_7_ALT}}"/></div>
-
-          <button type="button" class="ps-gallery-nav ps-gallery-prev" aria-label="Previous image">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <button type="button" class="ps-gallery-nav ps-gallery-next" aria-label="Next image">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-          </button>
-          <div class="ps-gallery-counter"><span data-counter-current>1</span> / 7</div>
-        </div>
-
-        <div class="ps-gallery-thumbs">
-          <button type="button" class="ps-gallery-thumb is-active" aria-label="View image 1"><img src="{{PP_LT_SLIDE_1_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 2"><img src="{{PP_LT_SLIDE_2_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 3"><img src="{{PP_LT_SLIDE_3_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 4"><img src="{{PP_LT_SLIDE_4_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 5"><img src="{{PP_LT_SLIDE_5_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 6"><img src="{{PP_LT_SLIDE_6_URL}}" alt=""/></button>
-          <button type="button" class="ps-gallery-thumb" aria-label="View image 7"><img src="{{PP_LT_SLIDE_7_URL}}" alt=""/></button>
-        </div>
-      </div>
+      {{PP_LT_GALLERY_HTML}}
 
       <!-- RIGHT: consolidated content panel -->
       <div class="ps-content">

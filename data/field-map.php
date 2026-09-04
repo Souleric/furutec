@@ -567,7 +567,7 @@ return array(
                     'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','rows'=>4,'max'=>600),
                 ),
                 // Gallery — 5 slides
-                fx_gallery_fields(5),
+                fx_gallery_fields(10),
                 // Features — 8 items
                 fx_feature_fields(8),
                 // Spec rows — 5
@@ -593,7 +593,7 @@ return array(
                     'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
                     'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','rows'=>4,'max'=>600),
                 ),
-                fx_gallery_fields(5),
+                fx_gallery_fields(10),
                 fx_feature_fields(7),
                 fx_spec_fields(5),
                 array(
@@ -616,7 +616,7 @@ return array(
                     'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
                     'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','rows'=>4,'max'=>800),
                 ),
-                fx_gallery_fields(6),
+                fx_gallery_fields(10),
                 fx_feature_fields(10),
                 fx_spec_fields(5),
                 array(
@@ -639,7 +639,7 @@ return array(
                     'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
                     'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','rows'=>5,'max'=>800),
                 ),
-                fx_gallery_fields(3),
+                fx_gallery_fields(10),
                 fx_feature_fields(6)   // Power section uses "Key Capabilities" label
             ),
         ),
@@ -656,7 +656,7 @@ return array(
                     'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
                     'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','rows'=>4,'max'=>800),
                 ),
-                fx_gallery_fields(7),
+                fx_gallery_fields(10),
                 fx_feature_fields(6),
                 fx_spec_fields(7),
                 // Paired diagram: title + two labelled videos
