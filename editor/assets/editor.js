@@ -400,6 +400,93 @@
     }
     function encodePath(p) { return String(p).split('/').map(encodeURIComponent).join('/'); }
 
+    // ---- Clear a media field --------------------------------------------
+    // Until now a media slot could only be overwritten, never emptied, so
+    // there was no way to go from 4 slideshow images back to 3.  This wipes
+    // the tracked value and resets the preview + filename to the same empty
+    // state the server renders for an unset field.
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest && e.target.closest('.fx-clear-btn');
+        if (!btn) return;
+        e.preventDefault();
+        var key   = btn.getAttribute('data-field-key');
+        var track = document.querySelector('.fx-track[data-field="' + cssEsc(key) + '"]');
+        if (!track) return;
+        if (!track.value) return;                       // already empty
+        track.value = '';
+        var media = track.closest('.fx-media');
+        if (media) {
+            var nameEl = media.querySelector('.fx-media-filename');
+            if (nameEl) nameEl.textContent = '';
+            var prev = media.querySelector('.fx-media-preview');
+            if (prev) prev.innerHTML = '<span class="fx-media-empty">(no file selected)</span>';
+        }
+        track.dispatchEvent(new Event('input', { bubbles: true }));
+        markDirty();
+        setStatus('Removed · click Save to store', 'is-ok');
+    });
+
+    // ======================================================================
+    // CONDITIONAL FIELDS
+    // ----------------------------------------------------------------------
+    // A field carrying data-show-when="<other field key>" +
+    // data-show-when-is="<value>" is only displayed while that other field
+    // holds that value.  Used to make the hero's Background type a real
+    // either/or: pick Video and the slideshow slots disappear, pick Image
+    // slideshow and the video field does.
+    //
+    // Hidden fields keep their inputs in the DOM, so their values persist and
+    // still save — flipping between modes never discards what was set.
+    //
+    // A group heading whose fields are ALL hidden is hidden too, otherwise
+    // you'd be left with an "Image slideshow" heading and nothing under it.
+    // ======================================================================
+    function applyConditionalFields() {
+        var conditional = document.querySelectorAll('.fx-field[data-show-when]');
+        for (var i = 0; i < conditional.length; i++) {
+            var f = conditional[i];
+            var ctrlKey = f.getAttribute('data-show-when');
+            var want    = f.getAttribute('data-show-when-is');
+            var ctrl    = document.querySelector('.fx-track[data-field="' + cssEsc(ctrlKey) + '"]');
+            // If the controlling field is missing, fail open — better to show
+            // a field than to silently hide something the client needs.
+            var show = !ctrl || String(ctrl.value) === want;
+            f.classList.toggle('is-cond-hidden', !show);
+        }
+
+        // Second pass: hide any group heading with no visible fields beneath
+        // it.  Fields sit as siblings after their .fx-group-head, up to the
+        // next heading.
+        var heads = document.querySelectorAll('.fx-group-head');
+        for (var h = 0; h < heads.length; h++) {
+            var head = heads[h];
+            var anyVisible = false;
+            var n = head.nextElementSibling;
+            while (n && !n.classList.contains('fx-group-head')) {
+                if (n.classList.contains('fx-field') && !n.classList.contains('is-cond-hidden')) {
+                    anyVisible = true;
+                    break;
+                }
+                n = n.nextElementSibling;
+            }
+            head.classList.toggle('is-cond-hidden', !anyVisible);
+        }
+    }
+
+    // Re-evaluate whenever any tracked field changes (cheap: a couple of
+    // hundred attribute reads), and once on boot.
+    document.addEventListener('change', function (e) {
+        if (e.target && e.target.classList && e.target.classList.contains('fx-track')) {
+            applyConditionalFields();
+        }
+    });
+    document.addEventListener('input', function (e) {
+        if (e.target && e.target.tagName === 'SELECT' && e.target.classList.contains('fx-track')) {
+            applyConditionalFields();
+        }
+    });
+    applyConditionalFields();
+
     // ======================================================================
     // MEDIA LIBRARY
     // ----------------------------------------------------------------------

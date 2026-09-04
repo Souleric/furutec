@@ -161,7 +161,8 @@ return array(
                     ),
                     'max'     => 20,
                 ),
-                'bg_video' => array('type'=>'video','group'=>'Background','label'=>'Background video','help'=>'Used when Background type is "Video". Auto-plays, muted, looped. MP4 only.','max_mb'=>30),
+                'bg_video' => array('type'=>'video','group'=>'Background','label'=>'Background video','help'=>'Auto-plays, muted, looped. MP4 only.','max_mb'=>30,
+                    'show_when'=>array('field'=>'bg_mode','is'=>'video')),
 
                 // ---- Slideshow -----------------------------------------
                 // Up to 6 slots.  Blank slots are skipped, so the client can
@@ -178,13 +179,14 @@ return array(
                     'step'      => 1,
                     'default'   => 5,
                     'max'       => 4,
+                    'show_when' => array('field'=>'bg_mode','is'=>'slideshow'),
                 ),
-                'slide_1_image' => array('type'=>'image','group'=>'Image slideshow','label'=>'Slide 1','max_mb'=>5),
-                'slide_2_image' => array('type'=>'image','group'=>'Image slideshow','label'=>'Slide 2','max_mb'=>5),
-                'slide_3_image' => array('type'=>'image','group'=>'Image slideshow','label'=>'Slide 3','max_mb'=>5),
-                'slide_4_image' => array('type'=>'image','group'=>'Image slideshow','label'=>'Slide 4','max_mb'=>5),
-                'slide_5_image' => array('type'=>'image','group'=>'Image slideshow','label'=>'Slide 5','max_mb'=>5),
-                'slide_6_image' => array('type'=>'image','group'=>'Image slideshow','label'=>'Slide 6','max_mb'=>5),
+                'slide_1_image' => array('type'=>'image','group'=>'Image slideshow','label'=>'Slide 1','max_mb'=>5,'show_when'=>array('field'=>'bg_mode','is'=>'slideshow')),
+                'slide_2_image' => array('type'=>'image','group'=>'Image slideshow','label'=>'Slide 2','max_mb'=>5,'show_when'=>array('field'=>'bg_mode','is'=>'slideshow')),
+                'slide_3_image' => array('type'=>'image','group'=>'Image slideshow','label'=>'Slide 3','max_mb'=>5,'show_when'=>array('field'=>'bg_mode','is'=>'slideshow')),
+                'slide_4_image' => array('type'=>'image','group'=>'Image slideshow','label'=>'Slide 4','max_mb'=>5,'show_when'=>array('field'=>'bg_mode','is'=>'slideshow')),
+                'slide_5_image' => array('type'=>'image','group'=>'Image slideshow','label'=>'Slide 5','max_mb'=>5,'show_when'=>array('field'=>'bg_mode','is'=>'slideshow')),
+                'slide_6_image' => array('type'=>'image','group'=>'Image slideshow','label'=>'Slide 6','max_mb'=>5,'show_when'=>array('field'=>'bg_mode','is'=>'slideshow')),
             ),
         ),
 

@@ -55,7 +55,18 @@ function fx_render_accordion($section_id, $data_prefix, $section_content, $secti
                     $max   = isset($fdef['max'])  ? (int)$fdef['max'] : 500;
                     $rows  = isset($fdef['rows']) ? (int)$fdef['rows']: 3;
                 ?>
-                <label class="fx-field" data-field-key="<?= fx_escape($fieldKey) ?>">
+                <?php
+                // Conditional visibility.  `show_when` names another field in
+                // the SAME section plus the value it must hold; the editor JS
+                // hides this field (and any group heading left with nothing
+                // under it) whenever that doesn't match.  The input stays in
+                // the DOM either way, so a hidden field keeps its value and
+                // still saves — switching back and forth is non-destructive.
+                $showWhen = isset($fdef['show_when']) && is_array($fdef['show_when']) ? $fdef['show_when'] : null;
+                $showWhenKey = $showWhen ? $data_prefix . '.' . $section_id . '.' . $showWhen['field'] : '';
+                ?>
+                <label class="fx-field" data-field-key="<?= fx_escape($fieldKey) ?>"<?php
+                    if ($showWhen): ?> data-show-when="<?= fx_escape($showWhenKey) ?>" data-show-when-is="<?= fx_escape($showWhen['is']) ?>"<?php endif; ?>>
                     <span class="fx-field-label"><?= fx_escape($label) ?></span>
                     <?php if ($type === 'text' || $type === 'url'): ?>
                         <input class="fx-input fx-track" type="<?= $type === 'url' ? 'url' : 'text' ?>"
@@ -124,6 +135,12 @@ function fx_render_accordion($section_id, $data_prefix, $section_content, $secti
                                                accept="<?= $type === 'video' ? 'video/mp4' : 'image/jpeg,image/png,image/webp' ?>"
                                                hidden/>
                                     </label>
+                                    <?php // Clearing a slot was impossible before this — the only way to
+                                          // "remove" a slideshow image was to overwrite it.  Hidden by CSS
+                                          // while the field is empty so it doesn't add noise to blank slots. ?>
+                                    <button type="button" class="fx-btn fx-btn-ghost fx-clear-btn"
+                                            data-field-key="<?= fx_escape($fieldKey) ?>"
+                                            title="Remove this file from the field">Remove</button>
                                 </div>
                             </div>
                         </div>
@@ -146,7 +163,7 @@ $firstPageId = array_keys($pages)[0];
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>Furutec Editor</title>
-    <link rel="stylesheet" href="assets/editor.css?v=14"/>
+    <link rel="stylesheet" href="assets/editor.css?v=16"/>
     <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%232E3192'/><text x='50' y='72' text-anchor='middle' font-family='-apple-system,Arial,sans-serif' font-weight='800' font-size='62' fill='white'>F</text></svg>"/>
     <meta name="robots" content="noindex, nofollow"/>
 </head>
@@ -311,6 +328,6 @@ window.FX = {
     publishingEnabled: <?= $publishingEnabled ? 'true' : 'false' ?>
 };
 </script>
-<script src="assets/editor.js?v=14"></script>
+<script src="assets/editor.js?v=16"></script>
 </body>
 </html>

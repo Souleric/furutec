@@ -651,3 +651,31 @@ body.fx-lib-open { overflow: hidden; }
 /* Tighter label + spacing on these slots too */
 .fx-field[data-field-key*=".slide_"] { margin-bottom: 10px; }
 .fx-field[data-field-key*=".slide_"] .fx-field-label { margin-bottom: 4px; }
+
+/* ---- Conditional fields ----------------------------------------------
+   Set by applyConditionalFields() in editor.js.  Uses display:none rather
+   than removing the node, so a hidden field keeps its value and still
+   saves — switching the hero between Video and Image slideshow never
+   discards what was configured for the other mode. */
+.fx-field.is-cond-hidden,
+.fx-group-head.is-cond-hidden { display: none !important; }
+
+/* The field that drives a conditional group reads as a real choice
+   rather than just another input. */
+.fx-field[data-field-key$=".bg_mode"] {
+    background: #F7F7FB;
+    border: 1px solid var(--fx-line);
+    border-radius: var(--fx-radius);
+    padding: 12px;
+    margin-bottom: 16px;
+}
+.fx-field[data-field-key$=".bg_mode"] .fx-field-label { color: var(--fx-brand); }
+
+/* ---- Remove (clear media field) --------------------------------------
+   Only offered when there's something to remove.  .fx-media-filename is
+   empty exactly when the field has no file, and it precedes .fx-media-btns
+   as a sibling, so :empty + ~ toggles the button with no JS bookkeeping —
+   including right after the clear handler blanks the filename. */
+.fx-clear-btn { color: var(--fx-ink-muted); }
+.fx-clear-btn:hover { color: var(--fx-err); background: rgba(183,28,28,.07); }
+.fx-media-filename:empty ~ .fx-media-btns .fx-clear-btn { display: none; }
