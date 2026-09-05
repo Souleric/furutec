@@ -1065,48 +1065,83 @@ html { scroll-padding-top: 80px; }
 <script>
 /* Hero image slideshow — cross-fades slides on a timer set in the editor.
    No-ops entirely when the hero is in video mode (no .fxhero-slides present)
-   or when there's only one slide. */
-(function () {
-  var wrap = document.querySelector('.fxhero-slides');
-  if (!wrap) return;                                  // video mode
-  var slides = wrap.querySelectorAll('.fxhero-slide');
-  if (slides.length < 2) return;                      // single still image
+   or when there's only one slide.
 
-  var dots  = document.querySelectorAll('.fxhero-dot');
-  var delay = parseInt(wrap.getAttribute('data-interval'), 10) || 5000;
-  var i = 0, timer = null;
+   Written to be re-runnable rather than as a one-shot IIFE.  The editor's
+   live preview rebuilds the hero in place when you switch Background type
+   between Video and Image slideshow, which replaces these nodes; it then
+   calls fxHero.init() to re-arm against the new ones.  Two consequences
+   shape the code below:
 
+     • Nothing is captured in a closure at load time.  parts() re-queries on
+       every use, so a stale reference to a removed node can't keep a dead
+       timer alive.
+     • The dot clicks use one delegated listener on the document instead of
+       a listener per dot, so repeated init() calls can't stack up handlers.
+
+   The current slide index lives in a data-i attribute rather than a
+   variable, so it survives the script being re-armed. */
+window.fxHero = (function () {
+  var timer = null;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function show(n) {
-    i = (n + slides.length) % slides.length;
-    for (var k = 0; k < slides.length; k++) {
-      slides[k].classList.toggle('is-on', k === i);
+  function parts() {
+    var wrap = document.querySelector('.fxhero-slides');
+    if (!wrap) return null;                             // video mode
+    var slides = wrap.querySelectorAll('.fxhero-slide');
+    if (slides.length < 2) return null;                 // single still image
+    return {
+      wrap: wrap,
+      slides: slides,
+      dots: document.querySelectorAll('.fxhero-dot'),
+      delay: parseInt(wrap.getAttribute('data-interval'), 10) || 5000
+    };
+  }
+  function current(p) { return parseInt(p.wrap.getAttribute('data-i'), 10) || 0; }
+
+  function show(p, n) {
+    var i = (n + p.slides.length) % p.slides.length;
+    p.wrap.setAttribute('data-i', i);
+    for (var k = 0; k < p.slides.length; k++) {
+      p.slides[k].classList.toggle('is-on', k === i);
     }
-    for (var d = 0; d < dots.length; d++) {
+    for (var d = 0; d < p.dots.length; d++) {
       var on = (d === i);
-      dots[d].classList.toggle('is-on', on);
-      dots[d].setAttribute('aria-selected', on ? 'true' : 'false');
+      p.dots[d].classList.toggle('is-on', on);
+      p.dots[d].setAttribute('aria-selected', on ? 'true' : 'false');
     }
   }
-  function start() { stop(); if (!reduce) timer = setInterval(function () { show(i + 1); }, delay); }
-  function stop()  { if (timer) { clearInterval(timer); timer = null; } }
+  function stop() { if (timer) { clearInterval(timer); timer = null; } }
+  function start() {
+    stop();
+    var p = parts();
+    if (!p || reduce) return;
+    timer = setInterval(function () {
+      var q = parts();
+      if (!q) { stop(); return; }                       // hero was swapped out
+      show(q, current(q) + 1);
+    }, p.delay);
+  }
 
   // Manual dot click jumps to that slide and restarts the timer, so the
   // visitor gets a full interval to look at what they picked.
-  for (var d = 0; d < dots.length; d++) {
-    (function (idx) {
-      dots[idx].addEventListener('click', function () { show(idx); start(); });
-    })(d);
-  }
+  document.addEventListener('click', function (e) {
+    var dot = e.target && e.target.closest ? e.target.closest('.fxhero-dot') : null;
+    if (!dot) return;
+    var p = parts();
+    if (!p) return;
+    show(p, parseInt(dot.getAttribute('data-i'), 10) || 0);
+    start();
+  });
 
   // Don't burn cycles (or advance unseen) while the tab is hidden.
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) stop(); else start();
   });
 
-  start();
+  return { init: start, stop: stop };
 })();
+fxHero.init();
 </script>
 
 <!-- ============================================================

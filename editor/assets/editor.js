@@ -240,14 +240,17 @@
     window.addEventListener('beforeunload', function (e) {
         if (dirty) { e.preventDefault(); e.returnValue = ''; }
     });
-    // The preview is rendered server-side from the saved file, so it cannot
-    // reflect unsaved edits.  Rather than let the pane silently contradict
-    // what was just typed, say so plainly and offer the fix in the same bar.
+    // The preview now follows your edits live, so this bar is no longer about
+    // the preview being out of date — it's the reminder that what you can see
+    // isn't stored yet, and carries the Save that stores it.
     var staleBar = document.getElementById('fx-stale-bar');
     function setStale(isStale) {
         if (staleBar) staleBar.hidden = !isStale;
     }
-    function markDirty() { dirty = true; setStatus('Unsaved changes', 'is-dirty'); setStale(true); }
+    function markDirty() {
+        dirty = true; setStatus('Unsaved changes', 'is-dirty'); setStale(true);
+        scheduleLivePreview();
+    }
     function markClean() { dirty = false; setStale(false); }
     function setStatus(msg, cls) { status.textContent = msg; status.className = 'fx-status ' + (cls || ''); }
     function setBusy(busy) {
@@ -302,8 +305,12 @@
         post('save.php', { content: collectContent() }).then(function (r) {
             setBusy(false);
             if (!r.ok) { setStatus(r.error || 'Save failed', 'is-err'); return; }
-            markClean(); setStatus('Draft saved · preview updated', 'is-ok');
-            refreshPreview();
+            markClean(); setStatus('Draft saved', 'is-ok');
+            // No reload: the preview already shows exactly this — the live
+            // patch put it there as it was typed, and what we just saved is
+            // the same merge the preview was rendered from.  Reloading here
+            // would re-fetch the page's MP4s for no visible change, which is
+            // what used to make saving feel slow.
         }).catch(function (e) {
             setBusy(false); setStatus('Save error: ' + (e && e.message ? e.message : 'unknown'), 'is-err');
         });
@@ -396,6 +403,212 @@
     refreshBtn.addEventListener('click', function () { refreshPreview(); });
     function refreshPreview() {
         preview.src = 'preview.php?page=' + encodeURIComponent(currentPage) + '&ts=' + Date.now();
+    }
+
+    // ======================================================================
+    // LIVE PREVIEW
+    // ----------------------------------------------------------------------
+    // The preview is server-rendered, and it used to render the SAVED file —
+    // so nothing you typed appeared until you saved and reloaded the iframe.
+    // Switching the hero between Video and Image slideshow looked especially
+    // broken: the dropdown moved, the preview didn't, and flipping back and
+    // forth still did nothing.  Measured: eight switches in 8ms with zero
+    // change in the preview.  Nothing was hanging — it was inert.
+    //
+    // Now every edit re-renders the page server-side from the CURRENT form
+    // values (livepreview.php, which never writes) and patches the result
+    // into the iframe.
+    //
+    // Patching rather than reloading the iframe, because a reload:
+    //   • re-fetches and restarts the MP4s — Home alone carries three, which
+    //     is what made saving feel slow,
+    //   • and throws away scroll position, so you lose your place on every
+    //     keystroke.
+    //
+    // The patch is a three-way diff: previous render vs new render, applied
+    // to the live DOM.  Where the two renders agree, the live node is not
+    // touched at all — so classes the page's own JS added (reveal-on-scroll,
+    // slideshow state, the click-tracker's markers) survive an edit
+    // elsewhere on the page.
+    // ======================================================================
+    var LIVE_DEBOUNCE_MS = 300;
+    var livePrevDoc = null;   // last server render, as a Document
+    var liveTimer   = null;
+    var liveSeq     = 0;      // discards responses overtaken by a newer edit
+    var baseSeq     = 0;
+
+    // Does this pair of child lists have the same shape?  Used to decide
+    // between patching children pairwise and rebuilding them outright.
+    function fxSameShape(a, b) {
+        if (a.length !== b.length) return false;
+        for (var i = 0; i < a.length; i++) {
+            if (a[i].nodeType !== b[i].nodeType) return false;
+            if (a[i].nodeType === 1 && a[i].nodeName !== b[i].nodeName) return false;
+        }
+        return true;
+    }
+
+    function fxPatchAttrs(live, prev, next) {
+        var i, a, pv;
+        for (i = 0; i < next.attributes.length; i++) {
+            a  = next.attributes[i];
+            pv = prev.hasAttribute(a.name) ? prev.getAttribute(a.name) : null;
+            // The server said the same thing twice — whatever the live node
+            // holds now came from the page's own JS.  Leave it alone.
+            if (pv === a.value) continue;
+            if (a.name === 'class') {
+                // Keep classes that only exist at runtime (present live, in
+                // neither render): 'reveal', 'is-visible', slideshow state.
+                // Dropping them would blank out animated sections.
+                var prevSet = (pv || '').split(/\s+/);
+                var liveSet = (live.getAttribute('class') || '').split(/\s+/);
+                var nextSet = a.value.split(/\s+/).filter(Boolean);
+                for (var k = 0; k < liveSet.length; k++) {
+                    var c = liveSet[k];
+                    if (c && prevSet.indexOf(c) === -1 && nextSet.indexOf(c) === -1) nextSet.push(c);
+                }
+                live.setAttribute('class', nextSet.join(' '));
+            } else {
+                live.setAttribute(a.name, a.value);
+            }
+        }
+        for (i = prev.attributes.length - 1; i >= 0; i--) {
+            var name = prev.attributes[i].name;
+            if (!next.hasAttribute(name)) live.removeAttribute(name);
+        }
+    }
+
+    function fxPatchTree(live, prev, next) {
+        // Identical between the two renders → this edit didn't touch this
+        // subtree.  Returning here is what keeps the videos playing and the
+        // scroll animations intact; it also skips most of the page.
+        if (prev.isEqualNode(next)) return;
+
+        // Never re-insert a <script>: appending one re-executes it, which
+        // would stack up a second slideshow timer on every keystroke.
+        if (next.nodeType === 1 && next.nodeName === 'SCRIPT') return;
+
+        if (live.nodeType !== next.nodeType || live.nodeName !== next.nodeName) {
+            live.parentNode.replaceChild(live.ownerDocument.importNode(next, true), live);
+            return;
+        }
+        if (next.nodeType === 3 || next.nodeType === 8) {
+            if (prev.nodeValue !== next.nodeValue) live.nodeValue = next.nodeValue;
+            return;
+        }
+        if (next.nodeType !== 1) return;
+
+        fxPatchAttrs(live, prev, next);
+
+        // Shape changed on either side — the hero swapping a <video> for a
+        // stack of slides, or the page's own JS having added nodes since.
+        // Rebuild from the new render, but move the existing <script> nodes
+        // across instead of importing fresh copies, so they don't re-run.
+        if (!fxSameShape(prev.childNodes, next.childNodes) ||
+            !fxSameShape(live.childNodes, prev.childNodes)) {
+            var doc  = live.ownerDocument;
+            var keep = [];
+            for (var s = 0; s < live.childNodes.length; s++) {
+                if (live.childNodes[s].nodeName === 'SCRIPT') keep.push(live.childNodes[s]);
+            }
+            var frag = doc.createDocumentFragment();
+            for (var i = 0; i < next.childNodes.length; i++) {
+                var nc = next.childNodes[i];
+                if (nc.nodeName === 'SCRIPT' && keep.length) frag.appendChild(keep.shift());
+                else frag.appendChild(doc.importNode(nc, true));
+            }
+            while (live.firstChild) live.removeChild(live.firstChild);
+            live.appendChild(frag);
+            return;
+        }
+
+        // Snapshot the three lists first: patching a child can replace it,
+        // which would shift the live NodeList mid-loop.
+        var lk = [], pk = [], nk = [];
+        for (var j = 0; j < next.childNodes.length; j++) {
+            lk.push(live.childNodes[j]); pk.push(prev.childNodes[j]); nk.push(next.childNodes[j]);
+        }
+        for (var m = 0; m < nk.length; m++) fxPatchTree(lk[m], pk[m], nk[m]);
+    }
+
+    function parseDoc(html) {
+        try {
+            var d = new DOMParser().parseFromString(html, 'text/html');
+            return (d && d.body) ? d : null;
+        } catch (e) { return null; }
+    }
+
+    // The baseline is what the iframe is currently showing.  The iframe is
+    // only ever loaded from preview.php (the saved draft), so fetching that
+    // same URL gives an exact copy to diff against.  Reading the iframe's own
+    // DOM instead would be wrong: by then its scripts have added classes the
+    // server never emitted, and the first edit would strip them all at once.
+    function captureBaseline() {
+        livePrevDoc = null;
+        var seq = ++baseSeq;
+        fetch('preview.php?page=' + encodeURIComponent(currentPage), { credentials: 'same-origin' })
+            .then(function (r) { return r.text(); })
+            .then(function (html) {
+                if (seq !== baseSeq) return;
+                livePrevDoc = parseDoc(html);
+                // Edits made while the baseline was still in flight.
+                if (livePrevDoc && dirty) scheduleLivePreview();
+            })
+            .catch(function () { livePrevDoc = null; });
+    }
+    if (preview) preview.addEventListener('load', captureBaseline);
+
+    function scheduleLivePreview() {
+        if (liveTimer) clearTimeout(liveTimer);
+        liveTimer = setTimeout(runLivePreview, LIVE_DEBOUNCE_MS);
+    }
+
+    function runLivePreview() {
+        if (!preview || !livePrevDoc) return;         // baseline not ready yet
+        var seq = ++liveSeq;
+        fetch('livepreview.php?page=' + encodeURIComponent(currentPage), {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF': window.FX.csrf,
+                'X-Requested-With': 'fetch'
+            },
+            body: JSON.stringify({ content: collectContent() })
+        })
+        .then(function (r) { return r.text(); })
+        .then(function (html) {
+            if (seq !== liveSeq) return;              // a newer edit already won
+            applyLiveRender(html);
+        })
+        .catch(function () { /* keep the current preview; Refresh still works */ });
+    }
+
+    function applyLiveRender(html) {
+        // The endpoint answers 200 with a comment marker on failure, so a
+        // broken render leaves the preview standing instead of blanking it.
+        if (html.indexOf('<!-- fx-live-preview-error:') === 0) return;
+        var next = parseDoc(html);
+        var doc  = preview.contentDocument;
+        if (!next || !livePrevDoc || !doc || !doc.body) return;
+
+        var win = preview.contentWindow;
+        var y = win ? win.scrollY : 0;
+        try {
+            fxPatchTree(doc.body, livePrevDoc.body, next.body);
+        } catch (e) {
+            // Anything unexpected: reload rather than leave a half-patched
+            // page on screen.
+            livePrevDoc = null;
+            refreshPreview();
+            return;
+        }
+        livePrevDoc = next;
+        if (win && win.scrollY !== y) win.scrollTo(0, y);
+        // The hero slideshow binds its timer at load; re-arm it in case the
+        // hero was just rebuilt.  Guarded — older published pages have no
+        // fxHero, and this must never break the patch.
+        try { if (win && win.fxHero) win.fxHero.init(); } catch (e) {}
     }
 
     document.addEventListener('change', function (e) {

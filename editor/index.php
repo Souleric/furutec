@@ -193,7 +193,7 @@ $firstPageId = array_keys($pages)[0];
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>Furutec Editor</title>
-    <link rel="stylesheet" href="assets/editor.css?v=21"/>
+    <link rel="stylesheet" href="assets/editor.css?v=22"/>
     <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%232E3192'/><text x='50' y='72' text-anchor='middle' font-family='-apple-system,Arial,sans-serif' font-weight='800' font-size='62' fill='white'>F</text></svg>"/>
     <meta name="robots" content="noindex, nofollow"/>
 </head>
@@ -230,8 +230,8 @@ $firstPageId = array_keys($pages)[0];
             <button type="button" class="fx-intro-x" id="fx-intro-dismiss" aria-label="Dismiss">&times;</button>
             <strong class="fx-intro-title">How editing works</strong>
             <ol class="fx-intro-steps">
-                <li>Change something below.</li>
-                <li><strong>Save draft</strong> — updates the preview on the right. Visitors still see the old site.</li>
+                <li>Change something below — the preview on the right follows as you type.</li>
+                <li><strong>Save draft</strong> — keeps your changes. Visitors still see the old site.</li>
                 <li><strong>Publish</strong> — puts it on the live website for everyone.</li>
             </ol>
             <span class="fx-intro-foot">Changed your mind after publishing? <strong>Restore previous</strong> puts the live site back.</span>
@@ -329,9 +329,9 @@ $firstPageId = array_keys($pages)[0];
         <div class="fx-stale-bar" id="fx-stale-bar" hidden>
             <span class="fx-stale-text">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
-                You have unsaved edits — this preview still shows the last saved version.
+                The preview below is up to date — but these edits aren&rsquo;t saved yet.
             </span>
-            <button type="button" class="fx-btn fx-btn-small fx-stale-save" id="fx-stale-save">Save &amp; refresh</button>
+            <button type="button" class="fx-btn fx-btn-small fx-stale-save" id="fx-stale-save">Save draft</button>
         </div>
         <div class="fx-preview-frame-wrap" id="fx-preview-frame-wrap" data-device="desktop">
             <iframe id="fx-preview" src="preview.php?page=<?= fx_escape($firstPageId) ?>&ts=<?= time() ?>" title="Draft preview"></iframe>
@@ -477,6 +477,6 @@ window.FX = {
     publishingEnabled: <?= $publishingEnabled ? 'true' : 'false' ?>
 };
 </script>
-<script src="assets/editor.js?v=21"></script>
+<script src="assets/editor.js?v=22"></script>
 </body>
 </html>
