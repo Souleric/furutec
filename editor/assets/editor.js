@@ -699,10 +699,15 @@
         outW: 0, outH: 0,  // target output pixels (0 = keep source scale)
         box: { x: 0, y: 0, w: 0, h: 0 },   // in displayed-image pixels
         drag: null,
+        // The image being cropped FROM — always the original, never the
+        // output of an earlier crop.
+        srcPath: '',
         // When the cropper auto-opens after a pick, remember what the field
         // held before so "Discard" can genuinely undo choosing the wrong file.
         revertTo: null,
         revertKind: null,
+        revertSrc: null,
+        revertRect: null,
     };
 
     function cropSetStatus(msg, cls) {
@@ -711,18 +716,46 @@
         cropStatus.className = 'fx-crop-status' + (cls ? ' ' + cls : '');
     }
 
-    function openCropper(fieldKey, url, w, h) {
+    // ---- Crop bookkeeping -------------------------------------------------
+    // Two hidden companions per croppable slot (generated server-side in
+    // fx_add_crop_companions): _src is the image the crop was taken from,
+    // _crop is the rectangle, in fractions of that image.
+    function companionTrack(fieldKey, suffix) {
+        return document.querySelector('.fx-track[data-field="' + cssEsc(fieldKey + suffix) + '"]');
+    }
+    /** The image a crop should be taken FROM — never the previous crop's output. */
+    function cropSourceFor(fieldKey) {
+        var src = companionTrack(fieldKey, '_src');
+        if (src && src.value) return src.value;
+        // No source recorded yet (slot filled before this existed): the value
+        // on the field is the best we have, and cropping it adopts it as the
+        // source from here on.
+        var track = document.querySelector('.fx-track[data-field="' + cssEsc(fieldKey) + '"]');
+        return track ? track.value : '';
+    }
+    /** A new image landed in the slot — it becomes the source, framing resets. */
+    function resetCropSource(fieldKey, filename) {
+        var src = companionTrack(fieldKey, '_src');
+        var rect = companionTrack(fieldKey, '_crop');
+        if (src)  src.value  = filename || '';
+        if (rect) rect.value = '';
+    }
+
+    function openCropper(fieldKey, srcPath, w, h) {
         cropState.fieldKey = fieldKey;
+        cropState.srcPath  = srcPath;
         cropState.revertTo = null;      // set by maybeOfferCrop on the auto path only
         showCropDiscard(false);
         cropState.outW = w || 0;
         cropState.outH = h || 0;
         cropState.ratio = (w && h) ? (w / h) : 0;
+        var url = '../assets/' + encodePath(srcPath);
 
-        cropSub.textContent = cropState.ratio
+        cropSub.textContent = (cropState.ratio
             ? 'This slot displays at ' + w + ' x ' + h + ' (' + cropState.ratio.toFixed(2) +
               ':1). The box is locked to that shape — drag to choose what stays visible.'
-            : 'No fixed shape for this slot — drag any area you want to keep.';
+            : 'No fixed shape for this slot — drag any area you want to keep.')
+            + ' Your original is kept, so you can come back and re-frame it any time.';
 
         cropSetStatus('');
         cropOverlay.hidden = false;
@@ -735,7 +768,10 @@
         // remote ones through when the host allows it.
         cropImg.crossOrigin = 'anonymous';
         // Load fresh (cache-bust) so a re-crop doesn't reuse a stale bitmap.
-        cropImg.onload = function () { resetCropBox(); };
+        // Reopen with the last framing in place rather than a fresh centred
+        // box — the point of keeping the rectangle is that you can nudge a
+        // previous crop instead of redoing it from scratch.
+        cropImg.onload = function () { restoreCropBox(); };
         cropImg.onerror = function () {
             cropSetStatus('Could not load that image for cropping. If it is hosted on another site, ' +
                           'download it and upload it here first.', 'is-err');
@@ -760,6 +796,19 @@
             w = iw; h = ih;
         }
         cropState.box = { x: (iw - w) / 2, y: (ih - h) / 2, w: w, h: h };
+        drawCropBox();
+    }
+
+    /** Put the box back where it was last applied, if we have a rectangle. */
+    function restoreCropBox() {
+        var iw = cropImg.clientWidth, ih = cropImg.clientHeight;
+        var rect = cropState.fieldKey ? companionTrack(cropState.fieldKey, '_crop') : null;
+        var v = rect && rect.value ? rect.value.split(' ') : null;
+        if (!iw || !ih || !v || v.length !== 4) { resetCropBox(); return; }
+        var x = parseFloat(v[0]), y = parseFloat(v[1]), w = parseFloat(v[2]), h = parseFloat(v[3]);
+        if (!(w > 0) || !(h > 0) || !isFinite(x) || !isFinite(y)) { resetCropBox(); return; }
+        cropState.box = { x: x * iw, y: y * ih, w: w * iw, h: h * ih };
+        clampBox();
         drawCropBox();
     }
 
@@ -847,7 +896,7 @@
         document.addEventListener('mouseup', function () { cropState.drag = null; });
 
         document.getElementById('fx-crop-close').addEventListener('click', closeCropper);
-        document.getElementById('fx-crop-skip').addEventListener('click', closeCropper);
+        document.getElementById('fx-crop-skip').addEventListener('click', useUncropped);
         document.getElementById('fx-crop-reset').addEventListener('click', resetCropBox);
         cropOverlay.addEventListener('click', function (e) { if (e.target === cropOverlay) closeCropper(); });
         document.addEventListener('keydown', function (e) {
@@ -862,7 +911,10 @@
             var key = btn.getAttribute('data-field-key');
             var track = document.querySelector('.fx-track[data-field="' + cssEsc(key) + '"]');
             if (!track || !track.value) { setStatus('Nothing to crop — add an image first.', 'is-err'); return; }
-            openCropper(key, '../assets/' + encodePath(track.value),
+            // Crop the ORIGINAL, not whatever the last crop produced.
+            var src = cropSourceFor(key);
+            if (!src) { setStatus('Nothing to crop — add an image first.', 'is-err'); return; }
+            openCropper(key, src,
                         parseInt(btn.getAttribute('data-crop-w'), 10) || 0,
                         parseInt(btn.getAttribute('data-crop-h'), 10) || 0);
         });
@@ -871,9 +923,29 @@
         document.getElementById('fx-crop-discard').addEventListener('click', discardCropPick);
     }
 
+    // Fractions are stored as "0", "1" or "0.xxxxx" — the shape save.php
+    // validates against.  toFixed alone would emit "1.00000" for a full-width
+    // box and the whole rectangle would be rejected on save.
+    function fmtFrac(n) {
+        if (!isFinite(n) || n <= 0) return '0';
+        if (n >= 1) return '1';
+        var s = n.toFixed(5);
+        if (parseFloat(s) >= 1) return '1';
+        if (parseFloat(s) <= 0) return '0';
+        return s;
+    }
+
     function applyCrop() {
         if (!cropState.fieldKey) return;
         var b = cropState.box;
+        // Store the rectangle as fractions of the source, not pixels, so it
+        // still means the same thing at any preview scale.
+        var normRect = [
+            fmtFrac(b.x / cropImg.clientWidth),
+            fmtFrac(b.y / cropImg.clientHeight),
+            fmtFrac(b.w / cropImg.clientWidth),
+            fmtFrac(b.h / cropImg.clientHeight)
+        ].join(' ');
         var scale = cropImg.naturalWidth / cropImg.clientWidth;   // displayed -> source px
         var sx = Math.max(0, Math.round(b.x * scale));
         var sy = Math.max(0, Math.round(b.y * scale));
@@ -918,8 +990,11 @@
         function onCropBlob(blob) {
             if (!blob) { cropSetStatus('Could not encode the crop.', 'is-err'); return; }
             var track = document.querySelector('.fx-track[data-field="' + cssEsc(cropState.fieldKey) + '"]');
-            var base  = (track && track.value ? track.value.split('/').pop() : 'image')
-                          .replace(/\.[a-z0-9]+$/i, '');
+            // Name from the SOURCE, so re-cropping gives "photo-crop.jpg"
+            // again rather than "photo-crop-crop-crop.jpg".
+            var base  = (cropState.srcPath ? cropState.srcPath.split('/').pop() : 'image')
+                          .replace(/\.[a-z0-9]+$/i, '')
+                          .replace(/-crop$/i, '');
             var fd = new FormData();
             fd.append('file', blob, base + '-crop.jpg');
             fd.append('kind', 'image');
@@ -931,6 +1006,13 @@
               .then(function (d) {
                   if (!d.ok) { cropSetStatus(d.error || 'Upload failed.', 'is-err'); return; }
                   if (track) {
+                      // Record what this was cut from and where, so the next
+                      // Crop reopens on the original with this framing —
+                      // rather than cutting further into the output.
+                      var srcT  = companionTrack(cropState.fieldKey, '_src');
+                      var rectT = companionTrack(cropState.fieldKey, '_crop');
+                      if (srcT && cropState.srcPath) srcT.value = cropState.srcPath;
+                      if (rectT) rectT.value = normRect;
                       track.value = d.filename;
                       var media = track.closest('.fx-media');
                       if (media) {
@@ -957,8 +1039,18 @@
         var w = parseInt(media.getAttribute('data-crop-w'), 10) || 0;
         var h = parseInt(media.getAttribute('data-crop-h'), 10) || 0;
         if (!w || !h) return;                       // no declared shape — don't nag
+        // A newly chosen image replaces the source outright, and any framing
+        // from the image before it is meaningless against a different picture.
+        // Keep the old pair so Discard restores the slot completely, not just
+        // its filename — otherwise reverting a wrong pick would leave the
+        // previous image pointing at the wrong source.
+        var oldSrc  = companionTrack(fieldKey, '_src');
+        var oldRect = companionTrack(fieldKey, '_crop');
+        cropState.revertSrc  = oldSrc  ? oldSrc.value  : null;
+        cropState.revertRect = oldRect ? oldRect.value : null;
+        resetCropSource(fieldKey, filename);
         if (/\.svg$/i.test(filename)) return;       // vector: scales cleanly, nothing to crop
-        openCropper(fieldKey, '../assets/' + encodePath(filename), w, h);
+        openCropper(fieldKey, filename, w, h);
         // Auto-opened, so offer a genuine way out: put the field back to what
         // it held before the pick.  Only meaningful in this path — a manual
         // Crop on an existing image has nothing to revert to.
@@ -972,6 +1064,36 @@
         if (btn) btn.hidden = !show;
     }
 
+    /**
+     * Put the whole original back in the slot and drop the framing.
+     *
+     * On the auto-open path the slot already holds the untouched pick, so
+     * this is a no-op beyond closing.  Reopened on an image that has been
+     * cropped before, it's the real undo the label promises — without it,
+     * "Use uncropped" quietly left the previous crop in place.
+     */
+    function useUncropped() {
+        var key = cropState.fieldKey, src = cropState.srcPath;
+        closeCropper();
+        if (!key || !src) return;
+        var track = document.querySelector('.fx-track[data-field="' + cssEsc(key) + '"]');
+        if (!track) return;
+        var rectT = companionTrack(key, '_crop');
+        if (rectT) rectT.value = '';
+        if (track.value === src) return;             // nothing to undo
+        track.value = src;
+        var media = track.closest('.fx-media');
+        if (media) {
+            var nameEl = media.querySelector('.fx-media-filename');
+            if (nameEl) nameEl.textContent = src;
+            var prevEl = media.querySelector('.fx-media-preview');
+            if (prevEl) prevEl.innerHTML = '<img src="../assets/' + encodePath(src) + '" alt=""/>';
+        }
+        track.dispatchEvent(new Event('input', { bubbles: true }));
+        markDirty();
+        setStatus('Using the full image · click Save to store', 'is-ok');
+    }
+
     /** Undo the pick that triggered an auto-opened cropper. */
     function discardCropPick() {
         var key = cropState.fieldKey, prev = cropState.revertTo;
@@ -980,6 +1102,11 @@
         var track = document.querySelector('.fx-track[data-field="' + cssEsc(key) + '"]');
         if (!track) return;
         track.value = prev;
+        // Put the crop source and framing back alongside the filename.
+        var srcT  = companionTrack(key, '_src');
+        var rectT = companionTrack(key, '_crop');
+        if (srcT)  srcT.value  = cropState.revertSrc  || '';
+        if (rectT) rectT.value = cropState.revertRect || '';
         var media = track.closest('.fx-media');
         if (media) {
             var nameEl = media.querySelector('.fx-media-filename');
@@ -1102,6 +1229,9 @@
         if (!track) return;
         if (!track.value) return;                       // already empty
         track.value = '';
+        // Drop the crop source and framing too, or the next image dropped in
+        // here would inherit the last one's rectangle.
+        resetCropSource(key, '');
         var media = track.closest('.fx-media');
         if (media) {
             var nameEl = media.querySelector('.fx-media-filename');

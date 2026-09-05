@@ -46,7 +46,44 @@ function fx_load_fieldmap() {
     $p = fx_fieldmap_path();
     if (!is_file($p)) return array('sections' => array());
     $data = include $p;
-    return is_array($data) ? $data : array('sections' => array());
+    if (!is_array($data)) return array('sections' => array());
+    return fx_add_crop_companions($data);
+}
+
+/**
+ * Give every croppable image slot two hidden bookkeeping fields.
+ *
+ *   <name>_src   the image the crop was taken FROM
+ *   <name>_crop  the crop rectangle, as fractions of that image
+ *
+ * Cropping writes a real file and points the slot at it, because the
+ * published site is static HTML on shared hosting and has to serve a
+ * correctly-sized image with no editor runtime behind it.  But the crop must
+ * still be re-doable: without these two, a second Crop would open the file
+ * the FIRST crop produced, so you could only ever cut further in, never back
+ * out, and every pass would re-encode what was left.  Keeping the source and
+ * the rectangle means re-cropping always starts from the original with your
+ * last framing already in place.
+ *
+ * Generated here rather than written into field-map.php so they cannot drift
+ * out of step with the 'crop' specs they shadow — add a crop spec and the
+ * companions exist; remove it and they're gone.
+ */
+function fx_add_crop_companions($map) {
+    if (!isset($map['sections']) || !is_array($map['sections'])) return $map;
+    foreach ($map['sections'] as $sid => $sdef) {
+        if (!isset($sdef['fields']) || !is_array($sdef['fields'])) continue;
+        $add = array();
+        foreach ($sdef['fields'] as $fname => $fdef) {
+            if (!isset($fdef['crop']) || !is_array($fdef['crop'])) continue;
+            $add[$fname . '_src']  = array('type' => 'hidden', 'pattern' => 'path', 'max' => 300);
+            $add[$fname . '_crop'] = array('type' => 'hidden', 'pattern' => 'rect', 'max' => 80);
+        }
+        if ($add) {
+            $map['sections'][$sid]['fields'] = array_merge($map['sections'][$sid]['fields'], $add);
+        }
+    }
+    return $map;
 }
 
 /**

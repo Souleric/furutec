@@ -34,12 +34,31 @@ function fx_apply_section($sect_id, $incoming_section, &$updated_section, $field
             $val  = trim($val);
             if (!in_array($val, $keys, true)) $val = isset($keys[0]) ? $keys[0] : '';
         } elseif ($type === 'hidden') {
-            // Machine-written values.  The only one so far is a video focal
-            // point, which must look exactly like an object-position pair —
-            // anything else is discarded rather than passed through into a
-            // style attribute.
+            // Machine-written values.  Each declares the shape it must have,
+            // and anything else is discarded rather than stored — a bad value
+            // here would otherwise reach a style attribute or a URL.
             $val = trim($val);
-            if ($val !== '' && !preg_match('/^\d{1,3}% \d{1,3}%$/', $val)) $val = '';
+            $pattern = isset($fdef['pattern']) ? $fdef['pattern'] : 'objectpos';
+            if ($val !== '') {
+                if ($pattern === 'path') {
+                    // A crop's source image, relative to /assets/.  Used to
+                    // build a URL in the editor, so keep it to plain path
+                    // characters and refuse anything that climbs out.
+                    if (!preg_match('#^[A-Za-z0-9 ._/()-]+$#', $val)
+                        || strpos($val, '..') !== false
+                        || substr($val, 0, 1) === '/') {
+                        $val = '';
+                    }
+                } elseif ($pattern === 'rect') {
+                    // "x y w h" as fractions of the source image, 0..1.
+                    if (!preg_match('/^(0|1|0?\.\d+) (0|1|0?\.\d+) (0|1|0?\.\d+) (0|1|0?\.\d+)$/', $val)) {
+                        $val = '';
+                    }
+                } else {
+                    // object-position pair, e.g. "25% 75%"
+                    if (!preg_match('/^\d{1,3}% \d{1,3}%$/', $val)) $val = '';
+                }
+            }
         } elseif ($type === 'number') {
             // Clamp into [min, max] and store as a plain integer string.
             $n   = (int)trim($val);
