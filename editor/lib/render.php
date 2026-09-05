@@ -538,7 +538,24 @@ function fx_render($content, &$errors_out = null) {
  * first keystroke.
  */
 function fx_preview_decorate($rendered, $page_id) {
-    $ribbon = '<div style="position:fixed;top:0;right:0;z-index:99999;background:#B36B00;color:#fff;padding:5px 12px;font-family:-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;border-bottom-left-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,0.3);pointer-events:none;">Draft preview · ' . fx_escape($page_id) . '</div>';
+    // Bottom-left, not top-right.  Top-right sat directly on the sticky
+    // header — over the nav, and over the burger button at narrower widths —
+    // so the one part of the page you could never inspect was the part every
+    // visitor sees first.  Both bottom corners are free of fixed elements on
+    // every template, and pointer-events:none keeps it from eating clicks
+    // wherever it happens to land.
+    //
+    // Kept small and translucent rather than dropped altogether: opened
+    // outside the editor this is the only thing distinguishing a draft from
+    // the real site.  Inside the editor the toolbar already says
+    // "Preview · <page> (draft)", so it's just a quiet second confirmation.
+    $ribbon = '<div style="position:fixed;bottom:0;left:0;z-index:99999;'
+            . 'background:rgba(120,72,0,0.80);color:#fff;padding:3px 9px;'
+            . 'font-family:-apple-system,sans-serif;font-size:10px;font-weight:600;'
+            . 'letter-spacing:0.05em;text-transform:uppercase;line-height:1.5;'
+            . 'border-top-right-radius:4px;pointer-events:none;'
+            . '-webkit-user-select:none;user-select:none;">'
+            . 'Draft · ' . fx_escape($page_id) . '</div>';
     // target="_blank" ensures that if Amy clicks any link inside the draft
     // preview, it opens in a new tab instead of hijacking the iframe (which
     // would replace the draft with the actual live page and confuse her).
