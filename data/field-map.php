@@ -80,7 +80,7 @@ return array(
             'template'  => 'product.template.html',
             'live_file' => 'product.html',
             'sections'  => array(
-                'product_intro', 'product_nav',
+                'product_intro', 'product_nav', 'product_buttons',
                 'product_indoor', 'product_outdoor', 'product_datacenter',
                 'product_power', 'product_lighting',
             ),
@@ -560,6 +560,17 @@ return array(
                 'datacenter_label' => array('type'=>'text','label'=>'03 · Data Centre label','max'=>60),
                 'power_label'      => array('type'=>'text','label'=>'04 · Power Monitoring label','max'=>60),
                 'lighting_label'   => array('type'=>'text','label'=>'05 · Lighting label','max'=>60),
+            ),
+        ),
+
+        'product_buttons' => array(
+            'label'   => 'Product page — action buttons',
+            'summary' => 'The two buttons under every product block ("Contact Us" and "Request a Catalogue"). One setting applies to all five products.',
+            'preview_target' => '#indoor .ps-cta',
+            'fields'  => array(
+                'contact_label'   => array('type'=>'text','preview_target'=>'.ps-btn-primary','default'=>'Contact Us','label'=>'Contact button label','help'=>'Shown on the main button. Each product\'s button already links to the contact form with that product pre-selected.','max'=>40),
+                'catalogue_label' => array('type'=>'text','preview_target'=>'.ps-btn-secondary','default'=>'Request a Catalogue','label'=>'Catalogue button label','help'=>'Shown next to the download icon.','max'=>40),
+                'catalogue_url'   => array('type'=>'text','preview_target'=>'.ps-btn-secondary','default'=>'quote.html','label'=>'Catalogue button link','help'=>'Where the catalogue button goes. Default is quote.html (the contact form). Can also be a PDF uploaded via the Media Library, e.g. assets/uploads/catalogue.pdf','max'=>300),
             ),
         ),
 

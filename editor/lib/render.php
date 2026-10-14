@@ -305,6 +305,20 @@ function fx_build_substitutions($page_id, $content) {
         $s['PP_NAV_POWER_LABEL']      = fx_escape(isset($nv['power_label'])      ? $nv['power_label']      : '');
         $s['PP_NAV_LIGHTING_LABEL']   = fx_escape(isset($nv['lighting_label'])   ? $nv['lighting_label']   : '');
 
+        // Action buttons shared by all five product blocks.  Fallbacks keep
+        // the buttons labelled even on a content.php saved before these
+        // fields existed (the server copy is older than the field map).
+        $bt = isset($page['product_buttons']) ? $page['product_buttons'] : array();
+        $btContact = isset($bt['contact_label'])   ? trim((string)$bt['contact_label'])   : '';
+        $btCatLbl  = isset($bt['catalogue_label']) ? trim((string)$bt['catalogue_label']) : '';
+        $btCatUrl  = isset($bt['catalogue_url'])   ? trim((string)$bt['catalogue_url'])   : '';
+        if ($btContact === '') $btContact = 'Contact Us';
+        if ($btCatLbl  === '') $btCatLbl  = 'Request a Catalogue';
+        if ($btCatUrl  === '') $btCatUrl  = 'quote.html';
+        $s['PP_BTN_CONTACT_LABEL']   = fx_escape($btContact);
+        $s['PP_BTN_CATALOGUE_LABEL'] = fx_escape($btCatLbl);
+        $s['PP_BTN_CATALOGUE_URL']   = fx_escape($btCatUrl);
+
         // Per-section builder: given the section-content array and the
         // placeholder-prefix (e.g. "PP_IN_"), plus counts, emit into $s.
         // Placed inline (not a helper) so PHP 5.6 has no closure issue.

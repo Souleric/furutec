@@ -605,11 +605,166 @@
         }
         livePrevDoc = next;
         if (win && win.scrollY !== y) win.scrollTo(0, y);
+        hlReapply();   // the outlined node may have been rebuilt by the patch
         // The hero slideshow binds its timer at load; re-arm it in case the
         // hero was just rebuilt.  Guarded — older published pages have no
         // fxHero, and this must never break the patch.
         try { if (win && win.fxHero) win.fxHero.init(); } catch (e) {}
     }
+
+    // ======================================================================
+    // EDITING HIGHLIGHT
+    // ----------------------------------------------------------------------
+    // While a sidebar field has focus, the preview outlines what that field
+    // controls, so the client sees where an edit will land before typing.
+    //
+    // The target is found three ways, tried in order:
+    //   1. the field's own `preview_target` selector from the field map
+    //      (e.g. every ".ps-btn-secondary" on the product page),
+    //   2. a text match: the deepest element(s) inside the section whose
+    //      visible text equals the field's current value — covers headings,
+    //      labels and paragraphs with no mapping at all.  Media fields match
+    //      the element whose src / href / poster / background ends with the
+    //      file path instead,
+    //   3. the section's `preview_target` itself.
+    // The section is outlined too (dashed) so the field sits in context.
+    // Classes live only in the iframe DOM.  The live-render patch keeps
+    // runtime-only classes, and we re-apply after each patch regardless, in
+    // case the node was rebuilt.
+    // ======================================================================
+    var HL_FIELD   = 'fx-editing';
+    var HL_SECTION = 'fx-editing-section';
+    var hlActiveWrap = null;
+
+    function hlEnsureStyle(doc) {
+        if (!doc || !doc.head || doc.getElementById('fx-editing-style')) return;
+        var st = doc.createElement('style');
+        st.id = 'fx-editing-style';
+        st.textContent =
+            '.' + HL_FIELD + '{outline:3px solid #2E3192 !important;outline-offset:4px !important;' +
+            'box-shadow:0 0 0 8px rgba(46,49,146,.16) !important;}' +
+            '.' + HL_SECTION + '{outline:2px dashed rgba(46,49,146,.55) !important;outline-offset:-2px !important;}';
+        doc.head.appendChild(st);
+    }
+    function hlClear(doc) {
+        if (!doc) return;
+        var els = doc.querySelectorAll('.' + HL_FIELD + ', .' + HL_SECTION);
+        for (var i = 0; i < els.length; i++) {
+            els[i].classList.remove(HL_FIELD);
+            els[i].classList.remove(HL_SECTION);
+        }
+    }
+    function hlNorm(s)  { return (s || '').replace(/\s+/g, ' ').trim(); }
+    function hlStrip(s) { return (s || '').replace(/\s+/g, ''); }
+    function hlList(l)  { return Array.prototype.slice.call(l || []); }
+
+    // Deepest elements within `scopes` whose visible text equals `value`.
+    function hlTextMatches(scopes, value) {
+        var want = hlNorm(value);
+        if (want.length < 2) return [];
+        var wantStripped = hlStrip(value);
+        var hits = [];
+        scopes.forEach(function (scope) {
+            var all = scope.querySelectorAll('*');
+            for (var i = 0; i < all.length; i++) {
+                var el  = all[i];
+                var tag = (el.tagName || '').toUpperCase();
+                if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'SVG' || tag === 'PATH') continue;
+                var txt = el.textContent;
+                if (!txt || txt.length > want.length * 3 + 50) continue;   // cheap pre-filter
+                if (hlNorm(txt) === want || hlStrip(txt) === wantStripped) hits.push(el);
+            }
+        });
+        // Keep only the deepest: drop any hit that contains another hit.
+        return hits.filter(function (el) {
+            return !hits.some(function (other) { return other !== el && el.contains(other); });
+        });
+    }
+    // Elements whose media / link attribute contains the file path.
+    function hlMediaMatches(scopes, value) {
+        var want = hlNorm(value);
+        if (!want) return [];
+        var hits = [];
+        scopes.forEach(function (scope) {
+            var els = scope.querySelectorAll('img,video,source,a,[style*="url("]');
+            for (var i = 0; i < els.length; i++) {
+                var el = els[i];
+                var cands = [el.getAttribute('src'), el.getAttribute('href'),
+                             el.getAttribute('poster'), el.getAttribute('style')];
+                for (var k = 0; k < cands.length; k++) {
+                    var v = cands[k];
+                    if (!v) continue;
+                    try { v = decodeURIComponent(v); } catch (e) {}
+                    if (v.indexOf(want) !== -1) {
+                        hits.push((el.tagName || '').toUpperCase() === 'SOURCE' ? el.parentNode : el);
+                        break;
+                    }
+                }
+            }
+        });
+        return hits;
+    }
+
+    function hlApply(wrap, allowScroll) {
+        var doc = preview && preview.contentDocument;
+        if (!doc || !doc.body) return;
+        hlEnsureStyle(doc);
+        hlClear(doc);
+        if (!wrap) return;
+
+        var acc        = wrap.closest('.fx-acc');
+        var sectionSel = acc ? acc.getAttribute('data-preview-target') : '';
+        var sections   = [];
+        if (sectionSel) { try { sections = hlList(doc.querySelectorAll(sectionSel)); } catch (e) {} }
+
+        var targets  = [];
+        var fieldSel = wrap.getAttribute('data-preview-target');
+        if (fieldSel) { try { targets = hlList(doc.querySelectorAll(fieldSel)); } catch (e) {} }
+        if (!targets.length) {
+            var input   = wrap.querySelector('.fx-track');
+            var value   = input ? input.value : '';
+            var isMedia = !!wrap.querySelector('.fx-media') || /\.(png|jpe?g|webp|gif|svg|mp4|pdf)$/i.test(value);
+            var scopes  = sections.length ? sections : [doc.body];
+            targets = isMedia ? hlMediaMatches(scopes, value) : hlTextMatches(scopes, value);
+        }
+        if (!targets.length) targets = sections;   // nothing more specific: show the section
+
+        sections.forEach(function (s) { if (targets.indexOf(s) === -1) s.classList.add(HL_SECTION); });
+        targets.forEach(function (el) { el.classList.add(HL_FIELD); });
+
+        // Bring the first target on screen, but only if it's off screen —
+        // never yank the preview around while the client is typing.
+        if (allowScroll && targets.length) {
+            try {
+                var r = targets[0].getBoundingClientRect();
+                var h = preview.contentWindow ? preview.contentWindow.innerHeight : 0;
+                if (r.bottom < 0 || r.top > h) targets[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } catch (e) {}
+        }
+    }
+    function hlReapply() { if (hlActiveWrap) hlApply(hlActiveWrap, false); }
+
+    document.addEventListener('focusin', function (e) {
+        var wrap = e.target.closest && e.target.closest('.fx-field');
+        if (!wrap) return;
+        hlActiveWrap = wrap;
+        hlApply(wrap, true);
+    });
+    document.addEventListener('focusout', function (e) {
+        var wrap = e.target.closest && e.target.closest('.fx-field');
+        if (!wrap || wrap !== hlActiveWrap) return;
+        // Next tick: if focus moved to another field its focusin repaints;
+        // if it left the fields entirely, clear the outline.
+        setTimeout(function () {
+            var now = document.activeElement;
+            if (now && now.closest && now.closest('.fx-field')) return;
+            hlActiveWrap = null;
+            hlApply(null, false);
+        }, 0);
+    });
+    // After a full preview reload (Refresh preview, page switch) the iframe
+    // document is new, so the outline has to be painted again.
+    if (preview) preview.addEventListener('load', function () { setTimeout(hlReapply, 50); });
 
     document.addEventListener('change', function (e) {
         var input = e.target;

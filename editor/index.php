@@ -48,6 +48,10 @@ function fx_render_accordion($section_id, $data_prefix, $section_content, $secti
                 <?php endif; ?>
                 <?php foreach ($fields as $fname => $fdef):
                     $val = isset($section_content[$fname]) ? $section_content[$fname] : '';
+                    // A field may declare a default so the box is never blank on a
+                    // field the client hasn't saved yet (the renderer uses the same
+                    // fallback, so box and page agree).
+                    if ($val === '' && isset($fdef['default'])) $val = (string)$fdef['default'];
                     $fieldKey = $data_prefix . '.' . $section_id . '.' . $fname;
                     $type = isset($fdef['type']) ? $fdef['type'] : 'text';
                     $label = isset($fdef['label']) ? $fdef['label'] : $fname;
@@ -73,7 +77,10 @@ function fx_render_accordion($section_id, $data_prefix, $section_content, $secti
                     <input type="hidden" class="fx-track" data-field="<?= fx_escape($fieldKey) ?>" value="<?= fx_escape($val) ?>"/>
                 <?php continue; endif; ?>
                 <label class="fx-field" data-field-key="<?= fx_escape($fieldKey) ?>"<?php
-                    if ($showWhen): ?> data-show-when="<?= fx_escape($showWhenKey) ?>" data-show-when-is="<?= fx_escape($showWhen['is']) ?>"<?php endif; ?>>
+                    if ($showWhen): ?> data-show-when="<?= fx_escape($showWhenKey) ?>" data-show-when-is="<?= fx_escape($showWhen['is']) ?>"<?php endif;
+                    // Optional per-field selector: what this field controls in the
+                    // preview, outlined while the field has focus (editor.js).
+                    if (!empty($fdef['preview_target'])): ?> data-preview-target="<?= fx_escape($fdef['preview_target']) ?>"<?php endif; ?>>
                     <span class="fx-field-label"><?= fx_escape($label) ?></span>
                     <?php if ($type === 'text' || $type === 'url'): ?>
                         <input class="fx-input fx-track" type="<?= $type === 'url' ? 'url' : 'text' ?>"
@@ -193,7 +200,7 @@ $firstPageId = array_keys($pages)[0];
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>Furutec Editor</title>
-    <link rel="stylesheet" href="assets/editor.css?v=23"/>
+    <link rel="stylesheet" href="assets/editor.css?v=24"/>
     <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%232E3192'/><text x='50' y='72' text-anchor='middle' font-family='-apple-system,Arial,sans-serif' font-weight='800' font-size='62' fill='white'>F</text></svg>"/>
     <meta name="robots" content="noindex, nofollow"/>
 </head>
@@ -477,6 +484,6 @@ window.FX = {
     publishingEnabled: <?= $publishingEnabled ? 'true' : 'false' ?>
 };
 </script>
-<script src="assets/editor.js?v=23"></script>
+<script src="assets/editor.js?v=24"></script>
 </body>
 </html>

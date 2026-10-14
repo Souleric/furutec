@@ -326,6 +326,12 @@ return array(
             'lighting_label'   => '05 · Lighting Busduct',
         ),
 
+        'product_buttons' => array(
+            'contact_label'   => 'Contact Us',
+            'catalogue_label' => 'Request a Catalogue',
+            'catalogue_url'   => 'quote.html',
+        ),
+
         // ---- 01 · Indoor ----
         'product_indoor' => array(
             'section_title' => 'INDOOR BUSDUCT SOLUTION',
