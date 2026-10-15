@@ -9,6 +9,14 @@ if (fx_is_logged_in()) {
 $err = '';
 $ip  = fx_client_ip();
 
+// Demo / test deployments pre-fill the form so a reviewer can just click
+// "Sign in".  Driven entirely by config.php, so the live site (demo_mode
+// absent) is unaffected.
+$cfg      = fx_config();
+$demo     = !empty($cfg['demo_mode']);
+$demoUser = $demo ? (string)$cfg['admin_user'] : '';
+$demoPass = $demo && isset($cfg['demo_password']) ? (string)$cfg['demo_password'] : '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (fx_login_is_locked($ip)) {
         $err = 'Too many failed attempts. Try again in a few minutes.';
@@ -38,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body class="fx-login-body">
     <form class="fx-login-card" method="post" autocomplete="off" novalidate>
         <div class="fx-login-brand">Furutec Editor</div>
-        <div class="fx-login-sub">Sign in to manage the website content.</div>
+        <div class="fx-login-sub"><?= $demo ? 'Test site — the login is pre-filled, just click Sign in.' : 'Sign in to manage the website content.' ?></div>
 
         <?php if ($err !== ''): ?>
         <div class="fx-alert fx-alert-error"><?= fx_escape($err) ?></div>
@@ -46,15 +54,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <label class="fx-field">
             <span class="fx-field-label">Username</span>
-            <input class="fx-input" type="text" name="user" required autofocus value="<?= fx_escape(isset($_POST['user']) ? $_POST['user'] : '') ?>"/>
+            <input class="fx-input" type="text" name="user" required autofocus value="<?= fx_escape(isset($_POST['user']) ? $_POST['user'] : $demoUser) ?>"/>
         </label>
         <label class="fx-field">
             <span class="fx-field-label">Password</span>
-            <input class="fx-input" type="password" name="pass" required/>
+            <input class="fx-input" type="password" name="pass" required value="<?= fx_escape($demoPass) ?>"/>
         </label>
         <button type="submit" class="fx-btn fx-btn-primary fx-btn-block">Sign in</button>
         <div class="fx-login-foot">
-            Trouble signing in? Contact your website administrator.
+            <?= $demo ? 'This is a test copy — changes here never reach the live website.' : 'Trouble signing in? Contact your website administrator.' ?>
         </div>
     </form>
 </body>
