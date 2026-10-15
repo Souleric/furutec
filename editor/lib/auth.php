@@ -169,7 +169,9 @@ function fx_change_password($new_pass) {
     $path = fx_config_path();
     $tmp  = $path . '.tmp';
     if (file_put_contents($tmp, $php, LOCK_EX) === false) return false;
-    return rename($tmp, $path);
+    if (!rename($tmp, $path)) return false;
+    if (function_exists('opcache_invalidate')) @opcache_invalidate($path, true);   // see fx_save_content()
+    return true;
 }
 
 /** Try to get the caller's IP, prefer X-Forwarded-For (LiteSpeed sets this behind their WAF). */

@@ -38,7 +38,13 @@ function fx_save_content($data) {
     $tmp  = $p . '.tmp';
     if (file_put_contents($tmp, $header . $body, LOCK_EX) === false) return false;
     // Atomic rename.
-    return rename($tmp, $p);
+    if (!rename($tmp, $p)) return false;
+    // The host runs an opcode cache that re-checks a file's timestamp only
+    // every couple of seconds.  Without this, a Publish that follows a Save
+    // within that window includes the PREVIOUS content.php and publishes
+    // the old draft.  Seen on 2026-10-15; harmless no-op where unavailable.
+    if (function_exists('opcache_invalidate')) @opcache_invalidate($p, true);
+    return true;
 }
 
 /** Load the field map (readonly, defines the editor UI). */
