@@ -408,22 +408,25 @@ function fx_build_substitutions($page_id, $content) {
             }
             // ---- Technical Specification, built server-side -------------
             // Every product offers the same 8 rows (the client asked for one
-            // standard table).  A row only appears once it has BOTH a label
-            // and a value, so the standard labels can sit ready in the editor
-            // while the values are still being supplied.  A product with no
-            // complete rows gets no table and no "Technical Specification"
-            // heading.
+            // standard table).  Every labelled row is shown, and a value that
+            // hasn't been supplied yet prints as "-" — the client wants the
+            // full 8-row shape visible even while they fill the gaps.  The
+            // table (and its heading) only appears once at least one row has
+            // a real value, so Power Monitoring, which has no tech specs,
+            // shows nothing until they choose to add some.
             $specRows = '';
+            $specFilled = 0;
             for ($n = 1; $n <= $b['specs']; $n++) {
                 $lbl = isset($p['spec_'.$n.'_label']) ? trim((string)$p['spec_'.$n.'_label']) : '';
                 $val = isset($p['spec_'.$n.'_value']) ? trim((string)$p['spec_'.$n.'_value']) : '';
                 $s[$px.'SPEC_'.$n.'_LABEL'] = fx_escape($lbl);
                 $s[$px.'SPEC_'.$n.'_VALUE'] = fx_escape($val);
-                if ($lbl === '' || $val === '') continue;
+                if ($lbl === '') continue;
+                if ($val !== '') $specFilled++;
                 $specRows .= '<div><span class="label">' . fx_escape($lbl) . '</span>'
-                           . '<span class="value">' . fx_escape($val) . '</span></div>';
+                           . '<span class="value">' . ($val === '' ? '-' : fx_escape($val)) . '</span></div>';
             }
-            $s[$px.'SPEC_BLOCK_HTML'] = ($specRows === '') ? ''
+            $s[$px.'SPEC_BLOCK_HTML'] = ($specFilled === 0) ? ''
                 : '<div class="ps-content-section-label">Technical Specification</div>'
                 . '<div class="ps-spec-rows">' . $specRows . '</div>'
                 . '<div class="ps-content-divider"></div>';
