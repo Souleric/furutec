@@ -809,10 +809,10 @@ html { scroll-padding-top: 80px; }
     </nav>
 
     <div id="ft-utility" style="display:flex;align-items:center;gap:20px;">
-      <div id="ft-phone" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-sans);font-size:13px;font-weight:600;color:#111114;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M5 4h4l2 5-2 1a12 12 0 0 0 5 5l1-2 5 2v4a1 1 0 0 1-1 1A17 17 0 0 1 4 5a1 1 0 0 1 1-1Z"/></svg>
+      <a id="ft-phone" href="https://wa.me/60128874517" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-sans);font-size:13px;font-weight:600;color:#111114;text-decoration:none;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#2E3192" style="display:inline-block;flex-shrink:0;"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-1 1.1-.2.2-.4.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.5-1.7-1.6-2-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5L9.4 7c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-1 .9-1 2.3 0 1.4 1 2.7 1.2 2.9.2.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.4-.1-.2-.3-.2-.5-.3ZM12 22a10 10 0 0 1-5.1-1.4l-3.6 1 .9-3.6A10 10 0 1 1 12 22Zm0-18a8 8 0 0 0-6.7 12.4l-.5 2 2-.6A8 8 0 1 0 12 4Z"/></svg>
         <span>+6012-887 4517</span>
-      </div>
+      </a>
       <a href="quote.html" id="ft-quote-btn" class="btn-dark" style="display:inline-flex;align-items:center;gap:12px;border:none;padding:0 24px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:opacity 200ms ease;background:#141414;color:#FFFFFF;text-decoration:none;">
         <span id="ft-quote-label" style="font-family:var(--font-sans);font-size:13px;font-weight:600;text-transform:none;">Contact Us</span>
         <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
@@ -976,29 +976,67 @@ html { scroll-padding-top: 80px; }
     .ft-hero-cert-bar img { height:22px; }
     .ft-hero-cert-bar-label { display:none; }
   }
+
+  /* ---- Hero image slideshow ------------------------------------------
+     Only present when Background type = "Image slideshow".  Slides are
+     stacked and cross-faded via opacity so there's no layout reflow and
+     no flash of background between them.
+
+     NOTE the fxhero- prefix.  A plain `.hero-slide` is already taken by
+     the legacy hidden slider at #hero-track further down this file, whose
+     slides use .is-active.  Un-prefixed rules here would force those to
+     position:absolute; opacity:0 and blank that component the moment
+     anyone un-hides it. */
+  .fxhero-slides { position:absolute; inset:0; }
+  .fxhero-slide {
+    position:absolute; inset:0;
+    background-size:cover; background-position:center; background-repeat:no-repeat;
+    opacity:0; transition:opacity 1.1s ease-in-out;
+    will-change:opacity;
+  }
+  .fxhero-slide.is-on { opacity:1; }
+
+  .fxhero-dots {
+    position:absolute; left:50%; bottom:26px; transform:translateX(-50%);
+    z-index:4; display:flex; gap:9px; align-items:center;
+    pointer-events:auto;
+  }
+  .fxhero-dot {
+    width:9px; height:9px; padding:0; border-radius:50%;
+    border:1px solid rgba(255,255,255,0.75); background:transparent;
+    cursor:pointer; transition:background .25s ease, transform .25s ease, border-color .25s ease;
+  }
+  .fxhero-dot:hover { background:rgba(255,255,255,0.55); }
+  .fxhero-dot.is-on { background:#FFFFFF; border-color:#FFFFFF; transform:scale(1.25); }
+  .fxhero-dot:focus-visible { outline:2px solid #FFFFFF; outline-offset:3px; }
+
+  @media (max-width: 640px) {
+    .fxhero-dots { bottom:16px; gap:7px; }
+    .fxhero-dot  { width:8px; height:8px; }
+  }
+  /* Respect reduced-motion: no cross-fade, and the timer is disabled in JS. */
+  @media (prefers-reduced-motion: reduce) {
+    .fxhero-slide { transition:none; }
+  }
 </style>
 <section class="ft-hero">
-  <!-- Background video — fills entire hero, autoplays on every page load -->
+  <!-- Background — either a single looping video or an image slideshow.
+       Which one is emitted is decided in render.php from the Hero
+       section's "Background type" field. -->
   <div id="hero-video-wrap" style="position:absolute;inset:0;z-index:0;overflow:hidden;background:#0A0A0B;pointer-events:none;">
-    <video id="hero-bg-video"
-           autoplay muted loop playsinline preload="auto"
-           style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;">
-      <source src="assets/banner-video-2.mp4" type="video/mp4"/>
-    </video>
+    <video id="hero-bg-video" autoplay muted loop playsinline preload="auto" style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;object-position:50% 50%;"><source src="assets/banner-video-2.mp4" type="video/mp4"/></video>
     <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.35) 0%,rgba(0,0,0,0.55) 60%,rgba(0,0,0,0.75) 100%);z-index:1;pointer-events:none;"></div>
   </div>
+  <!-- Slideshow dots (empty unless there are 2+ slides) -->
+  
 
   <div id="hero-title" class="ft-hero-inner" style="will-change:opacity,transform;">
     <div class="ft-hero-content">
       <h1>
-        Path to Power<br/>
-        <span class="accent">Efficiency &amp; Reliability</span>
+        Engineered For Density.<br/>
+        <span class="accent">Built For Scale.</span>
       </h1>
-      <p class="lede">
-        Engineered for industrial, commercial, and infrastructure projects.
-        Furutec delivers safe, efficient, and scalable busduct solutions
-        trusted by engineers and contractors.
-      </p>
+      <p class="lede">Integrated Busduct Power Distribution for Mission-Critical Data Centre - from Main Distribution to the Data Hall</p>
       <div class="ft-hero-cta">
         <a href="product.html" class="ft-hero-btn-primary" style="text-decoration:none;">
           Discover More
@@ -1011,7 +1049,7 @@ html { scroll-padding-top: 80px; }
         <div class="ft-hero-cert-bar-inner">
           <span class="ft-hero-cert-bar-label">Certified</span>
           <!-- Ordered by client priority — top 7 marks. -->
-          <img src="assets/CERTS%20LOGOS/UL_Mark%20(1).svg" alt="UL"/>
+          <img src="assets/CERTS%20LOGOS/UL_Mark%20%281%29.svg" alt="UL"/>
           <img src="assets/CERTS%20LOGOS/Dekra.png" alt="DEKRA"/>
           <img src="assets/certs/intertek.svg" alt="Intertek"/>
           <img src="assets/CERTS%20LOGOS/SGBP.jpg" alt="SGBC"/>
@@ -1023,6 +1061,88 @@ html { scroll-padding-top: 80px; }
     </div>
   </div>
 </section>
+
+<script>
+/* Hero image slideshow — cross-fades slides on a timer set in the editor.
+   No-ops entirely when the hero is in video mode (no .fxhero-slides present)
+   or when there's only one slide.
+
+   Written to be re-runnable rather than as a one-shot IIFE.  The editor's
+   live preview rebuilds the hero in place when you switch Background type
+   between Video and Image slideshow, which replaces these nodes; it then
+   calls fxHero.init() to re-arm against the new ones.  Two consequences
+   shape the code below:
+
+     • Nothing is captured in a closure at load time.  parts() re-queries on
+       every use, so a stale reference to a removed node can't keep a dead
+       timer alive.
+     • The dot clicks use one delegated listener on the document instead of
+       a listener per dot, so repeated init() calls can't stack up handlers.
+
+   The current slide index lives in a data-i attribute rather than a
+   variable, so it survives the script being re-armed. */
+window.fxHero = (function () {
+  var timer = null;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function parts() {
+    var wrap = document.querySelector('.fxhero-slides');
+    if (!wrap) return null;                             // video mode
+    var slides = wrap.querySelectorAll('.fxhero-slide');
+    if (slides.length < 2) return null;                 // single still image
+    return {
+      wrap: wrap,
+      slides: slides,
+      dots: document.querySelectorAll('.fxhero-dot'),
+      delay: parseInt(wrap.getAttribute('data-interval'), 10) || 5000
+    };
+  }
+  function current(p) { return parseInt(p.wrap.getAttribute('data-i'), 10) || 0; }
+
+  function show(p, n) {
+    var i = (n + p.slides.length) % p.slides.length;
+    p.wrap.setAttribute('data-i', i);
+    for (var k = 0; k < p.slides.length; k++) {
+      p.slides[k].classList.toggle('is-on', k === i);
+    }
+    for (var d = 0; d < p.dots.length; d++) {
+      var on = (d === i);
+      p.dots[d].classList.toggle('is-on', on);
+      p.dots[d].setAttribute('aria-selected', on ? 'true' : 'false');
+    }
+  }
+  function stop() { if (timer) { clearInterval(timer); timer = null; } }
+  function start() {
+    stop();
+    var p = parts();
+    if (!p || reduce) return;
+    timer = setInterval(function () {
+      var q = parts();
+      if (!q) { stop(); return; }                       // hero was swapped out
+      show(q, current(q) + 1);
+    }, p.delay);
+  }
+
+  // Manual dot click jumps to that slide and restarts the timer, so the
+  // visitor gets a full interval to look at what they picked.
+  document.addEventListener('click', function (e) {
+    var dot = e.target && e.target.closest ? e.target.closest('.fxhero-dot') : null;
+    if (!dot) return;
+    var p = parts();
+    if (!p) return;
+    show(p, parseInt(dot.getAttribute('data-i'), 10) || 0);
+    start();
+  });
+
+  // Don't burn cycles (or advance unseen) while the tab is hidden.
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) stop(); else start();
+  });
+
+  return { init: start, stop: stop };
+})();
+fxHero.init();
+</script>
 
 <!-- ============================================================
      STATS — animated counters
@@ -1330,15 +1450,8 @@ html { scroll-padding-top: 80px; }
   <div style="max-width:1200px;margin:0 auto;padding:0 32px;">
     <div style="max-width:720px;margin-bottom:40px;">
       <span class="eyebrow" style="margin-bottom:16px;text-transform:uppercase;">Inside Furutec</span>
-      <h2 style="font-family:var(--font-display);font-size:44px;font-weight:700;line-height:1.1;color:#111114;margin:0 0 16px;text-wrap:balance;">
-        Origin of Furutec.
-      </h2>
-      <p style="font-size:14px;line-height:1.8;color:#6B6B73;margin:0;max-width:560px;">
-        Driven by engineering expertise and a commitment to quality,
-        Furutec delivers reliable busduct solutions trusted by engineers
-        and developers. We continue to innovate our products to meet the
-        evolving demands of modern power distribution systems.
-      </p>
+      <h2 style="font-family:var(--font-display);font-size:44px;font-weight:700;line-height:1.1;color:#111114;margin:0 0 16px;text-wrap:balance;">Engineering Excellence. Built In-House</h2>
+      <p style="font-size:14px;line-height:1.8;color:#6B6B73;margin:0;max-width:560px;">Backed by engineering expertise and advanced manufacturing capabilities, Furutec develops and manufacture busduct systems engineered for reliable power distribution across mission-critical, commercial and industrial applications.</p>
     </div>
     <style>
       .video-showcase {
@@ -1752,19 +1865,8 @@ html { scroll-padding-top: 80px; }
           <h3 class="fv2-name">Bukit Minyak, Penang</h3>
           <div class="fv2-rule" aria-hidden="true"></div>
 
-          <p class="fv2-desc">
-            Our manufacturing site in Bukit Minyak Industrial Park
-            operates from two adjacent buildings —
-            <strong>Plant&nbsp;1</strong> and <strong>Plant&nbsp;2</strong>
-            — alongside the FURUTEC administrative block.
-          </p>
-          <p class="fv2-desc">
-            Every busduct system comes together here, from
-            precision-machined components and copper-bar fabrication
-            through full assembly and in-house type-testing to
-            IEC&nbsp;61439-6.  Every unit is verified on the floor
-            before it leaves the site.
-          </p>
+          <p class="fv2-desc">Our manufacturing site in Bukit Minyak Industrial Park operates from two adjacent buildings — <strong>Plant 1</strong> and <strong>Plant 2</strong> — alongside the FURUTEC administrative block.</p>
+          <p class="fv2-desc">Every busduct system comes together here, from precision-machined components and copper-bar fabrication through full assembly and in-house type-testing to IEC 61439-6. Every unit is verified on the floor before it leaves the site.</p>
 
           <div class="fv2-badges">
             <!-- 1 — Two adjacent factory buildings with peaked roofs -->
@@ -2043,36 +2145,23 @@ html { scroll-padding-top: 80px; }
   <video
     class="es-bg-video"
     src="assets/Furutec%20logo%20video%20%202.mp4"
+    style="object-position:50% 50%;"
     muted playsinline preload="auto"></video>
   <!-- Soft veil for text readability -->
   <div class="es-bg-veil" aria-hidden="true"></div>
 
   <div class="es-content" style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 1fr;gap:64px;">
     <div style="padding-top:12px;">
-      <span class="eyebrow" style="margin-bottom:16px;text-transform:uppercase;">
-        Company Profile
-      </span>
+      <span class="eyebrow" style="margin-bottom:16px;text-transform:uppercase;">Company Profile</span>
       <h2 style="font-family:var(--font-display);font-size:56px;font-weight:700;line-height:1.05;letter-spacing:-0.01em;color:#111114;margin:0 0 24px;text-wrap:balance;">
-        Build on expertise.<br/>
-        <span style="color:#2E3192;">Driven by innovation.</span><br/>
-        Committed by passion.
+        Built on Expertise.<br/>
+        <span style="color:#2E3192;">Driven by Innovation.</span><br/>
+        Committed to Excellence.
       </h2>
-      <p style="font-size:14px;line-height:1.8;color:#4A4A52;margin:0 0 16px;max-width:540px;">
-        Furutec Electrical Sdn Bhd is a manufacturer of busduct systems
-        specializing in indoor, outdoor, data center, lighting, and power
-        monitoring solutions. With over three decades of R&amp;D and
-        manufacturing experience, supported by two production facilities in
-        Malaysia and China, we deliver certified and reliable systems trusted
-        by engineers, developers, and project owners worldwide.
-      </p>
-      <p style="font-size:14px;line-height:1.8;color:#6B6B73;margin:0 0 32px;max-width:540px;">
-        Our products are type-tested and certified by reputable certification
-        bodies to ensure full compliance with international standards. Our
-        comprehensive range of busduct systems is also thoughtfully tailored
-        to meet diverse applications and market segments.
-      </p>
+      <p style="font-size:14px;line-height:1.8;color:#4A4A52;margin:0 0 16px;max-width:540px;">Furutec Electrical is a busduct system manufacturer with over three decades of experience in R&amp;D and manufacturing. Our solutions support a wide range of power distribution applications, from commercial and industrial facilities to mission-critical data centre, complemented by our Intelligent Monitoring System.</p>
+      <p style="font-size:14px;line-height:1.8;color:#6B6B73;margin:0 0 32px;max-width:540px;">Our busduct systems are developed and type-tested in accordance with applicable international standards, supporting reliable performance across diverse operating environments and application requirements.</p>
       <a href="https://www.eita.com.my" target="_blank" rel="noopener" class="btn-outline" style="display:inline-flex;align-items:center;gap:10px;padding:14px 24px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
-        Discover More
+        Discover EITA Group
         <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
       </a>
     </div>
@@ -2623,11 +2712,9 @@ html { scroll-padding-top: 80px; }
     <div style="text-align:center;margin-bottom:40px;">
       <span class="eyebrow">PRODUCT OVERVIEW</span>
       <h2 style="font-family:var(--font-display);font-size:44px;font-weight:700;line-height:1.05;letter-spacing:-0.01em;color:#111114;margin:8px 0 8px;text-wrap:balance;">
-        How A <span style="color:#2E3192;">Furutec Busduct System</span><br/>Comes Together.
+        Explore Furutec <span style="color:#2E3192;">Across Applications</span><br/>
       </h2>
-      <p style="font-size:13px;line-height:1.7;color:#6B6B73;margin:0 auto;max-width:640px;">
-        Click any number on the diagram, or use the arrows below the card, to see how each component fits into the system.
-      </p>
+      <p style="font-size:13px;line-height:1.7;color:#6B6B73;margin:0 auto;max-width:640px;">Select a number on the diagram or use the navigation arrows to explore Furutec solutions across different applications.</p>
     </div>
 
     <div class="pov-layout" id="po-pov-layout">
@@ -2676,23 +2763,23 @@ html { scroll-padding-top: 80px; }
        are intentionally dropped. */
     var DATA = [
       { num:1, x:9.6,  y:13.8,
-        title:'Outdoor Busduct',
+        title:'Outdoor Busduct Solution',
         img:'assets/products/CR%20(OUTDOOR)/cr%202.png',
         href:'product.html#outdoor' },
       { num:2, x:50.2, y:13.8,
-        title:'Indoor Busduct',
+        title:'Indoor Busduct Solution',
         img:'assets/products/AH%26AH-ES%20(INDOOR)/picture%206.png',
         href:'product.html#indoor' },
       { num:3, x:88.4, y:14.0,
-        title:'Data Centre Solution',
+        title:'Data Centre Busduct Solution',
         img:'assets/products/I-DC(DATA%20CENTRE)/i-dc%201.png',
         href:'product.html#datacenter' },
       { num:4, x:39.8, y:86.1,
-        title:'Power Monitoring',
+        title:'Intelligent Monitoring System',
         img:'assets/products/POWER%20MONITORING%20SYSTEM/pms%201.png',
         href:'product.html#power' },
       { num:5, x:88.4, y:86.1,
-        title:'Lighting Busduct',
+        title:'Lighting Busduct Solution',
         img:'assets/products/LB%26PB%20(LIGHTING)/pb%203.png',
         href:'product.html#lighting' }
     ];
@@ -2870,15 +2957,12 @@ html { scroll-padding-top: 80px; }
       <div style="max-width:560px;">
         <span class="eyebrow">OUR PRODUCTS</span>
         <h2 style="font-family:var(--font-display);font-size:44px;font-weight:700;line-height:1.1;color:#111114;margin:6px 0 0;text-wrap:balance;">
-          Complete busduct solutions,<br/>
-          <span style="color:#2E3192;">for every environment.</span>
+          Engineered Busduct Solutions<br/>
+          <span style="color:#2E3192;">for Diverse Applications.</span>
         </h2>
       </div>
       <div style="padding-top:20px;">
-        <p style="font-size:14px;line-height:1.8;color:#6B6B73;margin:0 0 24px;max-width:520px;">
-          From standard indoor installations to intelligent data centre
-          distribution — Furutec has the right system for your project.
-        </p>
+        <p style="font-size:14px;line-height:1.8;color:#6B6B73;margin:0 0 24px;max-width:520px;">Power distribution solutions engineered for diverse applications and operating environments.</p>
         <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
           <a href="product.html" class="btn-dark" style="display:inline-flex;align-items:center;gap:12px;border:none;padding:0 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;background:#141414;color:#FFFFFF;text-decoration:none;">
             View All Products  <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
@@ -2896,9 +2980,8 @@ html { scroll-padding-top: 80px; }
         <div class="prod-card-icon">
           <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h.01"/><path d="M9 13h.01"/><path d="M9 17h.01"/></svg>
         </div>
-        <h3>Indoor
-Solution</h3>
-        <p>Compact sandwich busducts ranging from <strong>500&nbsp;A to 6,300&nbsp;A</strong>, offering <strong>IP65 &amp; IP66 protection</strong> with excellent heat dissipation, engineered for reliable indoor power distribution.</p>
+        <h3>Indoor Busduct Solution</h3>
+        <p>Compact sandwich busduct systems engineered for reliable, space-efficient power distribution across commercial and industrial applications.</p>
         <span class="prod-card-cta">
           <span class="prod-card-cta-circle">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
@@ -2912,9 +2995,8 @@ Solution</h3>
         <div class="prod-card-icon">
           <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M4.93 19.07l1.41-1.41"/><path d="M17.66 6.34l1.41-1.41"/></svg>
         </div>
-        <h3>Outdoor
-Solution</h3>
-        <p>High-performance busducts with <strong>IP68 protection</strong>, engineered to withstand harsh environments and certified for <strong>Seismic Zone 4</strong> resilience.</p>
+        <h3>Outdoor Busduct Solution</h3>
+        <p>Cast resin systems engineered for reliable power distribution in outdoor and harsh operating environment.</p>
         <span class="prod-card-cta">
           <span class="prod-card-cta-circle">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
@@ -2928,9 +3010,8 @@ Solution</h3>
         <div class="prod-card-icon">
           <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="6" rx="1"/><rect x="2" y="15" width="20" height="6" rx="1"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
         </div>
-        <h3>Data Centre
-Solution</h3>
-        <p>Designed for hyperscale data centres with <strong>customisable tap-off units</strong> and <strong>space-efficient power distribution</strong>, ensuring maximum uptime and operational flexibility.</p>
+        <h3>Data Centre Busduct Solution</h3>
+        <p>Scalable busduct systems from main distribution to the data hall, with flexible power delivery at the point of use.</p>
         <span class="prod-card-cta">
           <span class="prod-card-cta-circle">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
@@ -2944,9 +3025,8 @@ Solution</h3>
         <div class="prod-card-icon">
           <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
         </div>
-        <h3>Power Monitoring
-Solution</h3>
-        <p>Advanced monitoring system providing <strong>real-time energy insights</strong>, predictive maintenance capabilities, and live load balancing for enhanced operational reliability.</p>
+        <h3>Intelligent Monitoring System</h3>
+        <p>Real-time visibility of electrical parameters to support informed power management across data hall power distribution.</p>
         <span class="prod-card-cta">
           <span class="prod-card-cta-circle">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
@@ -2960,9 +3040,8 @@ Solution</h3>
         <div class="prod-card-icon">
           <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
         </div>
-        <h3>Lighting
-Solution</h3>
-        <p>Lighting and power busduct systems featuring <strong>detachable, reusable components</strong> for simplified maintenance, reduced installation time, and lower lifecycle costs.</p>
+        <h3>Lighting Busduct Solution</h3>
+        <p>Flexible power distribution for commercial and industrial lighting applications.</p>
         <span class="prod-card-cta">
           <span class="prod-card-cta-circle">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
@@ -3286,12 +3365,10 @@ Monitoring</h3>
   <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,30,0.55) 0%,rgba(10,10,30,0.75) 100%);z-index:1;"></div>
   <div style="position:relative;z-index:2;max-width:880px;">
     <h2 style="font-family:var(--font-display);font-size:72px;font-weight:700;line-height:1.02;letter-spacing:-0.01em;margin:0 0 18px;color:#FFFFFF;text-wrap:balance;text-shadow:0 4px 32px rgba(0,0,0,0.45);">
-      Certificates <span style="color:#FFFFFF;">&amp;</span><br/>
+      Certificates &amp;<br/>
       <span style="color:#8E94FF;">Portfolio</span>
     </h2>
-    <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,0.88);margin:0 0 36px;text-shadow:0 2px 16px rgba(0,0,0,0.45);">
-      Where Credential Meets Capability.
-    </p>
+    <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,0.88);margin:0 0 36px;text-shadow:0 2px 16px rgba(0,0,0,0.45);">Where Credential Meet Capability.</p>
     <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
       <a href="portfolio.html" class="btn-orange" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
         Certificates
@@ -3771,10 +3848,7 @@ Monitoring</h3>
       Ready to specify your<br/>
       <span class="accent">next busduct project?</span>
     </h2>
-    <p class="gi-cta-lede">
-      Tell us about your load, location and timeline. Our engineering
-      team will scope a busduct configuration tailored to your project.
-    </p>
+    <p class="gi-cta-lede">Tell us about your power requirements, application and project timeline. Our team will help identify the right busduct solution for your project.</p>
     <a href="quote.html" class="gi-cta-btn">
       Get In Touch
       <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
@@ -3798,8 +3872,8 @@ Monitoring</h3>
         <a href="mailto:info@furutec.com.my" style="color:rgba(255,255,255,0.85);font-size:13px;text-decoration:none;">info@furutec.com.my</a>
       </p>
       <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0 0 10px;display:flex;align-items:center;gap:10px;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M5 4h4l2 5-2 1a12 12 0 0 0 5 5l1-2 5 2v4a1 1 0 0 1-1 1A17 17 0 0 1 4 5a1 1 0 0 1 1-1Z"/></svg>
-        <span style="color:rgba(255,255,255,0.85);font-size:13px;">+6012-887 4517</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF" style="display:inline-block;flex-shrink:0;"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-1 1.1-.2.2-.4.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.5-1.7-1.6-2-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5L9.4 7c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-1 .9-1 2.3 0 1.4 1 2.7 1.2 2.9.2.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.4-.1-.2-.3-.2-.5-.3ZM12 22a10 10 0 0 1-5.1-1.4l-3.6 1 .9-3.6A10 10 0 1 1 12 22Zm0-18a8 8 0 0 0-6.7 12.4l-.5 2 2-.6A8 8 0 1 0 12 4Z"/></svg>
+        <a href="https://wa.me/60128874517" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.85);font-size:13px;text-decoration:none;">+6012-887 4517</a>
       </p>
       <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0 0 8px;display:flex;align-items:center;gap:10px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M12 22s-8-7-8-13a8 8 0 0 1 16 0c0 6-8 13-8 13Z"/><circle cx="12" cy="9" r="3"/></svg>
@@ -3863,16 +3937,16 @@ Monitoring</h3>
         <span style="color:rgba(255,255,255,0.3);">·</span>
         <a href="#" style="color:rgba(255,255,255,0.55);text-decoration:none;">Sitemap</a>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="font-size:11px;color:rgba(255,255,255,0.55);text-align:center;">© 2026 Furutec Electrical Sdn Bhd. All Rights Reserved.</div><a href="https://www.betasocial.my" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:10.5px;font-weight:600;letter-spacing:0.3px;color:rgba(255,255,255,0.6);transition:opacity 200ms ease;" onmouseover="this.style.opacity='0.85';" onmouseout="this.style.opacity='1';">Built by<img src="assets/beta-social-logo.png" alt="BETA Social" style="height:22px;width:auto;display:block;filter:invert(1) grayscale(1) brightness(2);opacity:0.82;"/></a></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="font-size:11px;color:rgba(255,255,255,0.55);text-align:center;">© 2026 Furutec Electrical Sdn Bhd. All Rights Reserved.</div></div>
       <div style="display:flex;align-items:center;gap:10px;justify-content:flex-end;">
         <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.4px;text-transform:uppercase;margin-right:4px;">Social Media</span>
-        <a href="#" aria-label="Facebook" style="width:34px;height:34px;border-radius:50%;background:#1877F2;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <a href="https://www.facebook.com/furutecbusduct" aria-label="Facebook" style="width:34px;height:34px;border-radius:50%;background:#1877F2;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06c0 5.01 3.66 9.16 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.51 1.49-3.9 3.78-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.45 2.91h-2.33V22c4.78-.78 8.44-4.93 8.44-9.94Z"/></svg>
         </a>
         <a href="#" aria-label="YouTube" style="width:34px;height:34px;border-radius:50%;background:#FF0000;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>
         </a>
-        <a href="#" aria-label="LinkedIn" style="width:34px;height:34px;border-radius:50%;background:#0A66C2;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <a href="https://www.linkedin.com/company/furutec-electrical-sdn-bhd/posts/?feedView=all" aria-label="LinkedIn" style="width:34px;height:34px;border-radius:50%;background:#0A66C2;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.99 0 1.78-.77 1.78-1.72V1.72C24 .77 23.21 0 22.22 0Z"/></svg>
         </a>
         <a href="https://wa.me/60128874517" aria-label="WhatsApp" style="width:34px;height:34px;border-radius:50%;background:#25D366;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
