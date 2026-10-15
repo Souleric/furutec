@@ -726,6 +726,25 @@
             var isMedia = !!wrap.querySelector('.fx-media') || /\.(png|jpe?g|webp|gif|svg|mp4|pdf)$/i.test(value);
             var scopes  = sections.length ? sections : [doc.body];
             targets = isMedia ? hlMediaMatches(scopes, value) : hlTextMatches(scopes, value);
+
+            // A "<name>_value" field whose value is blank (or prints as "-")
+            // can't be found by its own text — find it by its partner
+            // "<name>_label" field instead, e.g. spec_3_value → spec_3_label.
+            if (!targets.length && !isMedia) {
+                var key = wrap.getAttribute('data-field-key') || '';
+                if (/_value$/.test(key)) {
+                    var lblWrap = document.querySelector('[data-field-key="' + key.replace(/_value$/, '_label') + '"]');
+                    var lblIn   = lblWrap && lblWrap.querySelector('.fx-track');
+                    if (lblIn && lblIn.value) targets = hlTextMatches(scopes, lblIn.value);
+                }
+            }
+            // Inside a label/value table, outline the whole row rather than
+            // just the one cell that matched.
+            targets = targets.map(function (el) {
+                var row = el.parentElement;
+                return (row && row.children.length === 2 && row.parentElement
+                        && /\bps-spec-rows\b/.test(row.parentElement.className || '')) ? row : el;
+            });
         }
         if (!targets.length) targets = sections;   // nothing more specific: show the section
 
