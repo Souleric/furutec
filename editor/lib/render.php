@@ -326,11 +326,11 @@ function fx_build_substitutions($page_id, $content) {
         // when the gallery HTML is built below, so a section can use 3 images
         // or 10 without any template change.
         $product_blocks = array(
-            array('key'=>'product_indoor',     'prefix'=>'PP_IN_',  'slides'=>10, 'features'=>8,  'specs'=>5, 'diagram'=>'single'),
-            array('key'=>'product_outdoor',    'prefix'=>'PP_OUT_', 'slides'=>10, 'features'=>7,  'specs'=>5, 'diagram'=>'single'),
-            array('key'=>'product_datacenter', 'prefix'=>'PP_DC_',  'slides'=>10, 'features'=>10, 'specs'=>5, 'diagram'=>'single'),
-            array('key'=>'product_power',      'prefix'=>'PP_PW_',  'slides'=>10, 'features'=>6,  'specs'=>0, 'diagram'=>'none'),
-            array('key'=>'product_lighting',   'prefix'=>'PP_LT_',  'slides'=>10, 'features'=>6,  'specs'=>7, 'diagram'=>'paired'),
+            array('key'=>'product_indoor',     'prefix'=>'PP_IN_',  'slides'=>10, 'features'=>8,  'specs'=>8, 'diagram'=>'single'),
+            array('key'=>'product_outdoor',    'prefix'=>'PP_OUT_', 'slides'=>10, 'features'=>7,  'specs'=>8, 'diagram'=>'single'),
+            array('key'=>'product_datacenter', 'prefix'=>'PP_DC_',  'slides'=>10, 'features'=>10, 'specs'=>8, 'diagram'=>'single'),
+            array('key'=>'product_power',      'prefix'=>'PP_PW_',  'slides'=>10, 'features'=>6,  'specs'=>8, 'diagram'=>'none'),
+            array('key'=>'product_lighting',   'prefix'=>'PP_LT_',  'slides'=>10, 'features'=>6,  'specs'=>8, 'diagram'=>'paired'),
         );
         foreach ($product_blocks as $b) {
             $p  = isset($page[$b['key']]) ? $page[$b['key']] : array();
@@ -406,10 +406,27 @@ function fx_build_substitutions($page_id, $content) {
             for ($n = 1; $n <= $b['features']; $n++) {
                 $s[$px.'FEATURE_'.$n] = fx_escape(isset($p['feature_'.$n]) ? $p['feature_'.$n] : '');
             }
+            // ---- Technical Specification, built server-side -------------
+            // Every product offers the same 8 rows (the client asked for one
+            // standard table).  A row only appears once it has BOTH a label
+            // and a value, so the standard labels can sit ready in the editor
+            // while the values are still being supplied.  A product with no
+            // complete rows gets no table and no "Technical Specification"
+            // heading.
+            $specRows = '';
             for ($n = 1; $n <= $b['specs']; $n++) {
-                $s[$px.'SPEC_'.$n.'_LABEL'] = fx_escape(isset($p['spec_'.$n.'_label']) ? $p['spec_'.$n.'_label'] : '');
-                $s[$px.'SPEC_'.$n.'_VALUE'] = fx_escape(isset($p['spec_'.$n.'_value']) ? $p['spec_'.$n.'_value'] : '');
+                $lbl = isset($p['spec_'.$n.'_label']) ? trim((string)$p['spec_'.$n.'_label']) : '';
+                $val = isset($p['spec_'.$n.'_value']) ? trim((string)$p['spec_'.$n.'_value']) : '';
+                $s[$px.'SPEC_'.$n.'_LABEL'] = fx_escape($lbl);
+                $s[$px.'SPEC_'.$n.'_VALUE'] = fx_escape($val);
+                if ($lbl === '' || $val === '') continue;
+                $specRows .= '<div><span class="label">' . fx_escape($lbl) . '</span>'
+                           . '<span class="value">' . fx_escape($val) . '</span></div>';
             }
+            $s[$px.'SPEC_BLOCK_HTML'] = ($specRows === '') ? ''
+                : '<div class="ps-content-section-label">Technical Specification</div>'
+                . '<div class="ps-spec-rows">' . $specRows . '</div>'
+                . '<div class="ps-content-divider"></div>';
             if ($b['diagram'] === 'single') {
                 $s[$px.'DIAGRAM_TITLE']       = fx_escape(isset($p['diagram_title'])   ? $p['diagram_title']   : '');
                 $s[$px.'DIAGRAM_VIDEO_URL']   = fx_asset_url(isset($p['diagram_video'])  ? $p['diagram_video']  : '');

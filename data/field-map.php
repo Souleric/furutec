@@ -576,7 +576,7 @@ return array(
 
         'product_indoor' => array(
             'label'   => '01 · Indoor Busduct',
-            'summary' => 'Section title, gallery (5 images), content panel, spec (5 rows), diagram video.',
+            'summary' => 'Section title, gallery (5 images), content panel, spec (8 rows), diagram video.',
             'preview_target' => '#indoor',
             'fields'  => array_merge(
                 array(
@@ -591,7 +591,7 @@ return array(
                 // Features — 8 items
                 fx_feature_fields(8),
                 // Spec rows — 5
-                fx_spec_fields(5),
+                fx_spec_fields(8),
                 // Diagram — single video
                 array(
                     'diagram_title'      => array('type'=>'text','group'=>'Diagram band','label'=>'Diagram title','max'=>120),
@@ -603,7 +603,7 @@ return array(
 
         'product_outdoor' => array(
             'label'   => '02 · Outdoor Busduct',
-            'summary' => 'Section title, gallery (5 images), content panel, spec (5 rows), diagram video.',
+            'summary' => 'Section title, gallery (5 images), content panel, spec (8 rows), diagram video.',
             'preview_target' => '#outdoor',
             'fields'  => array_merge(
                 array(
@@ -615,7 +615,7 @@ return array(
                 ),
                 fx_gallery_fields(10),
                 fx_feature_fields(7),
-                fx_spec_fields(5),
+                fx_spec_fields(8),
                 array(
                     'diagram_title'      => array('type'=>'text','group'=>'Diagram band','label'=>'Diagram title','max'=>120),
                     'diagram_video'      => array('type'=>'video','group'=>'Diagram band','label'=>'Diagram video (MP4)','max_mb'=>30),
@@ -626,7 +626,7 @@ return array(
 
         'product_datacenter' => array(
             'label'   => '03 · Data Centre Solution',
-            'summary' => 'Section title, gallery (6 images), content panel, spec (5 rows), diagram video.',
+            'summary' => 'Section title, gallery (6 images), content panel, spec (8 rows), diagram video.',
             'preview_target' => '#datacenter',
             'fields'  => array_merge(
                 array(
@@ -638,7 +638,7 @@ return array(
                 ),
                 fx_gallery_fields(10),
                 fx_feature_fields(10),
-                fx_spec_fields(5),
+                fx_spec_fields(8),
                 array(
                     'diagram_title'      => array('type'=>'text','group'=>'Diagram band','label'=>'Diagram title','max'=>120),
                     'diagram_video'      => array('type'=>'video','group'=>'Diagram band','label'=>'Diagram video (MP4)','max_mb'=>30),
@@ -649,7 +649,7 @@ return array(
 
         'product_power' => array(
             'label'   => '04 · Power Monitoring',
-            'summary' => 'Gallery (3 images), content panel. No tech-spec table and no diagram band.',
+            'summary' => 'Gallery, content panel, spec (8 rows, optional). No diagram band.',
             'preview_target' => '#power',
             'fields'  => array_merge(
                 array(
@@ -660,13 +660,14 @@ return array(
                     'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','rows'=>5,'max'=>800),
                 ),
                 fx_gallery_fields(10),
-                fx_feature_fields(6)   // Power section uses "Key Capabilities" label
+                fx_feature_fields(6),  // Power section uses "Key Capabilities" label
+                fx_spec_fields(8)
             ),
         ),
 
         'product_lighting' => array(
             'label'   => '05 · Lighting Busduct',
-            'summary' => 'Gallery (7 images), content panel, spec (7 rows), PAIRED diagram (LB + PB).',
+            'summary' => 'Gallery (7 images), content panel, spec (8 rows), PAIRED diagram (LB + PB).',
             'preview_target' => '#lighting',
             'fields'  => array_merge(
                 array(
@@ -678,7 +679,7 @@ return array(
                 ),
                 fx_gallery_fields(10),
                 fx_feature_fields(6),
-                fx_spec_fields(7),
+                fx_spec_fields(8),
                 // Paired diagram: title + two labelled videos
                 array(
                     'diagram_title'         => array('type'=>'text','group'=>'Diagram band','label'=>'Diagram title','max'=>120),
