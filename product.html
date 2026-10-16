@@ -884,7 +884,12 @@ html { scroll-padding-top: 80px; }
   /* Spec rows — full-width labelled rows */
   .ps-spec-rows { display:flex; flex-direction:column; }
   .ps-spec-rows > div {
-    display:grid; grid-template-columns:1fr auto; gap:18px;
+    /* Label column sized to its text (never wraps), value column takes the
+       rest and wraps onto 2+ lines when a value is long.  The old
+       `1fr auto` did the opposite: the value grew to its full width, the
+       label wrapped ("DEGREE OF / PROTECTION") and on phones the value
+       ran off the edge. */
+    display:grid; grid-template-columns:max-content minmax(0,1fr); gap:18px;
     padding:12px 0;
     border-top:1px solid rgba(46,49,146,0.10);
     align-items:baseline;
@@ -894,11 +899,18 @@ html { scroll-padding-top: 80px; }
   .ps-spec-rows .label {
     font-family:var(--font-sans); font-weight:600;
     font-size:12px; color:#6B6B73; letter-spacing:0.04em;
-    text-transform:uppercase;
+    text-transform:uppercase; white-space:nowrap;
   }
   .ps-spec-rows .value {
     font-family:var(--font-display); font-weight:700;
     font-size:15px; color:#111114; text-align:right; line-height:1.3;
+    min-width:0; overflow-wrap:anywhere;
+  }
+  @media (max-width: 480px) {
+    /* Very narrow screens: label on its own line, value below it. */
+    .ps-spec-rows > div { grid-template-columns:1fr; gap:4px; }
+    .ps-spec-rows .label { white-space:normal; }
+    .ps-spec-rows .value { text-align:left; }
   }
 
   @media (max-width: 1000px) {
@@ -1215,7 +1227,7 @@ html { scroll-padding-top: 80px; }
 
         <div class="ps-content-divider"></div>
 
-        <div class="ps-content-section-label">Technical Specification</div><div class="ps-spec-rows"><div><span class="label">Current Rating</span><span class="value">Up to 6,300 A</span></div><div><span class="label">Operational Voltage (AC)</span><span class="value">1,000 V</span></div><div><span class="label">System Frequency</span><span class="value">-</span></div><div><span class="label">IP Rating</span><span class="value">IP65 / IP66 (Busduct with &amp; without PIH) | IP40 / IP54 / IP65 (Busduct with TOU)</span></div><div><span class="label">Compliance Standard</span><span class="value">IEC 61439-6 &amp; IEC 61439-1 / UL 857</span></div><div><span class="label">Conductor Material</span><span class="value">Copper / Aluminium</span></div><div><span class="label">Insulation Material</span><span class="value">-</span></div><div><span class="label">Housing Material</span><span class="value">-</span></div></div><div class="ps-content-divider"></div>
+        <div class="ps-content-section-label">Technical Specification</div><div class="ps-spec-rows"><div><span class="label">Current Rating</span><span class="value">Up to 6,300 A</span></div><div><span class="label">Operational Voltage (AC)</span><span class="value">1,000 V</span></div><div><span class="label">System Frequency</span><span class="value">-</span></div><div><span class="label">IP Rating</span><span class="value">IP65 / IP66 (Busduct with &amp; without PIH)<br/>IP40 / IP54 / IP65 (Busduct with TOU)</span></div><div><span class="label">Compliance Standard</span><span class="value">IEC 61439-6 &amp; IEC 61439-1 / UL 857</span></div><div><span class="label">Conductor Material</span><span class="value">Copper / Aluminium</span></div><div><span class="label">Insulation Material</span><span class="value">-</span></div><div><span class="label">Housing Material</span><span class="value">-</span></div></div><div class="ps-content-divider"></div>
 
         <div class="ps-cta">
           <a class="ps-btn-primary" href="quote.html?topic=indoor">

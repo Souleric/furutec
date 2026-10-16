@@ -423,8 +423,13 @@ function fx_build_substitutions($page_id, $content) {
                 $s[$px.'SPEC_'.$n.'_VALUE'] = fx_escape($val);
                 if ($lbl === '') continue;
                 if ($val !== '') $specFilled++;
+                // A " | " in the value is the client's natural separator between
+                // variants ("IP65 / IP66 (…) | IP40 / IP54 (…)"): render it as
+                // a line break so each variant sits on its own line.
+                $valHtml = ($val === '') ? '-'
+                    : implode('<br/>', array_map('fx_escape', preg_split('/\s*\|\s*/', $val)));
                 $specRows .= '<div><span class="label">' . fx_escape($lbl) . '</span>'
-                           . '<span class="value">' . ($val === '' ? '-' : fx_escape($val)) . '</span></div>';
+                           . '<span class="value">' . $valHtml . '</span></div>';
             }
             $s[$px.'SPEC_BLOCK_HTML'] = ($specFilled === 0) ? ''
                 : '<div class="ps-content-section-label">Technical Specification</div>'
