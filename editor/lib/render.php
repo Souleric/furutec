@@ -17,6 +17,17 @@ function fx_asset_url($v) {
 }
 
 /**
+ * Escape text for HTML and turn the client's line separators into <br/>:
+ * a " | " (their own convention between variants) or a newline typed in a
+ * textarea each start a new line.  Used for every text line in the product
+ * blocks so long values can run to 2+ lines instead of being squeezed.
+ */
+function fx_lines($text) {
+    $parts = preg_split('/\s*\|\s*|\r?\n/', (string)$text);
+    return implode('<br/>', array_map('fx_escape', $parts));
+}
+
+/**
  * Build the substitution map from content array.
  * Expects nested content: content['shared']['nav'|'footer'], content[$page_id][sections...]
  */
@@ -338,9 +349,9 @@ function fx_build_substitutions($page_id, $content) {
 
             $s[$px.'SECTION_TITLE'] = fx_escape(isset($p['section_title']) ? $p['section_title'] : '');
             $s[$px.'TAG_LABEL']     = fx_escape(isset($p['tag_label'])     ? $p['tag_label']     : '');
-            $s[$px.'TITLE']         = fx_escape(isset($p['title'])         ? $p['title']         : '');
-            $s[$px.'SUBTITLE']      = fx_escape(isset($p['subtitle'])      ? $p['subtitle']      : '');
-            $s[$px.'DESC']          = fx_escape(isset($p['desc'])          ? $p['desc']          : '');
+            $s[$px.'TITLE']         = fx_lines(isset($p['title'])         ? $p['title']         : '');
+            $s[$px.'SUBTITLE']      = fx_lines(isset($p['subtitle'])      ? $p['subtitle']      : '');
+            $s[$px.'DESC']          = fx_lines(isset($p['desc'])          ? $p['desc']          : '');
 
             // Per-slot placeholders are still emitted (harmless, and any
             // template that references one directly keeps working).
@@ -404,7 +415,7 @@ function fx_build_substitutions($page_id, $content) {
                 $s[$px.'GALLERY_HTML'] = $g;
             }
             for ($n = 1; $n <= $b['features']; $n++) {
-                $s[$px.'FEATURE_'.$n] = fx_escape(isset($p['feature_'.$n]) ? $p['feature_'.$n] : '');
+                $s[$px.'FEATURE_'.$n] = fx_lines(isset($p['feature_'.$n]) ? $p['feature_'.$n] : '');
             }
             // ---- Technical Specification, built server-side -------------
             // Every product offers the same 8 rows (the client asked for one
@@ -423,11 +434,7 @@ function fx_build_substitutions($page_id, $content) {
                 $s[$px.'SPEC_'.$n.'_VALUE'] = fx_escape($val);
                 if ($lbl === '') continue;
                 if ($val !== '') $specFilled++;
-                // A " | " in the value is the client's natural separator between
-                // variants ("IP65 / IP66 (…) | IP40 / IP54 (…)"): render it as
-                // a line break so each variant sits on its own line.
-                $valHtml = ($val === '') ? '-'
-                    : implode('<br/>', array_map('fx_escape', preg_split('/\s*\|\s*/', $val)));
+                $valHtml = ($val === '') ? '-' : fx_lines($val);
                 $specRows .= '<div><span class="label">' . fx_escape($lbl) . '</span>'
                            . '<span class="value">' . $valHtml . '</span></div>';
             }

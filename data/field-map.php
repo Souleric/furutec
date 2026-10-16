@@ -29,7 +29,7 @@ if (!function_exists('fx_gallery_fields')) {
         $out = array();
         for ($i = 1; $i <= $count; $i++) {
             $out["feature_{$i}"] = array(
-                'type'=>'text','group'=>'Key features / capabilities','label'=>"Item $i",'max'=>200,
+                'type'=>'text','group'=>'Key features / capabilities','label'=>"Item $i",'help'=>'Long text wraps. Type " | " where you want a new line.','max'=>200,
             );
         }
         return $out;
@@ -41,7 +41,7 @@ if (!function_exists('fx_gallery_fields')) {
                 'type'=>'text','group'=>"Spec row $i",'label'=>'Label','max'=>60,
             );
             $out["spec_{$i}_value"] = array(
-                'type'=>'text','group'=>"Spec row $i",'label'=>'Value','max'=>200,
+                'type'=>'text','group'=>"Spec row $i",'label'=>'Value','help'=>'Long text wraps. Type " | " where you want a new line.','max'=>200,
             );
         }
         return $out;
@@ -584,7 +584,7 @@ return array(
                     'tag_label'     => array('type'=>'text','group'=>'Content panel','label'=>'Tag pill label','max'=>30),
                     'title'         => array('type'=>'text','group'=>'Content panel','label'=>'Product title','max'=>80),
                     'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
-                    'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','rows'=>4,'max'=>600),
+                    'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','help'=>'Press Enter (or type " | ") where you want a new line.','rows'=>4,'max'=>600),
                 ),
                 // Gallery — 5 slides
                 fx_gallery_fields(10),
@@ -611,7 +611,7 @@ return array(
                     'tag_label'     => array('type'=>'text','group'=>'Content panel','label'=>'Tag pill label','max'=>30),
                     'title'         => array('type'=>'text','group'=>'Content panel','label'=>'Product title','max'=>80),
                     'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
-                    'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','rows'=>4,'max'=>600),
+                    'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','help'=>'Press Enter (or type " | ") where you want a new line.','rows'=>4,'max'=>600),
                 ),
                 fx_gallery_fields(10),
                 fx_feature_fields(7),
@@ -634,7 +634,7 @@ return array(
                     'tag_label'     => array('type'=>'text','group'=>'Content panel','label'=>'Tag pill label','max'=>30),
                     'title'         => array('type'=>'text','group'=>'Content panel','label'=>'Product title','max'=>80),
                     'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
-                    'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','rows'=>4,'max'=>800),
+                    'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','help'=>'Press Enter (or type " | ") where you want a new line.','rows'=>4,'max'=>800),
                 ),
                 fx_gallery_fields(10),
                 fx_feature_fields(10),
@@ -657,7 +657,7 @@ return array(
                     'tag_label'     => array('type'=>'text','group'=>'Content panel','label'=>'Tag pill label','max'=>30),
                     'title'         => array('type'=>'text','group'=>'Content panel','label'=>'Product title','max'=>80),
                     'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
-                    'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','rows'=>5,'max'=>800),
+                    'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','help'=>'Press Enter (or type " | ") where you want a new line.','rows'=>5,'max'=>800),
                 ),
                 fx_gallery_fields(10),
                 fx_feature_fields(6),  // Power section uses "Key Capabilities" label
@@ -675,7 +675,7 @@ return array(
                     'tag_label'     => array('type'=>'text','group'=>'Content panel','label'=>'Tag pill label','max'=>30),
                     'title'         => array('type'=>'text','group'=>'Content panel','label'=>'Product title','max'=>80),
                     'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
-                    'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','rows'=>4,'max'=>800),
+                    'desc'          => array('type'=>'textarea','group'=>'Content panel','label'=>'Description','help'=>'Press Enter (or type " | ") where you want a new line.','rows'=>4,'max'=>800),
                 ),
                 fx_gallery_fields(10),
                 fx_feature_fields(6),
