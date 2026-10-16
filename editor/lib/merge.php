@@ -21,7 +21,7 @@ function fx_apply_section($sect_id, $incoming_section, &$updated_section, $field
         $max  = isset($fdef['max'])  ? (int)$fdef['max'] : 5000;
         if ($type === 'text' || $type === 'url') {
             $val = trim(preg_replace('/\s+/', ' ', $val));
-        } elseif ($type === 'textarea' || $type === 'markdown') {
+        } elseif ($type === 'textarea' || $type === 'markdown' || $type === 'lines') {
             $val = trim($val);
         } elseif ($type === 'image' || $type === 'video') {
             $val = trim($val);

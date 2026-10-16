@@ -612,6 +612,26 @@
         try { if (win && win.fxHero) win.fxHero.init(); } catch (e) {}
     }
 
+    // ---- Auto-growing one-row textareas (field type 'lines') ----
+    // Enter inserts a newline; the box grows to fit so nothing is hidden.
+    function fxGrow(el) {
+        el.style.height = 'auto';
+        el.style.height = (el.scrollHeight + 2) + 'px';
+    }
+    function fxGrowAll(scope) {
+        var els = (scope || document).querySelectorAll('.fx-autogrow');
+        for (var i = 0; i < els.length; i++) fxGrow(els[i]);
+    }
+    document.addEventListener('input', function (e) {
+        if (e.target.classList && e.target.classList.contains('fx-autogrow')) fxGrow(e.target);
+    });
+    // A collapsed accordion has zero-height boxes; re-measure when one opens.
+    document.addEventListener('click', function (e) {
+        var head = e.target.closest && e.target.closest('.fx-acc-head');
+        if (head) setTimeout(function () { fxGrowAll(head.closest('.fx-acc')); }, 0);
+    });
+    fxGrowAll();
+
     // ======================================================================
     // EDITING HIGHLIGHT
     // ----------------------------------------------------------------------

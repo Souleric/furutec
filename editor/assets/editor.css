@@ -105,6 +105,8 @@ a:hover { text-decoration: underline; }
     transition: border-color .12s, box-shadow .12s;
 }
 .fx-textarea { resize: vertical; min-height: 72px; font-family: var(--fx-font); }
+/* One-row textarea that grows with its content (type 'lines'). */
+.fx-autogrow { resize: none; overflow: hidden; min-height: 0; line-height: 1.4; font-family: var(--fx-font); }
 .fx-input:focus, .fx-textarea:focus {
     outline: none;
     border-color: var(--fx-brand);
