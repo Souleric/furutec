@@ -327,6 +327,18 @@ p, .body {
   #ft-burger { display: none; }
   #ft-mobile-nav { display: none; }
   .ft-logo-img { height: 44px; width: auto; display: block; }
+  /* The header logo is a transparent PNG.  When a phone browser forces a
+     dark theme (Android "auto dark", Samsung dark mode) the white header
+     turns dark and the logo's black "Busduct System" line would vanish —
+     a stacked 1px white drop-shadow gives every glyph a thin outline. */
+  @media (prefers-color-scheme: dark) {
+    .ft-logo-img {
+      filter: drop-shadow(0 0 0.8px rgba(255,255,255,0.95))
+              drop-shadow(0 0 0.8px rgba(255,255,255,0.95))
+              drop-shadow(0 0 0.8px rgba(255,255,255,0.95))
+              drop-shadow(0 0 0.8px rgba(255,255,255,0.95));
+    }
+  }
 
   /* Tablet: tighten spacing, shrink logo */
   @media (max-width: 1100px) {

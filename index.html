@@ -327,6 +327,18 @@ p, .body {
   #ft-burger { display: none; }
   #ft-mobile-nav { display: none; }
   .ft-logo-img { height: 44px; width: auto; display: block; }
+  /* The header logo is a transparent PNG.  When a phone browser forces a
+     dark theme (Android "auto dark", Samsung dark mode) the white header
+     turns dark and the logo's black "Busduct System" line would vanish —
+     a stacked 1px white drop-shadow gives every glyph a thin outline. */
+  @media (prefers-color-scheme: dark) {
+    .ft-logo-img {
+      filter: drop-shadow(0 0 0.8px rgba(255,255,255,0.95))
+              drop-shadow(0 0 0.8px rgba(255,255,255,0.95))
+              drop-shadow(0 0 0.8px rgba(255,255,255,0.95))
+              drop-shadow(0 0 0.8px rgba(255,255,255,0.95));
+    }
+  }
 
   /* Tablet: tighten spacing, shrink logo */
   @media (max-width: 1100px) {
@@ -775,7 +787,7 @@ html { scroll-padding-top: 80px; }
 <header style="position:sticky;top:0;z-index:40;width:100%;background:#FFFFFF;border-bottom:1px solid #F1F1F3;">
   <div id="ft-header-inner" style="max-width:1320px;margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:32px;padding:16px 32px;">
     <a href="index.html" style="display:inline-flex;align-items:center;text-decoration:none;">
-      <img class="ft-logo-img" src="assets/Logo.jpeg" alt="Furutec — Busduct System"/>
+      <img class="ft-logo-img" src="assets/Logo.png" alt="Furutec — Busduct System"/>
     </a>
 
     <nav id="ft-nav" style="display:flex;gap:28px;justify-content:center;">

@@ -5,7 +5,7 @@
 return array(
     'shared' => array(
         'nav' => array(
-            'logo' => 'Logo.jpeg',
+            'logo' => 'Logo.png',
             'phone' => '+6012-887 4517',
             'contact_button_label' => 'Contact Us',
         ),
