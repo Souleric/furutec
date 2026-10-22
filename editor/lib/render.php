@@ -70,6 +70,20 @@ function fx_build_substitutions($page_id, $content) {
     $s['FT_COL_3_HEADING']= fx_escape(isset($ft['col_3_heading'])? $ft['col_3_heading']: '');
     $s['FT_COL_4_HEADING']= fx_escape(isset($ft['col_4_heading'])? $ft['col_4_heading']: '');
     $s['FT_COPYRIGHT']    = fx_escape(isset($ft['copyright'])    ? $ft['copyright']    : '');
+    // Footer "Product" column — five links, editable, in the client's order.
+    // A blank label hides that row; with nothing set at all the standard
+    // five appear (so an older content.php still renders the full list).
+    $ftDefaults = array(array('Indoor Busduct Solution','product.html#indoor'), array('Outdoor Busduct Solution','product.html#outdoor'), array('Data Centre Busduct Solution','product.html#datacenter'), array('Intelligent Monitoring System','product.html#power'), array('Lighting Busduct Solution','product.html#lighting'));
+    $ftLinks = '';
+    for ($i = 1; $i <= 5; $i++) {
+        $lbl = isset($ft["product_{$i}_label"]) ? trim((string)$ft["product_{$i}_label"]) : '';
+        $url = isset($ft["product_{$i}_url"])   ? trim((string)$ft["product_{$i}_url"])   : '';
+        if ($lbl === '' && !isset($ft["product_{$i}_label"])) { $lbl = $ftDefaults[$i-1][0]; $url = $ftDefaults[$i-1][1]; }
+        if ($lbl === '') continue;
+        if ($url === '') $url = '#';
+        $ftLinks .= '<li style="margin-bottom:10px;"><a href="' . fx_escape($url) . '" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">' . fx_escape($lbl) . '</a></li>' . "\n";
+    }
+    $s['FT_PRODUCT_LINKS_HTML'] = $ftLinks;
     $s['FT_SOCIAL_FACEBOOK']= fx_escape(isset($ft['social_facebook']) ? $ft['social_facebook'] : '#');
     $s['FT_SOCIAL_YOUTUBE'] = fx_escape(isset($ft['social_youtube'])  ? $ft['social_youtube']  : '#');
     $s['FT_SOCIAL_LINKEDIN']= fx_escape(isset($ft['social_linkedin']) ? $ft['social_linkedin'] : '#');
