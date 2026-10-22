@@ -55,7 +55,7 @@ return array(
             'label'     => 'Homepage',
             'template'  => 'home.template.html',
             'live_file' => 'index.html',
-            'sections'  => array('hero', 'hero_certs', 'origin', 'facilities', 'company', 'product_overview', 'products', 'certs_cta', 'quote_cta'),
+            'sections'  => array('hero', 'hero_certs', 'origin', 'facilities', 'company', 'product_overview', 'products', 'news', 'certs_cta', 'quote_cta'),
         ),
         'certificates' => array(
             'label'     => 'Certificates page',
@@ -304,6 +304,9 @@ return array(
                 'section_heading_1' => array('type'=>'text','label'=>'Heading · Line 1','max'=>80),
                 'section_heading_2' => array('type'=>'text','label'=>'Heading · Line 2 (accent)','max'=>60),
                 'section_subtitle'  => array('type'=>'textarea','label'=>'Section subtitle','rows'=>3,'max'=>400),
+                'button_1_label' => array('type'=>'text','group'=>'Buttons','label'=>'Button 1 label','help'=>'Links to the product page.','default'=>'View All Products','max'=>40),
+                'button_2_label' => array('type'=>'text','group'=>'Buttons','label'=>'Button 2 label','default'=>'Request a Catalogue','max'=>40),
+                'button_2_url'   => array('type'=>'text','group'=>'Buttons','label'=>'Button 2 link','help'=>'Default is quote.html (the contact form). Can also be a PDF from the Media Library.','default'=>'quote.html','max'=>300),
                 'card_1_title'       => array('type'=>'text','group'=>'Card 1 · Indoor','label'=>'Card title','max'=>40),
                 'card_1_description' => array('type'=>'markdown','group'=>'Card 1 · Indoor','label'=>'Description','rows'=>4,'max'=>500),
                 'card_2_title'       => array('type'=>'text','group'=>'Card 2 · Outdoor','label'=>'Card title','max'=>40),
@@ -314,6 +317,20 @@ return array(
                 'card_4_description' => array('type'=>'markdown','group'=>'Card 4 · Power Monitoring','label'=>'Description','rows'=>4,'max'=>500),
                 'card_5_title'       => array('type'=>'text','group'=>'Card 5 · Lighting','label'=>'Card title','max'=>40),
                 'card_5_description' => array('type'=>'markdown','group'=>'Card 5 · Lighting','label'=>'Description','rows'=>4,'max'=>500),
+            ),
+        ),
+
+        'news' => array(
+            'label'   => 'Events & Newsletter band',
+            'summary' => 'Eyebrow, heading and the two "View all" links. The news and event cards themselves come from EITA.',
+            'preview_target' => '.en-section',
+            'fields'  => array(
+                'eyebrow'      => array('type'=>'text','label'=>'Eyebrow label','default'=>'LATEST FROM EITA','max'=>60),
+                'heading'      => array('type'=>'text','label'=>'Heading','default'=>'Events & Newsletter','max'=>80),
+                'news_label'   => array('type'=>'text','group'=>'News row','label'=>'"View all" link label','default'=>'View all news','max'=>40),
+                'news_url'     => array('type'=>'url','group'=>'News row','label'=>'"View all" link URL','default'=>'https://eita.com.my/news/','max'=>300),
+                'events_label' => array('type'=>'text','group'=>'Events row','label'=>'"View all" link label','default'=>'View all events','max'=>40),
+                'events_url'   => array('type'=>'url','group'=>'Events row','label'=>'"View all" link URL','default'=>'https://eita.com.my/events/','max'=>300),
             ),
         ),
 

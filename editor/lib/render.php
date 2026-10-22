@@ -247,6 +247,22 @@ function fx_build_substitutions($page_id, $content) {
         $s['PRODUCTS_HEADING_1'] = fx_escape(isset($p['section_heading_1']) ? $p['section_heading_1'] : '');
         $s['PRODUCTS_HEADING_2'] = fx_escape(isset($p['section_heading_2']) ? $p['section_heading_2'] : '');
         $s['PRODUCTS_SUBTITLE']  = fx_escape(isset($p['section_subtitle'])  ? $p['section_subtitle']  : '');
+        // Buttons under the intro (fallbacks keep an older content.php rendering).
+        $pb1 = isset($p['button_1_label']) ? trim((string)$p['button_1_label']) : '';
+        $pb2 = isset($p['button_2_label']) ? trim((string)$p['button_2_label']) : '';
+        $pb2u= isset($p['button_2_url'])   ? trim((string)$p['button_2_url'])   : '';
+        $s['PRODUCTS_BUTTON_1_LABEL'] = fx_escape($pb1 !== '' ? $pb1 : 'View All Products');
+        $s['PRODUCTS_BUTTON_2_LABEL'] = fx_escape($pb2 !== '' ? $pb2 : 'Request a Catalogue');
+        $s['PRODUCTS_BUTTON_2_URL']   = fx_escape($pb2u !== '' ? $pb2u : 'quote.html');
+
+        // Events & Newsletter band
+        $nw = isset($page['news']) ? $page['news'] : array();
+        $nwDefaults = array('eyebrow'=>'LATEST FROM EITA','heading'=>'Events & Newsletter','news_label'=>'View all news',
+                            'news_url'=>'https://eita.com.my/news/','events_label'=>'View all events','events_url'=>'https://eita.com.my/events/');
+        foreach ($nwDefaults as $k => $d) {
+            $v = isset($nw[$k]) ? trim((string)$nw[$k]) : '';
+            $s['NEWS_' . strtoupper($k)] = fx_escape($v !== '' ? $v : $d);
+        }
         for ($i = 1; $i <= 5; $i++) {
             $tKey = "card_{$i}_title";
             $dKey = "card_{$i}_description";

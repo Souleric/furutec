@@ -123,6 +123,9 @@ return array(
             'section_heading_1' => 'Engineered Busduct Solutions',
             'section_heading_2' => 'for Diverse Applications.',
             'section_subtitle' => 'Power distribution solutions engineered for diverse applications and operating environments.',
+            'button_1_label' => 'View All Products',
+            'button_2_label' => 'Request a Catalogue',
+            'button_2_url' => 'quote.html',
             'card_1_title' => 'Indoor Busduct Solution',
             'card_1_description' => 'Compact sandwich busduct systems engineered for reliable, space-efficient power distribution across commercial and industrial applications.',
             'card_2_title' => 'Outdoor Busduct Solution',
@@ -134,6 +137,15 @@ return array(
             'card_5_title' => 'Lighting Busduct Solution',
             'card_5_description' => 'Flexible power distribution for commercial and industrial lighting applications.',
         ),
+        'news' => array(
+            'eyebrow' => 'LATEST FROM EITA',
+            'heading' => 'Events & Newsletter',
+            'news_label' => 'View all news',
+            'news_url' => 'https://eita.com.my/news/',
+            'events_label' => 'View all events',
+            'events_url' => 'https://eita.com.my/events/',
+        ),
+
         'certs_cta' => array(
             'bg_image' => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=2000&q=80&auto=format&fit=crop',
             'heading_1' => 'Certificates &',
