@@ -233,6 +233,12 @@ function fx_build_substitutions($page_id, $content) {
         $s['POV_DIAGRAM_URL']     = fx_asset_url(isset($po['diagram'])      ? $po['diagram']         : '');
         for ($i = 1; $i <= 5; $i++) {
             $s["POV_CARD_{$i}_TITLE_JS"] = fx_js_string(isset($po["card_{$i}_title"]) ? $po["card_{$i}_title"] : '');
+            // Card photo.  Falls back to the file the template used to hardcode
+            // so a content.php saved before this field existed still renders.
+            $povDefaults = array(1=>'products/CR (OUTDOOR)/cr 2.png', 2=>'products/AH&AH-ES (INDOOR)/picture 6.png', 3=>'products/I-DC(DATA CENTRE)/i-dc 1.png', 4=>'products/POWER MONITORING SYSTEM/pms 1.png', 5=>'products/LB&PB (LIGHTING)/pb 3.png');
+            $povImg = isset($po["card_{$i}_image"]) ? trim((string)$po["card_{$i}_image"]) : '';
+            if ($povImg === '') $povImg = $povDefaults[$i];
+            $s["POV_CARD_{$i}_IMG_JS"] = fx_js_string(fx_asset_url($povImg));
         }
 
         // Products
