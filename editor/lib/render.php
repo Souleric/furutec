@@ -84,6 +84,19 @@ function fx_build_substitutions($page_id, $content) {
         $ftLinks .= '<li style="margin-bottom:10px;"><a href="' . fx_escape($url) . '" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">' . fx_escape($lbl) . '</a></li>' . "\n";
     }
     $s['FT_PRODUCT_LINKS_HTML'] = $ftLinks;
+
+    // Footer "Support" column — same mechanism, four links.
+    $ftSupDefaults = array(array('Technical Documents','#'), array('Product Catalogue','#'), array('FAQ','#'), array('Warranty','#'));
+    $ftSup = '';
+    for ($i = 1; $i <= 4; $i++) {
+        $lbl = isset($ft["support_{$i}_label"]) ? trim((string)$ft["support_{$i}_label"]) : '';
+        $url = isset($ft["support_{$i}_url"])   ? trim((string)$ft["support_{$i}_url"])   : '';
+        if ($lbl === '' && !isset($ft["support_{$i}_label"])) { $lbl = $ftSupDefaults[$i-1][0]; $url = $ftSupDefaults[$i-1][1]; }
+        if ($lbl === '') continue;
+        if ($url === '') $url = '#';
+        $ftSup .= '<li style="margin-bottom:10px;"><a href="' . fx_escape($url) . '" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">' . fx_escape($lbl) . '</a></li>' . "\n";
+    }
+    $s['FT_SUPPORT_LINKS_HTML'] = $ftSup;
     $s['FT_SOCIAL_FACEBOOK']= fx_escape(isset($ft['social_facebook']) ? $ft['social_facebook'] : '#');
     $s['FT_SOCIAL_YOUTUBE'] = fx_escape(isset($ft['social_youtube'])  ? $ft['social_youtube']  : '#');
     $s['FT_SOCIAL_LINKEDIN']= fx_escape(isset($ft['social_linkedin']) ? $ft['social_linkedin'] : '#');
