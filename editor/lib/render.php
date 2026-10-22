@@ -28,6 +28,19 @@ function fx_lines($text) {
 }
 
 /**
+ * Like fx_asset_url() but with a "?v=<mtime>" so browsers that cached an
+ * older file at the same path (the header logo was a JPEG for months)
+ * fetch the new one.  Only used for the logos — everything else keeps its
+ * plain URL.
+ */
+function fx_asset_url_v($v) {
+    $url = fx_asset_url($v);
+    if ($url === '' || strpos($url, 'assets/') !== 0) return $url;
+    $file = fx_base_path() . '/assets/' . (string)$v;
+    return is_file($file) ? $url . '?v=' . filemtime($file) : $url;
+}
+
+/**
  * Build the substitution map from content array.
  * Expects nested content: content['shared']['nav'|'footer'], content[$page_id][sections...]
  */
@@ -39,13 +52,13 @@ function fx_build_substitutions($page_id, $content) {
 
     // -------- SHARED: Nav --------
     $n = isset($shared['nav']) ? $shared['nav'] : array();
-    $s['NAV_LOGO_URL']            = fx_asset_url(isset($n['logo']) ? $n['logo'] : '');
+    $s['NAV_LOGO_URL']            = fx_asset_url_v(isset($n['logo']) ? $n['logo'] : '');
     $s['NAV_PHONE']               = fx_escape(isset($n['phone']) ? $n['phone'] : '');
     $s['NAV_CONTACT_BUTTON_LABEL']= fx_escape(isset($n['contact_button_label']) ? $n['contact_button_label'] : '');
 
     // -------- SHARED: Footer --------
     $ft = isset($shared['footer']) ? $shared['footer'] : array();
-    $s['FT_LOGO_URL']     = fx_asset_url(isset($ft['logo']) ? $ft['logo'] : '');
+    $s['FT_LOGO_URL']     = fx_asset_url_v(isset($ft['logo']) ? $ft['logo'] : '');
     $s['FT_COMPANY_NAME'] = fx_escape(isset($ft['company_name']) ? $ft['company_name'] : '');
     $s['FT_COMPANY_REG']  = fx_escape(isset($ft['company_reg'])  ? $ft['company_reg']  : '');
     $s['FT_EMAIL']        = fx_escape(isset($ft['email'])        ? $ft['email']        : '');

@@ -3,6 +3,11 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- The site has no dark theme.  Tell Chrome/Samsung "auto dark" not to
+     recolour it — otherwise the white header turns black and logos get
+     boxed/dimmed.  The prefers-color-scheme rule further down stays as a
+     fallback for browsers that ignore this. -->
+<meta name="color-scheme" content="only light"/>
 <title>Products — Furutec Busduct Systems</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -301,6 +306,7 @@ p, .body {
   #ft-header-inner { gap: 32px; padding: 16px 32px; }
   #ft-burger { display: none; }
   #ft-mobile-nav { display: none; }
+  :root { color-scheme: only light; }
   .ft-logo-img { height: 44px; width: auto; display: block; }
   /* The header logo is a transparent PNG.  When a phone browser forces a
      dark theme (Android "auto dark", Samsung dark mode) the white header
@@ -331,8 +337,9 @@ p, .body {
       gap: 12px;
       padding: 12px 18px;
     }
-    .ft-logo-img { height: 32px; }
+    .ft-logo-img { height: 36px; }
     #ft-nav { display: none !important; }
+    #ft-phone span { white-space: nowrap; font-size: 12px; }
     #ft-utility { gap: 10px; }
     #ft-quote-label { display: none; }
     #ft-quote-btn { padding: 0 14px !important; }
@@ -396,9 +403,15 @@ p, .body {
     #ft-mobile-nav a.active { color: #2E3192; }
   }
 
+  /* Narrow phones (≤380px): no room for the digits next to a 34px logo —
+     keep the WhatsApp icon as the tap target, drop the number. */
+  @media (max-width: 380px) {
+    #ft-phone span { display: none; }
+  }
+
   /* Small phones */
   @media (max-width: 420px) {
-    .ft-logo-img { height: 28px; }
+    .ft-logo-img { height: 34px; }
     #ft-header-inner { padding: 10px 14px; gap: 8px; }
     #ft-quote-btn { height: 40px !important; }
   }

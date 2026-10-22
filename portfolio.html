@@ -3,6 +3,11 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- The site has no dark theme.  Tell Chrome/Samsung "auto dark" not to
+     recolour it — otherwise the white header turns black and logos get
+     boxed/dimmed.  The prefers-color-scheme rule further down stays as a
+     fallback for browsers that ignore this. -->
+<meta name="color-scheme" content="only light"/>
 <title>Certificates — Furutec Busduct Systems</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -301,6 +306,7 @@ p, .body {
   #ft-header-inner { gap: 32px; padding: 16px 32px; }
   #ft-burger { display: none; }
   #ft-mobile-nav { display: none; }
+  :root { color-scheme: only light; }
   .ft-logo-img { height: 44px; width: auto; display: block; }
   /* The header logo is a transparent PNG.  When a phone browser forces a
      dark theme (Android "auto dark", Samsung dark mode) the white header
@@ -331,8 +337,9 @@ p, .body {
       gap: 12px;
       padding: 12px 18px;
     }
-    .ft-logo-img { height: 32px; }
+    .ft-logo-img { height: 36px; }
     #ft-nav { display: none !important; }
+    #ft-phone span { white-space: nowrap; font-size: 12px; }
     #ft-utility { gap: 10px; }
     #ft-quote-label { display: none; }
     #ft-quote-btn { padding: 0 14px !important; }
@@ -396,9 +403,15 @@ p, .body {
     #ft-mobile-nav a.active { color: #2E3192; }
   }
 
+  /* Narrow phones (≤380px): no room for the digits next to a 34px logo —
+     keep the WhatsApp icon as the tap target, drop the number. */
+  @media (max-width: 380px) {
+    #ft-phone span { display: none; }
+  }
+
   /* Small phones */
   @media (max-width: 420px) {
-    .ft-logo-img { height: 28px; }
+    .ft-logo-img { height: 34px; }
     #ft-header-inner { padding: 10px 14px; gap: 8px; }
     #ft-quote-btn { height: 40px !important; }
   }
@@ -677,7 +690,7 @@ html { scroll-padding-top: 80px; }
 <header style="position:sticky;top:0;z-index:40;width:100%;background:#FFFFFF;border-bottom:1px solid #F1F1F3;">
   <div id="ft-header-inner" style="max-width:1320px;margin:0 auto;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:32px;padding:16px 32px;">
     <a href="index.html" style="display:inline-flex;align-items:center;text-decoration:none;">
-      <img class="ft-logo-img" src="assets/Logo.png" alt="Furutec — Busduct System"/>
+      <img class="ft-logo-img" src="assets/Logo.png?v=1792313996" alt="Furutec — Busduct System"/>
     </a>
 
     <nav id="ft-nav" style="display:flex;gap:28px;justify-content:center;">
@@ -914,7 +927,7 @@ html { scroll-padding-top: 80px; }
   <div style="max-width:1320px;margin:0 auto;padding:64px 32px 40px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr;gap:40px;">
     <div>
       <div style="display:inline-flex;align-items:center;margin-bottom:14px;">
-        <img src="assets/Logo-white.png" alt="Furutec — Busduct System" style="height:54px;width:auto;display:block;"/>
+        <img src="assets/Logo-white.png?v=1780558217" alt="Furutec — Busduct System" style="height:54px;width:auto;display:block;"/>
       </div>
       <p style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:#FFFFFF;margin:0 0 4px;line-height:1.4;">Furutec Electrical Sdn Bhd</p>
       <p style="font-size:11px;color:rgba(255,255,255,0.45);margin:0 0 16px;font-style:italic;">Company No. 198001003423 (57207-W)</p>
