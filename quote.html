@@ -337,7 +337,6 @@ p, .body {
     #ft-header-inner { gap: 20px; padding: 14px 24px; }
     #ft-nav { gap: 20px; }
     #ft-nav a { font-size: 12px; padding: 20px 0; }
-    .ft-logo-img { height: 38px; }
     #ft-phone { display: none; }
   }
 
@@ -348,7 +347,6 @@ p, .body {
       gap: 12px;
       padding: 12px 18px;
     }
-    .ft-logo-img { height: 36px; }
     #ft-nav { display: none !important; }
     #ft-phone span { white-space: nowrap; font-size: 12px; }
     #ft-utility { gap: 10px; }
@@ -414,15 +412,15 @@ p, .body {
     #ft-mobile-nav a.active { color: #2E3192; }
   }
 
-  /* Narrow phones (≤380px): no room for the digits next to a 34px logo —
-     keep the WhatsApp icon as the tap target, drop the number. */
-  @media (max-width: 380px) {
+  /* Phones (≤480px): the logo keeps its desktop size (client request), so
+     there is no room for the digits — keep the WhatsApp icon as the tap
+     target and drop the number. */
+  @media (max-width: 480px) {
     #ft-phone span { display: none; }
   }
 
   /* Small phones */
   @media (max-width: 420px) {
-    .ft-logo-img { height: 34px; }
     #ft-header-inner { padding: 10px 14px; gap: 8px; }
     #ft-quote-btn { height: 40px !important; }
   }
