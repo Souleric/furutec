@@ -536,6 +536,7 @@ return array(
             'preview_target' => '#quote-form',
             'fields'  => array(
                 'title'     => array('type'=>'text','label'=>'Form title','help'=>'Small heading above the form.','max'=>60),
+                'submit_label' => array('type'=>'text','label'=>'Submit button label','default'=>'Submit Enquiry','max'=>40),
                 'reassure'  => array('type'=>'text','label'=>'Reassurance line','help'=>'Shown below the submit button. Use · for dot separator.','max'=>200),
             ),
         ),

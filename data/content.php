@@ -311,6 +311,7 @@ return array(
         ),
         'contact_form' => array(
             'title' => 'Tell Us About Your Project',
+            'submit_label' => 'Submit Enquiry',
             'reassure' => 'Your Enquiry will be directed to the relevant Furutec team for follow-up',
         ),
         'contact_locations' => array(

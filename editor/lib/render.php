@@ -534,6 +534,8 @@ function fx_build_substitutions($page_id, $content) {
         $fm = isset($page['contact_form']) ? $page['contact_form'] : array();
         $s['CT_FORM_TITLE']    = fx_escape(isset($fm['title'])    ? $fm['title']    : '');
         $s['CT_FORM_REASSURE'] = fx_escape(isset($fm['reassure']) ? $fm['reassure'] : '');
+        $cfSubmit = isset($fm['submit_label']) ? trim((string)$fm['submit_label']) : '';
+        $s['CT_FORM_SUBMIT_LABEL'] = fx_escape($cfSubmit !== '' ? $cfSubmit : 'Submit Enquiry');
 
         // Locations + map
         $l = isset($page['contact_locations']) ? $page['contact_locations'] : array();
