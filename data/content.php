@@ -111,7 +111,7 @@ return array(
             'card_1_image' => 'products/CR (OUTDOOR)/outdoor-site-2026-10.jpg',
             'card_2_image' => 'products/AH&AH-ES (INDOOR)/picture 6.png',
             'card_3_image' => 'products/I-DC(DATA CENTRE)/i-dc 1.png',
-            'card_4_image' => 'products/POWER MONITORING SYSTEM/pms 1.png',
+            'card_4_image' => 'uploads/2026-10-20_07-54-33-industrial-hmi-rack-card.jpg',
             'card_5_image' => 'products/LB&PB (LIGHTING)/pb 3.png',
             'card_2_title' => 'Indoor Busduct Solution',
             'card_3_title' => 'Data Centre Busduct Solution',
