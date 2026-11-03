@@ -78,8 +78,8 @@ return array(
             'eyebrow' => 'Introducing Furutec',
             'heading' => 'Engineering Excellence. Built In-House.',
             'body' => 'Backed by engineering expertise and advanced manufacturing capabilities, Furutec develops and manufacture busduct systems engineered for reliable power distribution across mission-critical, commercial and industrial applications.',
-            'video' => 'Furutec promo video 1.mp4',
-            'poster' => 'promo video thumbnail.png',
+            'video' => 'video/furutec-corporate-2026-11.mp4',
+            'poster' => 'video/furutec-corporate-2026-11-poster.jpg',
             'caption' => 'Inside Furutec — Manufacturing Facility',
         ),
         'facilities' => array(
