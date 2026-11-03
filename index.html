@@ -1495,25 +1495,6 @@ fxHero.init();
            cropped. */
         object-fit:contain; display:block;
       }
-      /* Invisible click-catcher that sits above the <video> element.
-         Solves a Safari quirk: clicking the video body fires Safari's
-         own click-to-toggle handler at the target phase *after* our
-         stage bubble handler pauses, which immediately re-plays the
-         clip.  By taking the click here we prevent it from ever
-         reaching the video element, so only our toggle runs.
-
-         Bottom 72 px is left uncovered so clicks on the native control
-         bar (play/pause, scrubber, volume, fullscreen) still reach
-         Safari's shadow-DOM controls untouched. */
-      .video-click-catcher {
-        position:absolute; left:0; right:0; top:0;
-        bottom:72px;
-        z-index:1;
-        cursor:pointer;
-        background:transparent;
-        pointer-events:none;   /* inert until playback starts */
-      }
-      .video-showcase.is-playing .video-click-catcher { pointer-events:auto; }
       .video-showcase-overlay {
         position:absolute; inset:0; z-index:2;
         cursor:pointer; border:0; padding:0; background:transparent;
@@ -1562,10 +1543,6 @@ fxHero.init();
         muted playsinline preload="auto"
         controlslist="nodownload"
         poster="assets/video/furutec-corporate-2026-11-poster.jpg"></video>
-      <!-- Catches body clicks during playback so Safari's native
-           click-to-toggle on the <video> element never fires.  See the
-           .video-click-catcher CSS rule for the why. -->
-      <div class="video-click-catcher" id="factory-click-catcher" aria-hidden="true"></div>
       <button type="button" class="video-showcase-overlay" aria-label="Play Inside Furutec factory video">
         <span class="video-showcase-play" aria-hidden="true"></span>
         <span class="video-showcase-caption">Inside Furutec — Manufacturing Facility</span>
@@ -1600,21 +1577,6 @@ fxHero.init();
            ended and the overlay is showing again. */
         overlay.addEventListener('click', start);
 
-        /* Click anywhere on the video body (above the native control
-           bar) toggles pause/play.  The click-catcher div sits on top
-           of the <video> element during playback so the click never
-           reaches the video — that's the only reliable way to stop
-           Safari from re-playing immediately after we pause. */
-        var catcher = document.getElementById('factory-click-catcher');
-        if (catcher) {
-          catcher.addEventListener('click', function () {
-            if (video.paused) {
-              video.play();
-            } else {
-              video.pause();
-            }
-          });
-        }
 
         /* When the clip finishes, restore the overlay so the user has a
            tap-to-replay affordance. */
@@ -2242,60 +2204,6 @@ fxHero.init();
     io.observe(section);
   })();
 
-  // Magnet-snap: when the user stops scrolling and the section's top edge
-  // has entered the viewport from below by ~20%, smoothly pull it up so the
-  // section fills the screen. Also re-anchors the section if the user is
-  // ≤ 15% past the top going up. Applied to multiple sections.
-  (function magnetSnap() {
-    var APPROACH_FRACTION = 0.8;   // section.top < vh * 0.8 → pull up
-    var LEAVE_FRACTION    = 0.15;  // user ≤ 15% past top going up → pull back
-    var DEBOUNCE_MS  = 180;
-    var SNAP_LOCK_MS = 900;
-    var snapping = false;
-    var scrollEndTimer = null;
-
-    var TARGET_IDS = ['about', 'engineered-section'];
-    var sections = TARGET_IDS
-      .map(function (id) { return document.getElementById(id); })
-      .filter(Boolean);
-    if (!sections.length) return;
-
-    function maybeSnap() {
-      if (snapping) return;
-      if (window.scrollY < 100) return;
-      var vh = window.innerHeight;
-
-      // Find the section closest to triggering a snap.
-      var best = null;
-      sections.forEach(function (section) {
-        var rect = section.getBoundingClientRect();
-        var sh = section.offsetHeight;
-        if (!sh) return;
-        var topOffset = rect.top;
-        var inApproachZone = topOffset > 0 && topOffset < vh * APPROACH_FRACTION;
-        var inLeaveZone    = topOffset < 0 && topOffset > -sh * LEAVE_FRACTION;
-        if (inApproachZone || inLeaveZone) {
-          var distance = Math.abs(topOffset);
-          if (!best || distance < best.distance) {
-            best = { section: section, offset: topOffset, distance: distance };
-          }
-        }
-      });
-
-      if (!best) return;
-      snapping = true;
-      // Instant teleport (no animation) to align the section's top edge
-      // with the viewport top.
-      window.scrollTo(0, window.scrollY + best.offset);
-      setTimeout(function () { snapping = false; }, SNAP_LOCK_MS);
-    }
-
-    window.addEventListener('scroll', function () {
-      if (snapping) return;
-      clearTimeout(scrollEndTimer);
-      scrollEndTimer = setTimeout(maybeSnap, DEBOUNCE_MS);
-    }, { passive: true });
-  })();
 </script>
 
 <!-- ============================================================
