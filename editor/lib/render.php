@@ -86,7 +86,7 @@ function fx_build_substitutions($page_id, $content) {
     $s['FT_PRODUCT_LINKS_HTML'] = $ftLinks;
 
     // Footer "Support" column — same mechanism, four links.
-    $ftSupDefaults = array(array('Technical Documents','#'), array('Product Catalogue','#'), array('FAQ','#'), array('Warranty','#'));
+    $ftSupDefaults = array(array('Technical Documents','quote.html'), array('Product Catalogue','quote.html'), array('FAQ','quote.html'), array('Warranty','quote.html'));
     $ftSup = '';
     for ($i = 1; $i <= 4; $i++) {
         $lbl = isset($ft["support_{$i}_label"]) ? trim((string)$ft["support_{$i}_label"]) : '';
@@ -97,6 +97,20 @@ function fx_build_substitutions($page_id, $content) {
         $ftSup .= '<li style="margin-bottom:10px;"><a href="' . fx_escape($url) . '" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">' . fx_escape($lbl) . '</a></li>' . "\n";
     }
     $s['FT_SUPPORT_LINKS_HTML'] = $ftSup;
+
+    // Footer "Industries" column — four links, editable; each jumps to its
+    // card on the portfolio (track record) page unless the client changes it.
+    $ftIndDefaults = array(array('Data Centres','portfolio-track-record.html#data-centre'), array('Commercial Buildings','portfolio-track-record.html#commercial'), array('Public Transportation','portfolio-track-record.html#infrastructure'), array('Medical & Healthcare','portfolio-track-record.html#medical'));
+    $ftInd = '';
+    for ($i = 1; $i <= 4; $i++) {
+        $lbl = isset($ft["industry_{$i}_label"]) ? trim((string)$ft["industry_{$i}_label"]) : '';
+        $url = isset($ft["industry_{$i}_url"])   ? trim((string)$ft["industry_{$i}_url"])   : '';
+        if ($lbl === '' && !isset($ft["industry_{$i}_label"])) { $lbl = $ftIndDefaults[$i-1][0]; $url = $ftIndDefaults[$i-1][1]; }
+        if ($lbl === '') continue;
+        if ($url === '') $url = '#';
+        $ftInd .= '<li style="margin-bottom:10px;"><a href="' . fx_escape($url) . '" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">' . fx_escape($lbl) . '</a></li>' . "\n";
+    }
+    $s['FT_INDUSTRY_LINKS_HTML'] = $ftInd;
     $s['FT_SOCIAL_FACEBOOK']= fx_escape(isset($ft['social_facebook']) ? $ft['social_facebook'] : '#');
     $s['FT_SOCIAL_YOUTUBE'] = fx_escape(isset($ft['social_youtube'])  ? $ft['social_youtube']  : '#');
     $s['FT_SOCIAL_LINKEDIN']= fx_escape(isset($ft['social_linkedin']) ? $ft['social_linkedin'] : '#');
