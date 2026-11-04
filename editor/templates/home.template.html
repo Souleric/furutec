@@ -803,31 +803,31 @@ html { scroll-padding-top: 80px; }
 
     <nav id="ft-nav" style="display:flex;gap:28px;justify-content:center;">
       <a href="index.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#2E3192;position:relative;">
-        Home
+        {{NAV_MENU_HOME}}
         <span style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:24px;height:3px;background:#2E3192;"></span>
       </a>
       <a href="index.html#about" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
-        Company
+        {{NAV_MENU_COMPANY}}
       </a>
       <div class="ft-nav-dropdown">
         <a href="product.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
-          Product
+          {{NAV_MENU_PRODUCT}}
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           
         </a>
         <div class="ft-nav-menu" role="menu">
-          <a href="product.html#indoor" role="menuitem">Indoor Busduct <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
-          <a href="product.html#outdoor" role="menuitem">Outdoor Busduct <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
-          <a href="product.html#datacenter" role="menuitem">Data Centre Solution <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
-          <a href="product.html#power" role="menuitem">Power Monitoring <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
-          <a href="product.html#lighting" role="menuitem">Lighting Busduct <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+          <a href="{{NAV_PRODUCT_1_URL}}" role="menuitem">{{NAV_PRODUCT_1_LABEL}} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+          <a href="{{NAV_PRODUCT_2_URL}}" role="menuitem">{{NAV_PRODUCT_2_LABEL}} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+          <a href="{{NAV_PRODUCT_3_URL}}" role="menuitem">{{NAV_PRODUCT_3_LABEL}} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+          <a href="{{NAV_PRODUCT_4_URL}}" role="menuitem">{{NAV_PRODUCT_4_LABEL}} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+          <a href="{{NAV_PRODUCT_5_URL}}" role="menuitem">{{NAV_PRODUCT_5_LABEL}} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
         </div>
       </div>
       <a href="portfolio.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
-        Certificates
+        {{NAV_MENU_CERTIFICATES}}
       </a>
       <a href="portfolio-track-record.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
-        Portfolio
+        {{NAV_MENU_PORTFOLIO}}
       </a>
     </nav>
 
@@ -844,11 +844,11 @@ html { scroll-padding-top: 80px; }
     </div>
   </div>
   <nav id="ft-mobile-nav" aria-label="Mobile">
-    <a href="index.html" class="active">Home</a>
-    <a href="index.html#about">Company</a>
-    <a href="product.html">Product</a>
-    <a href="portfolio.html">Certificates</a>
-    <a href="portfolio-track-record.html">Portfolio</a>
+    <a href="index.html" class="active">{{NAV_MENU_HOME}}</a>
+    <a href="index.html#about">{{NAV_MENU_COMPANY}}</a>
+    <a href="product.html">{{NAV_MENU_PRODUCT}}</a>
+    <a href="portfolio.html">{{NAV_MENU_CERTIFICATES}}</a>
+    <a href="portfolio-track-record.html">{{NAV_MENU_PORTFOLIO}}</a>
   </nav>
 </header>
 <script>
@@ -1061,8 +1061,8 @@ html { scroll-padding-top: 80px; }
       </h1>
       <p class="lede">{{HERO_LEDE}}</p>
       <div class="ft-hero-cta">
-        <a href="product.html" class="ft-hero-btn-primary" style="text-decoration:none;">
-          Discover More
+        <a href="{{HERO_BUTTON_URL}}" class="ft-hero-btn-primary" style="text-decoration:none;">
+          {{HERO_BUTTON_LABEL}}
           <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
         </a>
       </div>
@@ -1070,7 +1070,7 @@ html { scroll-padding-top: 80px; }
       <!-- White certification bar — sits inside hero, below the CTA -->
       <div class="ft-hero-cert-bar" aria-label="Certifications">
         <div class="ft-hero-cert-bar-inner">
-          <span class="ft-hero-cert-bar-label">Certified</span>
+          <span class="ft-hero-cert-bar-label">{{HERO_CERT_BAR_LABEL}}</span>
           <!-- Ordered by client priority — top 7 marks. -->
           <img src="{{HERO_CERT_1_URL}}" alt="{{HERO_CERT_1_ALT}}"/>
           <img src="{{HERO_CERT_2_URL}}" alt="{{HERO_CERT_2_ALT}}"/>
@@ -2917,7 +2917,7 @@ fxHero.init();
           <span class="prod-card-cta-circle">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
           </span>
-          Explore More
+          {{PRODUCTS_CARD_CTA}}
         </span>
       </a>
 
@@ -2932,7 +2932,7 @@ fxHero.init();
           <span class="prod-card-cta-circle">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
           </span>
-          Explore More
+          {{PRODUCTS_CARD_CTA}}
         </span>
       </a>
 
@@ -2947,7 +2947,7 @@ fxHero.init();
           <span class="prod-card-cta-circle">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
           </span>
-          Explore More
+          {{PRODUCTS_CARD_CTA}}
         </span>
       </a>
 
@@ -2962,7 +2962,7 @@ fxHero.init();
           <span class="prod-card-cta-circle">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
           </span>
-          Explore More
+          {{PRODUCTS_CARD_CTA}}
         </span>
       </a>
 
@@ -2977,7 +2977,7 @@ fxHero.init();
           <span class="prod-card-cta-circle">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
           </span>
-          Explore More
+          {{PRODUCTS_CARD_CTA}}
         </span>
       </a>
     </div>
@@ -3840,10 +3840,7 @@ Monitoring</h3>
     <div>
       <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">{{FT_COL_4_HEADING}}</h4>
       <ul style="list-style:none;padding:0;margin:0;">
-        <li style="margin-bottom:10px;"><a href="index.html#about" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">About Furutec</a></li>
-        <li style="margin-bottom:10px;"><a href="portfolio-track-record.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Key Projects</a></li>
-        <li style="margin-bottom:10px;"><a href="portfolio.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Certifications</a></li>
-        <li style="margin-bottom:10px;"><a href="quote.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Contact</a></li>
+{{FT_COMPANY_LINKS_HTML}}
       </ul>
     </div>
   </div>
@@ -3853,15 +3850,15 @@ Monitoring</h3>
   <div style="background:#0A0A0B;padding:18px 0;">
     <div style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;">
       <div style="display:flex;gap:8px;align-items:center;font-size:11px;">
-        <a href="#" style="color:rgba(255,255,255,0.55);text-decoration:none;">Privacy Policy</a>
+        <a href="{{FT_LEGAL_1_URL}}" style="color:rgba(255,255,255,0.55);text-decoration:none;">{{FT_LEGAL_1_LABEL}}</a>
         <span style="color:rgba(255,255,255,0.3);">·</span>
-        <a href="#" style="color:rgba(255,255,255,0.55);text-decoration:none;">Terms &amp; Conditions</a>
+        <a href="{{FT_LEGAL_2_URL}}" style="color:rgba(255,255,255,0.55);text-decoration:none;">{{FT_LEGAL_2_LABEL}}</a>
         <span style="color:rgba(255,255,255,0.3);">·</span>
-        <a href="#" style="color:rgba(255,255,255,0.55);text-decoration:none;">Sitemap</a>
+        <a href="{{FT_LEGAL_3_URL}}" style="color:rgba(255,255,255,0.55);text-decoration:none;">{{FT_LEGAL_3_LABEL}}</a>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="font-size:11px;color:rgba(255,255,255,0.55);text-align:center;">{{FT_COPYRIGHT}}</div></div>
       <div style="display:flex;align-items:center;gap:10px;justify-content:flex-end;">
-        <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.4px;text-transform:uppercase;margin-right:4px;">Social Media</span>
+        <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.4px;text-transform:uppercase;margin-right:4px;">{{FT_SOCIAL_LABEL}}</span>
         <a href="{{FT_SOCIAL_FACEBOOK}}" aria-label="Facebook" style="width:34px;height:34px;border-radius:50%;background:#1877F2;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06c0 5.01 3.66 9.16 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.51 1.49-3.9 3.78-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.45 2.91h-2.33V22c4.78-.78 8.44-4.93 8.44-9.94Z"/></svg>
         </a>

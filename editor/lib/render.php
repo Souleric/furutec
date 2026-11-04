@@ -55,6 +55,10 @@ function fx_build_substitutions($page_id, $content) {
     $s['NAV_LOGO_URL']            = fx_asset_url_v(isset($n['logo']) ? $n['logo'] : '');
     $s['NAV_PHONE']               = fx_escape(isset($n['phone']) ? $n['phone'] : '');
     $s['NAV_CONTACT_BUTTON_LABEL']= fx_escape(isset($n['contact_button_label']) ? $n['contact_button_label'] : '');
+    foreach (array('home'=>'Home','company'=>'Company','product'=>'Product','certificates'=>'Certificates','portfolio'=>'Portfolio') as $mk => $md) {
+        $mv = isset($n['menu_'.$mk.'_label']) ? trim((string)$n['menu_'.$mk.'_label']) : '';
+        $s['NAV_MENU_'.strtoupper($mk)] = fx_escape($mv !== '' ? $mv : $md);
+    }
 
     // -------- SHARED: Footer --------
     $ft = isset($shared['footer']) ? $shared['footer'] : array();
@@ -84,6 +88,14 @@ function fx_build_substitutions($page_id, $content) {
         $ftLinks .= '<li style="margin-bottom:10px;"><a href="' . fx_escape($url) . '" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">' . fx_escape($lbl) . '</a></li>' . "\n";
     }
     $s['FT_PRODUCT_LINKS_HTML'] = $ftLinks;
+    // Header Product dropdown mirrors the footer Product column (one source).
+    for ($i = 1; $i <= 5; $i++) {
+        $lbl = isset($ft["product_{$i}_label"]) ? trim((string)$ft["product_{$i}_label"]) : '';
+        $url = isset($ft["product_{$i}_url"])   ? trim((string)$ft["product_{$i}_url"])   : '';
+        if ($lbl === '') { $lbl = $ftDefaults[$i-1][0]; $url = $ftDefaults[$i-1][1]; }
+        $s["NAV_PRODUCT_{$i}_LABEL"] = fx_escape($lbl);
+        $s["NAV_PRODUCT_{$i}_URL"]   = fx_escape($url !== '' ? $url : '#');
+    }
 
     // Footer "Support" column — same mechanism, four links.
     $ftSupDefaults = array(array('Technical Documents','quote.html'), array('Product Catalogue','quote.html'), array('FAQ','quote.html'), array('Warranty','quote.html'));
@@ -111,6 +123,28 @@ function fx_build_substitutions($page_id, $content) {
         $ftInd .= '<li style="margin-bottom:10px;"><a href="' . fx_escape($url) . '" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">' . fx_escape($lbl) . '</a></li>' . "\n";
     }
     $s['FT_INDUSTRY_LINKS_HTML'] = $ftInd;
+
+    // Footer "Company" column — four links, editable.
+    $ftCoDefaults = array(array('About Furutec','index.html#about'), array('Key Projects','portfolio-track-record.html'), array('Certifications','portfolio.html'), array('Contact','quote.html'));
+    $ftCo = '';
+    for ($i = 1; $i <= 4; $i++) {
+        $lbl = isset($ft["company_{$i}_label"]) ? trim((string)$ft["company_{$i}_label"]) : '';
+        $url = isset($ft["company_{$i}_url"])   ? trim((string)$ft["company_{$i}_url"])   : '';
+        if ($lbl === '' && !isset($ft["company_{$i}_label"])) { $lbl = $ftCoDefaults[$i-1][0]; $url = $ftCoDefaults[$i-1][1]; }
+        if ($lbl === '') continue;
+        if ($url === '') $url = '#';
+        $ftCo .= '<li style="margin-bottom:10px;"><a href="' . fx_escape($url) . '" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">' . fx_escape($lbl) . '</a></li>' . "\n";
+    }
+    $s['FT_COMPANY_LINKS_HTML'] = $ftCo;
+    $s['FT_TAGLINE'] = fx_escape((isset($ft['tagline']) && trim((string)$ft['tagline']) !== '') ? $ft['tagline'] : 'Engineering The Future Of Power Distribution — Reliable, Efficient, And Built For Demanding Environments Worldwide.');
+    $legalDefaults = array(1=>array('Privacy Policy','#'), 2=>array('Terms & Conditions','#'), 3=>array('Sitemap','#'));
+    foreach ($legalDefaults as $i => $d) {
+        $lbl = isset($ft["legal_{$i}_label"]) ? trim((string)$ft["legal_{$i}_label"]) : '';
+        $url = isset($ft["legal_{$i}_url"])   ? trim((string)$ft["legal_{$i}_url"])   : '';
+        $s["FT_LEGAL_{$i}_LABEL"] = fx_escape($lbl !== '' ? $lbl : $d[0]);
+        $s["FT_LEGAL_{$i}_URL"]   = fx_escape($url !== '' ? $url : $d[1]);
+    }
+    $s['FT_SOCIAL_LABEL'] = fx_escape((isset($ft['social_label']) && trim((string)$ft['social_label']) !== '') ? $ft['social_label'] : 'Social Media');
     $s['FT_SOCIAL_FACEBOOK']= fx_escape(isset($ft['social_facebook']) ? $ft['social_facebook'] : '#');
     $s['FT_SOCIAL_YOUTUBE'] = fx_escape(isset($ft['social_youtube'])  ? $ft['social_youtube']  : '#');
     $s['FT_SOCIAL_LINKEDIN']= fx_escape(isset($ft['social_linkedin']) ? $ft['social_linkedin'] : '#');
@@ -136,6 +170,10 @@ function fx_build_substitutions($page_id, $content) {
         $s['HERO_HEADLINE_1']   = fx_escape(isset($hero['headline_1']) ? $hero['headline_1'] : '');
         $s['HERO_HEADLINE_2']   = fx_escape(isset($hero['headline_2']) ? $hero['headline_2'] : '');
         $s['HERO_LEDE']         = fx_escape(isset($hero['lede']) ? $hero['lede'] : '');
+        $s['HERO_BUTTON_LABEL'] = fx_escape((isset($hero['button_label']) && trim((string)$hero['button_label']) !== '') ? $hero['button_label'] : 'Discover More');
+        $s['HERO_BUTTON_URL']   = fx_escape((isset($hero['button_url']) && trim((string)$hero['button_url']) !== '') ? $hero['button_url'] : 'product.html');
+        $hc = isset($page['hero_certs']) ? $page['hero_certs'] : array();
+        $s['HERO_CERT_BAR_LABEL'] = fx_escape((isset($hc['bar_label']) && trim((string)$hc['bar_label']) !== '') ? $hc['bar_label'] : 'Certified');
 
         // ---- Hero background: single looping video, or an image slideshow --
         // Built here rather than branched in the template because the
@@ -292,6 +330,7 @@ function fx_build_substitutions($page_id, $content) {
         $pb1 = isset($p['button_1_label']) ? trim((string)$p['button_1_label']) : '';
         $pb2 = isset($p['button_2_label']) ? trim((string)$p['button_2_label']) : '';
         $pb2u= isset($p['button_2_url'])   ? trim((string)$p['button_2_url'])   : '';
+        $s['PRODUCTS_CARD_CTA'] = fx_escape((isset($p['card_cta_label']) && trim((string)$p['card_cta_label']) !== '') ? $p['card_cta_label'] : 'Explore More');
         $s['PRODUCTS_BUTTON_1_LABEL'] = fx_escape($pb1 !== '' ? $pb1 : 'View All Products');
         $s['PRODUCTS_BUTTON_2_LABEL'] = fx_escape($pb2 !== '' ? $pb2 : 'Request a Catalogue');
         $s['PRODUCTS_BUTTON_2_URL']   = fx_escape($pb2u !== '' ? $pb2u : 'quote.html');
@@ -428,6 +467,8 @@ function fx_build_substitutions($page_id, $content) {
             $s[$px.'TITLE']         = fx_lines(isset($p['title'])         ? $p['title']         : '');
             $s[$px.'SUBTITLE']      = fx_lines(isset($p['subtitle'])      ? $p['subtitle']      : '');
             $s[$px.'DESC']          = fx_lines(isset($p['desc'])          ? $p['desc']          : '');
+            $fhDefault = ($b['key'] === 'product_power') ? 'Key Capabilities' : 'Key Features';
+            $s[$px.'FEATURES_HEADING'] = fx_escape((isset($p['features_heading']) && trim((string)$p['features_heading']) !== '') ? $p['features_heading'] : $fhDefault);
 
             // Per-slot placeholders are still emitted (harmless, and any
             // template that references one directly keeps working).
@@ -515,7 +556,7 @@ function fx_build_substitutions($page_id, $content) {
                            . '<span class="value">' . $valHtml . '</span></div>';
             }
             $s[$px.'SPEC_BLOCK_HTML'] = ($specFilled === 0) ? ''
-                : '<div class="ps-content-section-label">Technical Specification</div>'
+                : '<div class="ps-content-section-label">' . fx_escape((isset($p['spec_heading']) && trim((string)$p['spec_heading']) !== '') ? $p['spec_heading'] : 'Technical Specification') . '</div>'
                 . '<div class="ps-spec-rows">' . $specRows . '</div>'
                 . '<div class="ps-content-divider"></div>';
             if ($b['diagram'] === 'single') {
@@ -550,6 +591,12 @@ function fx_build_substitutions($page_id, $content) {
         $s['CT_FORM_REASSURE'] = fx_escape(isset($fm['reassure']) ? $fm['reassure'] : '');
         $cfSubmit = isset($fm['submit_label']) ? trim((string)$fm['submit_label']) : '';
         $s['CT_FORM_SUBMIT_LABEL'] = fx_escape($cfSubmit !== '' ? $cfSubmit : 'Submit Enquiry');
+        foreach (array('topic'=>'Select Topic *','name'=>'Full Name *','email'=>'Corporate Email *','phone'=>'Phone Number *','country'=>'Country *','message'=>'Project Description *') as $lk => $ld) {
+            $lv = isset($fm['label_'.$lk]) ? trim((string)$fm['label_'.$lk]) : '';
+            $s['CT_FORM_LABEL_'.strtoupper($lk)] = fx_escape($lv !== '' ? $lv : $ld);
+        }
+        $cl = isset($page['contact_locations']) ? $page['contact_locations'] : array();
+        $s['CT_LOC_DIRECTIONS_LABEL'] = fx_escape((isset($cl['directions_label']) && trim((string)$cl['directions_label']) !== '') ? $cl['directions_label'] : 'Directions');
 
         // Locations + map
         $l = isset($page['contact_locations']) ? $page['contact_locations'] : array();

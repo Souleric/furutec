@@ -100,6 +100,11 @@ return array(
             'shared'  => true,
             'preview_target' => 'header',
             'fields'  => array(
+                'menu_home_label'         => array('type'=>'text','group'=>'Menu labels','label'=>'Home','default'=>'Home','max'=>30),
+                'menu_company_label'      => array('type'=>'text','group'=>'Menu labels','label'=>'Company','default'=>'Company','max'=>30),
+                'menu_product_label'      => array('type'=>'text','group'=>'Menu labels','label'=>'Product','help'=>'The dropdown under it lists the five products from the Footer \'Product column links\'.','default'=>'Product','max'=>30),
+                'menu_certificates_label' => array('type'=>'text','group'=>'Menu labels','label'=>'Certificates','default'=>'Certificates','max'=>30),
+                'menu_portfolio_label'    => array('type'=>'text','group'=>'Menu labels','label'=>'Portfolio','default'=>'Portfolio','max'=>30),
                 'logo' => array('type'=>'image','label'=>'Header logo','help'=>'PNG or JPG. Currently 54 px tall on desktop.','max_mb'=>5),
                 'phone' => array('type'=>'text','label'=>'Phone number','help'=>'Shown in the top-right of every page.','max'=>40),
                 'contact_button_label' => array('type'=>'text','label'=>'Contact button label','max'=>30),
@@ -141,6 +146,22 @@ return array(
                 'industry_3_url'   => array('type'=>'text','group'=>'Industries column links','label'=>'Link 3 URL','default'=>'portfolio-track-record.html#infrastructure','max'=>300),
                 'industry_4_label' => array('type'=>'text','group'=>'Industries column links','label'=>'Link 4 label','default'=>'Medical & Healthcare','max'=>60),
                 'industry_4_url'   => array('type'=>'text','group'=>'Industries column links','label'=>'Link 4 URL','default'=>'portfolio-track-record.html#medical','max'=>300),
+                'company_1_label' => array('type'=>'text','group'=>'Company column links','label'=>'Link 1 label','default'=>'About Furutec','max'=>60),
+                'company_1_url'   => array('type'=>'text','group'=>'Company column links','label'=>'Link 1 URL','default'=>'index.html#about','max'=>300),
+                'company_2_label' => array('type'=>'text','group'=>'Company column links','label'=>'Link 2 label','default'=>'Key Projects','max'=>60),
+                'company_2_url'   => array('type'=>'text','group'=>'Company column links','label'=>'Link 2 URL','default'=>'portfolio-track-record.html','max'=>300),
+                'company_3_label' => array('type'=>'text','group'=>'Company column links','label'=>'Link 3 label','default'=>'Certifications','max'=>60),
+                'company_3_url'   => array('type'=>'text','group'=>'Company column links','label'=>'Link 3 URL','default'=>'portfolio.html','max'=>300),
+                'company_4_label' => array('type'=>'text','group'=>'Company column links','label'=>'Link 4 label','default'=>'Contact','max'=>60),
+                'company_4_url'   => array('type'=>'text','group'=>'Company column links','label'=>'Link 4 URL','default'=>'quote.html','max'=>300),
+                'tagline'         => array('type'=>'textarea','group'=>'Bottom row','label'=>'Tagline under the logo','help'=>'Shown on every page except the homepage.','rows'=>2,'default'=>'Engineering The Future Of Power Distribution — Reliable, Efficient, And Built For Demanding Environments Worldwide.','max'=>200),
+                'legal_1_label'   => array('type'=>'text','group'=>'Bottom row','label'=>'Legal link 1 label','default'=>'Privacy Policy','max'=>40),
+                'legal_1_url'     => array('type'=>'text','group'=>'Bottom row','label'=>'Legal link 1 URL','default'=>'#','max'=>300),
+                'legal_2_label'   => array('type'=>'text','group'=>'Bottom row','label'=>'Legal link 2 label','default'=>'Terms & Conditions','max'=>40),
+                'legal_2_url'     => array('type'=>'text','group'=>'Bottom row','label'=>'Legal link 2 URL','default'=>'#','max'=>300),
+                'legal_3_label'   => array('type'=>'text','group'=>'Bottom row','label'=>'Legal link 3 label','default'=>'Sitemap','max'=>40),
+                'legal_3_url'     => array('type'=>'text','group'=>'Bottom row','label'=>'Legal link 3 URL','default'=>'#','max'=>300),
+                'social_label'    => array('type'=>'text','group'=>'Bottom row','label'=>'Social media label','default'=>'Social Media','max'=>30),
                 'support_1_label' => array('type'=>'text','group'=>'Support column links','label'=>'Link 1 label','default'=>'Technical Documents','max'=>60),
                 'support_1_url'   => array('type'=>'text','group'=>'Support column links','label'=>'Link 1 URL','help'=>'Points to the contact page until there is a document or page to link to.','default'=>'quote.html','max'=>300),
                 'support_2_label' => array('type'=>'text','group'=>'Support column links','label'=>'Link 2 label','default'=>'Product Catalogue','max'=>60),
@@ -168,6 +189,8 @@ return array(
             'summary' => 'Big headline over a background video or image slideshow.',
             'preview_target' => '.ft-hero',
             'fields'  => array(
+                'button_label' => array('type'=>'text','group'=>'Button','label'=>'Button label','default'=>'Discover More','max'=>40),
+                'button_url'   => array('type'=>'text','group'=>'Button','label'=>'Button link','default'=>'product.html','max'=>300),
                 'headline_1' => array('type'=>'text','label'=>'Headline · Line 1','help'=>'Big white text at the top of the hero.','max'=>60),
                 'headline_2' => array('type'=>'text','label'=>'Headline · Line 2 (accent color)','max'=>60),
                 'lede'       => array('type'=>'textarea','label'=>'Subtitle paragraph','rows'=>3,'max'=>400),
@@ -240,6 +263,7 @@ return array(
             'summary' => '7 certification-mark logos shown in the white strip below the hero button.',
             'preview_target' => '.ft-hero-cert-bar',
             'fields'  => array(
+                'bar_label' => array('type'=>'text','label'=>'Bar label','help'=>'The word before the certification logos.','default'=>'Certified','max'=>30),
                 'cert_1_image' => array('type'=>'image','group'=>'Cert 1','label'=>'Logo','max_mb'=>2),
                 'cert_1_alt'   => array('type'=>'text', 'group'=>'Cert 1','label'=>'Alt text (for screen readers)','max'=>60),
                 'cert_2_image' => array('type'=>'image','group'=>'Cert 2','label'=>'Logo','max_mb'=>2),
@@ -330,6 +354,7 @@ return array(
                 'section_heading_1' => array('type'=>'text','label'=>'Heading · Line 1','max'=>80),
                 'section_heading_2' => array('type'=>'text','label'=>'Heading · Line 2 (accent)','max'=>60),
                 'section_subtitle'  => array('type'=>'textarea','label'=>'Section subtitle','rows'=>3,'max'=>400),
+                'card_cta_label' => array('type'=>'text','group'=>'Cards','label'=>'Card link label','help'=>'The small label at the bottom of each of the 5 cards.','default'=>'Explore More','max'=>30),
                 'button_1_label' => array('type'=>'text','group'=>'Buttons','label'=>'Button 1 label','help'=>'Links to the product page.','default'=>'View All Products','max'=>40),
                 'button_2_label' => array('type'=>'text','group'=>'Buttons','label'=>'Button 2 label','default'=>'Request a Catalogue','max'=>40),
                 'button_2_url'   => array('type'=>'text','group'=>'Buttons','label'=>'Button 2 link','help'=>'Default is quote.html (the contact form). Can also be a PDF from the Media Library.','default'=>'quote.html','max'=>300),
@@ -544,6 +569,12 @@ return array(
             'preview_target' => '#quote-form',
             'fields'  => array(
                 'title'     => array('type'=>'text','label'=>'Form title','help'=>'Small heading above the form.','max'=>60),
+                'label_topic'   => array('type'=>'text','group'=>'Field labels','label'=>'Topic','default'=>'Select Topic *','max'=>40),
+                'label_name'    => array('type'=>'text','group'=>'Field labels','label'=>'Full name','default'=>'Full Name *','max'=>40),
+                'label_email'   => array('type'=>'text','group'=>'Field labels','label'=>'Email','default'=>'Corporate Email *','max'=>40),
+                'label_phone'   => array('type'=>'text','group'=>'Field labels','label'=>'Phone','default'=>'Phone Number *','max'=>40),
+                'label_country' => array('type'=>'text','group'=>'Field labels','label'=>'Country','default'=>'Country *','max'=>40),
+                'label_message' => array('type'=>'text','group'=>'Field labels','label'=>'Project description','default'=>'Project Description *','max'=>40),
                 'submit_label' => array('type'=>'text','label'=>'Submit button label','default'=>'Submit Enquiry','max'=>40),
                 'reassure'  => array('type'=>'text','label'=>'Reassurance line','help'=>'Shown below the submit button. Use · for dot separator.','max'=>200),
             ),
@@ -554,6 +585,7 @@ return array(
             'summary' => 'Company name, two addresses, map tabs.',
             'preview_target' => '#gi-map-tabs',
             'fields'  => array(
+                'directions_label' => array('type'=>'text','label'=>'"Directions" link label','default'=>'Directions','max'=>30),
                 'company_name'    => array('type'=>'text','label'=>'Company name','max'=>80),
                 'loc_1_label'     => array('type'=>'text','group'=>'Location 1','label'=>'Small label','help'=>'Shown above the address (e.g. "Headquarters").','max'=>40),
                 'loc_1_addr'      => array('type'=>'textarea','group'=>'Location 1','label'=>'Address','help'=>'One address line per line. Line breaks show as new lines on the site.','rows'=>3,'max'=>400),
@@ -630,6 +662,8 @@ return array(
             'fields'  => array_merge(
                 array(
                     'section_title' => array('type'=>'text','label'=>'Section title (uppercase)','max'=>80),
+                    'features_heading' => array('type'=>'text','group'=>'Content panel','label'=>'Features heading','default'=>'Key Features','max'=>40),
+                    'spec_heading'     => array('type'=>'text','group'=>'Content panel','label'=>'Specification heading','default'=>'Technical Specification','max'=>40),
                     'tag_label'     => array('type'=>'text','group'=>'Content panel','label'=>'Tag pill label','max'=>30),
                     'title'         => array('type'=>'text','group'=>'Content panel','label'=>'Product title','max'=>80),
                     'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
@@ -657,6 +691,8 @@ return array(
             'fields'  => array_merge(
                 array(
                     'section_title' => array('type'=>'text','label'=>'Section title (uppercase)','max'=>80),
+                    'features_heading' => array('type'=>'text','group'=>'Content panel','label'=>'Features heading','default'=>'Key Features','max'=>40),
+                    'spec_heading'     => array('type'=>'text','group'=>'Content panel','label'=>'Specification heading','default'=>'Technical Specification','max'=>40),
                     'tag_label'     => array('type'=>'text','group'=>'Content panel','label'=>'Tag pill label','max'=>30),
                     'title'         => array('type'=>'text','group'=>'Content panel','label'=>'Product title','max'=>80),
                     'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
@@ -680,6 +716,8 @@ return array(
             'fields'  => array_merge(
                 array(
                     'section_title' => array('type'=>'text','label'=>'Section title (uppercase)','max'=>80),
+                    'features_heading' => array('type'=>'text','group'=>'Content panel','label'=>'Features heading','default'=>'Key Features','max'=>40),
+                    'spec_heading'     => array('type'=>'text','group'=>'Content panel','label'=>'Specification heading','default'=>'Technical Specification','max'=>40),
                     'tag_label'     => array('type'=>'text','group'=>'Content panel','label'=>'Tag pill label','max'=>30),
                     'title'         => array('type'=>'text','group'=>'Content panel','label'=>'Product title','max'=>80),
                     'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
@@ -703,6 +741,8 @@ return array(
             'fields'  => array_merge(
                 array(
                     'section_title' => array('type'=>'text','label'=>'Section title (uppercase)','max'=>80),
+                    'features_heading' => array('type'=>'text','group'=>'Content panel','label'=>'Features heading','default'=>'Key Capabilities','max'=>40),
+                    'spec_heading'     => array('type'=>'text','group'=>'Content panel','label'=>'Specification heading','default'=>'Technical Specification','max'=>40),
                     'tag_label'     => array('type'=>'text','group'=>'Content panel','label'=>'Tag pill label','max'=>30),
                     'title'         => array('type'=>'text','group'=>'Content panel','label'=>'Product title','max'=>80),
                     'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
@@ -721,6 +761,8 @@ return array(
             'fields'  => array_merge(
                 array(
                     'section_title' => array('type'=>'text','label'=>'Section title (uppercase)','max'=>80),
+                    'features_heading' => array('type'=>'text','group'=>'Content panel','label'=>'Features heading','default'=>'Key Features','max'=>40),
+                    'spec_heading'     => array('type'=>'text','group'=>'Content panel','label'=>'Specification heading','default'=>'Technical Specification','max'=>40),
                     'tag_label'     => array('type'=>'text','group'=>'Content panel','label'=>'Tag pill label','max'=>30),
                     'title'         => array('type'=>'text','group'=>'Content panel','label'=>'Product title','max'=>80),
                     'subtitle'      => array('type'=>'text','group'=>'Content panel','label'=>'Subtitle (italic)','max'=>120),
