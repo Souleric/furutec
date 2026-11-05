@@ -4,9 +4,9 @@
     --fx-brand: #2E3192;
     --fx-brand-dark: #1E2170;
     --fx-ink: #111114;
-    --fx-ink-muted: #4A4A57;   /* readability pass 2026-11-05: was #5b5b66 */
-    --fx-line: #E4E4EA;
-    --fx-line-strong: #C7C7D1;
+    --fx-ink-muted: #3A3A46;   /* contrast pass 2026-11-05: #5b5b66 → #4A4A57 → #3A3A46 (~10:1 on white) */
+    --fx-line: #CFCFD9;        /* dividers, was #E4E4EA */
+    --fx-line-strong: #9A9AAA; /* input borders, was #C7C7D1 */
     --fx-bg: #F5F5F8;
     --fx-panel: #FFFFFF;
     --fx-ok: #1B7A34;
@@ -91,7 +91,7 @@ a:hover { text-decoration: underline; }
 .fx-field { display: block; margin-bottom: 18px; }
 .fx-field-label {
     display: block;
-    font-size: 13.5px; font-weight: 600; color: var(--fx-ink);
+    font-size: 13.5px; font-weight: 700; color: #000;
     text-transform: none; letter-spacing: 0;
     margin-bottom: 6px;
 }
@@ -99,8 +99,8 @@ a:hover { text-decoration: underline; }
     display: block; width: 100%;
     padding: 10px 12px;
     font-family: var(--fx-font); font-size: 14.5px; line-height: 1.4;
-    color: var(--fx-ink); background: #fff;
-    border: 1px solid var(--fx-line-strong);
+    color: #000; background: #fff;
+    border: 1.5px solid var(--fx-line-strong);
     border-radius: var(--fx-radius);
     transition: border-color .12s, box-shadow .12s;
 }
@@ -228,8 +228,8 @@ a:hover { text-decoration: underline; }
     font-size: 12px; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.08em;
     color: var(--fx-brand);
-    padding: 14px 20px 6px;
-    background: #FAFAFC;
+    padding: 14px 20px 8px;
+    background: #EEF0F7; border-top: 1px solid var(--fx-line);
 }
 .fx-page-sections { display: none; }
 .fx-page-sections.is-active { display: block; }
@@ -251,11 +251,11 @@ a:hover { text-decoration: underline; }
 .fx-acc-head:hover { background: #FAFAFC; }
 .fx-acc-title {
     grid-column: 1;
-    font-size: 15px; font-weight: 700; color: var(--fx-ink);
+    font-size: 15px; font-weight: 700; color: #000;
 }
 .fx-acc-summary {
     grid-column: 1; grid-row: 2;
-    font-size: 13px; color: var(--fx-ink-muted); font-weight: 400;
+    font-size: 13px; color: var(--fx-ink-muted); font-weight: 500;
     line-height: 1.4;
 }
 .fx-acc-chev {
@@ -267,11 +267,11 @@ a:hover { text-decoration: underline; }
 .fx-acc-body {
     display: none;
     padding: 4px 20px 22px;
-    background: #FAFAFC;
+    background: #FFFFFF;
     border-top: 1px solid var(--fx-line);
 }
 .fx-acc.is-open .fx-acc-body { display: block; }
-.fx-acc.is-open { background: #fff; }
+.fx-acc.is-open { background: #fff; box-shadow: inset 3px 0 0 var(--fx-brand); }
 
 /* ---- Focused-from-preview highlight ----
  * When the user clicks a section inside the preview iframe, the matching
@@ -300,12 +300,12 @@ a:hover { text-decoration: underline; }
 
 /* ---- Field group headers within an accordion body ---- */
 .fx-group-head {
-    font-size: 12.5px; font-weight: 700;
+    font-size: 13px; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.06em;
     color: var(--fx-brand);
-    margin: 18px 0 8px;
+    margin: 20px 0 10px;
     padding-bottom: 4px;
-    border-bottom: 1px dashed var(--fx-line);
+    border-bottom: 2px solid #DADAE6;
 }
 .fx-acc-body > .fx-group-head:first-child { margin-top: 12px; }
 
