@@ -209,7 +209,7 @@ $firstPageId = array_keys($pages)[0];
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>Furutec Editor</title>
-    <link rel="stylesheet" href="assets/editor.css?v=26"/>
+    <link rel="stylesheet" href="assets/editor.css?v=27"/>
     <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%232E3192'/><text x='50' y='72' text-anchor='middle' font-family='-apple-system,Arial,sans-serif' font-weight='800' font-size='62' fill='white'>F</text></svg>"/>
     <meta name="robots" content="noindex, nofollow"/>
 </head>
@@ -485,14 +485,17 @@ $firstPageId = array_keys($pages)[0];
 <?php
 $labels = array();
 foreach ($pages as $pid => $pdef) $labels[$pid] = $pdef['label'];
+$pageFiles = array();
+foreach ($pages as $pid => $pdef) $pageFiles[$pid] = $pdef['live_file'];
 ?>
 <script>
 window.FX = {
     csrf: <?= fx_json_encode($csrf) ?>,
     pageLabels: <?= fx_json_encode($labels) ?>,
+    pageFiles: <?= fx_json_encode($pageFiles) ?>,
     publishingEnabled: <?= $publishingEnabled ? 'true' : 'false' ?>
 };
 </script>
-<script src="assets/editor.js?v=26"></script>
+<script src="assets/editor.js?v=27"></script>
 </body>
 </html>

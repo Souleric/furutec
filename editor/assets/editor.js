@@ -108,6 +108,89 @@
         void acc.offsetWidth;
         acc.classList.add('is-focused');
     }
+    // ---- Preview click → sidebar field -------------------------------
+    // Normalise text the same way fx_lines() splits values: a field whose
+    // value is "A | B" or "A\nB" renders as two lines, so match any line.
+    function fxNormText(s) { return (s || '').replace(/\s+/g, ' ').trim(); }
+    function fxFieldLines(v) {
+        return String(v || '').split(/\s*\|\s*|\r?\n/).map(fxNormText).filter(Boolean);
+    }
+    // The element whose own text the user most likely meant: the clicked
+    // node's nearest link/button/heading/paragraph/list item/cell.
+    function fxClickedTextOf(target) {
+        var el = target.nodeType === 3 ? target.parentElement : target;
+        var pick = el && el.closest ? el.closest('a, button, h1, h2, h3, h4, h5, h6, p, li, label, td, th, span, div') : el;
+        if (!pick) return '';
+        // Prefer the deepest element that still carries the clicked text.
+        var txt = fxNormText(pick.textContent);
+        if (txt.length > 160 && el && el !== pick) txt = fxNormText(el.textContent);
+        return txt;
+    }
+    function fxFindFieldForPreviewClick(target, link, activeBlock) {
+        var text = fxClickedTextOf(target);
+        var href = link ? (link.getAttribute('href') || '') : '';
+        // Fields on the current page first, then the shared nav/footer.
+        var scopes = [activeBlock, document.querySelector('.fx-shared-block')];
+        var textHits = [], byHref = null;
+        for (var s = 0; s < scopes.length && !textHits.length; s++) {
+            if (!scopes[s]) continue;
+            var inputs = scopes[s].querySelectorAll('.fx-track');
+            for (var i = 0; i < inputs.length; i++) {
+                var inp = inputs[i];
+                if (inp.type === 'hidden' || inp.type === 'file') continue;
+                var key = inp.getAttribute('data-field') || '';
+                var v = inp.value;
+                if (text && text.length >= 2 && fxFieldLines(v).indexOf(text) !== -1) textHits.push(inp);
+                if (href && !byHref && /_url$/.test(key) && fxNormText(v) === href) byHref = inp;
+            }
+        }
+        // Several fields can hold the same words (a section's eyebrow and
+        // its button both say "Get In Touch").  A click on a link/button
+        // means the button-ish field; otherwise the first match wins.
+        var byText = null;
+        if (textHits.length) {
+            var clickedButton = !!(link || (target.closest && target.closest('button, .btn-dark, .btn-outline, [class*="btn"]')));
+            if (clickedButton) {
+                for (var h = 0; h < textHits.length; h++) {
+                    // Test the field name only (not the section, e.g. "quote_cta").
+                    var fname = (textHits[h].getAttribute('data-field') || '').split('.').pop();
+                    if (/button|cta|link|_label$/.test(fname)) { byText = textHits[h]; break; }
+                }
+            }
+            if (!byText) byText = textHits[0];
+        }
+        var hit = byText || byHref;
+        if (!hit) return null;
+        // For a "<x>_url" hit prefer its partner label field so the client
+        // lands on the wording, with the URL right below it.
+        if (hit === byHref) {
+            var k = hit.getAttribute('data-field') || '';
+            var lbl = document.querySelector('.fx-track[data-field="' + k.replace(/_url$/, '_label') + '"]');
+            if (lbl) hit = lbl;
+        }
+        return hit;
+    }
+    function fxFocusField(input) {
+        var acc = input.closest('.fx-acc');
+        if (acc) {
+            // Keep the rest of the UI consistent with a manual click.
+            var others = document.querySelectorAll('.fx-acc.is-focused');
+            for (var i = 0; i < others.length; i++) if (others[i] !== acc) others[i].classList.remove('is-focused');
+            acc.classList.add('is-open');
+            var head = acc.querySelector('.fx-acc-head');
+            if (head) head.setAttribute('aria-expanded', 'true');
+            acc.classList.add('is-focused');
+            fxGrowAll(acc);
+        }
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Focus after the scroll settles so the highlight (focusin) paints
+        // against the final layout.
+        setTimeout(function () {
+            try { input.focus({ preventScroll: true }); } catch (e) { input.focus(); }
+            if (typeof input.select === 'function' && input.tagName === 'INPUT') input.select();
+        }, 250);
+    }
+
     function installPreviewClickTracker() {
         try {
             var doc = preview && preview.contentDocument;
@@ -116,12 +199,40 @@
             if (doc.body.dataset.fxTrackerInstalled === '1') return;
             doc.body.dataset.fxTrackerInstalled = '1';
 
+            // Forms in the preview must never submit (the contact form would
+            // post to contact.php from inside the editor).
+            doc.addEventListener('submit', function (e) { e.preventDefault(); }, true);
+
             doc.addEventListener('click', function (e) {
-                // Build the list of selectors *currently* active (this page).
-                // Doing it lazily on click keeps things correct even if
-                // Amy switches pages/expands accordions mid-session.
                 var active = document.querySelector('.fx-page-sections.is-active');
                 if (!active) return;
+
+                // A link in the preview never navigates: the preview is for
+                // editing, not browsing.  Instead, clicking anything opens
+                // the field that controls it (below); a link to another page
+                // of the site switches the editor to that page.
+                var link = e.target.closest ? e.target.closest('a[href]') : null;
+                if (link) e.preventDefault();
+
+                // 1. Exact match: the clicked text (or the link's address) is
+                //    the value of a sidebar field → open and focus that field.
+                var hit = fxFindFieldForPreviewClick(e.target, link, active);
+                if (hit) { fxFocusField(hit); return; }
+
+                // 2. A link to another page of the site → switch the editor
+                //    to that page (same as using the page picker).
+                if (link) {
+                    var href = (link.getAttribute('href') || '').split('#')[0].split('?')[0];
+                    var files = (window.FX && window.FX.pageFiles) || {};
+                    for (var pid in files) {
+                        if (files[pid] === href && pid !== currentPage) {
+                            var btn = document.querySelector('.fx-picker-btn[data-page="' + pid + '"]');
+                            if (btn) { btn.click(); return; }
+                        }
+                    }
+                }
+
+                // 3. Otherwise fall back to highlighting the section.
                 var accs = active.querySelectorAll('.fx-acc[data-preview-target]');
                 var pairs = [];
                 for (var i = 0; i < accs.length; i++) {
