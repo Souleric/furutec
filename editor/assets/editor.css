@@ -4,7 +4,7 @@
     --fx-brand: #2E3192;
     --fx-brand-dark: #1E2170;
     --fx-ink: #111114;
-    --fx-ink-muted: #5b5b66;
+    --fx-ink-muted: #4A4A57;   /* readability pass 2026-11-05: was #5b5b66 */
     --fx-line: #E4E4EA;
     --fx-line-strong: #C7C7D1;
     --fx-bg: #F5F5F8;
@@ -24,8 +24,8 @@ body {
     font-family: var(--fx-font);
     color: var(--fx-ink);
     background: var(--fx-bg);
-    font-size: 14px;
-    line-height: 1.45;
+    font-size: 15px;
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
 }
 a { color: var(--fx-brand); text-decoration: none; }
@@ -34,8 +34,8 @@ a:hover { text-decoration: underline; }
 /* ---- Buttons ---- */
 .fx-btn {
     display: inline-flex; align-items: center; justify-content: center;
-    height: 34px; padding: 0 14px;
-    font-family: var(--fx-font); font-size: 13px; font-weight: 600;
+    height: 36px; padding: 0 14px;
+    font-family: var(--fx-font); font-size: 13.5px; font-weight: 600;
     color: var(--fx-ink);
     background: #fff; border: 1px solid var(--fx-line-strong);
     border-radius: var(--fx-radius);
@@ -91,14 +91,14 @@ a:hover { text-decoration: underline; }
 .fx-field { display: block; margin-bottom: 18px; }
 .fx-field-label {
     display: block;
-    font-size: 12px; font-weight: 600; color: var(--fx-ink);
-    text-transform: uppercase; letter-spacing: 0.04em;
+    font-size: 13.5px; font-weight: 600; color: var(--fx-ink);
+    text-transform: none; letter-spacing: 0;
     margin-bottom: 6px;
 }
 .fx-input, .fx-textarea {
     display: block; width: 100%;
-    padding: 9px 11px;
-    font-family: var(--fx-font); font-size: 14px; line-height: 1.4;
+    padding: 10px 12px;
+    font-family: var(--fx-font); font-size: 14.5px; line-height: 1.4;
     color: var(--fx-ink); background: #fff;
     border: 1px solid var(--fx-line-strong);
     border-radius: var(--fx-radius);
@@ -114,9 +114,9 @@ a:hover { text-decoration: underline; }
 }
 .fx-hint {
     display: block; margin-top: 6px;
-    font-size: 12px; color: var(--fx-ink-muted); line-height: 1.4;
+    font-size: 13px; color: var(--fx-ink-muted); line-height: 1.5;
 }
-.fx-hint code { background: #EEEEF3; padding: 1px 4px; border-radius: 3px; font-size: 11.5px; }
+.fx-hint code { background: #EEEEF3; padding: 1px 4px; border-radius: 3px; font-size: 12.5px; }
 
 /* ---- App shell ---- */
 .fx-body { overflow: hidden; }
@@ -129,9 +129,9 @@ a:hover { text-decoration: underline; }
 }
 .fx-topbar-left, .fx-topbar-right { display: flex; align-items: center; gap: 10px; }
 .fx-brand { font-weight: 700; font-size: 15px; color: var(--fx-ink); letter-spacing: -0.01em; padding-right: 8px; }
-.fx-brand-sub { font-size: 12px; color: var(--fx-ink-muted); border-left: 1px solid var(--fx-line); padding-left: 12px; }
+.fx-brand-sub { font-size: 13px; color: var(--fx-ink-muted); border-left: 1px solid var(--fx-line); padding-left: 12px; }
 .fx-status {
-    font-size: 12px; color: var(--fx-ink-muted);
+    font-size: 13px; color: var(--fx-ink-muted);
     min-width: 140px; text-align: right;
 }
 .fx-status.is-ok  { color: var(--fx-ok); }
@@ -168,7 +168,7 @@ a:hover { text-decoration: underline; }
 }
 .fx-picker-label {
     display: block;
-    font-size: 10.5px; font-weight: 700;
+    font-size: 12px; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.08em;
     color: var(--fx-ink-muted);
     margin: 0 0 8px 2px;
@@ -181,7 +181,7 @@ a:hover { text-decoration: underline; }
     display: flex; align-items: center; gap: 8px;
     width: 100%; text-align: left;
     padding: 9px 12px 9px 11px;
-    font-size: 13px; font-weight: 600;
+    font-size: 14px; font-weight: 600;
     font-family: var(--fx-font);
     color: var(--fx-ink-muted);
     background: transparent;
@@ -225,7 +225,7 @@ a:hover { text-decoration: underline; }
 /* ---- Shared block header ---- */
 .fx-shared-block { }
 .fx-shared-title, .fx-page-title {
-    font-size: 10.5px; font-weight: 700;
+    font-size: 12px; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.08em;
     color: var(--fx-brand);
     padding: 14px 20px 6px;
@@ -251,11 +251,11 @@ a:hover { text-decoration: underline; }
 .fx-acc-head:hover { background: #FAFAFC; }
 .fx-acc-title {
     grid-column: 1;
-    font-size: 14px; font-weight: 700; color: var(--fx-ink);
+    font-size: 15px; font-weight: 700; color: var(--fx-ink);
 }
 .fx-acc-summary {
     grid-column: 1; grid-row: 2;
-    font-size: 12px; color: var(--fx-ink-muted); font-weight: 400;
+    font-size: 13px; color: var(--fx-ink-muted); font-weight: 400;
     line-height: 1.4;
 }
 .fx-acc-chev {
@@ -300,7 +300,7 @@ a:hover { text-decoration: underline; }
 
 /* ---- Field group headers within an accordion body ---- */
 .fx-group-head {
-    font-size: 11.5px; font-weight: 700;
+    font-size: 12.5px; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.06em;
     color: var(--fx-brand);
     margin: 18px 0 8px;
@@ -326,7 +326,7 @@ a:hover { text-decoration: underline; }
 .fx-media-controls { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
 .fx-media-filename {
     flex: 1 1 auto;
-    font-size: 12px; color: var(--fx-ink-muted);
+    font-size: 12.5px; color: var(--fx-ink-muted);
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     max-width: 240px;
 }
@@ -343,8 +343,8 @@ a:hover { text-decoration: underline; }
     height: 40px; padding: 0 16px;
     background: #FFFFFF; border-bottom: 1px solid var(--fx-line);
 }
-.fx-preview-label { font-size: 12px; font-weight: 600; color: var(--fx-ink); flex: 1 1 auto; }
-.fx-preview-hint  { font-size: 11.5px; color: var(--fx-ink-muted); }
+.fx-preview-label { font-size: 13px; font-weight: 600; color: var(--fx-ink); flex: 1 1 auto; }
+.fx-preview-hint  { font-size: 12.5px; color: var(--fx-ink-muted); }
 
 /* ---- Device toggle (Desktop / Tablet / Mobile) ---- */
 .fx-device-toggle {
@@ -358,7 +358,7 @@ a:hover { text-decoration: underline; }
 .fx-device-btn {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 4px 10px; border: 0; background: transparent;
-    font-family: var(--fx-font); font-size: 11.5px; font-weight: 600;
+    font-family: var(--fx-font); font-size: 12.5px; font-weight: 600;
     color: var(--fx-ink-muted);
     border-radius: 4px; cursor: pointer;
     transition: background .12s, color .12s, box-shadow .12s;
@@ -384,7 +384,7 @@ a:hover { text-decoration: underline; }
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%234A4A52' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");
     background-repeat: no-repeat;
     background-position: right 8px center;
-    font-family: var(--fx-font); font-size: 11.5px; font-weight: 600;
+    font-family: var(--fx-font); font-size: 12.5px; font-weight: 600;
     color: var(--fx-ink);
     -webkit-appearance: none; -moz-appearance: none; appearance: none;
     cursor: pointer;
@@ -550,7 +550,7 @@ body.fx-lib-open { overflow: hidden; }
 .fx-lib-body::-webkit-scrollbar-thumb:hover { background: var(--fx-ink-muted); }
 .fx-lib-empty { text-align: center; color: var(--fx-ink-muted); font-size: 13px; padding: 48px 0; }
 .fx-lib-divider {
-    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
     letter-spacing: .06em; color: var(--fx-ink-muted);
     margin: 22px 0 10px; padding-bottom: 4px;
     border-bottom: 1px dashed var(--fx-line);
@@ -576,11 +576,11 @@ body.fx-lib-open { overflow: hidden; }
 .fx-lib-thumb-video, .fx-lib-thumb-folder { color: var(--fx-ink-muted); }
 .fx-lib-thumb-video { background: #EEEEF3; }
 .fx-lib-name {
-    font-size: 11.5px; font-weight: 600; color: var(--fx-ink);
+    font-size: 12.5px; font-weight: 600; color: var(--fx-ink);
     line-height: 1.3; word-break: break-word;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-.fx-lib-meta { font-size: 10.5px; color: var(--fx-ink-muted); margin-top: 3px; }
+.fx-lib-meta { font-size: 11.5px; color: var(--fx-ink-muted); margin-top: 3px; }
 .fx-lib-used { color: var(--fx-ok); font-weight: 700; }
 
 /* Delete affordance — only on hover, so it can't be hit by accident */
@@ -651,7 +651,7 @@ body.fx-lib-open { overflow: hidden; }
 }
 .fx-field[data-field-key*=".slide_"] .fx-media-empty {
     padding: 0 4px;
-    font-size: 10px;
+    font-size: 11.5px;
     line-height: 1.25;
     text-align: center;
 }
@@ -663,14 +663,14 @@ body.fx-lib-open { overflow: hidden; }
 }
 .fx-field[data-field-key*=".slide_"] .fx-media-filename {
     max-width: 100%;
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.3;
 }
 .fx-field[data-field-key*=".slide_"] .fx-media-btns { gap: 6px; }
 .fx-field[data-field-key*=".slide_"] .fx-media-btns .fx-btn {
     height: 26px;
     padding: 0 9px;
-    font-size: 11.5px;
+    font-size: 12.5px;
 }
 /* Tighter label + spacing on these slots too */
 .fx-field[data-field-key*=".slide_"] { margin-bottom: 10px; }
@@ -868,7 +868,7 @@ body.fx-lib-open { overflow: hidden; }
 }
 .fx-intro-steps li { margin-bottom: 2px; }
 .fx-intro-foot {
-    display: block; font-size: 11.5px; color: var(--fx-ink-muted); line-height: 1.5;
+    display: block; font-size: 12.5px; color: var(--fx-ink-muted); line-height: 1.5;
 }
 .fx-intro-x {
     position: absolute; top: 6px; right: 8px;

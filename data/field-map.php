@@ -29,7 +29,7 @@ if (!function_exists('fx_gallery_fields')) {
         $out = array();
         for ($i = 1; $i <= $count; $i++) {
             $out["feature_{$i}"] = array(
-                'type'=>'lines','group'=>'Key features / capabilities','label'=>"Item $i",'help'=>'Press Enter where you want a new line.','max'=>200,
+                'type'=>'lines','group'=>'Key features / capabilities','label'=>"Item $i",'help'=>($i === 1 ? 'Press Enter inside any item to start a new line. Blank items are not shown.' : ''),'max'=>200,
             );
         }
         return $out;
@@ -41,7 +41,7 @@ if (!function_exists('fx_gallery_fields')) {
                 'type'=>'text','group'=>"Spec row $i",'label'=>'Label','max'=>60,
             );
             $out["spec_{$i}_value"] = array(
-                'type'=>'lines','group'=>"Spec row $i",'label'=>'Value','help'=>'Press Enter where you want a new line.','max'=>200,
+                'type'=>'lines','group'=>"Spec row $i",'label'=>'Value','help'=>($i === 1 ? 'Press Enter inside any value to start a new line. A row shows once it has both a label and a value.' : ''),'max'=>200,
             );
         }
         return $out;
