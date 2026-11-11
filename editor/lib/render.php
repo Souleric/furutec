@@ -561,16 +561,16 @@ function fx_build_substitutions($page_id, $content) {
                 . '<div class="ps-content-divider"></div>';
             if ($b['diagram'] === 'single') {
                 $s[$px.'DIAGRAM_TITLE']       = fx_escape(isset($p['diagram_title'])   ? $p['diagram_title']   : '');
-                $s[$px.'DIAGRAM_VIDEO_URL']   = fx_asset_url(isset($p['diagram_video'])  ? $p['diagram_video']  : '');
-                $s[$px.'DIAGRAM_POSTER_URL']  = fx_asset_url(isset($p['diagram_poster']) ? $p['diagram_poster'] : '');
+                $s[$px.'DIAGRAM_VIDEO_URL']   = fx_asset_url_v(isset($p['diagram_video'])  ? $p['diagram_video']  : '');
+                $s[$px.'DIAGRAM_POSTER_URL']  = fx_asset_url_v(isset($p['diagram_poster']) ? $p['diagram_poster'] : '');
             } elseif ($b['diagram'] === 'paired') {
                 $s[$px.'DIAGRAM_TITLE']          = fx_escape(isset($p['diagram_title'])     ? $p['diagram_title']     : '');
                 $s[$px.'DIAGRAM_1_LABEL']        = fx_escape(isset($p['diagram_1_label'])   ? $p['diagram_1_label']   : '');
-                $s[$px.'DIAGRAM_1_VIDEO_URL']    = fx_asset_url(isset($p['diagram_1_video'])  ? $p['diagram_1_video']  : '');
-                $s[$px.'DIAGRAM_1_POSTER_URL']   = fx_asset_url(isset($p['diagram_1_poster']) ? $p['diagram_1_poster'] : '');
+                $s[$px.'DIAGRAM_1_VIDEO_URL']    = fx_asset_url_v(isset($p['diagram_1_video'])  ? $p['diagram_1_video']  : '');
+                $s[$px.'DIAGRAM_1_POSTER_URL']   = fx_asset_url_v(isset($p['diagram_1_poster']) ? $p['diagram_1_poster'] : '');
                 $s[$px.'DIAGRAM_2_LABEL']        = fx_escape(isset($p['diagram_2_label'])   ? $p['diagram_2_label']   : '');
-                $s[$px.'DIAGRAM_2_VIDEO_URL']    = fx_asset_url(isset($p['diagram_2_video'])  ? $p['diagram_2_video']  : '');
-                $s[$px.'DIAGRAM_2_POSTER_URL']   = fx_asset_url(isset($p['diagram_2_poster']) ? $p['diagram_2_poster'] : '');
+                $s[$px.'DIAGRAM_2_VIDEO_URL']    = fx_asset_url_v(isset($p['diagram_2_video'])  ? $p['diagram_2_video']  : '');
+                $s[$px.'DIAGRAM_2_POSTER_URL']   = fx_asset_url_v(isset($p['diagram_2_poster']) ? $p['diagram_2_poster'] : '');
             }
         }
     }
