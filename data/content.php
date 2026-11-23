@@ -230,6 +230,8 @@ return array(
             'cert_7_alt' => 'Malaysian Brand',
             'bar_label' => 'Certified',
             'show_bar' => 'show',
+            'cert_8_image' => 'CERTS LOGOS/SGS.png',
+            'cert_8_alt' => 'SGS',
         ),
         'news' => array(
             'eyebrow' => 'LATEST FROM EITA',
