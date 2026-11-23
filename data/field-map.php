@@ -263,6 +263,7 @@ return array(
             'summary' => '7 certification-mark logos shown in the white strip below the hero button.Up to 12 certification-mark logos in the white strip below the hero button. Empty slots are skipped.',
             'preview_target' => '.ft-hero-cert-bar',
             'fields'  => array(
+                'show_bar' => array('type'=>'select','label'=>'Show this bar on the homepage','options'=>array('show'=>'Show','hide'=>'Hide'),'help'=>'Hide removes the whole white logo strip from the hero. Your logos stay saved and come back when you switch to Show.'),
                 'bar_label' => array('type'=>'text','label'=>'Bar label','help'=>'The word before the certification logos.','default'=>'Certified','max'=>30),
                 'cert_1_image' => array('type'=>'image','group'=>'Logo 1','label'=>'Logo','help'=>'Leave empty to hide this slot. Logos are shown at 42px tall, so a wide PNG or SVG on a transparent background works best.','max_mb'=>2),
                 'cert_1_alt'   => array('type'=>'text', 'group'=>'Logo 1','label'=>'Name (for screen readers)','max'=>60),

@@ -264,6 +264,7 @@ function fx_build_substitutions($page_id, $content) {
             $certsHtml .= '<img src="' . fx_asset_url_v($img) . '" alt="' . fx_escape($alt) . '" loading="lazy"/>' . "\n          ";
         }
         $s['HERO_CERTS_HTML'] = rtrim($certsHtml);
+        $s['HERO_CERT_BAR_ATTR'] = (isset($hc['show_bar']) && $hc['show_bar'] === 'hide') ? ' hidden style="display:none"' : '';
 
         // Origin
         $o = isset($page['origin']) ? $page['origin'] : array();
