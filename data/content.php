@@ -1,6 +1,6 @@
 <?php
 // Furutec Editor content — auto-written by /editor/save.php.
-// Last update: 2026-11-17 10:00:51
+// Last update: 2026-11-23 04:13:34
 
 return array(
     'shared' => array(
@@ -214,7 +214,6 @@ return array(
             'button_label' => 'Get In Touch',
         ),
         'hero_certs' => array(
-            'show_bar' => 'show',
             'cert_1_image' => 'CERTS LOGOS/UL_Mark (1).svg',
             'cert_1_alt' => 'UL',
             'cert_2_image' => 'CERTS LOGOS/Dekra.png',
@@ -230,6 +229,7 @@ return array(
             'cert_7_image' => 'CERTS LOGOS/Malaysian Brand.png',
             'cert_7_alt' => 'Malaysian Brand',
             'bar_label' => 'Certified',
+            'show_bar' => 'show',
         ),
         'news' => array(
             'eyebrow' => 'LATEST FROM EITA',
