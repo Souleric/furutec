@@ -51,6 +51,8 @@ $topic    = clean_line(pick($_POST, 'topic', 100));
 $fullName = clean_line(pick($_POST, 'fullName', 150));
 $email    = clean_line(pick($_POST, 'email', 200));
 $phone    = clean_line(pick($_POST, 'phone', 60));
+$phoneCode = clean_line(pick($_POST, 'phone_code', 12));
+if ($phone !== '' && preg_match('/^\+[0-9 ]{1,8}$/', $phoneCode) && strpos($phone, '+') !== 0) { $phone = $phoneCode . ' ' . $phone; }
 $country  = clean_line(pick($_POST, 'country', 100));
 $message  = clean_block(pick($_POST, 'message', 5000));
 
