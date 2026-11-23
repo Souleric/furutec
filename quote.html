@@ -790,17 +790,47 @@ html { scroll-padding-top: 80px; }
   .gi-input:focus, .gi-textarea:focus, .gi-select:focus { border-color:#2E3192; }
   .gi-label { display:block; font-family:var(--font-sans); font-size:12px; font-weight:600; color:#4A4A52; margin-bottom:6px; letter-spacing:0.2px; }
   .gi-field { margin-bottom:16px; }
-  /* Phone: country-code picker on the left, number on the right.  The
-     native <select> is stretched invisibly over the visible "+60 ▾" so it
-     opens the system picker (good on phones) while staying compact. */
+  /* Phone: country-code dropdown joined to the number box. */
   .gi-phone { display:flex; align-items:stretch; }
-  .gi-phone .gi-input { flex:1; min-width:0; border-top-left-radius:0; border-bottom-left-radius:0; }
-  .gi-phone-code { position:relative; display:flex; align-items:center; gap:6px; flex:0 0 auto;
-    padding:0 10px 0 12px; border:1px solid #E1E3EA; border-right:0; background:#F6F6F8;
-    font-family:var(--font-sans); font-size:14px; font-weight:600; color:#111114; cursor:pointer; }
-  .gi-phone-code svg { color:#6B6B73; }
-  .gi-phone-code select { position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; font-size:16px; }
-  .gi-phone-code:focus-within { outline:2px solid #2E3192; outline-offset:-2px; }
+  .gi-phone .gi-input { flex:1; min-width:0; }
+  .gi-phone-code { flex:0 0 auto; }
+  .gi-phone-code .fx-dd-btn { width:auto; min-width:84px; background:#F6F6F8; border-right:0;
+    padding:0 10px 0 12px; font-size:14px; font-weight:600; gap:8px; }
+
+  /* ---- Site dropdown (replaces the browser's native list) ---------- */
+  .fx-dd-wrap { position:relative; }
+  .fx-dd-native { position:absolute !important; inset:0; width:100%; height:100%;
+    opacity:0; pointer-events:none; }               /* kept for form submit + validation */
+  .fx-dd-btn { display:flex; align-items:center; justify-content:space-between; gap:12px;
+    width:100%; height:48px; padding:0 16px; box-sizing:border-box; cursor:pointer;
+    border:1px solid #E1E3EA; background:#FFFFFF; color:#111114; text-align:left;
+    font-family:var(--font-sans); font-size:16px; }
+  .fx-dd-btn:focus-visible, .fx-dd-wrap.is-open .fx-dd-btn { outline:none; border-color:#2E3192; }
+  .fx-dd-btn.is-placeholder .fx-dd-label { color:#8A8A94; }
+  .fx-dd-btn.is-invalid { border-color:#B42318; }
+  .fx-dd-label { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .fx-dd-chev { flex:0 0 auto; color:#6B6B73; transition:transform 150ms ease; }
+  .fx-dd-wrap.is-open .fx-dd-chev { transform:rotate(180deg); }
+  .fx-dd-panel { position:absolute; z-index:60; top:calc(100% + 6px); left:0; width:100%;
+    min-width:260px; background:#FFFFFF; border:1px solid #E1E3EA; border-radius:10px;
+    box-shadow:0 18px 40px rgba(17,17,20,0.14); overflow:hidden; }
+  .fx-dd-panel[hidden] { display:none; }
+  .fx-dd-panel.is-right { left:auto; right:0; }
+  .fx-dd-search { display:block; width:100%; box-sizing:border-box; height:42px; padding:0 14px;
+    border:0; border-bottom:1px solid #ECECF1; font-family:var(--font-sans); font-size:15px;
+    color:#111114; outline:none; }
+  .fx-dd-list { list-style:none; margin:0; padding:6px; max-height:280px; overflow-y:auto; }
+  .fx-dd-group { padding:10px 10px 4px; font-family:var(--font-sans); font-size:11px; font-weight:700;
+    letter-spacing:0.08em; text-transform:uppercase; color:#8A8A94; }
+  .fx-dd-opt { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:6px;
+    font-family:var(--font-sans); font-size:14.5px; color:#111114; cursor:pointer; }
+  .fx-dd-opt .fx-dd-code { flex:0 0 52px; font-weight:600; color:#2E3192; }
+  .fx-dd-opt.is-active { background:#F1F2FA; }
+  .fx-dd-opt.is-selected { font-weight:600; }
+  .fx-dd-opt.is-selected::after { content:''; margin-left:auto; width:6px; height:11px;
+    border:solid #2E3192; border-width:0 2px 2px 0; transform:rotate(45deg) translate(-2px,-2px); }
+  .fx-dd-empty { padding:14px 10px; font-family:var(--font-sans); font-size:14px; color:#8A8A94; }
+  @media (max-width:600px) { .fx-dd-list { max-height:240px; } }
   .gi-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
   .gi-loc { display:grid; grid-template-columns:1fr auto; align-items:start; gap:16px; padding:16px 0; border-bottom:1px solid #ECECF1; }
   .gi-loc:last-of-type { border-bottom:none; }
@@ -855,7 +885,7 @@ html { scroll-padding-top: 80px; }
         <div class="gi-field">
           <label class="gi-label">Select Topic *</label>
           <div style="position:relative;">
-            <select class="gi-select" name="topic" required>
+            <select class="gi-select fx-dd" name="topic" required>
               <option value="">Choose one</option>
               <option>Indoor Busduct</option>
               <option>Outdoor Busduct</option>
@@ -863,7 +893,6 @@ html { scroll-padding-top: 80px; }
               <option>Power Monitoring</option>
               <option>Others</option>
             </select>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B6B73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);pointer-events:none;"><path d="M6 9l6 6 6-6"/></svg>
           </div>
         </div>
 
@@ -880,10 +909,8 @@ html { scroll-padding-top: 80px; }
           <div class="gi-field">
             <label class="gi-label">Phone Number *</label>
             <div class="gi-phone">
-              <label class="gi-phone-code" title="Country code">
-                <span class="gi-phone-code-text" id="gi-phone-code-text">+60</span>
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-                <select name="phone_code" id="gi-phone-code" aria-label="Country calling code">
+              <div class="gi-phone-code">
+                <select name="phone_code" id="gi-phone-code" class="fx-dd" data-dd-display="value" data-dd-search="Search country or code" aria-label="Country calling code">
                 <optgroup label="Common">
                   <option value="+60" data-country="Malaysia" selected>+60 Malaysia</option>
                   <option value="+65" data-country="Singapore">+65 Singapore</option>
@@ -1101,7 +1128,7 @@ html { scroll-padding-top: 80px; }
                   <option value="+263" data-country="Zimbabwe">+263 Zimbabwe</option>
                 </optgroup>
                 </select>
-              </label>
+              </div>
               <input class="gi-input" name="phone" id="gi-phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="12 345 6789" required/>
             </div>
           </div>
@@ -1110,7 +1137,7 @@ html { scroll-padding-top: 80px; }
         <div class="gi-field">
           <label class="gi-label">Country *</label>
           <div style="position:relative;">
-            <select class="gi-select" name="country" id="gi-country" required>
+            <select class="gi-select fx-dd" name="country" id="gi-country" data-dd-search="Search country" required>
               <option value="">Select country</option>
               <optgroup label="Common">
                 <option value="Malaysia" data-dial="+60">Malaysia (+60)</option>
@@ -1329,7 +1356,6 @@ html { scroll-padding-top: 80px; }
                 <option value="Zimbabwe" data-dial="+263">Zimbabwe (+263)</option>
               </optgroup>
             </select>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B6B73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);pointer-events:none;"><path d="M6 9l6 6 6-6"/></svg>
           </div>
         </div>
 
@@ -1776,18 +1802,151 @@ html { scroll-padding-top: 80px; }
 
 
 <script>
-  /* Country-code picker beside the phone number.  The visible box shows
-     the chosen code ("+60").  Picking a Country below also moves the code
-     picker to that country, unless the visitor has chosen a code by hand. */
+  /* Site dropdown.  Every <select class="fx-dd"> is upgraded to a styled
+     button + list.  The native <select> stays in the form (invisible) so
+     submission, required-validation and form.reset() keep working.
+     data-dd-search adds a filter box; data-dd-display="value" shows the
+     option's value on the button (used for "+60"). */
+  (function siteDropdowns() {
+    var CHEV = '<svg class="fx-dd-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+    var openDd = null;
+    function norm(s) { return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+
+    function enhance(sel) {
+      var wrap = document.createElement('div'); wrap.className = 'fx-dd-wrap';
+      sel.parentNode.insertBefore(wrap, sel); wrap.appendChild(sel);
+      sel.classList.add('fx-dd-native'); sel.tabIndex = -1; sel.setAttribute('aria-hidden', 'true');
+      var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'fx-dd-btn';
+      btn.setAttribute('aria-haspopup', 'listbox'); btn.setAttribute('aria-expanded', 'false');
+      var lab = sel.getAttribute('aria-label') || (sel.closest('.gi-field') && sel.closest('.gi-field').querySelector('.gi-label') ? sel.closest('.gi-field').querySelector('.gi-label').textContent : '');
+      if (lab) btn.setAttribute('aria-label', lab.replace(/\s*\*\s*$/, ''));
+      btn.innerHTML = '<span class="fx-dd-label"></span>' + CHEV;
+      wrap.appendChild(btn);
+      var panel = document.createElement('div'); panel.className = 'fx-dd-panel'; panel.hidden = true;
+      var searchPh = sel.getAttribute('data-dd-search');
+      var search = null;
+      if (searchPh) { search = document.createElement('input'); search.type = 'text'; search.className = 'fx-dd-search'; search.placeholder = searchPh; search.setAttribute('autocomplete', 'off'); panel.appendChild(search); }
+      var list = document.createElement('ul'); list.className = 'fx-dd-list'; list.setAttribute('role', 'listbox'); panel.appendChild(list);
+      wrap.appendChild(panel);
+      var showValue = sel.getAttribute('data-dd-display') === 'value';
+
+      function label() {
+        var o = sel.options[sel.selectedIndex];
+        var empty = !o || o.value === '';
+        btn.querySelector('.fx-dd-label').textContent = o ? (showValue && !empty ? o.value : o.textContent) : '';
+        btn.classList.toggle('is-placeholder', empty);
+        if (!empty) btn.classList.remove('is-invalid');
+      }
+      function build(filter) {
+        list.innerHTML = ''; var f = norm(filter), count = 0, seen = {};
+        Array.prototype.forEach.call(sel.children, function (node) {
+          var opts = node.tagName === 'OPTGROUP' ? Array.prototype.slice.call(node.children) : [node];
+          var items = opts.filter(function (o) {
+            if (o.value === '') return false;
+            if (!f) return true;
+            if (norm(o.textContent).indexOf(f) === -1 && norm(o.value).indexOf(f) === -1) return false;
+            if (seen[o.textContent]) return false;          // "Common" + "All" list it twice
+            seen[o.textContent] = 1; return true;
+          });
+          if (!items.length) return;
+          if (node.tagName === 'OPTGROUP' && !f) { var g = document.createElement('li'); g.className = 'fx-dd-group'; g.textContent = node.label; g.setAttribute('role', 'presentation'); list.appendChild(g); }
+          items.forEach(function (o) {
+            var li = document.createElement('li'); li.className = 'fx-dd-opt'; li.setAttribute('role', 'option');
+            li.dataset.index = o.index;
+            if (showValue) { li.innerHTML = '<span class="fx-dd-code"></span><span></span>'; li.children[0].textContent = o.value; li.children[1].textContent = o.getAttribute('data-country') || o.textContent; }
+            else li.textContent = o.textContent;
+            if (o.index === sel.selectedIndex) { li.classList.add('is-selected'); li.setAttribute('aria-selected', 'true'); }
+            list.appendChild(li); count++;
+          });
+        });
+        if (!count) { var e = document.createElement('li'); e.className = 'fx-dd-empty'; e.textContent = 'No match'; list.appendChild(e); }
+      }
+      // The form's fields each sit in their own layer (scroll-reveal uses
+      // transforms), so later fields would paint over an open list.  Lift
+      // this field and its row above the rest while the list is open.
+      function lift(on) {
+        var n = wrap.parentNode;
+        while (n && n !== sel.form && n !== document.body) {
+          if (n.classList && (n.classList.contains('gi-field') || n.classList.contains('gi-row'))) {
+            n.style.position = on ? 'relative' : ''; n.style.zIndex = on ? '40' : '';
+          }
+          n = n.parentNode;
+        }
+      }
+      function items() { return Array.prototype.slice.call(list.querySelectorAll('.fx-dd-opt')); }
+      function setActive(li) {
+        items().forEach(function (x) { x.classList.remove('is-active'); });
+        if (li) { li.classList.add('is-active'); li.scrollIntoView({ block: 'nearest' }); }
+      }
+      function open() {
+        if (openDd && openDd !== api) openDd.close();
+        build(''); panel.hidden = false; wrap.classList.add('is-open'); btn.setAttribute('aria-expanded', 'true');
+        lift(true);
+        panel.classList.remove('is-right');
+        var r = panel.getBoundingClientRect(); if (r.right > window.innerWidth - 8) panel.classList.add('is-right');
+        var cur = list.querySelector('.is-selected') || items()[0];
+        setActive(cur); if (cur) list.scrollTop = Math.max(0, cur.offsetTop - list.clientHeight / 2);
+        if (search) { search.value = ''; search.focus(); } else list.focus && btn.focus();
+        openDd = api;
+      }
+      function close(refocus) {
+        panel.hidden = true; wrap.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false');
+        lift(false);
+        if (openDd === api) openDd = null; if (refocus) btn.focus();
+      }
+      function choose(li) {
+        sel.selectedIndex = +li.dataset.index; label(); close(true);
+        sel.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      function move(dir) {
+        var all = items(); if (!all.length) return;
+        var i = all.indexOf(list.querySelector('.is-active'));
+        setActive(all[Math.max(0, Math.min(all.length - 1, i + dir))]);
+      }
+      function keys(e) {
+        if (e.key === 'ArrowDown') { e.preventDefault(); move(1); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
+        else if (e.key === 'Enter') { e.preventDefault(); var a = list.querySelector('.is-active'); if (a) choose(a); }
+        else if (e.key === 'Escape') { e.preventDefault(); close(true); }
+        else if (e.key === 'Tab') { close(false); }
+        else if (!search && e.key.length === 1) {
+          var k = norm(e.key), hit = items().filter(function (x) { return norm(x.textContent).charAt(0) === k; })[0]; if (hit) setActive(hit);
+        }
+      }
+      btn.addEventListener('click', function () { panel.hidden ? open() : close(true); });
+      btn.addEventListener('keydown', function (e) {
+        if (panel.hidden && (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); open(); }
+        else if (!panel.hidden) keys(e);
+      });
+      if (search) {
+        search.addEventListener('input', function () { build(search.value); setActive(items()[0]); });
+        search.addEventListener('keydown', keys);
+      }
+      list.addEventListener('mousedown', function (e) { e.preventDefault(); });
+      list.addEventListener('click', function (e) { var li = e.target.closest('.fx-dd-opt'); if (li) choose(li); });
+      list.addEventListener('mousemove', function (e) { var li = e.target.closest('.fx-dd-opt'); if (li && !li.classList.contains('is-active')) setActive(li); });
+      sel.addEventListener('change', label);
+      sel.addEventListener('fx-refresh', label);
+      sel.addEventListener('invalid', function () { btn.classList.add('is-invalid'); btn.focus(); });
+      if (sel.form) sel.form.addEventListener('reset', function () { setTimeout(label, 0); });
+      label();
+      var api = { close: close, wrap: wrap };
+      return api;
+    }
+    var dds = Array.prototype.map.call(document.querySelectorAll('select.fx-dd'), enhance);
+    document.addEventListener('mousedown', function (e) { if (openDd && !openDd.wrap.contains(e.target)) openDd.close(false); });
+    window.addEventListener('resize', function () { if (openDd) openDd.close(false); });
+  })();
+</script>
+<script>
+  /* Phone code follows Country unless the visitor picked a code by hand. */
   (function phoneCode() {
     var code = document.getElementById('gi-phone-code');
-    var text = document.getElementById('gi-phone-code-text');
     var country = document.getElementById('gi-country');
-    if (!code || !text) return;
-    var touched = false;
-    function show() { text.textContent = code.value || '+'; }
-    code.addEventListener('change', function () { touched = true; show(); });
-    if (country) country.addEventListener('change', function () {
+    if (!code || !country) return;
+    var touched = false, syncing = false;
+    code.addEventListener('change', function () { if (!syncing) touched = true; });
+    country.addEventListener('change', function () {
       if (touched) return;
       var o = country.options[country.selectedIndex];
       var d = o ? o.getAttribute('data-dial') : '';
@@ -1795,9 +1954,8 @@ html { scroll-padding-top: 80px; }
       for (var i = 0; i < code.options.length; i++) {
         if (code.options[i].value === d && code.options[i].getAttribute('data-country') === o.value) { code.selectedIndex = i; break; }
       }
-      show();
+      syncing = true; code.dispatchEvent(new Event('fx-refresh')); syncing = false;
     });
-    show();
   })();
 </script>
 </body>
