@@ -249,14 +249,21 @@ function fx_build_substitutions($page_id, $content) {
             6 => array('img'=>'CERTS LOGOS/ISO 9001 Certified_col.png',   'alt'=>'ISO 9001 Certified'),
             7 => array('img'=>'CERTS LOGOS/Malaysian Brand.png',          'alt'=>'Malaysian Brand'),
         );
-        for ($i = 1; $i <= 7; $i++) {
-            $img = isset($hc["cert_{$i}_image"]) && $hc["cert_{$i}_image"] !== ''
-                ? $hc["cert_{$i}_image"] : $hero_cert_defaults[$i]['img'];
-            $alt = isset($hc["cert_{$i}_alt"]) && $hc["cert_{$i}_alt"] !== ''
-                ? $hc["cert_{$i}_alt"] : $hero_cert_defaults[$i]['alt'];
+        // Up to 12 slots.  Slots 1–7 fall back to the original marks when
+        // blank (so an older content.php renders unchanged); slots 8+ only
+        // appear once the client fills them.  Built server-side so empty
+        // slots leave no gap and the bar can hold any count.
+        $certsHtml = '';
+        for ($i = 1; $i <= 12; $i++) {
+            $img = isset($hc["cert_{$i}_image"]) ? trim((string)$hc["cert_{$i}_image"]) : '';
+            $alt = isset($hc["cert_{$i}_alt"])   ? trim((string)$hc["cert_{$i}_alt"])   : '';
+            if ($img === '' && isset($hero_cert_defaults[$i])) { $img = $hero_cert_defaults[$i]['img']; if ($alt === '') $alt = $hero_cert_defaults[$i]['alt']; }
             $s["HERO_CERT_{$i}_URL"] = fx_asset_url($img);
             $s["HERO_CERT_{$i}_ALT"] = fx_escape($alt);
+            if ($img === '') continue;
+            $certsHtml .= '<img src="' . fx_asset_url_v($img) . '" alt="' . fx_escape($alt) . '" loading="lazy"/>' . "\n          ";
         }
+        $s['HERO_CERTS_HTML'] = rtrim($certsHtml);
 
         // Origin
         $o = isset($page['origin']) ? $page['origin'] : array();

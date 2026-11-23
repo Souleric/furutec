@@ -968,8 +968,8 @@ html { scroll-padding-top: 80px; }
   }
   .ft-hero-cert-bar-inner {
     padding:18px 28px;
-    display:flex; align-items:center; justify-content:space-between;
-    flex-wrap:nowrap; gap:20px;
+    display:flex; align-items:center; justify-content:center;
+    flex-wrap:wrap; gap:18px 28px;   /* wraps to a second row once there are more logos than fit */
   }
   .ft-hero-cert-bar img {
     flex:0 1 auto; min-width:0;
@@ -1071,14 +1071,8 @@ html { scroll-padding-top: 80px; }
       <div class="ft-hero-cert-bar" aria-label="Certifications">
         <div class="ft-hero-cert-bar-inner">
           <span class="ft-hero-cert-bar-label">{{HERO_CERT_BAR_LABEL}}</span>
-          <!-- Ordered by client priority — top 7 marks. -->
-          <img src="{{HERO_CERT_1_URL}}" alt="{{HERO_CERT_1_ALT}}"/>
-          <img src="{{HERO_CERT_2_URL}}" alt="{{HERO_CERT_2_ALT}}"/>
-          <img src="{{HERO_CERT_3_URL}}" alt="{{HERO_CERT_3_ALT}}"/>
-          <img src="{{HERO_CERT_4_URL}}" alt="{{HERO_CERT_4_ALT}}"/>
-          <img src="{{HERO_CERT_5_URL}}" alt="{{HERO_CERT_5_ALT}}"/>
-          <img src="{{HERO_CERT_6_URL}}" alt="{{HERO_CERT_6_ALT}}"/>
-          <img src="{{HERO_CERT_7_URL}}" alt="{{HERO_CERT_7_ALT}}"/>
+          <!-- Logos come from the editor (Certification bar section); empty slots are skipped. -->
+          {{HERO_CERTS_HTML}}
         </div>
       </div>
     </div>
