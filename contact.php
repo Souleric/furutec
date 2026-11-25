@@ -1,4 +1,6 @@
 <?php
+// Enquiry timestamps in Malaysian time (the server runs on UTC).
+date_default_timezone_set('Asia/Kuala_Lumpur');
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
 header('Referrer-Policy: same-origin');
@@ -75,7 +77,7 @@ $ua = isset($_SERVER['HTTP_USER_AGENT']) ? substr($_SERVER['HTTP_USER_AGENT'], 0
 
 $bodyLines = array(
     'New enquiry received via furutec.com.my',
-    'Submitted: ' . date('Y-m-d H:i:s') . ' (' . date_default_timezone_get() . ')',
+    'Submitted: ' . date('j M Y, g:i A') . ' (Malaysia time, GMT+8)',
     '-----------------------------------------',
     'Topic:        ' . $topic,
     'Full name:    ' . $fullName,
