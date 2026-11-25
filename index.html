@@ -921,13 +921,24 @@ html { scroll-padding-top: 80px; }
       var v = document.getElementById('hero-bg-video');
       if (!v) return;
       try { v.currentTime = 0; } catch (e) {}
-      var p = v.play();
-      if (p && typeof p.catch === 'function') {
-        p.catch(function () {
-          v.muted = true;
-          v.play().catch(function(){});
-        });
+      // Phones may refuse autoplay (Low Power Mode, Data Saver, in-app
+      // browsers).  Keep trying: when enough has loaded, when the tab comes
+      // back, and on the visitor's first touch / click / scroll / key.
+      function tryPlay() {
+        if (!v.paused) return;
+        v.muted = true;
+        var p = v.play();
+        if (p && typeof p.catch === 'function') p.catch(function () {});
       }
+      tryPlay();
+      v.addEventListener('canplay', tryPlay);
+      document.addEventListener('visibilitychange', function () { if (!document.hidden) tryPlay(); });
+      var evs = ['touchstart', 'touchend', 'click', 'scroll', 'keydown'];
+      function onFirst() {
+        tryPlay();
+        if (!v.paused) evs.forEach(function (n) { window.removeEventListener(n, onFirst, true); });
+      }
+      evs.forEach(function (n) { window.addEventListener(n, onFirst, { capture: true, passive: true }); });
     });
   })();
 </script>
@@ -1089,7 +1100,7 @@ html { scroll-padding-top: 80px; }
        Which one is emitted is decided in render.php from the Hero
        section's "Background type" field. -->
   <div id="hero-video-wrap" style="position:absolute;inset:0;z-index:0;overflow:hidden;background:#0A0A0B;pointer-events:none;">
-    <video id="hero-bg-video" autoplay muted loop playsinline preload="auto" style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;object-position:50% 50%;"><source src="assets/banner-video-2.mp4" type="video/mp4"/></video>
+    <video id="hero-bg-video" autoplay muted loop playsinline preload="auto" poster="assets/banner-video-2-poster.jpg" style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;object-position:50% 50%;background:#08080A url('assets/banner-video-2-poster.jpg') 50% 50%/cover no-repeat;"><source src="assets/banner-video-2-mobile.mp4" type="video/mp4" media="(max-width: 820px)"/><source src="assets/banner-video-2.mp4" type="video/mp4"/></video>
     <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.35) 0%,rgba(0,0,0,0.55) 60%,rgba(0,0,0,0.75) 100%);z-index:1;pointer-events:none;"></div>
   </div>
   <!-- Slideshow dots (empty unless there are 2+ slides) -->

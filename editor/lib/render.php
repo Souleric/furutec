@@ -203,9 +203,33 @@ function fx_build_substitutions($page_id, $content) {
             // an object-position pair is ignored rather than injected.
             $heroFocus = isset($hero['bg_video_focus']) ? trim((string)$hero['bg_video_focus']) : '';
             if (!preg_match('/^\d{1,3}% \d{1,3}%$/', $heroFocus)) $heroFocus = '50% 50%';
+            // Optional companions next to the chosen video, picked up when
+            // the files exist (same name + "-poster.jpg" / "-mobile.mp4"):
+            //   poster — a still shown at once, and kept if the phone
+            //            refuses to autoplay (Low Power Mode, Data Saver,
+            //            in-app browsers) so the hero is never blank;
+            //   mobile — a lighter encode served to phones/tablets.
+            $heroVideoRaw  = isset($hero['bg_video']) ? (string)$hero['bg_video'] : '';
+            $heroVideoStem = preg_replace('/\.[A-Za-z0-9]+$/', '', $heroVideoRaw);
+            $heroPosterAttr = '';
+            $heroPosterCss  = '';
+            $heroMobileSrc  = '';
+            if ($heroVideoStem !== '' && strpos($heroVideoStem, '..') === false) {
+                $posterRel = $heroVideoStem . '-poster.jpg';
+                $mobileRel = $heroVideoStem . '-mobile.mp4';
+                if (is_file(fx_base_path() . '/assets/' . $posterRel)) {
+                    $posterUrl = 'assets/' . fx_url_path($posterRel);
+                    $heroPosterAttr = ' poster="' . $posterUrl . '"';
+                    $heroPosterCss  = 'background:#08080A url(\'' . $posterUrl . '\') ' . $heroFocus . '/cover no-repeat;';
+                }
+                if (is_file(fx_base_path() . '/assets/' . $mobileRel)) {
+                    $heroMobileSrc = '<source src="assets/' . fx_url_path($mobileRel) . '" type="video/mp4" media="(max-width: 820px)"/>';
+                }
+            }
             $s['HERO_BG_HTML'] =
-                '<video id="hero-bg-video" autoplay muted loop playsinline preload="auto"'
-              . ' style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;object-position:' . $heroFocus . ';">'
+                '<video id="hero-bg-video" autoplay muted loop playsinline preload="auto"' . $heroPosterAttr
+              . ' style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;object-position:' . $heroFocus . ';' . $heroPosterCss . '">'
+              . $heroMobileSrc
               . '<source src="assets/' . $s['HERO_BG_VIDEO_URL'] . '" type="video/mp4"/>'
               . '</video>';
             $s['HERO_SLIDESHOW_HTML'] = '';

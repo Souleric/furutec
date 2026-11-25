@@ -921,13 +921,24 @@ html { scroll-padding-top: 80px; }
       var v = document.getElementById('hero-bg-video');
       if (!v) return;
       try { v.currentTime = 0; } catch (e) {}
-      var p = v.play();
-      if (p && typeof p.catch === 'function') {
-        p.catch(function () {
-          v.muted = true;
-          v.play().catch(function(){});
-        });
+      // Phones may refuse autoplay (Low Power Mode, Data Saver, in-app
+      // browsers).  Keep trying: when enough has loaded, when the tab comes
+      // back, and on the visitor's first touch / click / scroll / key.
+      function tryPlay() {
+        if (!v.paused) return;
+        v.muted = true;
+        var p = v.play();
+        if (p && typeof p.catch === 'function') p.catch(function () {});
       }
+      tryPlay();
+      v.addEventListener('canplay', tryPlay);
+      document.addEventListener('visibilitychange', function () { if (!document.hidden) tryPlay(); });
+      var evs = ['touchstart', 'touchend', 'click', 'scroll', 'keydown'];
+      function onFirst() {
+        tryPlay();
+        if (!v.paused) evs.forEach(function (n) { window.removeEventListener(n, onFirst, true); });
+      }
+      evs.forEach(function (n) { window.addEventListener(n, onFirst, { capture: true, passive: true }); });
     });
   })();
 </script>
