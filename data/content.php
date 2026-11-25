@@ -1,6 +1,6 @@
 <?php
 // Furutec Editor content — auto-written by /editor/save.php.
-// Last update: 2026-11-25 08:28:10
+// Last update: 2026-11-25 09:36:35
 
 return array(
     'shared' => array(
@@ -143,9 +143,9 @@ return array(
             'heading_1' => 'Built on Expertise.',
             'heading_2' => 'Driven by Innovation.',
             'heading_3' => 'Committed to Excellence.',
-            'body_1' => 'With over three decades of experience in Research and development, engineering and manufacturing, Furutec Electrical specializes in the design and manufacture of high-performance busduct systems for a wide range of power distribution applications. 
+            'body_1' => 'With over three decades of experience in research and development, engineering and manufacturing, Furutec Electrical specializes in the design and manufacture of high performance busduct systems for a wide range of power distribution applications. 
 Serving diverse sectors including commercial buildings, industrial facilities and mission-critical data centres, complemented by an Intelligent Monitoring System that enhances system visibility, monitoring and operational oversight.',
-            'body_2' => 'Developed and type-tested in accordance with applicable international standards, our busduct systems are engineered to deliver reliable performance, operational safety and consistent power distribution across a wide range of operating environments and application requirements.',
+            'body_2' => 'Developed and type-tested in accordance with applicable international standards, our busduct systems are engineered to deliver reliable performance, operational safety and consistent power distribution across a wide range of operating environment and application requirement.',
             'button_label' => 'Discover EITA Group',
             'button_url' => 'https://eita.com.my',
             'bg_video_focus' => '',
