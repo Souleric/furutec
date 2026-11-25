@@ -325,7 +325,7 @@ p, .body {
   @media (max-width: 1100px) {
     #ft-header-inner { gap: 20px; padding: 14px 24px; }
     #ft-nav { gap: 20px; }
-    #ft-nav a { font-size: 12px; padding: 20px 0; }
+    #ft-nav a { font-size: 14px; padding: 20px 0; }
     #ft-phone { display: none; }
   }
 
@@ -337,7 +337,7 @@ p, .body {
       padding: 12px 18px;
     }
     #ft-nav { display: none !important; }
-    #ft-phone span { white-space: nowrap; font-size: 12px; }
+    #ft-phone span { white-space: nowrap; font-size: 14px; }
     #ft-utility { gap: 10px; }
     #ft-quote-label { display: none; }
     #ft-quote-btn { padding: 0 14px !important; }
@@ -548,16 +548,16 @@ html { scroll-padding-top: 80px; }
 /* Get A Quote — brand-orange pill (kept consistent with the
    orange CTAs used elsewhere on the homepage). */
 #ft-quote-btn {
-  background: #F58220 !important;
+  background: #BD530B !important;
   color: #FFFFFF !important;
-  border: 1.5px solid #F58220 !important;
+  border: 1.5px solid #BD530B !important;
   transition: background .25s ease, color .25s ease, border-color .25s ease !important;
-  box-shadow: 0 4px 14px rgba(245,130,32,0.30);
+  box-shadow: 0 4px 14px rgba(189,83,11,0.30);
 }
 #ft-quote-btn:hover {
   background: transparent !important;
-  color: #F58220 !important;
-  border-color: #F58220 !important;
+  color: #BD530B !important;
+  border-color: #BD530B !important;
   box-shadow: none;
 }
 #ft-quote-btn .btn-arrow > span svg { stroke: currentColor !important; }
@@ -643,6 +643,30 @@ html { scroll-padding-top: 80px; }
   }
 </style>
 
+<style id="a11y-pass-2026-11">
+  /* Readability pass 2026-11-25 (WCAG 2.1 AA): tap targets >= 44px on touch
+     layouts.  Text sizes were raised in place (11→13, 12→14, 13→15, 14→16)
+     and the brand orange darkened #F58220 → #BD530B (4.8:1 with white). */
+  .fx-dd-btn.is-placeholder .fx-dd-label { color:#6B6B73 !important; }
+  @media (max-width: 820px) {
+    footer li { margin-bottom:0 !important; }
+    footer li a, footer p a { display:inline-block; padding:12px 0; }
+    footer a[aria-label="Facebook"], footer a[aria-label="YouTube"],
+    footer a[aria-label="LinkedIn"], footer a[aria-label="WhatsApp"] { width:44px !important; height:44px !important; }
+    #ft-phone { min-width:44px; min-height:44px; justify-content:center; }
+    #ft-phone svg { width:20px; height:20px; }
+    #ft-quote-btn { min-height:44px; }
+    .pov-nav-btn { min-width:44px; min-height:44px; }
+    .pov-card-cta { min-height:44px; }
+    .en-row-viewall { min-height:44px; align-items:center; }
+    .ps-gallery-thumbs { grid-auto-columns:minmax(60px,1fr); }
+    .ps-gallery-thumb { min-width:60px; min-height:45px; }
+    footer a[href] { min-height:44px; display:inline-flex; align-items:center; }
+    .pov-hotspot { min-width:44px; min-height:44px; }
+    a[href="portfolio-track-record.html"][style*="inline-flex"] { min-height:44px; }
+    footer a[href] { min-width:44px; }
+  }
+</style>
 </head>
 
 <body>
@@ -674,7 +698,7 @@ html { scroll-padding-top: 80px; }
   .ft-nav-menu a {
     display:flex; align-items:center; justify-content:space-between;
     padding:11px 22px; font-family:var(--font-sans);
-    font-size:13px; font-weight:500; color:#4A4A52;
+    font-size:15px; font-weight:500; color:#4A4A52;
     text-decoration:none;
     transition:background 80ms ease, color 80ms ease, padding-left 80ms ease, border-color 80ms ease;
   }
@@ -692,13 +716,13 @@ html { scroll-padding-top: 80px; }
     </a>
 
     <nav id="ft-nav" style="display:flex;gap:28px;justify-content:center;">
-      <a href="index.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">{{NAV_MENU_HOME}}
+      <a href="index.html" style="font-family:var(--font-sans);font-size:15px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">{{NAV_MENU_HOME}}
         </a>
-      <a href="index.html#about" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
+      <a href="index.html#about" style="font-family:var(--font-sans);font-size:15px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
         {{NAV_MENU_COMPANY}}
       </a>
       <div class="ft-nav-dropdown">
-        <a href="product.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
+        <a href="product.html" style="font-family:var(--font-sans);font-size:15px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
           {{NAV_MENU_PRODUCT}}
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           
@@ -711,22 +735,22 @@ html { scroll-padding-top: 80px; }
           <a href="{{NAV_PRODUCT_5_URL}}" role="menuitem">{{NAV_PRODUCT_5_LABEL}} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
         </div>
       </div>
-      <a href="portfolio.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
+      <a href="portfolio.html" style="font-family:var(--font-sans);font-size:15px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
         {{NAV_MENU_CERTIFICATES}}
       </a>
-      <a href="portfolio-track-record.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#2E3192;position:relative;">
+      <a href="portfolio-track-record.html" style="font-family:var(--font-sans);font-size:15px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#2E3192;position:relative;">
         {{NAV_MENU_PORTFOLIO}}
         <span style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:24px;height:3px;background:#2E3192;"></span>
       </a>
     </nav>
 
     <div id="ft-utility" style="display:flex;align-items:center;gap:20px;">
-      <a id="ft-phone" href="{{SHARED_WA_URL}}" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-sans);font-size:13px;font-weight:600;color:#111114;text-decoration:none;">
+      <a id="ft-phone" href="{{SHARED_WA_URL}}" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-sans);font-size:15px;font-weight:600;color:#111114;text-decoration:none;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="#2E3192" style="display:inline-block;flex-shrink:0;"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-1 1.1-.2.2-.4.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.5-1.7-1.6-2-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5L9.4 7c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-1 .9-1 2.3 0 1.4 1 2.7 1.2 2.9.2.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.4-.1-.2-.3-.2-.5-.3ZM12 22a10 10 0 0 1-5.1-1.4l-3.6 1 .9-3.6A10 10 0 1 1 12 22Zm0-18a8 8 0 0 0-6.7 12.4l-.5 2 2-.6A8 8 0 1 0 12 4Z"/></svg>
         <span>{{NAV_PHONE}}</span>
       </a>
-      <a href="quote.html" id="ft-quote-btn" class="btn-dark" style="display:inline-flex;align-items:center;gap:12px;border:none;padding:0 24px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:opacity 200ms ease;background:#141414;color:#FFFFFF;text-decoration:none;">
-        <span id="ft-quote-label" style="font-family:var(--font-sans);font-size:13px;font-weight:600;text-transform:none;">{{NAV_CONTACT_BUTTON_LABEL}}</span>
+      <a href="quote.html" id="ft-quote-btn" class="btn-dark" style="display:inline-flex;align-items:center;gap:12px;border:none;padding:0 24px;font-family:var(--font-sans);font-size:15px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:opacity 200ms ease;background:#141414;color:#FFFFFF;text-decoration:none;">
+        <span id="ft-quote-label" style="font-family:var(--font-sans);font-size:15px;font-weight:600;text-transform:none;">{{NAV_CONTACT_BUTTON_LABEL}}</span>
         <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
       </a>
       <button id="ft-burger" aria-label="Open menu" aria-expanded="false"><span></span></button>
@@ -783,7 +807,7 @@ html { scroll-padding-top: 80px; }
     display:inline-flex; align-self:flex-start; align-items:center;
     padding:5px 12px; border-radius:999px;
     background:#EEF1FA; color:#2E3192;
-    font-family:var(--font-sans); font-size:11px; font-weight:700;
+    font-family:var(--font-sans); font-size:13px; font-weight:700;
     letter-spacing:0.5px; text-transform:uppercase; line-height:1;
     margin-bottom:4px;
   }
@@ -793,7 +817,7 @@ html { scroll-padding-top: 80px; }
     color:#111114; margin:0;
   }
   .ind-card-desc {
-    margin:0; font-size:13px; line-height:1.65; color:#6B6B73;
+    margin:0; font-size:15px; line-height:1.65; color:#6B6B73;
   }
   @media (max-width: 1100px) {
     .ind-grid { grid-template-columns:repeat(2, 1fr); }
@@ -826,14 +850,14 @@ html { scroll-padding-top: 80px; }
     color:#FFFFFF; margin:0 0 16px; line-height:1.1;
   }
   .ind-cta p {
-    margin:0 0 30px; font-size:14px; line-height:1.75; color:rgba(255,255,255,0.75);
+    margin:0 0 30px; font-size:16px; line-height:1.75; color:rgba(255,255,255,0.75);
   }
   .ind-cta-btn {
     display:inline-flex; align-items:center; gap:12px;
     background:transparent; color:#FFFFFF; text-decoration:none;
     padding:0 28px; height:56px;
     border:1.5px solid #FFFFFF;
-    font-family:var(--font-sans); font-size:14px; font-weight:600;
+    font-family:var(--font-sans); font-size:16px; font-weight:600;
     transition:background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   }
   .ind-cta-btn:hover {
@@ -928,26 +952,26 @@ html { scroll-padding-top: 80px; }
       <div style="display:inline-flex;align-items:center;margin-bottom:14px;">
         <img src="{{FT_LOGO_URL}}" alt="Furutec — Busduct System" style="height:54px;width:auto;display:block;"/>
       </div>
-      <p style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:#FFFFFF;margin:0 0 4px;line-height:1.4;">{{FT_COMPANY_NAME}}</p>
-      <p style="font-size:11px;color:rgba(255,255,255,0.45);margin:0 0 16px;font-style:italic;">{{FT_COMPANY_REG}}</p>
-      <p style="font-size:12px;line-height:1.7;color:rgba(255,255,255,0.6);margin:0 0 22px;max-width:260px;">
+      <p style="font-family:var(--font-sans);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 4px;line-height:1.4;">{{FT_COMPANY_NAME}}</p>
+      <p style="font-size:13px;color:rgba(255,255,255,0.45);margin:0 0 16px;font-style:italic;">{{FT_COMPANY_REG}}</p>
+      <p style="font-size:14px;line-height:1.7;color:rgba(255,255,255,0.6);margin:0 0 22px;max-width:260px;">
         {{FT_TAGLINE}}
       </p>
-      <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0 0 10px;display:flex;align-items:center;gap:10px;">
+      <p style="font-size:14px;color:rgba(255,255,255,0.7);margin:0 0 10px;display:flex;align-items:center;gap:10px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M3 6h18v12H3Z"/><path d="M3 6l9 7 9-7"/></svg>
-        <a href="mailto:{{FT_EMAIL}}" style="color:rgba(255,255,255,0.85);font-size:13px;text-decoration:none;">{{FT_EMAIL}}</a>
+        <a href="mailto:{{FT_EMAIL}}" style="color:rgba(255,255,255,0.85);font-size:15px;text-decoration:none;">{{FT_EMAIL}}</a>
       </p>
-      <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0 0 10px;display:flex;align-items:center;gap:10px;">
+      <p style="font-size:14px;color:rgba(255,255,255,0.7);margin:0 0 10px;display:flex;align-items:center;gap:10px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF" style="display:inline-block;flex-shrink:0;"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-1 1.1-.2.2-.4.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.5-1.7-1.6-2-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5L9.4 7c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-1 .9-1 2.3 0 1.4 1 2.7 1.2 2.9.2.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.4-.1-.2-.3-.2-.5-.3ZM12 22a10 10 0 0 1-5.1-1.4l-3.6 1 .9-3.6A10 10 0 1 1 12 22Zm0-18a8 8 0 0 0-6.7 12.4l-.5 2 2-.6A8 8 0 1 0 12 4Z"/></svg>
-        <a href="{{SHARED_WA_URL}}" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.85);font-size:13px;text-decoration:none;">{{FT_PHONE}}</a>
+        <a href="{{SHARED_WA_URL}}" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.85);font-size:15px;text-decoration:none;">{{FT_PHONE}}</a>
       </p>
-      <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0 0 8px;display:flex;align-items:center;gap:10px;">
+      <p style="font-size:14px;color:rgba(255,255,255,0.7);margin:0 0 8px;display:flex;align-items:center;gap:10px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M12 22s-8-7-8-13a8 8 0 0 1 16 0c0 6-8 13-8 13Z"/><circle cx="12" cy="9" r="3"/></svg>
-        <span style="color:rgba(255,255,255,0.85);font-size:13px;">{{FT_LOCATION_1}}</span>
+        <span style="color:rgba(255,255,255,0.85);font-size:15px;">{{FT_LOCATION_1}}</span>
       </p>
-      <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0;display:flex;align-items:center;gap:10px;">
+      <p style="font-size:14px;color:rgba(255,255,255,0.7);margin:0;display:flex;align-items:center;gap:10px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M12 22s-8-7-8-13a8 8 0 0 1 16 0c0 6-8 13-8 13Z"/><circle cx="12" cy="9" r="3"/></svg>
-        <span style="color:rgba(255,255,255,0.85);font-size:13px;">{{FT_LOCATION_2}}</span>
+        <span style="color:rgba(255,255,255,0.85);font-size:15px;">{{FT_LOCATION_2}}</span>
       </p>
     </div>
 
@@ -984,16 +1008,16 @@ html { scroll-padding-top: 80px; }
 
   <div style="background:#0A0A0B;padding:18px 0;">
     <div style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;">
-      <div style="display:flex;gap:8px;align-items:center;font-size:11px;">
+      <div style="display:flex;gap:8px;align-items:center;font-size:13px;">
         <a href="{{FT_LEGAL_1_URL}}" style="color:rgba(255,255,255,0.55);text-decoration:none;">{{FT_LEGAL_1_LABEL}}</a>
         <span style="color:rgba(255,255,255,0.3);">·</span>
         <a href="{{FT_LEGAL_2_URL}}" style="color:rgba(255,255,255,0.55);text-decoration:none;">{{FT_LEGAL_2_LABEL}}</a>
         <span style="color:rgba(255,255,255,0.3);">·</span>
         <a href="{{FT_LEGAL_3_URL}}" style="color:rgba(255,255,255,0.55);text-decoration:none;">{{FT_LEGAL_3_LABEL}}</a>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="font-size:11px;color:rgba(255,255,255,0.55);text-align:center;">{{FT_COPYRIGHT}}</div></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="font-size:13px;color:rgba(255,255,255,0.55);text-align:center;">{{FT_COPYRIGHT}}</div></div>
       <div style="display:flex;align-items:center;gap:10px;justify-content:flex-end;">
-        <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.4px;text-transform:uppercase;margin-right:4px;">{{FT_SOCIAL_LABEL}}</span>
+        <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.4px;text-transform:uppercase;margin-right:4px;">{{FT_SOCIAL_LABEL}}</span>
         <a href="{{FT_SOCIAL_FACEBOOK}}" aria-label="Facebook" style="width:34px;height:34px;border-radius:50%;background:#1877F2;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06c0 5.01 3.66 9.16 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.51 1.49-3.9 3.78-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.45 2.91h-2.33V22c4.78-.78 8.44-4.93 8.44-9.94Z"/></svg>
         </a>

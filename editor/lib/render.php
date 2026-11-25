@@ -85,7 +85,7 @@ function fx_build_substitutions($page_id, $content) {
         if ($lbl === '' && !isset($ft["product_{$i}_label"])) { $lbl = $ftDefaults[$i-1][0]; $url = $ftDefaults[$i-1][1]; }
         if ($lbl === '') continue;
         if ($url === '') $url = '#';
-        $ftLinks .= '<li style="margin-bottom:10px;"><a href="' . fx_escape($url) . '" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">' . fx_escape($lbl) . '</a></li>' . "\n";
+        $ftLinks .= '<li style="margin-bottom:10px;"><a href="' . fx_escape($url) . '" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">' . fx_escape($lbl) . '</a></li>' . "\n";
     }
     $s['FT_PRODUCT_LINKS_HTML'] = $ftLinks;
     // Header Product dropdown mirrors the footer Product column (one source).
@@ -106,7 +106,7 @@ function fx_build_substitutions($page_id, $content) {
         if ($lbl === '' && !isset($ft["support_{$i}_label"])) { $lbl = $ftSupDefaults[$i-1][0]; $url = $ftSupDefaults[$i-1][1]; }
         if ($lbl === '') continue;
         if ($url === '') $url = '#';
-        $ftSup .= '<li style="margin-bottom:10px;"><a href="' . fx_escape($url) . '" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">' . fx_escape($lbl) . '</a></li>' . "\n";
+        $ftSup .= '<li style="margin-bottom:10px;"><a href="' . fx_escape($url) . '" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">' . fx_escape($lbl) . '</a></li>' . "\n";
     }
     $s['FT_SUPPORT_LINKS_HTML'] = $ftSup;
 
@@ -120,7 +120,7 @@ function fx_build_substitutions($page_id, $content) {
         if ($lbl === '' && !isset($ft["industry_{$i}_label"])) { $lbl = $ftIndDefaults[$i-1][0]; $url = $ftIndDefaults[$i-1][1]; }
         if ($lbl === '') continue;
         if ($url === '') $url = '#';
-        $ftInd .= '<li style="margin-bottom:10px;"><a href="' . fx_escape($url) . '" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">' . fx_escape($lbl) . '</a></li>' . "\n";
+        $ftInd .= '<li style="margin-bottom:10px;"><a href="' . fx_escape($url) . '" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">' . fx_escape($lbl) . '</a></li>' . "\n";
     }
     $s['FT_INDUSTRY_LINKS_HTML'] = $ftInd;
 
@@ -133,7 +133,7 @@ function fx_build_substitutions($page_id, $content) {
         if ($lbl === '' && !isset($ft["company_{$i}_label"])) { $lbl = $ftCoDefaults[$i-1][0]; $url = $ftCoDefaults[$i-1][1]; }
         if ($lbl === '') continue;
         if ($url === '') $url = '#';
-        $ftCo .= '<li style="margin-bottom:10px;"><a href="' . fx_escape($url) . '" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">' . fx_escape($lbl) . '</a></li>' . "\n";
+        $ftCo .= '<li style="margin-bottom:10px;"><a href="' . fx_escape($url) . '" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">' . fx_escape($lbl) . '</a></li>' . "\n";
     }
     $s['FT_COMPANY_LINKS_HTML'] = $ftCo;
     $s['FT_TAGLINE'] = fx_escape((isset($ft['tagline']) && trim((string)$ft['tagline']) !== '') ? $ft['tagline'] : 'Engineering The Future Of Power Distribution — Reliable, Efficient, And Built For Demanding Environments Worldwide.');

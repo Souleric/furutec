@@ -336,7 +336,7 @@ p, .body {
   @media (max-width: 1100px) {
     #ft-header-inner { gap: 20px; padding: 14px 24px; }
     #ft-nav { gap: 20px; }
-    #ft-nav a { font-size: 12px; padding: 20px 0; }
+    #ft-nav a { font-size: 14px; padding: 20px 0; }
     #ft-phone { display: none; }
   }
 
@@ -348,7 +348,7 @@ p, .body {
       padding: 12px 18px;
     }
     #ft-nav { display: none !important; }
-    #ft-phone span { white-space: nowrap; font-size: 12px; }
+    #ft-phone span { white-space: nowrap; font-size: 14px; }
     #ft-utility { gap: 10px; }
     #ft-quote-label { display: none; }
     #ft-quote-btn { padding: 0 14px !important; }
@@ -559,16 +559,16 @@ html { scroll-padding-top: 80px; }
 /* Get A Quote — brand-orange pill (kept consistent with the
    orange CTAs used elsewhere on the homepage). */
 #ft-quote-btn {
-  background: #F58220 !important;
+  background: #BD530B !important;
   color: #FFFFFF !important;
-  border: 1.5px solid #F58220 !important;
+  border: 1.5px solid #BD530B !important;
   transition: background .25s ease, color .25s ease, border-color .25s ease !important;
-  box-shadow: 0 4px 14px rgba(245,130,32,0.30);
+  box-shadow: 0 4px 14px rgba(189,83,11,0.30);
 }
 #ft-quote-btn:hover {
   background: transparent !important;
-  color: #F58220 !important;
-  border-color: #F58220 !important;
+  color: #BD530B !important;
+  border-color: #BD530B !important;
   box-shadow: none;
 }
 #ft-quote-btn .btn-arrow > span svg { stroke: currentColor !important; }
@@ -654,6 +654,30 @@ html { scroll-padding-top: 80px; }
   }
 </style>
 
+<style id="a11y-pass-2026-11">
+  /* Readability pass 2026-11-25 (WCAG 2.1 AA): tap targets >= 44px on touch
+     layouts.  Text sizes were raised in place (11→13, 12→14, 13→15, 14→16)
+     and the brand orange darkened #F58220 → #BD530B (4.8:1 with white). */
+  .fx-dd-btn.is-placeholder .fx-dd-label { color:#6B6B73 !important; }
+  @media (max-width: 820px) {
+    footer li { margin-bottom:0 !important; }
+    footer li a, footer p a { display:inline-block; padding:12px 0; }
+    footer a[aria-label="Facebook"], footer a[aria-label="YouTube"],
+    footer a[aria-label="LinkedIn"], footer a[aria-label="WhatsApp"] { width:44px !important; height:44px !important; }
+    #ft-phone { min-width:44px; min-height:44px; justify-content:center; }
+    #ft-phone svg { width:20px; height:20px; }
+    #ft-quote-btn { min-height:44px; }
+    .pov-nav-btn { min-width:44px; min-height:44px; }
+    .pov-card-cta { min-height:44px; }
+    .en-row-viewall { min-height:44px; align-items:center; }
+    .ps-gallery-thumbs { grid-auto-columns:minmax(60px,1fr); }
+    .ps-gallery-thumb { min-width:60px; min-height:45px; }
+    footer a[href] { min-height:44px; display:inline-flex; align-items:center; }
+    .pov-hotspot { min-width:44px; min-height:44px; }
+    a[href="portfolio-track-record.html"][style*="inline-flex"] { min-height:44px; }
+    footer a[href] { min-width:44px; }
+  }
+</style>
 </head>
 
 <body>
@@ -685,7 +709,7 @@ html { scroll-padding-top: 80px; }
   .ft-nav-menu a {
     display:flex; align-items:center; justify-content:space-between;
     padding:11px 22px; font-family:var(--font-sans);
-    font-size:13px; font-weight:500; color:#4A4A52;
+    font-size:15px; font-weight:500; color:#4A4A52;
     text-decoration:none;
     transition:background 80ms ease, color 80ms ease, padding-left 80ms ease, border-color 80ms ease;
   }
@@ -703,13 +727,13 @@ html { scroll-padding-top: 80px; }
     </a>
 
     <nav id="ft-nav" style="display:flex;gap:28px;justify-content:center;">
-      <a href="index.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">Home
+      <a href="index.html" style="font-family:var(--font-sans);font-size:15px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">Home
         </a>
-      <a href="index.html#about" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
+      <a href="index.html#about" style="font-family:var(--font-sans);font-size:15px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
         Company
       </a>
       <div class="ft-nav-dropdown">
-        <a href="product.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
+        <a href="product.html" style="font-family:var(--font-sans);font-size:15px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
           Product
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           
@@ -722,21 +746,21 @@ html { scroll-padding-top: 80px; }
           <a href="product.html#lighting" role="menuitem">Lighting Busduct Solution <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
         </div>
       </div>
-      <a href="portfolio.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
+      <a href="portfolio.html" style="font-family:var(--font-sans);font-size:15px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
         Certificates
       </a>
-      <a href="portfolio-track-record.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
+      <a href="portfolio-track-record.html" style="font-family:var(--font-sans);font-size:15px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
         Portfolio
       </a>
     </nav>
 
     <div id="ft-utility" style="display:flex;align-items:center;gap:20px;">
-      <a id="ft-phone" href="https://wa.me/60128874517" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-sans);font-size:13px;font-weight:600;color:#111114;text-decoration:none;">
+      <a id="ft-phone" href="https://wa.me/60128874517" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-sans);font-size:15px;font-weight:600;color:#111114;text-decoration:none;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="#2E3192" style="display:inline-block;flex-shrink:0;"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-1 1.1-.2.2-.4.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.5-1.7-1.6-2-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5L9.4 7c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-1 .9-1 2.3 0 1.4 1 2.7 1.2 2.9.2.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.4-.1-.2-.3-.2-.5-.3ZM12 22a10 10 0 0 1-5.1-1.4l-3.6 1 .9-3.6A10 10 0 1 1 12 22Zm0-18a8 8 0 0 0-6.7 12.4l-.5 2 2-.6A8 8 0 1 0 12 4Z"/></svg>
         <span>+6012-887 4517</span>
       </a>
-      <a href="quote.html" id="ft-quote-btn" class="btn-dark" style="display:inline-flex;align-items:center;gap:12px;border:none;padding:0 24px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:opacity 200ms ease;background:#141414;color:#FFFFFF;text-decoration:none;">
-        <span id="ft-quote-label" style="font-family:var(--font-sans);font-size:13px;font-weight:600;text-transform:none;">Contact Us</span>
+      <a href="quote.html" id="ft-quote-btn" class="btn-dark" style="display:inline-flex;align-items:center;gap:12px;border:none;padding:0 24px;font-family:var(--font-sans);font-size:15px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:opacity 200ms ease;background:#141414;color:#FFFFFF;text-decoration:none;">
+        <span id="ft-quote-label" style="font-family:var(--font-sans);font-size:15px;font-weight:600;text-transform:none;">Contact Us</span>
         <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
       </a>
       <button id="ft-burger" aria-label="Open menu" aria-expanded="false"><span></span></button>
@@ -788,14 +812,14 @@ html { scroll-padding-top: 80px; }
   }
   .gi-textarea { padding:14px 16px; height:96px; resize:vertical; }
   .gi-input:focus, .gi-textarea:focus, .gi-select:focus { border-color:#2E3192; }
-  .gi-label { display:block; font-family:var(--font-sans); font-size:12px; font-weight:600; color:#4A4A52; margin-bottom:6px; letter-spacing:0.2px; }
+  .gi-label { display:block; font-family:var(--font-sans); font-size:14px; font-weight:600; color:#4A4A52; margin-bottom:6px; letter-spacing:0.2px; }
   .gi-field { margin-bottom:16px; }
   /* Phone: country-code dropdown joined to the number box. */
   .gi-phone { display:flex; align-items:stretch; }
   .gi-phone .gi-input { flex:1; min-width:0; }
   .gi-phone-code { flex:0 0 auto; }
   .gi-phone-code .fx-dd-btn { width:auto; min-width:84px; background:#F6F6F8; border-right:0;
-    padding:0 10px 0 12px; font-size:14px; font-weight:600; gap:8px; }
+    padding:0 10px 0 12px; font-size:16px; font-weight:600; gap:8px; }
 
   /* ---- Site dropdown (replaces the browser's native list) ---------- */
   .fx-dd-wrap { position:relative; }
@@ -820,7 +844,7 @@ html { scroll-padding-top: 80px; }
     border:0; border-bottom:1px solid #ECECF1; font-family:var(--font-sans); font-size:15px;
     color:#111114; outline:none; }
   .fx-dd-list { list-style:none; margin:0; padding:6px; max-height:280px; overflow-y:auto; }
-  .fx-dd-group { padding:10px 10px 4px; font-family:var(--font-sans); font-size:11px; font-weight:700;
+  .fx-dd-group { padding:10px 10px 4px; font-family:var(--font-sans); font-size:13px; font-weight:700;
     letter-spacing:0.08em; text-transform:uppercase; color:#8A8A94; }
   .fx-dd-opt { display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:6px;
     font-family:var(--font-sans); font-size:14.5px; color:#111114; cursor:pointer; }
@@ -829,7 +853,7 @@ html { scroll-padding-top: 80px; }
   .fx-dd-opt.is-selected { font-weight:600; }
   .fx-dd-opt.is-selected::after { content:''; margin-left:auto; width:6px; height:11px;
     border:solid #2E3192; border-width:0 2px 2px 0; transform:rotate(45deg) translate(-2px,-2px); }
-  .fx-dd-empty { padding:14px 10px; font-family:var(--font-sans); font-size:14px; color:#8A8A94; }
+  .fx-dd-empty { padding:14px 10px; font-family:var(--font-sans); font-size:16px; color:#8A8A94; }
   @media (max-width:600px) { .fx-dd-list { max-height:240px; } }
   .gi-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
   .gi-loc { display:grid; grid-template-columns:1fr auto; align-items:start; gap:16px; padding:16px 0; border-bottom:1px solid #ECECF1; }
@@ -837,7 +861,7 @@ html { scroll-padding-top: 80px; }
   .gi-pill {
     display:inline-flex; align-items:center; gap:6px; padding:8px 14px;
     background:#F4F6FB; color:#2E3192; border-radius:999px;
-    font-family:var(--font-sans); font-size:12px; font-weight:600; text-decoration:none;
+    font-family:var(--font-sans); font-size:14px; font-weight:600; text-decoration:none;
     transition:background 200ms ease;
   }
   .gi-pill:hover { background:#E4E7F4; }
@@ -848,8 +872,8 @@ html { scroll-padding-top: 80px; }
     width:40px; height:40px; border-radius:50%; background:#F4F6FB; color:#2E3192;
     display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;
   }
-  .gi-direct-label { font-family:var(--font-sans); font-size:11px; font-weight:600; color:#6B6B73; letter-spacing:0.4px; text-transform:uppercase; margin:0 0 2px; }
-  .gi-direct-value { font-family:var(--font-sans); font-size:13px; font-weight:600; color:#111114; line-height:1.35; margin:0; }
+  .gi-direct-label { font-family:var(--font-sans); font-size:13px; font-weight:600; color:#6B6B73; letter-spacing:0.4px; text-transform:uppercase; margin:0 0 2px; }
+  .gi-direct-value { font-family:var(--font-sans); font-size:15px; font-weight:600; color:#111114; line-height:1.35; margin:0; }
   @media (max-width: 900px) {
     .gi-grid { grid-template-columns:1fr; }
     .gi-direct { grid-template-columns:1fr 1fr; }
@@ -1364,13 +1388,13 @@ html { scroll-padding-top: 80px; }
           <textarea class="gi-textarea" name="message" placeholder="Load, location, schedule, project type…" required></textarea>
         </div>
 
-        <button type="submit" id="quote-submit" class="btn-blue" style="width:100%;background:#2E3192;color:#FFFFFF;height:52px;font-family:var(--font-sans);font-size:14px;font-weight:600;letter-spacing:0.3px;cursor:pointer;margin-top:8px;">
+        <button type="submit" id="quote-submit" class="btn-blue" style="width:100%;background:#2E3192;color:#FFFFFF;height:52px;font-family:var(--font-sans);font-size:16px;font-weight:600;letter-spacing:0.3px;cursor:pointer;margin-top:8px;">
           Submit Enquiry
         </button>
 
-        <div id="quote-status" style="display:none;margin-top:14px;padding:12px 14px;border-radius:6px;font-size:13px;line-height:1.5;"></div>
+        <div id="quote-status" style="display:none;margin-top:14px;padding:12px 14px;border-radius:6px;font-size:15px;line-height:1.5;"></div>
 
-        <p style="font-size:11.5px;line-height:1.6;color:#6B6B73;margin:18px 0 0;text-align:center;letter-spacing:0.2px;">
+        <p style="font-size:13px;line-height:1.6;color:#6B6B73;margin:18px 0 0;text-align:center;letter-spacing:0.2px;">
           Your Enquiry will be directed to the relevant Furutec team for follow-up
         </p>
       </form>
@@ -1437,28 +1461,30 @@ html { scroll-padding-top: 80px; }
           <h3 style="font-family:var(--font-display);font-size:22px;font-weight:700;color:#111114;margin:0 0 8px;">Furutec Electrical Sdn Bhd</h3>
           <div class="gi-loc">
             <div>
-              <div style="font-family:var(--font-sans);font-size:11px;font-weight:600;color:#6B6B73;letter-spacing:0.4px;text-transform:uppercase;margin-bottom:4px;">Sales &amp; Marketing Office</div>
-              <div style="font-size:13px;line-height:1.55;color:#111114;">
-                Lot 4 Block A, Jalan SS 13/7,<br/>
+              <div style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:#6B6B73;letter-spacing:0.4px;text-transform:uppercase;margin-bottom:4px;">Sales &amp; Marketing Office</div>
+              <div style="font-size:15px;line-height:1.55;color:#111114;">
+                Lot 4, Block A, Jalan SS 13/7,<br/>
                 Subang Jaya Industrial Estate,<br/>
-                47500 Subang Jaya, Selangor.
+                47500 Subang Jaya, <br/>
+                Selangor, Malaysia
               </div>
             </div>
-            <a class="gi-pill" href="https://www.google.com/maps/dir/?api=1&amp;destination=Lot+Block+A%2C+4%2C+Jalan+SS+13%2F7%2C+Subang+Jaya+Industrial+Estate%2C+47500+Subang+Jaya%2C+Selangor" target="_blank" rel="noopener">
+            <a class="gi-pill" href="https://maps.app.goo.gl/f2Svjc3KCZewJPvM9" target="_blank" rel="noopener">
               Directions
               <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
             </a>
           </div>
           <div class="gi-loc">
             <div>
-              <div style="font-family:var(--font-sans);font-size:11px;font-weight:600;color:#6B6B73;letter-spacing:0.4px;text-transform:uppercase;margin-bottom:4px;">Manufacturing Plant</div>
-              <div style="font-size:13px;line-height:1.55;color:#111114;">
-                MK13, Plot 89, Lorong Perindustrian Bukit Minyak 11,<br/>
+              <div style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:#6B6B73;letter-spacing:0.4px;text-transform:uppercase;margin-bottom:4px;">Manufacturing Plant</div>
+              <div style="font-size:15px;line-height:1.55;color:#111114;">
+                Plot 89, Lorong Perindustrian Bukit Minyak 11,<br/>
                 Kawasan Perindustrian Bukit Minyak,<br/>
-                14100 Seberang Perai Tengah, Penang.
+                MK 13, 14100 Seberang Perai Tengah, <br/>
+                Penang, Malaysia.
               </div>
             </div>
-            <a class="gi-pill" href="https://www.google.com/maps/dir/?api=1&amp;destination=MK13%2C+Plot+89%2C+Lorong+Perindustrian+Bukit+Minyak+11%2C+Kawasan+Perindustrian+Bukit+Minyak%2C+14100+Simpang+Ampat%2C+Penang" target="_blank" rel="noopener">
+            <a class="gi-pill" href="https://maps.app.goo.gl/FCiBxC7z7w54Dw8P8" target="_blank" rel="noopener">
               Directions
               <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
             </a>
@@ -1466,8 +1492,8 @@ html { scroll-padding-top: 80px; }
 
           <!-- Map tabs -->
           <div id="gi-map-tabs" style="display:flex;gap:0;border-bottom:1px solid #ECECF1;margin:18px 0 0;">
-            <button type="button" data-map="subang" class="gi-map-tab is-active" style="background:none;border:none;padding:12px 20px 14px;font-family:var(--font-sans);font-size:12px;font-weight:600;letter-spacing:0.4px;text-transform:uppercase;color:#2E3192;cursor:pointer;border-bottom:2px solid #2E3192;margin-bottom:-1px;">Subang Jaya</button>
-            <button type="button" data-map="penang" class="gi-map-tab" style="background:none;border:none;padding:12px 20px 14px;font-family:var(--font-sans);font-size:12px;font-weight:600;letter-spacing:0.4px;text-transform:uppercase;color:#6B6B73;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;">Penang Manufacturing Plant</button>
+            <button type="button" data-map="subang" class="gi-map-tab is-active" style="background:none;border:none;padding:12px 20px 14px;font-family:var(--font-sans);font-size:14px;font-weight:600;letter-spacing:0.4px;text-transform:uppercase;color:#2E3192;cursor:pointer;border-bottom:2px solid #2E3192;margin-bottom:-1px;">Sales &amp; marketing office</button>
+            <button type="button" data-map="penang" class="gi-map-tab" style="background:none;border:none;padding:12px 20px 14px;font-family:var(--font-sans);font-size:14px;font-weight:600;letter-spacing:0.4px;text-transform:uppercase;color:#6B6B73;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;">Manufacturing Plant</button>
           </div>
         </div>
 
@@ -1542,7 +1568,7 @@ html { scroll-padding-top: 80px; }
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
         </span>
         <div>
-          <p class="gi-direct-label">Working Hours</p>
+          <p class="gi-direct-label">Working Hour</p>
           <p class="gi-direct-value">8:30 AM – 6:00 PM<br/>Monday to Friday</p>
         </div>
       </div>
@@ -1559,37 +1585,37 @@ html { scroll-padding-top: 80px; }
       <div style="display:inline-flex;align-items:center;margin-bottom:14px;">
         <img src="assets/Logo-white.png?v=1780558217" alt="Furutec — Busduct System" style="height:54px;width:auto;display:block;"/>
       </div>
-      <p style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:#FFFFFF;margin:0 0 4px;line-height:1.4;">Furutec Electrical Sdn Bhd</p>
-      <p style="font-size:11px;color:rgba(255,255,255,0.45);margin:0 0 16px;font-style:italic;">Company No. 198001003423 (57207-W)</p>
-      <p style="font-size:12px;line-height:1.7;color:rgba(255,255,255,0.6);margin:0 0 22px;max-width:260px;">
+      <p style="font-family:var(--font-sans);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 4px;line-height:1.4;">Furutec Electrical Sdn Bhd</p>
+      <p style="font-size:13px;color:rgba(255,255,255,0.45);margin:0 0 16px;font-style:italic;">Company No. 198001003423 (57207-W)</p>
+      <p style="font-size:14px;line-height:1.7;color:rgba(255,255,255,0.6);margin:0 0 22px;max-width:260px;">
         Engineering The Future Of Power Distribution — Reliable, Efficient, And Built For Demanding Environments Worldwide.
       </p>
-      <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0 0 10px;display:flex;align-items:center;gap:10px;">
+      <p style="font-size:14px;color:rgba(255,255,255,0.7);margin:0 0 10px;display:flex;align-items:center;gap:10px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M3 6h18v12H3Z"/><path d="M3 6l9 7 9-7"/></svg>
-        <a href="mailto:info@furutec.com.my" style="color:rgba(255,255,255,0.85);font-size:13px;text-decoration:none;">info@furutec.com.my</a>
+        <a href="mailto:info@furutec.com.my" style="color:rgba(255,255,255,0.85);font-size:15px;text-decoration:none;">info@furutec.com.my</a>
       </p>
-      <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0 0 10px;display:flex;align-items:center;gap:10px;">
+      <p style="font-size:14px;color:rgba(255,255,255,0.7);margin:0 0 10px;display:flex;align-items:center;gap:10px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF" style="display:inline-block;flex-shrink:0;"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-1 1.1-.2.2-.4.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.5-1.7-1.6-2-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5L9.4 7c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-1 .9-1 2.3 0 1.4 1 2.7 1.2 2.9.2.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.4-.1-.2-.3-.2-.5-.3ZM12 22a10 10 0 0 1-5.1-1.4l-3.6 1 .9-3.6A10 10 0 1 1 12 22Zm0-18a8 8 0 0 0-6.7 12.4l-.5 2 2-.6A8 8 0 1 0 12 4Z"/></svg>
-        <a href="https://wa.me/60128874517" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.85);font-size:13px;text-decoration:none;">+6012-887 4517</a>
+        <a href="https://wa.me/60128874517" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.85);font-size:15px;text-decoration:none;">+6012-887 4517</a>
       </p>
-      <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0 0 8px;display:flex;align-items:center;gap:10px;">
+      <p style="font-size:14px;color:rgba(255,255,255,0.7);margin:0 0 8px;display:flex;align-items:center;gap:10px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M12 22s-8-7-8-13a8 8 0 0 1 16 0c0 6-8 13-8 13Z"/><circle cx="12" cy="9" r="3"/></svg>
-        <span style="color:rgba(255,255,255,0.85);font-size:13px;">Subang Jaya, Malaysia</span>
+        <span style="color:rgba(255,255,255,0.85);font-size:15px;">Subang Jaya, Malaysia</span>
       </p>
-      <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0;display:flex;align-items:center;gap:10px;">
+      <p style="font-size:14px;color:rgba(255,255,255,0.7);margin:0;display:flex;align-items:center;gap:10px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M12 22s-8-7-8-13a8 8 0 0 1 16 0c0 6-8 13-8 13Z"/><circle cx="12" cy="9" r="3"/></svg>
-        <span style="color:rgba(255,255,255,0.85);font-size:13px;">Penang, Malaysia</span>
+        <span style="color:rgba(255,255,255,0.85);font-size:15px;">Penang, Malaysia</span>
       </p>
     </div>
 
     <div>
       <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">Product</h4>
       <ul style="list-style:none;padding:0;margin:0;">
-<li style="margin-bottom:10px;"><a href="product.html#indoor" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Indoor Busduct Solution</a></li>
-<li style="margin-bottom:10px;"><a href="product.html#outdoor" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Outdoor Busduct Solution</a></li>
-<li style="margin-bottom:10px;"><a href="product.html#datacenter" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Data Centre Busduct Solution</a></li>
-<li style="margin-bottom:10px;"><a href="product.html#power" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Intelligent Monitoring System</a></li>
-<li style="margin-bottom:10px;"><a href="product.html#lighting" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Lighting Busduct Solution</a></li>
+<li style="margin-bottom:10px;"><a href="product.html#indoor" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Indoor Busduct Solution</a></li>
+<li style="margin-bottom:10px;"><a href="product.html#outdoor" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Outdoor Busduct Solution</a></li>
+<li style="margin-bottom:10px;"><a href="product.html#datacenter" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Data Centre Busduct Solution</a></li>
+<li style="margin-bottom:10px;"><a href="product.html#power" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Intelligent Monitoring System</a></li>
+<li style="margin-bottom:10px;"><a href="product.html#lighting" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Lighting Busduct Solution</a></li>
 
       </ul>
     </div>
@@ -1597,10 +1623,10 @@ html { scroll-padding-top: 80px; }
     <div>
       <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">Industries</h4>
       <ul style="list-style:none;padding:0;margin:0;">
-<li style="margin-bottom:10px;"><a href="portfolio-track-record.html#data-centre" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Data Centres</a></li>
-<li style="margin-bottom:10px;"><a href="portfolio-track-record.html#commercial" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Commercial Buildings</a></li>
-<li style="margin-bottom:10px;"><a href="portfolio-track-record.html#infrastructure" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Public Transportation</a></li>
-<li style="margin-bottom:10px;"><a href="portfolio-track-record.html#medical" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Medical &amp; Healthcare</a></li>
+<li style="margin-bottom:10px;"><a href="portfolio-track-record.html#data-centre" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Data Centre</a></li>
+<li style="margin-bottom:10px;"><a href="portfolio-track-record.html#commercial" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Commercial Building</a></li>
+<li style="margin-bottom:10px;"><a href="portfolio-track-record.html#infrastructure" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Public Transportation</a></li>
+<li style="margin-bottom:10px;"><a href="portfolio-track-record.html#medical" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Medical &amp; Healthcare</a></li>
 
       </ul>
     </div>
@@ -1608,10 +1634,10 @@ html { scroll-padding-top: 80px; }
     <div>
       <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">Support</h4>
       <ul style="list-style:none;padding:0;margin:0;">
-<li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Technical Documents</a></li>
-<li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Product Catalogue</a></li>
-<li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">FAQ</a></li>
-<li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Warranty</a></li>
+<li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Technical Document</a></li>
+<li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Product Catalogue</a></li>
+<li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">FAQ</a></li>
+<li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Warranty</a></li>
 
       </ul>
     </div>
@@ -1619,10 +1645,10 @@ html { scroll-padding-top: 80px; }
     <div>
       <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">Company</h4>
       <ul style="list-style:none;padding:0;margin:0;">
-<li style="margin-bottom:10px;"><a href="index.html#about" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">About Furutec</a></li>
-<li style="margin-bottom:10px;"><a href="portfolio-track-record.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Key Projects</a></li>
-<li style="margin-bottom:10px;"><a href="portfolio.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Certifications</a></li>
-<li style="margin-bottom:10px;"><a href="quote.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Contact</a></li>
+<li style="margin-bottom:10px;"><a href="index.html#about" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">About Furutec</a></li>
+<li style="margin-bottom:10px;"><a href="portfolio-track-record.html" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Key Project</a></li>
+<li style="margin-bottom:10px;"><a href="portfolio.html" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Certification</a></li>
+<li style="margin-bottom:10px;"><a href="quote.html" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Contact</a></li>
 
       </ul>
     </div>
@@ -1632,16 +1658,16 @@ html { scroll-padding-top: 80px; }
 
   <div style="background:#0A0A0B;padding:18px 0;">
     <div style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;">
-      <div style="display:flex;gap:8px;align-items:center;font-size:11px;">
+      <div style="display:flex;gap:8px;align-items:center;font-size:13px;">
         <a href="#" style="color:rgba(255,255,255,0.55);text-decoration:none;">Privacy Policy</a>
         <span style="color:rgba(255,255,255,0.3);">·</span>
         <a href="#" style="color:rgba(255,255,255,0.55);text-decoration:none;">Terms &amp; Conditions</a>
         <span style="color:rgba(255,255,255,0.3);">·</span>
         <a href="#" style="color:rgba(255,255,255,0.55);text-decoration:none;">Sitemap</a>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="font-size:11px;color:rgba(255,255,255,0.55);text-align:center;">© 2026 Furutec Electrical Sdn Bhd. All Rights Reserved.</div></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="font-size:13px;color:rgba(255,255,255,0.55);text-align:center;">© 2026 Furutec Electrical Sdn Bhd. All Rights Reserved.</div></div>
       <div style="display:flex;align-items:center;gap:10px;justify-content:flex-end;">
-        <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.4px;text-transform:uppercase;margin-right:4px;">Social Media</span>
+        <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.4px;text-transform:uppercase;margin-right:4px;">Social Media</span>
         <a href="https://www.facebook.com/furutecbusduct" aria-label="Facebook" style="width:34px;height:34px;border-radius:50%;background:#1877F2;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06c0 5.01 3.66 9.16 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.51 1.49-3.9 3.78-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.45 2.91h-2.33V22c4.78-.78 8.44-4.93 8.44-9.94Z"/></svg>
         </a>

@@ -276,11 +276,11 @@ p, .body {
   }
   /* Filled brand-orange button — used on dark sections (e.g. Credential banner). */
   .btn-orange {
-    background: #F58220 !important;
+    background: #BD530B !important;
     color: #FFFFFF !important;
-    border: 1.5px solid #F58220 !important;
+    border: 1.5px solid #BD530B !important;
     transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
-    box-shadow: 0 4px 14px rgba(245,130,32,0.30);
+    box-shadow: 0 4px 14px rgba(189,83,11,0.30);
   }
   .btn-orange:hover {
     background: transparent !important;
@@ -350,7 +350,7 @@ p, .body {
   @media (max-width: 1100px) {
     #ft-header-inner { gap: 20px; padding: 14px 24px; }
     #ft-nav { gap: 20px; }
-    #ft-nav a { font-size: 12px; padding: 20px 0; }
+    #ft-nav a { font-size: 14px; padding: 20px 0; }
     #ft-phone { display: none; }
   }
 
@@ -362,7 +362,7 @@ p, .body {
       padding: 12px 18px;
     }
     #ft-nav { display: none !important; }
-    #ft-phone span { white-space: nowrap; font-size: 12px; }
+    #ft-phone span { white-space: nowrap; font-size: 14px; }
     #ft-utility { gap: 10px; }
     #ft-quote-label { display: none; }
     #ft-quote-btn { padding: 0 14px !important; }
@@ -650,16 +650,16 @@ html { scroll-padding-top: 80px; }
 /* Get A Quote — brand-orange pill (kept consistent with the
    orange CTAs used elsewhere on the homepage). */
 #ft-quote-btn {
-  background: #F58220 !important;
+  background: #BD530B !important;
   color: #FFFFFF !important;
-  border: 1.5px solid #F58220 !important;
+  border: 1.5px solid #BD530B !important;
   transition: background .25s ease, color .25s ease, border-color .25s ease !important;
-  box-shadow: 0 4px 14px rgba(245,130,32,0.30);
+  box-shadow: 0 4px 14px rgba(189,83,11,0.30);
 }
 #ft-quote-btn:hover {
   background: transparent !important;
-  color: #F58220 !important;
-  border-color: #F58220 !important;
+  color: #BD530B !important;
+  border-color: #BD530B !important;
   box-shadow: none;
 }
 #ft-quote-btn .btn-arrow > span svg { stroke: currentColor !important; }
@@ -745,6 +745,30 @@ html { scroll-padding-top: 80px; }
   }
 </style>
 
+<style id="a11y-pass-2026-11">
+  /* Readability pass 2026-11-25 (WCAG 2.1 AA): tap targets >= 44px on touch
+     layouts.  Text sizes were raised in place (11→13, 12→14, 13→15, 14→16)
+     and the brand orange darkened #F58220 → #BD530B (4.8:1 with white). */
+  .fx-dd-btn.is-placeholder .fx-dd-label { color:#6B6B73 !important; }
+  @media (max-width: 820px) {
+    footer li { margin-bottom:0 !important; }
+    footer li a, footer p a { display:inline-block; padding:12px 0; }
+    footer a[aria-label="Facebook"], footer a[aria-label="YouTube"],
+    footer a[aria-label="LinkedIn"], footer a[aria-label="WhatsApp"] { width:44px !important; height:44px !important; }
+    #ft-phone { min-width:44px; min-height:44px; justify-content:center; }
+    #ft-phone svg { width:20px; height:20px; }
+    #ft-quote-btn { min-height:44px; }
+    .pov-nav-btn { min-width:44px; min-height:44px; }
+    .pov-card-cta { min-height:44px; }
+    .en-row-viewall { min-height:44px; align-items:center; }
+    .ps-gallery-thumbs { grid-auto-columns:minmax(60px,1fr); }
+    .ps-gallery-thumb { min-width:60px; min-height:45px; }
+    footer a[href] { min-height:44px; display:inline-flex; align-items:center; }
+    .pov-hotspot { min-width:44px; min-height:44px; }
+    a[href="portfolio-track-record.html"][style*="inline-flex"] { min-height:44px; }
+    footer a[href] { min-width:44px; }
+  }
+</style>
 </head>
 
 <body>
@@ -784,7 +808,7 @@ html { scroll-padding-top: 80px; }
   .ft-nav-menu a {
     display:flex; align-items:center; justify-content:space-between;
     padding:11px 22px; font-family:var(--font-sans);
-    font-size:13px; font-weight:500; color:#4A4A52;
+    font-size:15px; font-weight:500; color:#4A4A52;
     text-decoration:none;
     transition:background 80ms ease, color 80ms ease, padding-left 80ms ease, border-color 80ms ease;
   }
@@ -802,15 +826,15 @@ html { scroll-padding-top: 80px; }
     </a>
 
     <nav id="ft-nav" style="display:flex;gap:28px;justify-content:center;">
-      <a href="index.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#2E3192;position:relative;">
+      <a href="index.html" style="font-family:var(--font-sans);font-size:15px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#2E3192;position:relative;">
         Home
         <span style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:24px;height:3px;background:#2E3192;"></span>
       </a>
-      <a href="index.html#about" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
+      <a href="index.html#about" style="font-family:var(--font-sans);font-size:15px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
         Company
       </a>
       <div class="ft-nav-dropdown">
-        <a href="product.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
+        <a href="product.html" style="font-family:var(--font-sans);font-size:15px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
           Product
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
           
@@ -823,21 +847,21 @@ html { scroll-padding-top: 80px; }
           <a href="product.html#lighting" role="menuitem">Lighting Busduct Solution <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
         </div>
       </div>
-      <a href="portfolio.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
+      <a href="portfolio.html" style="font-family:var(--font-sans);font-size:15px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
         Certificates
       </a>
-      <a href="portfolio-track-record.html" style="font-family:var(--font-sans);font-size:13px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
+      <a href="portfolio-track-record.html" style="font-family:var(--font-sans);font-size:15px;font-weight:500;text-decoration:none;padding:22px 0;transition:color 200ms ease;color:#4A4A52;position:relative;">
         Portfolio
       </a>
     </nav>
 
     <div id="ft-utility" style="display:flex;align-items:center;gap:20px;">
-      <a id="ft-phone" href="https://wa.me/60128874517" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-sans);font-size:13px;font-weight:600;color:#111114;text-decoration:none;">
+      <a id="ft-phone" href="https://wa.me/60128874517" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-sans);font-size:15px;font-weight:600;color:#111114;text-decoration:none;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="#2E3192" style="display:inline-block;flex-shrink:0;"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-1 1.1-.2.2-.4.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.5-1.7-1.6-2-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5L9.4 7c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-1 .9-1 2.3 0 1.4 1 2.7 1.2 2.9.2.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.4-.1-.2-.3-.2-.5-.3ZM12 22a10 10 0 0 1-5.1-1.4l-3.6 1 .9-3.6A10 10 0 1 1 12 22Zm0-18a8 8 0 0 0-6.7 12.4l-.5 2 2-.6A8 8 0 1 0 12 4Z"/></svg>
         <span>+6012-887 4517</span>
       </a>
-      <a href="quote.html" id="ft-quote-btn" class="btn-dark" style="display:inline-flex;align-items:center;gap:12px;border:none;padding:0 24px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:opacity 200ms ease;background:#141414;color:#FFFFFF;text-decoration:none;">
-        <span id="ft-quote-label" style="font-family:var(--font-sans);font-size:13px;font-weight:600;text-transform:none;">Contact Us</span>
+      <a href="quote.html" id="ft-quote-btn" class="btn-dark" style="display:inline-flex;align-items:center;gap:12px;border:none;padding:0 24px;font-family:var(--font-sans);font-size:15px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:opacity 200ms ease;background:#141414;color:#FFFFFF;text-decoration:none;">
+        <span id="ft-quote-label" style="font-family:var(--font-sans);font-size:15px;font-weight:600;text-transform:none;">Contact Us</span>
         <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
       </a>
       <button id="ft-burger" aria-label="Open menu" aria-expanded="false"><span></span></button>
@@ -928,11 +952,11 @@ html { scroll-padding-top: 80px; }
   .ft-hero-btn-primary {
     display:inline-flex; align-items:center; gap:14px;
     padding:0 32px; height:56px; cursor:pointer;
-    background:#F58220; color:#FFFFFF;
-    border:1.5px solid #F58220;
-    font-family:var(--font-sans); font-size:14px; font-weight:600;
+    background:#BD530B; color:#FFFFFF;
+    border:1.5px solid #BD530B;
+    font-family:var(--font-sans); font-size:16px; font-weight:600;
     transition:background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-    box-shadow:0 4px 14px rgba(245,130,32,0.30);
+    box-shadow:0 4px 14px rgba(189,83,11,0.30);
   }
   .ft-hero-btn-primary:hover {
     background:transparent;
@@ -948,7 +972,7 @@ html { scroll-padding-top: 80px; }
   .ft-hero-eyebrow {
     display:inline-flex; align-items:center; gap:8px;
     margin-bottom:22px;
-    font-family:var(--font-sans); font-size:12px; font-weight:600;
+    font-family:var(--font-sans); font-size:14px; font-weight:600;
     letter-spacing:0.6px; text-transform:uppercase;
     color:#FFFFFF;
   }
@@ -981,7 +1005,7 @@ html { scroll-padding-top: 80px; }
   .ft-hero-cert-bar-label {
     flex-shrink:0;
     font-family:var(--font-sans);
-    font-size:11px; font-weight:700;
+    font-size:13px; font-weight:700;
     letter-spacing:0.18em; text-transform:uppercase;
     color:#6B6B73;
     padding-right:14px;
@@ -991,7 +1015,7 @@ html { scroll-padding-top: 80px; }
     .ft-hero-cert-bar { margin-top:36px; border-radius:12px; }
     .ft-hero-cert-bar-inner { gap:14px; padding:14px 18px; }
     .ft-hero-cert-bar img { height:30px; }
-    .ft-hero-cert-bar-label { font-size:10px; padding-right:10px; }
+    .ft-hero-cert-bar-label { font-size:12px; padding-right:10px; }
   }
   @media (max-width: 600px) {
     .ft-hero-cert-bar { border-radius:10px; }
@@ -1056,8 +1080,8 @@ html { scroll-padding-top: 80px; }
   <div id="hero-title" class="ft-hero-inner" style="will-change:opacity,transform;">
     <div class="ft-hero-content">
       <h1>
-        Engineered For Density.<br/>
-        <span class="accent">Built For Scale.</span>
+        Engineered for Density.<br/>
+        <span class="accent">Built for Scale.</span>
       </h1>
       <p class="lede">Integrated busduct power distribution for mission-critical data centre - from main distribution to the data hall</p>
       <div class="ft-hero-cta">
@@ -1359,13 +1383,13 @@ fxHero.init();
         '<div style="position:relative;max-width:1320px;margin:0 auto;padding:80px 32px 64px;height:100%;">' +
           '<div style="max-width:720px;">' +
             '<h1 class="hero-fade hero-fade-1" style="font-family:var(--font-display);font-size:84px;font-weight:700;line-height:1.02;letter-spacing:-0.01em;margin:0 0 28px;color:#FFFFFF;text-wrap:balance;">' + s.title + '</h1>' +
-            '<p class="hero-fade hero-fade-2" style="font-size:14px;line-height:1.75;color:rgba(255,255,255,0.75);max-width:440px;margin:0 0 32px;">' + s.body + '</p>' +
+            '<p class="hero-fade hero-fade-2" style="font-size:16px;line-height:1.75;color:rgba(255,255,255,0.75);max-width:440px;margin:0 0 32px;">' + s.body + '</p>' +
             '<div class="hero-fade hero-fade-3" style="display:flex;gap:12px;align-items:center;margin-bottom:48px;">' +
-              '<button style="display:inline-flex;align-items:center;gap:10px;border:none;padding:6px 24px 6px 6px;font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;background:#111114;color:#FFFFFF;">' +
+              '<button style="display:inline-flex;align-items:center;gap:10px;border:none;padding:6px 24px 6px 6px;font-size:15px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;background:#111114;color:#FFFFFF;">' +
                 '<span style="width:36px;height:36px;border-radius:50%;background:#2E3192;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">' + ARROW_SVG + '</span>' +
-                '<span style="font-family:var(--font-sans);font-size:13px;font-weight:600;">Our Systems</span>' +
+                '<span style="font-family:var(--font-sans);font-size:15px;font-weight:600;">Our Systems</span>' +
               '</button>' +
-              '<button style="background:#FFFFFF;color:#111114;border:none;padding:0 28px;height:48px;cursor:pointer;font-family:var(--font-sans);font-size:13px;font-weight:600;">Discover More</button>' +
+              '<button style="background:#FFFFFF;color:#111114;border:none;padding:0 28px;height:48px;cursor:pointer;font-family:var(--font-sans);font-size:15px;font-weight:600;">Discover More</button>' +
             '</div>' +
           '</div>' +
         '</div>';
@@ -1474,8 +1498,8 @@ fxHero.init();
   <div style="max-width:1200px;margin:0 auto;padding:0 32px;">
     <div style="max-width:720px;margin-bottom:40px;">
       <span class="eyebrow" style="margin-bottom:16px;text-transform:uppercase;">Introducing Furutec</span>
-      <h2 style="font-family:var(--font-display);font-size:44px;font-weight:700;line-height:1.1;color:#111114;margin:0 0 16px;text-wrap:balance;">Engineering Excellence. Built In-House.</h2>
-      <p style="font-size:14px;line-height:1.8;color:#6B6B73;margin:0;max-width:560px;">Backed by engineering expertise and advanced manufacturing capabilities, Furutec develops and manufacture busduct systems engineered for reliable power distribution across mission-critical, commercial and industrial applications.</p>
+      <h2 style="font-family:var(--font-display);font-size:44px;font-weight:700;line-height:1.1;color:#111114;margin:0 0 16px;text-wrap:balance;">Engineering with Precision. Manufactured In-House.</h2>
+      <p style="font-size:16px;line-height:1.8;color:#6B6B73;margin:0;max-width:560px;">Combining engineering expertise with advanced manufacturing capabilities, Furuteс develops high-performance busduct solutions that deliver dependable power distribution for today&#039;s most demanding commercial, industrial and mission-critical environments.</p>
     </div>
     <style>
       .video-showcase {
@@ -1531,7 +1555,7 @@ fxHero.init();
       }
       .video-showcase-caption {
         position:absolute; left:24px; bottom:18px;
-        font-family:var(--font-sans); font-size:13px; font-weight:600;
+        font-family:var(--font-sans); font-size:15px; font-weight:600;
         color:#FFFFFF; letter-spacing:0.3px;
         text-shadow:0 2px 8px rgba(0,0,0,0.5);
         z-index:3;
@@ -1656,8 +1680,8 @@ fxHero.init();
       .fv2-left .fv2-badges { margin-top:auto; }
       .fv2-tag {
         font-family:var(--font-sans);
-        font-size:11px; font-weight:700; letter-spacing:1.4px;
-        color:#F58220; text-transform:uppercase;
+        font-size:13px; font-weight:700; letter-spacing:1.4px;
+        color:#BD530B; text-transform:uppercase;
         margin:0 0 14px;
       }
       .fv2-name {
@@ -1669,12 +1693,12 @@ fxHero.init();
       }
       .fv2-rule {
         width:64px; height:3px;
-        background:#F58220;
+        background:#BD530B;
         margin:0 0 26px;
       }
       .fv2-desc {
         font-family:var(--font-sans);
-        font-size:14px; line-height:1.75; color:#4A4A52;
+        font-size:16px; line-height:1.75; color:#4A4A52;
         margin:0 0 16px;
         max-width:520px;
       }
@@ -1696,19 +1720,19 @@ fxHero.init();
       .fv2-badge-icon {
         width:44px; height:44px;
         display:inline-flex; align-items:center; justify-content:center;
-        color:#F58220;
+        color:#BD530B;
       }
       .fv2-badge-icon svg { width:32px; height:32px; }
       .fv2-badge-label {
         font-family:var(--font-sans);
-        font-size:11px; font-weight:700; letter-spacing:0.9px;
+        font-size:13px; font-weight:700; letter-spacing:0.9px;
         text-transform:uppercase;
         color:#111114; line-height:1.3;
         margin:0;
       }
       .fv2-badge-sub {
         font-family:var(--font-sans);
-        font-size:11px; font-weight:500; line-height:1.4;
+        font-size:13px; font-weight:500; line-height:1.4;
         color:#6B6B73;
         margin:4px 0 0;
       }
@@ -1787,7 +1811,7 @@ fxHero.init();
         transform:translateY(-6px) scale(1.06);
         box-shadow:0 26px 50px rgba(46,49,146,0.32),
                    0 8px 18px rgba(17,17,20,0.18);
-        border-color:#F58220;
+        border-color:#BD530B;
         z-index:3;
       }
       .fv2-process img {
@@ -1951,15 +1975,15 @@ fxHero.init();
                    alt="Robotic arm" loading="lazy"/>
             </figure>
             <figure>
-              <img src="assets/penang-plant-process-2.png"
+              <img src="assets/uploads/2026-11-25_01-22-05-whatsapp-image-2026-11-25-at-8-51-56-am.jpeg"
                    alt="Laser cutting" loading="lazy"/>
             </figure>
             <figure>
-              <img src="assets/penang-plant-process-3.png"
+              <img src="assets/uploads/2026-11-25_01-24-13-whatsapp-image-2026-11-25-at-8-53-08-am.jpeg"
                    alt="CNC drilling" loading="lazy"/>
             </figure>
             <figure>
-              <img src="assets/penang-plant-process-4.png"
+              <img src="assets/uploads/2026-11-25_01-24-06-whatsapp-image-2026-11-25-at-8-51-56-am-1.jpeg"
                    alt="Busbar machining centre" loading="lazy"/>
             </figure>
           </div>
@@ -2012,7 +2036,7 @@ fxHero.init();
           <span style="color:#2E3192;">Driven by innovation.</span><br/>
           Committed by passion.
         </h2>
-        <p style="font-size:14px;line-height:1.8;color:#4A4A52;margin:0 0 16px;max-width:540px;">
+        <p style="font-size:16px;line-height:1.8;color:#4A4A52;margin:0 0 16px;max-width:540px;">
           Furutec Electrical Sdn Bhd is a manufacturer of busduct systems,
           specialising in indoor, outdoor, data centre, lighting and power
           monitoring solutions. With over 3 decades in the manufacturing and
@@ -2020,13 +2044,13 @@ fxHero.init();
           systems trusted by engineers, developers and project owners
           worldwide.
         </p>
-        <p style="font-size:14px;line-height:1.8;color:#6B6B73;margin:0 0 32px;max-width:540px;">
+        <p style="font-size:16px;line-height:1.8;color:#6B6B73;margin:0 0 32px;max-width:540px;">
           Our products are type-tested and certified by reputable certification
           bodies, ensuring full compliance with international standards, while
           our comprehensive range of busduct systems is thoughtfully tailored
           to meet diverse applications and market segments.
         </p>
-        <a href="https://www.eita.com.my" target="_blank" rel="noopener" class="btn-outline" style="display:inline-flex;align-items:center;gap:10px;padding:14px 24px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
+        <a href="https://www.eita.com.my" target="_blank" rel="noopener" class="btn-outline" style="display:inline-flex;align-items:center;gap:10px;padding:14px 24px;font-family:var(--font-sans);font-size:15px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
           Discover More
           <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
         </a>
@@ -2043,9 +2067,9 @@ fxHero.init();
         <a href="product.html#datacenter" class="cp-card-feature" style="margin-bottom:16px;text-decoration:none;color:inherit;">
           <div class="cp-thumb" style="background-image:url('https://furutec.com.my/wp-content/uploads/2019/07/BIM1.jpg');"></div>
           <div>
-            <span style="display:inline-block;font-family:var(--font-sans);font-size:10px;font-weight:700;letter-spacing:0.12em;color:#D93025;margin-bottom:8px;">MISSION CRITICAL</span>
+            <span style="display:inline-block;font-family:var(--font-sans);font-size:12px;font-weight:700;letter-spacing:0.12em;color:#D93025;margin-bottom:8px;">MISSION CRITICAL</span>
             <h3 style="font-family:var(--font-display);font-size:20px;font-weight:700;line-height:1.2;color:#111114;margin:0 0 8px;">Data Centre Application</h3>
-            <p style="font-size:13px;line-height:1.6;color:#6B6B73;margin:0;">
+            <p style="font-size:15px;line-height:1.6;color:#6B6B73;margin:0;">
               High-efficiency live system solutions for zero-downtime data halls.
             </p>
           </div>
@@ -2057,7 +2081,7 @@ fxHero.init();
             <div class="cp-thumb" style="background-image:url('https://furutec.com.my/wp-content/uploads/2019/07/keyfeatures2.jpg');"></div>
             <div class="cp-body">
               <h3 style="font-family:var(--font-display);font-size:18px;font-weight:700;line-height:1.2;color:#111114;margin:0 0 6px;">Indoor Installation</h3>
-              <p style="font-size:12.5px;line-height:1.6;color:#6B6B73;margin:0;">
+              <p style="font-size:14px;line-height:1.6;color:#6B6B73;margin:0;">
                 Compact Sandwich Busduct with extruded aluminium housing
                 for residential and commercial environments.
               </p>
@@ -2067,7 +2091,7 @@ fxHero.init();
             <div class="cp-thumb" style="background-image:url('https://furutec.com.my/wp-content/uploads/2019/07/keyfeatures3.jpg');"></div>
             <div class="cp-body">
               <h3 style="font-family:var(--font-display);font-size:18px;font-weight:700;line-height:1.2;color:#111114;margin:0 0 6px;">Outdoor Installation</h3>
-              <p style="font-size:12.5px;line-height:1.6;color:#6B6B73;margin:0;">
+              <p style="font-size:14px;line-height:1.6;color:#6B6B73;margin:0;">
                 IP68 Fully Cast Resin systems designed to withstand
                 moisture and extreme conditions.
               </p>
@@ -2144,9 +2168,10 @@ fxHero.init();
         <span style="color:#2E3192;">Driven by Innovation.</span><br/>
         Committed to Excellence.
       </h2>
-      <p style="font-size:14px;line-height:1.8;color:#4A4A52;margin:0 0 16px;max-width:540px;">With over three decades of expertise in research and development and manufacturing, Furutec Electrical specialises in the design and production of high-performance busduct systems for a wide range of power distribution applications. Our solutions serve diverse sectors, including commercial buildings, industrial facilities and mission-critical data centres, supported by our Intelligent Monitoring System for enhanced system visibility and operational oversight.</p>
-      <p style="font-size:14px;line-height:1.8;color:#6B6B73;margin:0 0 32px;max-width:540px;">Developed and type-tested in accordance with applicable international standards, our busduct systems are engineered to deliver reliable performance, operational safety and consistent power distribution across diverse operating environments and application requirements.</p>
-      <a href="https://www.eita.com.my" target="_blank" rel="noopener" class="btn-outline" style="display:inline-flex;align-items:center;gap:10px;padding:14px 24px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
+      <p style="font-size:16px;line-height:1.8;color:#4A4A52;margin:0 0 16px;max-width:540px;">With over three decades of experience in Research and development, engineering and manufacturing, Furutec Electrical specializes in the design and manufacture of high-performance busduct systems for a wide range of power distribution applications. 
+Serving diverse sectors including commercial buildings, industrial facilities and mission-critical data centres, complemented by an Intelligent Monitoring System that enhances system visibility, monitoring and operational oversight.</p>
+      <p style="font-size:16px;line-height:1.8;color:#6B6B73;margin:0 0 32px;max-width:540px;">Developed and type-tested in accordance with applicable international standards, our busduct systems are engineered to deliver reliable performance, operational safety and consistent power distribution across a wide range of operating environments and application requirements.</p>
+      <a href="https://eita.com.my" target="_blank" rel="noopener" class="btn-outline" style="display:inline-flex;align-items:center;gap:10px;padding:14px 24px;font-family:var(--font-sans);font-size:15px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
         Discover EITA Group
         <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
       </a>
@@ -2236,7 +2261,7 @@ fxHero.init();
   .rp-tab:hover .rp-map { fill:#E5E8F2; }
   .rp-tab.is-active .rp-map { fill:#2E3192; stroke:#2E3192; }
   .rp-label {
-    font-size:12px; font-weight:600; letter-spacing:0.4px;
+    font-size:14px; font-weight:600; letter-spacing:0.4px;
     color:#4A4A52; text-transform:uppercase;
     transition:color 200ms ease;
   }
@@ -2264,10 +2289,10 @@ fxHero.init();
   }
   .rp-name {
     padding:12px 14px; font-family:var(--font-display);
-    font-size:13.5px; font-weight:600; color:#111114; line-height:1.3;
+    font-size:15px; font-weight:600; color:#111114; line-height:1.3;
   }
   .rp-region-tag {
-    font-family:var(--font-sans); font-size:10px; font-weight:600;
+    font-family:var(--font-sans); font-size:12px; font-weight:600;
     color:#6B6B73; letter-spacing:0.4px; text-transform:uppercase;
     display:block; margin-top:4px;
   }
@@ -2282,7 +2307,7 @@ fxHero.init();
       <h2 style="font-family:var(--font-display);font-size:48px;font-weight:700;line-height:1.05;letter-spacing:-0.01em;color:#111114;margin:8px 0 12px;text-wrap:balance;">
         Powering Projects <span style="color:#2E3192;">Across The Region.</span>
       </h2>
-      <p style="font-size:14px;line-height:1.7;color:#6B6B73;margin:0 auto;max-width:560px;">
+      <p style="font-size:16px;line-height:1.7;color:#6B6B73;margin:0 auto;max-width:560px;">
         Select a region to view a portfolio of completed Furutec
         installations across the territory.
       </p>
@@ -2558,7 +2583,7 @@ fxHero.init();
   .pov-card-img.is-fading { opacity:0; }
   .pov-card-label {
     padding:16px 20px 14px;
-    border-top:3px solid #F58220;
+    border-top:3px solid #BD530B;
     display:flex; flex-direction:column;
     gap:6px;
     transition:opacity .25s ease;
@@ -2566,8 +2591,8 @@ fxHero.init();
   .pov-card-label.is-fading { opacity:0; }
   .pov-card-num {
     font-family:var(--font-display);
-    font-size:12px; font-weight:700; letter-spacing:1.4px;
-    color:#F58220; text-transform:uppercase;
+    font-size:14px; font-weight:700; letter-spacing:1.4px;
+    color:#BD530B; text-transform:uppercase;
     margin:0;
   }
   .pov-card-row {
@@ -2584,9 +2609,9 @@ fxHero.init();
   .pov-card-cta {
     display:inline-flex; align-items:center; gap:6px;
     padding:8px 14px;
-    background:#F58220; color:#FFFFFF;
+    background:#BD530B; color:#FFFFFF;
     font-family:var(--font-sans);
-    font-size:12px; font-weight:600; letter-spacing:0.3px;
+    font-size:14px; font-weight:600; letter-spacing:0.3px;
     border-radius:6px;
     text-decoration:none;
     white-space:nowrap;
@@ -2624,7 +2649,7 @@ fxHero.init();
   .pov-nav-btn svg { width:14px; height:14px; }
   .pov-nav-counter {
     font-family:var(--font-display);
-    font-size:13px; font-weight:700; letter-spacing:1.2px;
+    font-size:15px; font-weight:700; letter-spacing:1.2px;
     color:#6B6B73;
   }
   .pov-nav-counter .pov-nav-current { color:#2E3192; }
@@ -2646,7 +2671,7 @@ fxHero.init();
       <h2 style="font-family:var(--font-display);font-size:44px;font-weight:700;line-height:1.05;letter-spacing:-0.01em;color:#111114;margin:8px 0 8px;text-wrap:balance;">
         Explore Furutec <span style="color:#2E3192;">Across Applications</span><br/>
       </h2>
-      <p style="font-size:13px;line-height:1.7;color:#6B6B73;margin:0 auto;max-width:640px;">Select a number on the diagram or use the navigation arrows to explore Furutec solutions across different applications.</p>
+      <p style="font-size:15px;line-height:1.7;color:#6B6B73;margin:0 auto;max-width:640px;">Select a number on the diagram or use the navigation arrows to explore Furutec solutions across different applications.</p>
     </div>
 
     <div class="pov-layout" id="po-pov-layout">
@@ -2848,7 +2873,7 @@ fxHero.init();
     white-space:pre-line;
   }
   .prod-card p {
-    font-size:13px; line-height:1.7; color:#6B6B73; margin:0 0 28px;
+    font-size:15px; line-height:1.7; color:#6B6B73; margin:0 0 28px;
   }
   /* Tech-spec <strong> tags are kept in the HTML for accessibility
      and SEO, but rendered as normal body text within these cards
@@ -2859,7 +2884,7 @@ fxHero.init();
   .prod-card-cta {
     display:inline-flex; align-items:center; gap:10px;
     padding-top:16px; border-top:1px solid rgba(128,128,128,0.15);
-    font-size:13px; font-weight:600; color:#111114;
+    font-size:15px; font-weight:600; color:#111114;
     text-decoration:none; width:100%;
     margin-top:auto;
   }
@@ -2894,12 +2919,12 @@ fxHero.init();
         </h2>
       </div>
       <div style="padding-top:20px;">
-        <p style="font-size:14px;line-height:1.8;color:#6B6B73;margin:0 0 24px;max-width:520px;">Power distribution solutions engineered for diverse applications and operating environments.</p>
+        <p style="font-size:16px;line-height:1.8;color:#6B6B73;margin:0 0 24px;max-width:520px;">Power distribution solutions engineered for diverse applications and operating environments.</p>
         <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
-          <a href="product.html" class="btn-dark" style="display:inline-flex;align-items:center;gap:12px;border:none;padding:0 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;background:#141414;color:#FFFFFF;text-decoration:none;">
+          <a href="product.html" class="btn-dark" style="display:inline-flex;align-items:center;gap:12px;border:none;padding:0 28px;font-family:var(--font-sans);font-size:15px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;background:#141414;color:#FFFFFF;text-decoration:none;">
             View All Products  <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
           </a>
-          <a href="quote.html" class="btn-dark" style="display:inline-flex;align-items:center;gap:12px;border:none;padding:0 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;background:#141414;color:#FFFFFF;text-decoration:none;">
+          <a href="quote.html" class="btn-dark" style="display:inline-flex;align-items:center;gap:12px;border:none;padding:0 28px;font-family:var(--font-sans);font-size:15px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;background:#141414;color:#FFFFFF;text-decoration:none;">
             Request a Catalogue  <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
           </a>
         </div>
@@ -2913,7 +2938,7 @@ fxHero.init();
           <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h.01"/><path d="M9 13h.01"/><path d="M9 17h.01"/></svg>
         </div>
         <h3>Indoor Busduct Solution</h3>
-        <p>Compact sandwich busduct systems engineered for reliable, space-efficient power distribution across commercial and industrial applications.</p>
+        <p>Compact sandwich busduct systems designed for reliable, space-efficient power distribution in commercial and industrial facilities.</p>
         <span class="prod-card-cta">
           <span class="prod-card-cta-circle">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
@@ -2928,7 +2953,7 @@ fxHero.init();
           <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M4.93 19.07l1.41-1.41"/><path d="M17.66 6.34l1.41-1.41"/></svg>
         </div>
         <h3>Outdoor Busduct Solution</h3>
-        <p>Cast resin busduct systems engineered for reliable power distribution in outdoor and harsh operating environments.</p>
+        <p>Robust cast resin busduct systems engineered to deliver reliable power distribution in outdoor installations and demanding operating environments.</p>
         <span class="prod-card-cta">
           <span class="prod-card-cta-circle">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
@@ -2943,7 +2968,7 @@ fxHero.init();
           <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="6" rx="1"/><rect x="2" y="15" width="20" height="6" rx="1"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
         </div>
         <h3>Data Centre Busduct Solution</h3>
-        <p>Scalable busduct systems for power distribution from main distribution to the data hall, with flexible power delivery at the point of use.</p>
+        <p>Scalable busduct systems designed for mission-critical data centres,  delivering reliable power distribution from main distribution to the data hall, with flexible power delivery at the point of use.</p>
         <span class="prod-card-cta">
           <span class="prod-card-cta-circle">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
@@ -2958,7 +2983,7 @@ fxHero.init();
           <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
         </div>
         <h3>Intelligent Monitoring System</h3>
-        <p>Real-time visibility of electrical parameters to enhance power management and operational oversight across data hall power distribution systems.</p>
+        <p>Real-time monitoring of electrical parameters to enhance power management, improve operational visibility and support efficient oversight of data centre power distribution systems.</p>
         <span class="prod-card-cta">
           <span class="prod-card-cta-circle">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
@@ -2973,7 +2998,7 @@ fxHero.init();
           <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
         </div>
         <h3>Lighting Busduct Solution</h3>
-        <p>Flexible busduct systems designed for commercial and industrial lighting applications.</p>
+        <p>Flexible busduct systems engineered to support reliable lighting distribution across commercial and industrial environments.</p>
         <span class="prod-card-cta">
           <span class="prod-card-cta-circle">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
@@ -2996,7 +3021,7 @@ fxHero.init();
   <div style="background:#2E3192;color:#FFFFFF;position:relative;padding:64px 80px 64px 64px;display:flex;align-items:center;">
     <div style="position:relative;z-index:1;width:100%;max-width:520px;">
       <div style="margin-bottom:12px;">
-        <span style="font-family:var(--font-sans);font-size:12px;font-weight:600;letter-spacing:0.4px;color:#FFFFFF;">Quality Assurance &amp; Testing Excellence</span>
+        <span style="font-family:var(--font-sans);font-size:14px;font-weight:600;letter-spacing:0.4px;color:#FFFFFF;">Quality Assurance &amp; Testing Excellence</span>
       </div>
       <div style="height:1px;background:rgba(255,255,255,0.45);margin-bottom:28px;"></div>
       <h2 style="font-family:var(--font-display);font-size:64px;font-weight:700;line-height:1.02;letter-spacing:-0.01em;color:#FFFFFF;margin:0 0 32px;">Certified<br/>Performance.</h2>
@@ -3008,24 +3033,24 @@ fxHero.init();
           <svg width="16.72" height="16.72" viewBox="0 0 24 24" fill="none" stroke="#111114" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M9 6l6 6-6 6"/></svg>
         </button>
       </div>
-      <p style="font-size:14px;line-height:1.75;color:rgba(255,255,255,0.9);margin:0 0 14px;max-width:480px;">
+      <p style="font-size:16px;line-height:1.75;color:rgba(255,255,255,0.9);margin:0 0 14px;max-width:480px;">
         Every Furutec busduct is type‑tested to IEC 61439‑6 at independent
         laboratories including ASTA (UK) and KEMA (Netherlands). Temperature
         rise, short‑circuit withstand, and IP ratings are verified before
         a single unit leaves our Shah Alam floor.
       </p>
-      <p style="font-size:14px;line-height:1.75;color:rgba(255,255,255,0.9);margin:0 0 14px;max-width:480px;">
+      <p style="font-size:16px;line-height:1.75;color:rgba(255,255,255,0.9);margin:0 0 14px;max-width:480px;">
         Full traceability — from copper bar lot number to site
         commissioning sign‑off — is delivered with every project.
       </p>
       <div style="display:flex;gap:12px;margin-top:24px;">
-        <button style="display:inline-flex;align-items:center;gap:10px;border:none;padding:6px 24px 6px 6px;font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:transform 200ms ease, opacity 200ms ease;background:#FFFFFF;color:#111114;">
+        <button style="display:inline-flex;align-items:center;gap:10px;border:none;padding:6px 24px 6px 6px;font-size:15px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:transform 200ms ease, opacity 200ms ease;background:#FFFFFF;color:#111114;">
           <span style="width:36px;height:36px;border-radius:50%;background:#2E3192;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
             <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
           </span>
-          <span style="font-family:var(--font-sans);font-size:13px;font-weight:600;text-transform:none;">Download Test Reports</span>
+          <span style="font-family:var(--font-sans);font-size:15px;font-weight:600;text-transform:none;">Download Test Reports</span>
         </button>
-        <button style="background:transparent;color:#FFFFFF;border:1.5px solid #FFFFFF;height:48px;padding:0 24px;font-family:var(--font-sans);font-size:13px;font-weight:600;cursor:pointer;">Contact Engineering</button>
+        <button style="background:transparent;color:#FFFFFF;border:1.5px solid #FFFFFF;height:48px;padding:0 24px;font-family:var(--font-sans);font-size:15px;font-weight:600;cursor:pointer;">Contact Engineering</button>
       </div>
       <svg viewBox="0 0 240 240" width="240" height="240" style="position:absolute;bottom:-20px;right:-30px;opacity:0.7;pointer-events:none;" aria-hidden="true">
         <g fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.2">
@@ -3065,20 +3090,20 @@ fxHero.init();
         </h2>
       </div>
       <div style="padding-top:20px;">
-        <p style="font-size:14px;line-height:1.8;color:#6B6B73;margin:0 0 24px;max-width:520px;">
+        <p style="font-size:16px;line-height:1.8;color:#6B6B73;margin:0 0 24px;max-width:520px;">
           Furutec has been built on engineering excellence — every system
           is designed, manufactured and type‑tested under one roof in
           Shah Alam to serve an impressive list of long‑term clients
           across Asia.
         </p>
         <div style="display:flex;gap:20px;align-items:center;">
-          <button style="display:inline-flex;align-items:center;gap:10px;border:none;padding:6px 24px 6px 6px;font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:transform 200ms ease, opacity 200ms ease;background:#111114;color:#FFFFFF;">
+          <button style="display:inline-flex;align-items:center;gap:10px;border:none;padding:6px 24px 6px 6px;font-size:15px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:transform 200ms ease, opacity 200ms ease;background:#111114;color:#FFFFFF;">
             <span style="width:36px;height:36px;border-radius:50%;background:#2E3192;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
               <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
             </span>
-            <span style="font-family:var(--font-sans);font-size:13px;font-weight:600;text-transform:none;">How It Works</span>
+            <span style="font-family:var(--font-sans);font-size:15px;font-weight:600;text-transform:none;">How It Works</span>
           </button>
-          <a href="product.html" style="display:inline-flex;align-items:center;gap:12px;font-family:var(--font-sans);font-size:13px;font-weight:600;color:#111114;text-decoration:none;">
+          <a href="product.html" style="display:inline-flex;align-items:center;gap:12px;font-family:var(--font-sans);font-size:15px;font-weight:600;color:#111114;text-decoration:none;">
             Check All Systems
             <span style="width:28px;height:28px;border-radius:50%;border:1.5px solid #2E3192;display:inline-flex;align-items:center;justify-content:center;">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2E3192" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M9 6l6 6-6 6"/></svg>
@@ -3101,9 +3126,9 @@ fxHero.init();
         </div>
         <h3 class="sc-title" style="font-family:var(--font-display);font-size:22px;font-weight:600;line-height:1.15;margin:0 0 12px;position:relative;color:#111114;white-space:pre-line;">Low‑Voltage
 Busduct</h3>
-        <p class="sc-desc" style="font-size:13px;line-height:1.7;margin:0 0 28px;position:relative;color:#6B6B73;">Compact sandwich‑type LV busduct, 250 A – 6,300 A, copper or aluminium. Type‑tested at ASTA and KEMA to IEC 61439‑6.</p>
+        <p class="sc-desc" style="font-size:15px;line-height:1.7;margin:0 0 28px;position:relative;color:#6B6B73;">Compact sandwich‑type LV busduct, 250 A – 6,300 A, copper or aluminium. Type‑tested at ASTA and KEMA to IEC 61439‑6.</p>
         <div style="padding-top:16px;border-top:1px solid rgba(128,128,128,0.15);position:relative;">
-          <span class="sc-cta-text" style="display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:#111114;">
+          <span class="sc-cta-text" style="display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:#111114;">
             <span class="sc-cta-circle" style="width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#2E3192;">
               <svg class="sc-cta-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M9 6l6 6-6 6"/></svg>
             </span>
@@ -3124,9 +3149,9 @@ Busduct</h3>
         </div>
         <h3 class="sc-title" style="font-family:var(--font-display);font-size:22px;font-weight:600;line-height:1.15;margin:0 0 12px;position:relative;color:#111114;white-space:pre-line;">Medium‑Voltage
 Systems</h3>
-        <p class="sc-desc" style="font-size:13px;line-height:1.7;margin:0 0 28px;position:relative;color:#6B6B73;">MV busduct and switchgear interconnection up to 36 kV, engineered for data‑centre and utility substations.</p>
+        <p class="sc-desc" style="font-size:15px;line-height:1.7;margin:0 0 28px;position:relative;color:#6B6B73;">MV busduct and switchgear interconnection up to 36 kV, engineered for data‑centre and utility substations.</p>
         <div style="padding-top:16px;border-top:1px solid rgba(128,128,128,0.15);position:relative;">
-          <span class="sc-cta-text" style="display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:#111114;">
+          <span class="sc-cta-text" style="display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:#111114;">
             <span class="sc-cta-circle" style="width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#2E3192;">
               <svg class="sc-cta-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M9 6l6 6-6 6"/></svg>
             </span>
@@ -3147,9 +3172,9 @@ Systems</h3>
         </div>
         <h3 class="sc-title" style="font-family:var(--font-display);font-size:22px;font-weight:600;line-height:1.15;margin:0 0 12px;position:relative;color:#111114;white-space:pre-line;">Smart Power
 Monitoring</h3>
-        <p class="sc-desc" style="font-size:13px;line-height:1.7;margin:0 0 28px;position:relative;color:#6B6B73;">IoT‑ready metering with real‑time current, harmonics and thermal telemetry streamed to your BMS.</p>
+        <p class="sc-desc" style="font-size:15px;line-height:1.7;margin:0 0 28px;position:relative;color:#6B6B73;">IoT‑ready metering with real‑time current, harmonics and thermal telemetry streamed to your BMS.</p>
         <div style="padding-top:16px;border-top:1px solid rgba(128,128,128,0.15);position:relative;">
-          <span class="sc-cta-text" style="display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:#111114;">
+          <span class="sc-cta-text" style="display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:#111114;">
             <span class="sc-cta-circle" style="width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#2E3192;">
               <svg class="sc-cta-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M9 6l6 6-6 6"/></svg>
             </span>
@@ -3170,9 +3195,9 @@ Monitoring</h3>
         </div>
         <h3 class="sc-title" style="font-family:var(--font-display);font-size:22px;font-weight:600;line-height:1.15;margin:0 0 12px;position:relative;color:#111114;white-space:pre-line;">Installation
 &amp; Site Service</h3>
-        <p class="sc-desc" style="font-size:13px;line-height:1.7;margin:0 0 28px;position:relative;color:#6B6B73;">Factory‑trained crews handle survey, hoisting, jointing and commissioning — nationwide, on your schedule.</p>
+        <p class="sc-desc" style="font-size:15px;line-height:1.7;margin:0 0 28px;position:relative;color:#6B6B73;">Factory‑trained crews handle survey, hoisting, jointing and commissioning — nationwide, on your schedule.</p>
         <div style="padding-top:16px;border-top:1px solid rgba(128,128,128,0.15);position:relative;">
-          <span class="sc-cta-text" style="display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:#111114;">
+          <span class="sc-cta-text" style="display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:#111114;">
             <span class="sc-cta-circle" style="width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#2E3192;">
               <svg class="sc-cta-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M9 6l6 6-6 6"/></svg>
             </span>
@@ -3189,12 +3214,12 @@ Monitoring</h3>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
         </span>
       </span>
-      <p style="font-size:13px;line-height:1.7;color:#4A4A52;margin:0;max-width:640px;">
+      <p style="font-size:15px;line-height:1.7;color:#4A4A52;margin:0;max-width:640px;">
         Every Furutec project is backed by a corporate mandate that
         binds engineering, manufacturing and site teams to one shared
         standard. <a href="#" class="text-link">Schedule A Factory Visit</a>
       </p>
-      <button class="btn-outline" style="background:#FFFFFF;color:#111114;border:1.5px solid #111114;padding:0 24px;height:44px;font-family:var(--font-sans);font-size:13px;font-weight:600;cursor:pointer;">Get A Free Quote</button>
+      <button class="btn-outline" style="background:#FFFFFF;color:#111114;border:1.5px solid #111114;padding:0 24px;height:44px;font-family:var(--font-sans);font-size:15px;font-weight:600;cursor:pointer;">Get A Free Quote</button>
     </div>
   </div>
 </section>
@@ -3206,7 +3231,7 @@ Monitoring</h3>
   <div style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1.05fr 1fr;gap:80px;align-items:start;">
     <div>
       <h2 style="font-family:var(--font-display);font-size:44px;font-weight:700;line-height:1.08;color:#FFFFFF;margin:0 0 20px;">Powering Infrastructure,<br/>Building Continuity.</h2>
-      <p style="font-size:14px;line-height:1.8;color:rgba(255,255,255,0.7);margin:0 0 32px;max-width:480px;">
+      <p style="font-size:16px;line-height:1.8;color:rgba(255,255,255,0.7);margin:0 0 32px;max-width:480px;">
         As one of Asia's leading busduct manufacturers, Furutec has powered
         data centres, hospitals, airports and commercial towers with
         engineered, tested and tracked electrical distribution for over
@@ -3220,7 +3245,7 @@ Monitoring</h3>
           </span>
           <div>
             <h4 style="font-family:var(--font-display);font-size:18px;font-weight:600;color:#FFFFFF;margin:0 0 6px;">Quality Control System</h4>
-            <p style="font-size:13px;line-height:1.7;color:rgba(255,255,255,0.55);margin:0;">Every busduct section is dielectric‑tested, torque‑checked, and photo‑recorded before dispatch.</p>
+            <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,0.55);margin:0;">Every busduct section is dielectric‑tested, torque‑checked, and photo‑recorded before dispatch.</p>
           </div>
         </div>
         <div style="display:grid;grid-template-columns:44px 1fr;gap:20px;padding:22px 0;border-bottom:1px solid rgba(255,255,255,0.08);align-items:start;">
@@ -3229,7 +3254,7 @@ Monitoring</h3>
           </span>
           <div>
             <h4 style="font-family:var(--font-display);font-size:18px;font-weight:600;color:#FFFFFF;margin:0 0 6px;">Type‑Tested Performance</h4>
-            <p style="font-size:13px;line-height:1.7;color:rgba(255,255,255,0.55);margin:0;">Temperature‑rise, IP55, IP66 and short‑circuit ratings verified at ASTA and KEMA laboratories.</p>
+            <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,0.55);margin:0;">Temperature‑rise, IP55, IP66 and short‑circuit ratings verified at ASTA and KEMA laboratories.</p>
           </div>
         </div>
         <div style="display:grid;grid-template-columns:44px 1fr;gap:20px;padding:22px 0;border-bottom:1px solid rgba(255,255,255,0.08);align-items:start;">
@@ -3238,19 +3263,19 @@ Monitoring</h3>
           </span>
           <div>
             <h4 style="font-family:var(--font-display);font-size:18px;font-weight:600;color:#FFFFFF;margin:0 0 6px;">Fire &amp; Seismic Rated</h4>
-            <p style="font-size:13px;line-height:1.7;color:rgba(255,255,255,0.55);margin:0;">Fire‑barrier units certified to BS 476‑20 / UL 263 up to 120 min; seismic tested for data‑centre deployment.</p>
+            <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,0.55);margin:0;">Fire‑barrier units certified to BS 476‑20 / UL 263 up to 120 min; seismic tested for data‑centre deployment.</p>
           </div>
         </div>
       </div>
 
       <div style="display:flex;gap:12px;margin-top:32px;">
-        <button style="display:inline-flex;align-items:center;gap:10px;border:none;padding:6px 24px 6px 6px;font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:transform 200ms ease, opacity 200ms ease;background:#FFFFFF;color:#111114;">
+        <button style="display:inline-flex;align-items:center;gap:10px;border:none;padding:6px 24px 6px 6px;font-size:15px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:transform 200ms ease, opacity 200ms ease;background:#FFFFFF;color:#111114;">
           <span style="width:36px;height:36px;border-radius:50%;background:#2E3192;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
             <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
           </span>
-          <span style="font-family:var(--font-sans);font-size:13px;font-weight:600;text-transform:none;">Awards &amp; Certifications</span>
+          <span style="font-family:var(--font-sans);font-size:15px;font-weight:600;text-transform:none;">Awards &amp; Certifications</span>
         </button>
-        <button style="background:transparent;color:#FFFFFF;border:1.5px solid rgba(255,255,255,0.6);height:48px;padding:0 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;cursor:pointer;">Discover More</button>
+        <button style="background:transparent;color:#FFFFFF;border:1.5px solid rgba(255,255,255,0.6);height:48px;padding:0 28px;font-family:var(--font-sans);font-size:15px;font-weight:600;cursor:pointer;">Discover More</button>
       </div>
     </div>
 
@@ -3260,9 +3285,9 @@ Monitoring</h3>
         <div style="position:absolute;inset:0;background-size:cover;background-position:center;background-image:url(https://furutec.com.my/wp-content/uploads/2012/07/mainbanner61-980x370.jpg);"></div>
         <div style="position:relative;z-index:1;margin-top:auto;padding:24px;background:linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.0) 100%);min-height:220px;">
           <div>
-            <div style="font-family:var(--font-sans);font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.6px;margin-bottom:12px;">Hyperscale</div>
+            <div style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.6px;margin-bottom:12px;">Hyperscale</div>
             <h3 style="font-family:var(--font-display);font-size:26px;font-weight:700;line-height:1.1;color:#FFFFFF;margin:0 0 14px;">Data Centre<br/>&amp; Colocation</h3>
-            <p style="font-size:12px;line-height:1.7;color:rgba(255,255,255,0.75);margin:0;max-width:260px;">We understand the complexity of redundant N+1 distribution, concurrent maintainability, and the thermal expectations of today's hyperscale and colocation campuses.</p>
+            <p style="font-size:14px;line-height:1.7;color:rgba(255,255,255,0.75);margin:0;max-width:260px;">We understand the complexity of redundant N+1 distribution, concurrent maintainability, and the thermal expectations of today's hyperscale and colocation campuses.</p>
           </div>
         </div>
         <span style="position:absolute;top:20px;right:20px;width:44px;height:44px;border-radius:50%;background:#2E3192;display:inline-flex;align-items:center;justify-content:center;z-index:2;">
@@ -3274,7 +3299,7 @@ Monitoring</h3>
         <div style="position:absolute;inset:0;background-size:cover;background-position:center;background-image:url(https://furutec.com.my/wp-content/uploads/2019/07/BIM1.jpg);"></div>
         <div style="position:relative;z-index:1;margin-top:auto;padding:24px;background:linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.0) 100%);min-height:220px;">
           <div>
-            <div style="font-family:var(--font-sans);font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.6px;margin-bottom:12px;">Industrial</div>
+            <div style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.6px;margin-bottom:12px;">Industrial</div>
             <h3 style="font-family:var(--font-display);font-size:26px;font-weight:700;line-height:1.1;color:#FFFFFF;margin:0 0 14px;">Manufacturing<br/>&amp; Heavy Industry</h3>
           </div>
         </div>
@@ -3300,13 +3325,13 @@ Monitoring</h3>
       Certificates &amp;<br/>
       <span style="color:#8E94FF;">Portfolio</span>
     </h2>
-    <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,0.88);margin:0 0 36px;text-shadow:0 2px 16px rgba(0,0,0,0.45);">Where Credential Meet Capability.</p>
+    <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,0.88);margin:0 0 36px;text-shadow:0 2px 16px rgba(0,0,0,0.45);">Where Credentials Meet Capability and Safety</p>
     <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
-      <a href="portfolio.html" class="btn-orange" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
+      <a href="portfolio.html" class="btn-orange" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-sans);font-size:15px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
         Certificates
         <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
       </a>
-      <a href="portfolio-track-record.html" class="btn-orange" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-sans);font-size:13px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
+      <a href="portfolio-track-record.html" class="btn-orange" style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;font-family:var(--font-sans);font-size:15px;font-weight:600;letter-spacing:0.2px;text-decoration:none;">
         Portfolio
         <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
       </a>
@@ -3320,7 +3345,7 @@ Monitoring</h3>
 <section style="background:#2E3192;color:#FFFFFF;padding:96px 0;display:none;">
   <div style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 1.1fr;gap:64px;">
     <div style="position:relative;">
-      <span style="font-family:var(--font-sans);font-size:12px;font-weight:600;letter-spacing:0.4px;color:#FFFFFF;">Reliable · Type‑Tested · Site‑Proven!</span>
+      <span style="font-family:var(--font-sans);font-size:14px;font-weight:600;letter-spacing:0.4px;color:#FFFFFF;">Reliable · Type‑Tested · Site‑Proven!</span>
       <div style="height:1px;background:rgba(255,255,255,0.4);margin:14px 0 28px;max-width:380px;"></div>
       <h2 style="font-family:var(--font-display);font-size:48px;font-weight:700;line-height:1.08;color:#FFFFFF;margin:0 0 24px;">
         Individually Assess<br/>
@@ -3328,17 +3353,17 @@ Monitoring</h3>
         Deliver Certified<br/>
         Power For You.
       </h2>
-      <p style="font-size:14px;line-height:1.75;color:rgba(255,255,255,0.9);max-width:420px;margin:0;">
+      <p style="font-size:16px;line-height:1.75;color:rgba(255,255,255,0.9);max-width:420px;margin:0;">
         From single‑line review to commissioning, our four‑stage
         handover process is designed to leave a consultant, facility
         manager and client equally confident on day of switch‑on.
       </p>
       <div style="margin-top:28px;">
-        <button style="display:inline-flex;align-items:center;gap:10px;border:none;padding:6px 24px 6px 6px;font-size:13px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:transform 200ms ease, opacity 200ms ease;background:#FFFFFF;color:#111114;">
+        <button style="display:inline-flex;align-items:center;gap:10px;border:none;padding:6px 24px 6px 6px;font-size:15px;font-weight:600;letter-spacing:0.3px;cursor:pointer;height:48px;border-radius:8px;transition:transform 200ms ease, opacity 200ms ease;background:#FFFFFF;color:#111114;">
           <span style="width:36px;height:36px;border-radius:50%;background:#2E3192;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">
             <span class="btn-arrow"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span><span class="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h4"/><path d="M13 6l6 6-6 6"/></svg></span></span>
           </span>
-          <span style="font-family:var(--font-sans);font-size:13px;font-weight:600;text-transform:none;">Meet Our Engineers</span>
+          <span style="font-family:var(--font-sans);font-size:15px;font-weight:600;text-transform:none;">Meet Our Engineers</span>
         </button>
       </div>
     </div>
@@ -3347,28 +3372,28 @@ Monitoring</h3>
       <div style="display:grid;grid-template-columns:1fr;gap:16px;">
         <div style="display:grid;grid-template-columns:72px 1fr;gap:24px;align-items:start;">
           <span style="font-family:var(--font-display);font-size:56px;font-weight:400;line-height:1;color:#FFFFFF;letter-spacing:-0.02em;">01</span>
-          <p style="font-size:13px;line-height:1.7;color:rgba(255,255,255,0.92);margin:0;max-width:420px;">Site survey and load analysis — we review your single‑line, cooling and growth plan before a single copper bar is quoted.</p>
+          <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,0.92);margin:0;max-width:420px;">Site survey and load analysis — we review your single‑line, cooling and growth plan before a single copper bar is quoted.</p>
         </div>
         <div style="margin-left:96px;width:300px;height:160px;background-size:cover;background-position:center;background-image:url(https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=2000&amp;q=80&amp;auto=format&amp;fit=crop);"></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr;gap:16px;">
         <div style="display:grid;grid-template-columns:72px 1fr;gap:24px;align-items:start;">
           <span style="font-family:var(--font-display);font-size:56px;font-weight:400;line-height:1;color:#FFFFFF;letter-spacing:-0.02em;">02</span>
-          <p style="font-size:13px;line-height:1.7;color:rgba(255,255,255,0.92);margin:0;max-width:420px;">Engineering review with your consultants: short‑circuit, voltage drop, IP rating, fire barrier and trace‑heat are locked in.</p>
+          <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,0.92);margin:0;max-width:420px;">Engineering review with your consultants: short‑circuit, voltage drop, IP rating, fire barrier and trace‑heat are locked in.</p>
         </div>
         <div style="margin-left:96px;width:300px;height:160px;background-size:cover;background-position:center;background-image:url(https://furutec.com.my/wp-content/uploads/2019/07/keyfeatures3.jpg);"></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr;gap:16px;">
         <div style="display:grid;grid-template-columns:72px 1fr;gap:24px;align-items:start;">
           <span style="font-family:var(--font-display);font-size:56px;font-weight:400;line-height:1;color:#FFFFFF;letter-spacing:-0.02em;">03</span>
-          <p style="font-size:13px;line-height:1.7;color:rgba(255,255,255,0.92);margin:0;max-width:420px;">Manufacture, type‑test witness and factory acceptance — every joint torque‑marked and photo‑logged for QA records.</p>
+          <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,0.92);margin:0;max-width:420px;">Manufacture, type‑test witness and factory acceptance — every joint torque‑marked and photo‑logged for QA records.</p>
         </div>
         <div style="margin-left:96px;width:300px;height:160px;background-size:cover;background-position:center;background-image:url(https://furutec.com.my/wp-content/uploads/2019/07/keyfeatures2.jpg);"></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr;gap:16px;">
         <div style="display:grid;grid-template-columns:72px 1fr;gap:24px;align-items:start;">
           <span style="font-family:var(--font-display);font-size:56px;font-weight:400;line-height:1;color:#FFFFFF;letter-spacing:-0.02em;">04</span>
-          <p style="font-size:13px;line-height:1.7;color:rgba(255,255,255,0.92);margin:0;max-width:420px;">On‑site hoisting, jointing and commissioning by factory crew, with full IR, HiPot and thermographic reports at handover.</p>
+          <p style="font-size:15px;line-height:1.7;color:rgba(255,255,255,0.92);margin:0;max-width:420px;">On‑site hoisting, jointing and commissioning by factory crew, with full IR, HiPot and thermographic reports at handover.</p>
         </div>
         <div style="margin-left:96px;width:300px;height:160px;background-size:cover;background-position:center;background-image:url(https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1600&amp;q=80&amp;auto=format&amp;fit=crop);"></div>
       </div>
@@ -3385,7 +3410,7 @@ Monitoring</h3>
       <div>
         <h2 style="font-family:var(--font-display);font-size:40px;font-weight:700;line-height:1.1;color:#111114;margin:0;">Explore Our Case Studies &amp;<br/>Latest Success Stories.</h2>
       </div>
-      <p style="font-size:14px;line-height:1.75;color:#6B6B73;margin:0;max-width:520px;">
+      <p style="font-size:16px;line-height:1.75;color:#6B6B73;margin:0;max-width:520px;">
         Furutec has delivered busduct systems to an impressive list of
         long‑term clients across data‑centre, healthcare, commercial and
         heavy‑industry sectors. Select recent references below.
@@ -3396,11 +3421,11 @@ Monitoring</h3>
       <!-- Case 1 (featured/first) -->
       <div style="background:#FFFFFF;border:1px solid #F1F1F3;">
         <div style="position:relative;height:180px;background-size:cover;background-position:center;background-image:url(https://furutec.com.my/wp-content/uploads/2012/07/mainbanner61-980x370.jpg);">
-          <span style="position:absolute;top:14px;left:14px;background:#2E3192;color:#FFFFFF;font-family:var(--font-sans);font-size:11px;font-weight:600;padding:6px 10px;letter-spacing:0.2px;">Data Centre, Hyperscale</span>
+          <span style="position:absolute;top:14px;left:14px;background:#2E3192;color:#FFFFFF;font-family:var(--font-sans);font-size:13px;font-weight:600;padding:6px 10px;letter-spacing:0.2px;">Data Centre, Hyperscale</span>
         </div>
         <div style="padding:22px 20px 28px;position:relative;">
           <h3 style="font-family:var(--font-display);font-size:18px;font-weight:600;line-height:1.2;color:#111114;margin:0 0 10px;">KL Hyperscale Campus – Phase 2</h3>
-          <p style="font-size:12px;line-height:1.7;color:#6B6B73;margin:0;">6,300 A copper LV busduct across three data halls; N+1 riser with smart metering and live capacity dashboards.</p>
+          <p style="font-size:14px;line-height:1.7;color:#6B6B73;margin:0;">6,300 A copper LV busduct across three data halls; N+1 riser with smart metering and live capacity dashboards.</p>
           <div style="display:flex;justify-content:center;margin-top:14px;">
             <span style="width:42px;height:42px;border-radius:50%;border:1.5px solid #2E3192;display:inline-flex;align-items:center;justify-content:center;">
               <span style="width:28px;height:28px;border-radius:50%;background:#111114;display:inline-flex;align-items:center;justify-content:center;">
@@ -3413,31 +3438,31 @@ Monitoring</h3>
       <!-- Case 2 -->
       <div style="background:#FFFFFF;border:1px solid #F1F1F3;">
         <div style="position:relative;height:180px;background-size:cover;background-position:center;background-image:url(https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1600&amp;q=80&amp;auto=format&amp;fit=crop);">
-          <span style="position:absolute;top:14px;left:14px;background:#2E3192;color:#FFFFFF;font-family:var(--font-sans);font-size:11px;font-weight:600;padding:6px 10px;letter-spacing:0.2px;">Healthcare, Critical Power</span>
+          <span style="position:absolute;top:14px;left:14px;background:#2E3192;color:#FFFFFF;font-family:var(--font-sans);font-size:13px;font-weight:600;padding:6px 10px;letter-spacing:0.2px;">Healthcare, Critical Power</span>
         </div>
         <div style="padding:22px 20px 28px;position:relative;">
           <h3 style="font-family:var(--font-display);font-size:18px;font-weight:600;line-height:1.2;color:#111114;margin:0 0 10px;">Regional Medical Centre, Johor</h3>
-          <p style="font-size:12px;line-height:1.7;color:#6B6B73;margin:0;">Dual 4,000 A feeds serving operating theatres and MRI suites, fire‑rated risers certified to 120 min.</p>
+          <p style="font-size:14px;line-height:1.7;color:#6B6B73;margin:0;">Dual 4,000 A feeds serving operating theatres and MRI suites, fire‑rated risers certified to 120 min.</p>
         </div>
       </div>
       <!-- Case 3 -->
       <div style="background:#FFFFFF;border:1px solid #F1F1F3;">
         <div style="position:relative;height:180px;background-size:cover;background-position:center;background-image:url(https://furutec.com.my/wp-content/uploads/2019/07/keyfeatures2.jpg);">
-          <span style="position:absolute;top:14px;left:14px;background:#2E3192;color:#FFFFFF;font-family:var(--font-sans);font-size:11px;font-weight:600;padding:6px 10px;letter-spacing:0.2px;">Commercial, High-Rise</span>
+          <span style="position:absolute;top:14px;left:14px;background:#2E3192;color:#FFFFFF;font-family:var(--font-sans);font-size:13px;font-weight:600;padding:6px 10px;letter-spacing:0.2px;">Commercial, High-Rise</span>
         </div>
         <div style="padding:22px 20px 28px;position:relative;">
           <h3 style="font-family:var(--font-display);font-size:18px;font-weight:600;line-height:1.2;color:#111114;margin:0 0 10px;">Merdeka Financial Tower</h3>
-          <p style="font-size:12px;line-height:1.7;color:#6B6B73;margin:0;">72‑storey LV busduct riser with plug‑in tap‑off boxes on every tenanted floor.</p>
+          <p style="font-size:14px;line-height:1.7;color:#6B6B73;margin:0;">72‑storey LV busduct riser with plug‑in tap‑off boxes on every tenanted floor.</p>
         </div>
       </div>
       <!-- Case 4 -->
       <div style="background:#FFFFFF;border:1px solid #F1F1F3;">
         <div style="position:relative;height:180px;background-size:cover;background-position:center;background-image:url(https://furutec.com.my/wp-content/uploads/2019/07/BIM1.jpg);">
-          <span style="position:absolute;top:14px;left:14px;background:#2E3192;color:#FFFFFF;font-family:var(--font-sans);font-size:11px;font-weight:600;padding:6px 10px;letter-spacing:0.2px;">Industrial, Chemical</span>
+          <span style="position:absolute;top:14px;left:14px;background:#2E3192;color:#FFFFFF;font-family:var(--font-sans);font-size:13px;font-weight:600;padding:6px 10px;letter-spacing:0.2px;">Industrial, Chemical</span>
         </div>
         <div style="padding:22px 20px 28px;position:relative;">
           <h3 style="font-family:var(--font-display);font-size:18px;font-weight:600;line-height:1.2;color:#111114;margin:0 0 10px;">Pengerang Refinery Complex</h3>
-          <p style="font-size:12px;line-height:1.7;color:#6B6B73;margin:0;">IP66 outdoor busduct with anti‑corrosion coating and seismic brackets for hazardous zones.</p>
+          <p style="font-size:14px;line-height:1.7;color:#6B6B73;margin:0;">IP66 outdoor busduct with anti‑corrosion coating and seismic brackets for hazardous zones.</p>
         </div>
       </div>
     </div>
@@ -3464,7 +3489,7 @@ Monitoring</h3>
      ============================================================ -->
 <section style="background:#FFFFFF;border-top:1px solid #F1F1F3;padding:28px 0;display:none;">
   <div style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 2fr;align-items:center;gap:32px;">
-    <p style="font-size:12px;line-height:1.7;color:#6B6B73;margin:0;max-width:360px;">
+    <p style="font-size:14px;line-height:1.7;color:#6B6B73;margin:0;max-width:360px;">
       Serving an impressive list of clients across data‑centre, healthcare,
       commercial and industrial sectors.<br/>
       <a href="#quote" class="text-link" style="display:inline-block;margin-top:2px;">Contact Head Office</a>
@@ -3514,7 +3539,7 @@ Monitoring</h3>
     padding-bottom:10px; border-bottom:1px solid #ECECF1;
   }
   .en-row-label {
-    font-family:var(--font-sans); font-size:11px; font-weight:700;
+    font-family:var(--font-sans); font-size:13px; font-weight:700;
     letter-spacing:0.18em; text-transform:uppercase;
     color:#2E3192;
     display:inline-flex; align-items:center; gap:10px;
@@ -3524,7 +3549,7 @@ Monitoring</h3>
   }
   .en-row-viewall {
     display:inline-flex; align-items:center; gap:8px;
-    font-family:var(--font-sans); font-size:13px; font-weight:600;
+    font-family:var(--font-sans); font-size:15px; font-weight:600;
     color:#111114; text-decoration:none;
     transition:color .2s ease;
   }
@@ -3572,7 +3597,7 @@ Monitoring</h3>
   .en-card:hover .en-card-thumb img { transform:scale(1.05); }
   .en-card-body { padding:20px 22px 24px; flex:1; display:flex; flex-direction:column; }
   .en-card-date {
-    font-family:var(--font-sans); font-size:11px; font-weight:600;
+    font-family:var(--font-sans); font-size:13px; font-weight:600;
     letter-spacing:0.08em; text-transform:uppercase;
     color:#6B6B73; margin:0 0 10px;
   }
@@ -3586,7 +3611,7 @@ Monitoring</h3>
   .en-card-cta {
     margin-top:auto;
     display:inline-flex; align-items:center; gap:8px;
-    font-family:var(--font-sans); font-size:12.5px; font-weight:600;
+    font-family:var(--font-sans); font-size:14px; font-weight:600;
     color:#2E3192;
   }
   .en-card-cta svg { transition:transform .2s ease; }
@@ -3717,7 +3742,7 @@ Monitoring</h3>
   }
   .gi-cta-eyebrow {
     display:inline-block;
-    font-family:var(--font-sans); font-size:12px; font-weight:600;
+    font-family:var(--font-sans); font-size:14px; font-weight:600;
     letter-spacing:0.6px; text-transform:uppercase;
     color:rgba(255,255,255,0.85);
     margin-bottom:18px;
@@ -3746,13 +3771,13 @@ Monitoring</h3>
   .gi-cta-btn {
     display:inline-flex; align-items:center; gap:14px;
     padding:0 36px; height:60px;
-    background:#F58220; color:#FFFFFF;
-    border:1.5px solid #F58220;
-    font-family:var(--font-sans); font-size:14px; font-weight:600;
+    background:#BD530B; color:#FFFFFF;
+    border:1.5px solid #BD530B;
+    font-family:var(--font-sans); font-size:16px; font-weight:600;
     letter-spacing:0.3px;
     text-decoration:none; cursor:pointer;
     transition:background .3s ease, color .3s ease, border-color .3s ease;
-    box-shadow:0 6px 18px rgba(245,130,32,0.35);
+    box-shadow:0 6px 18px rgba(189,83,11,0.35);
   }
   .gi-cta-btn:hover {
     background:transparent; color:#FFFFFF; border-color:#FFFFFF;
@@ -3797,34 +3822,34 @@ Monitoring</h3>
       <div style="display:inline-flex;align-items:center;margin-bottom:18px;">
         <img src="assets/Logo-white.png?v=1780558217" alt="Furutec — Busduct System" style="height:54px;width:auto;display:block;"/>
       </div>
-      <p style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:#FFFFFF;margin:0 0 4px;line-height:1.4;">Furutec Electrical Sdn Bhd</p>
-      <p style="font-size:11px;color:rgba(255,255,255,0.45);margin:0 0 14px;font-style:italic;">Company No. 198001003423 (57207-W)</p>
-      <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0 0 10px;display:flex;align-items:center;gap:10px;">
+      <p style="font-family:var(--font-sans);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 4px;line-height:1.4;">Furutec Electrical Sdn Bhd</p>
+      <p style="font-size:13px;color:rgba(255,255,255,0.45);margin:0 0 14px;font-style:italic;">Company No. 198001003423 (57207-W)</p>
+      <p style="font-size:14px;color:rgba(255,255,255,0.7);margin:0 0 10px;display:flex;align-items:center;gap:10px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M3 6h18v12H3Z"/><path d="M3 6l9 7 9-7"/></svg>
-        <a href="mailto:info@furutec.com.my" style="color:rgba(255,255,255,0.85);font-size:13px;text-decoration:none;">info@furutec.com.my</a>
+        <a href="mailto:info@furutec.com.my" style="color:rgba(255,255,255,0.85);font-size:15px;text-decoration:none;">info@furutec.com.my</a>
       </p>
-      <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0 0 10px;display:flex;align-items:center;gap:10px;">
+      <p style="font-size:14px;color:rgba(255,255,255,0.7);margin:0 0 10px;display:flex;align-items:center;gap:10px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF" style="display:inline-block;flex-shrink:0;"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-1 1.1-.2.2-.4.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.5-1.7-1.6-2-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5L9.4 7c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-1 .9-1 2.3 0 1.4 1 2.7 1.2 2.9.2.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.4-.1-.2-.3-.2-.5-.3ZM12 22a10 10 0 0 1-5.1-1.4l-3.6 1 .9-3.6A10 10 0 1 1 12 22Zm0-18a8 8 0 0 0-6.7 12.4l-.5 2 2-.6A8 8 0 1 0 12 4Z"/></svg>
-        <a href="https://wa.me/60128874517" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.85);font-size:13px;text-decoration:none;">+6012-887 4517</a>
+        <a href="https://wa.me/60128874517" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.85);font-size:15px;text-decoration:none;">+6012-887 4517</a>
       </p>
-      <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0 0 8px;display:flex;align-items:center;gap:10px;">
+      <p style="font-size:14px;color:rgba(255,255,255,0.7);margin:0 0 8px;display:flex;align-items:center;gap:10px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M12 22s-8-7-8-13a8 8 0 0 1 16 0c0 6-8 13-8 13Z"/><circle cx="12" cy="9" r="3"/></svg>
-        <span style="color:rgba(255,255,255,0.85);font-size:13px;">Subang Jaya, Malaysia</span>
+        <span style="color:rgba(255,255,255,0.85);font-size:15px;">Subang Jaya, Malaysia</span>
       </p>
-      <p style="font-size:12px;color:rgba(255,255,255,0.7);margin:0;display:flex;align-items:center;gap:10px;">
+      <p style="font-size:14px;color:rgba(255,255,255,0.7);margin:0;display:flex;align-items:center;gap:10px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;flex-shrink:0;"><path d="M12 22s-8-7-8-13a8 8 0 0 1 16 0c0 6-8 13-8 13Z"/><circle cx="12" cy="9" r="3"/></svg>
-        <span style="color:rgba(255,255,255,0.85);font-size:13px;">Penang, Malaysia</span>
+        <span style="color:rgba(255,255,255,0.85);font-size:15px;">Penang, Malaysia</span>
       </p>
     </div>
 
     <div>
       <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">Product</h4>
       <ul style="list-style:none;padding:0;margin:0;">
-<li style="margin-bottom:10px;"><a href="product.html#indoor" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Indoor Busduct Solution</a></li>
-<li style="margin-bottom:10px;"><a href="product.html#outdoor" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Outdoor Busduct Solution</a></li>
-<li style="margin-bottom:10px;"><a href="product.html#datacenter" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Data Centre Busduct Solution</a></li>
-<li style="margin-bottom:10px;"><a href="product.html#power" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Intelligent Monitoring System</a></li>
-<li style="margin-bottom:10px;"><a href="product.html#lighting" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Lighting Busduct Solution</a></li>
+<li style="margin-bottom:10px;"><a href="product.html#indoor" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Indoor Busduct Solution</a></li>
+<li style="margin-bottom:10px;"><a href="product.html#outdoor" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Outdoor Busduct Solution</a></li>
+<li style="margin-bottom:10px;"><a href="product.html#datacenter" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Data Centre Busduct Solution</a></li>
+<li style="margin-bottom:10px;"><a href="product.html#power" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Intelligent Monitoring System</a></li>
+<li style="margin-bottom:10px;"><a href="product.html#lighting" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Lighting Busduct Solution</a></li>
 
       </ul>
     </div>
@@ -3832,10 +3857,10 @@ Monitoring</h3>
     <div>
       <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">Industries</h4>
       <ul style="list-style:none;padding:0;margin:0;">
-<li style="margin-bottom:10px;"><a href="portfolio-track-record.html#data-centre" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Data Centres</a></li>
-<li style="margin-bottom:10px;"><a href="portfolio-track-record.html#commercial" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Commercial Buildings</a></li>
-<li style="margin-bottom:10px;"><a href="portfolio-track-record.html#infrastructure" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Public Transportation</a></li>
-<li style="margin-bottom:10px;"><a href="portfolio-track-record.html#medical" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Medical &amp; Healthcare</a></li>
+<li style="margin-bottom:10px;"><a href="portfolio-track-record.html#data-centre" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Data Centre</a></li>
+<li style="margin-bottom:10px;"><a href="portfolio-track-record.html#commercial" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Commercial Building</a></li>
+<li style="margin-bottom:10px;"><a href="portfolio-track-record.html#infrastructure" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Public Transportation</a></li>
+<li style="margin-bottom:10px;"><a href="portfolio-track-record.html#medical" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Medical &amp; Healthcare</a></li>
 
       </ul>
     </div>
@@ -3843,10 +3868,10 @@ Monitoring</h3>
     <div>
       <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">Support</h4>
       <ul style="list-style:none;padding:0;margin:0;">
-<li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Technical Documents</a></li>
-<li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Product Catalogue</a></li>
-<li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">FAQ</a></li>
-<li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Warranty</a></li>
+<li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Technical Document</a></li>
+<li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Product Catalogue</a></li>
+<li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">FAQ</a></li>
+<li style="margin-bottom:10px;"><a href="#" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Warranty</a></li>
 
       </ul>
     </div>
@@ -3854,10 +3879,10 @@ Monitoring</h3>
     <div>
       <h4 style="font-family:var(--font-display);font-size:15px;font-weight:600;color:#FFFFFF;margin:0 0 18px;letter-spacing:0.2px;">Company</h4>
       <ul style="list-style:none;padding:0;margin:0;">
-<li style="margin-bottom:10px;"><a href="index.html#about" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">About Furutec</a></li>
-<li style="margin-bottom:10px;"><a href="portfolio-track-record.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Key Projects</a></li>
-<li style="margin-bottom:10px;"><a href="portfolio.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Certifications</a></li>
-<li style="margin-bottom:10px;"><a href="quote.html" style="color:rgba(255,255,255,0.6);font-size:12px;text-decoration:none;">Contact</a></li>
+<li style="margin-bottom:10px;"><a href="index.html#about" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">About Furutec</a></li>
+<li style="margin-bottom:10px;"><a href="portfolio-track-record.html" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Key Project</a></li>
+<li style="margin-bottom:10px;"><a href="portfolio.html" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Certification</a></li>
+<li style="margin-bottom:10px;"><a href="quote.html" style="color:rgba(255,255,255,0.6);font-size:14px;text-decoration:none;">Contact</a></li>
 
       </ul>
     </div>
@@ -3867,16 +3892,16 @@ Monitoring</h3>
 
   <div style="background:#0A0A0B;padding:18px 0;">
     <div style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;">
-      <div style="display:flex;gap:8px;align-items:center;font-size:11px;">
+      <div style="display:flex;gap:8px;align-items:center;font-size:13px;">
         <a href="#" style="color:rgba(255,255,255,0.55);text-decoration:none;">Privacy Policy</a>
         <span style="color:rgba(255,255,255,0.3);">·</span>
         <a href="#" style="color:rgba(255,255,255,0.55);text-decoration:none;">Terms &amp; Conditions</a>
         <span style="color:rgba(255,255,255,0.3);">·</span>
         <a href="#" style="color:rgba(255,255,255,0.55);text-decoration:none;">Sitemap</a>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="font-size:11px;color:rgba(255,255,255,0.55);text-align:center;">© 2026 Furutec Electrical Sdn Bhd. All Rights Reserved.</div></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div style="font-size:13px;color:rgba(255,255,255,0.55);text-align:center;">© 2026 Furutec Electrical Sdn Bhd. All Rights Reserved.</div></div>
       <div style="display:flex;align-items:center;gap:10px;justify-content:flex-end;">
-        <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.4px;text-transform:uppercase;margin-right:4px;">Social Media</span>
+        <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);letter-spacing:0.4px;text-transform:uppercase;margin-right:4px;">Social Media</span>
         <a href="https://www.facebook.com/furutecbusduct" aria-label="Facebook" style="width:34px;height:34px;border-radius:50%;background:#1877F2;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform 200ms ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFFFFF"><path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06c0 5.01 3.66 9.16 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.51 1.49-3.9 3.78-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.45 2.91h-2.33V22c4.78-.78 8.44-4.93 8.44-9.94Z"/></svg>
         </a>
@@ -4013,7 +4038,7 @@ Monitoring</h3>
         '<g id="globe-dots" pointer-events="none"></g>' +
         '<g id="globe-label" pointer-events="none"></g>' +
         '<g transform="translate(' + (W - 14) + ', ' + (H - 12) + ')" pointer-events="none">' +
-          '<text text-anchor="end" style="font-family:Inter,sans-serif;font-size:9px;font-weight:600;fill:#9A9AA2;letter-spacing:0.5px;text-transform:uppercase;">↻ Drag to rotate</text>' +
+          '<text text-anchor="end" style="font-family:Inter,sans-serif;font-size:12px;font-weight:600;fill:#6B6B73;letter-spacing:0.5px;text-transform:uppercase;">↻ Drag to rotate</text>' +
         '</g>' +
       '</svg>';
 
@@ -4078,7 +4103,7 @@ Monitoring</h3>
       p.setAttribute('d', 'M 0,0');
       p.setAttribute('pathLength', ARC_PATH_LENGTH);
       p.setAttribute('fill', 'none');
-      p.setAttribute('stroke', '#F58220');
+      p.setAttribute('stroke', '#BD530B');
       p.setAttribute('stroke-width', '1.6');
       p.setAttribute('stroke-linecap', 'round');
       p.setAttribute('stroke-dasharray', ARC_PATH_LENGTH);
@@ -4119,7 +4144,7 @@ Monitoring</h3>
 
       var c = document.createElementNS(SVG_NS, 'circle');
       c.setAttribute('r', '2.4');
-      c.setAttribute('fill', '#F58220');
+      c.setAttribute('fill', '#BD530B');
       c.setAttribute('opacity', '0.85');
       c.setAttribute('visibility', 'hidden');
       dotsG.appendChild(c);
@@ -4312,26 +4337,26 @@ function buildPanel() {
     position:fixed; right:24px; bottom:24px; z-index:99999;
     width:340px; background:#111114; color:#fff;
     border:1px solid #2A2A30; box-shadow:0 16px 40px rgba(0,0,0,.4);
-    font-family:Inter,system-ui,sans-serif; font-size:13px;
+    font-family:Inter,system-ui,sans-serif; font-size:15px;
     display:none;
   `;
   wrap.innerHTML = `
     <div style="padding:14px 16px;border-bottom:1px solid #2A2A30;display:flex;align-items:center;justify-content:space-between">
       <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:18px;letter-spacing:.5px;text-transform:uppercase">Tweaks</div>
-      <div style="font-size:10px;color:#9A9AA2;letter-spacing:.5px">HERO BACKGROUND</div>
+      <div style="font-size:12px;color:#9A9AA2;letter-spacing:.5px">HERO BACKGROUND</div>
     </div>
     <div style="padding:14px 16px;display:flex;flex-direction:column;gap:14px">
       <div>
-        <div style="font-size:10px;color:#9A9AA2;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Preset image</div>
+        <div style="font-size:12px;color:#9A9AA2;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Preset image</div>
         <div id="ft-presets" style="display:flex;flex-direction:column;gap:4px"></div>
       </div>
       <div>
-        <div style="font-size:10px;color:#9A9AA2;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Custom image URL</div>
+        <div style="font-size:12px;color:#9A9AA2;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">Custom image URL</div>
         <input id="ft-url" type="text" placeholder="https://…"
-          style="width:100%;padding:10px 12px;background:#0A0A0B;border:1px solid #2A2A30;color:#fff;font-family:inherit;font-size:12px"/>
+          style="width:100%;padding:10px 12px;background:#0A0A0B;border:1px solid #2A2A30;color:#fff;font-family:inherit;font-size:14px"/>
       </div>
       <div>
-        <div style="font-size:10px;color:#9A9AA2;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">
+        <div style="font-size:12px;color:#9A9AA2;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">
           Overlay darkness <span id="ft-overlay-val" style="color:#2E3192;font-weight:600">0.55</span>
         </div>
         <input id="ft-overlay" type="range" min="0" max="1" step="0.05"
@@ -4348,7 +4373,7 @@ function buildPanel() {
     b.textContent = p.label;
     b.style.cssText = `
       text-align:left;padding:10px 12px;background:#0A0A0B;border:1px solid #2A2A30;
-      color:#fff;font-family:inherit;font-size:12px;cursor:pointer;
+      color:#fff;font-family:inherit;font-size:14px;cursor:pointer;
     `;
     b.onmouseenter = () => b.style.borderColor = "#2E3192";
     b.onmouseleave = () => b.style.borderColor = window.__furutecTweaks.heroBg === p.url ? "#2E3192" : "#2A2A30";
@@ -4754,7 +4779,7 @@ function buildPanel() {
       "content: 'Click to change image';" +
       "position: absolute; top: 8px; left: 8px; z-index: 5;" +
       "background: #2E3192; color: #fff;" +
-      "font-family: Inter, system-ui, sans-serif; font-size: 11px; font-weight: 600;" +
+      "font-family: Inter, system-ui, sans-serif; font-size: 13px; font-weight: 600;" +
       "padding: 4px 8px; border-radius: 3px; pointer-events: none;" +
     "}" +
     "body.__ed-on .__ed-link { position: relative; }" +
@@ -4763,7 +4788,7 @@ function buildPanel() {
       "position: fixed; top: 16px; left: 50%; transform: translateX(-50%);" +
       "z-index: 100001; display: flex; align-items: center; gap: 12px;" +
       "background: #111114; color: #fff;" +
-      "font-family: Inter, system-ui, sans-serif; font-size: 13px; font-weight: 500;" +
+      "font-family: Inter, system-ui, sans-serif; font-size: 15px; font-weight: 500;" +
       "padding: 10px 14px; border-radius: 4px;" +
       "box-shadow: 0 8px 32px rgba(0,0,0,.35);" +
     "}" +
@@ -4781,24 +4806,24 @@ function buildPanel() {
       "box-shadow: 0 20px 60px rgba(0,0,0,.25); color: #111114;" +
     "}" +
     "#__ed-modal .__ed-modal-title { font-family: 'Saira Condensed', sans-serif; font-weight: 700; font-size: 22px; margin-bottom: 14px; }" +
-    "#__ed-modal .__ed-modal-body { font-size: 13px; }" +
-    "#__ed-modal .__ed-label { display:block; font-size: 11px; font-weight: 600; color: #4A4A52; margin: 0 0 6px; letter-spacing: .04em; text-transform: uppercase; }" +
+    "#__ed-modal .__ed-modal-body { font-size: 15px; }" +
+    "#__ed-modal .__ed-label { display:block; font-size: 13px; font-weight: 600; color: #4A4A52; margin: 0 0 6px; letter-spacing: .04em; text-transform: uppercase; }" +
     "#__ed-modal .__ed-input {" +
       "width: 100%; font: inherit; font-size: 16px; box-sizing: border-box;" +
       "padding: 9px 10px; border: 1px solid #C8C8CE; border-radius: 3px; background: #fff; color: #111114;" +
     "}" +
     "#__ed-modal .__ed-input:focus { outline: 2px solid #2E3192; outline-offset: -1px; border-color: #2E3192; }" +
-    "#__ed-modal .__ed-or { text-align: center; color: #9A9AA2; margin: 12px 0 10px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }" +
+    "#__ed-modal .__ed-or { text-align: center; color: #9A9AA2; margin: 12px 0 10px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }" +
     "#__ed-modal .__ed-file-row { display: flex; align-items: center; gap: 10px; }" +
-    "#__ed-modal .__ed-file-name { font-size: 12px; color: #6B6B73; }" +
+    "#__ed-modal .__ed-file-name { font-size: 14px; color: #6B6B73; }" +
     "#__ed-modal .__ed-preview-wrap { margin-top: 12px; background: #F6F6F8; border: 1px solid #E6E6EA; border-radius: 3px; padding: 8px; min-height: 80px; display:flex; align-items:center; justify-content:center; }" +
     "#__ed-modal .__ed-preview { max-width: 100%; max-height: 160px; display:block; }" +
     "#__ed-modal .__ed-preview:not([src]), #__ed-modal .__ed-preview[src='' i] { display: none; }" +
-    "#__ed-modal .__ed-hint { margin-top: 10px; font-size: 11px; color: #9A9AA2; }" +
-    "#__ed-modal .__ed-check { display:flex; align-items:center; gap:8px; margin-top:12px; font-size: 13px; color: #4A4A52; }" +
+    "#__ed-modal .__ed-hint { margin-top: 10px; font-size: 13px; color: #9A9AA2; }" +
+    "#__ed-modal .__ed-check { display:flex; align-items:center; gap:8px; margin-top:12px; font-size: 15px; color: #4A4A52; }" +
     "#__ed-modal .__ed-modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top: 18px; }" +
     "#__ed-modal .__ed-btn-ghost, #__ed-modal .__ed-btn-primary {" +
-      "font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;" +
+      "font: inherit; font-size: 15px; font-weight: 600; cursor: pointer;" +
       "padding: 9px 14px; border-radius: 3px; border: 1px solid #C8C8CE; background: #fff; color: #111114;" +
     "}" +
     "#__ed-modal .__ed-btn-primary { background: #2E3192; border-color: #2E3192; color: #fff; }" +
