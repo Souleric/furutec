@@ -768,6 +768,24 @@ html { scroll-padding-top: 80px; }
     a[href="portfolio-track-record.html"][style*="inline-flex"] { min-height:44px; }
     footer a[href] { min-width:44px; }
   }
+  /* Header on phones: the inline gap/padding on #ft-header-inner and
+     #ft-utility used to win over the responsive rules, leaving too little
+     room and squeezing the logo sideways.  Force the compact spacing and
+     let the logo only ever scale in proportion. */
+  .ft-logo-img { height:auto !important; max-height:44px; width:auto; max-width:100%; }
+  @media (max-width: 820px) {
+    #ft-header-inner { gap:12px !important; padding:12px 18px !important; }
+    #ft-utility { gap:10px !important; }
+  }
+  @media (max-width: 420px) {
+    #ft-header-inner { gap:8px !important; padding:10px 14px !important; }
+    #ft-utility { gap:8px !important; }
+  }
+  /* Phones: size the hero headline to the screen so its first line
+     ("Engineered for Density.") stays on one line instead of breaking. */
+  @media (max-width: 480px) {
+    .ft-hero h1 { font-size:min(40px, 8.8vw) !important; }
+  }
 </style>
 </head>
 
