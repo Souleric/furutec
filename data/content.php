@@ -1,6 +1,6 @@
 <?php
 // Furutec Editor content — auto-written by /editor/save.php.
-// Last update: 2026-11-25 08:00:51
+// Last update: 2026-11-25 08:28:10
 
 return array(
     'shared' => array(
@@ -147,7 +147,7 @@ return array(
 Serving diverse sectors including commercial buildings, industrial facilities and mission-critical data centres, complemented by an Intelligent Monitoring System that enhances system visibility, monitoring and operational oversight.',
             'body_2' => 'Developed and type-tested in accordance with applicable international standards, our busduct systems are engineered to deliver reliable performance, operational safety and consistent power distribution across a wide range of operating environments and application requirements.',
             'button_label' => 'Discover EITA Group',
-            'button_url' => 'https://www.eita.com.my',
+            'button_url' => 'https://eita.com.my',
             'bg_video_focus' => '',
         ),
         'product_overview' => array(
