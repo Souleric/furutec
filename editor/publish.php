@@ -57,12 +57,25 @@ foreach ($fieldmap['pages'] as $page_id => $pageDef) {
     $publishedFiles[] = $pageDef['live_file'];
 }
 
-// Trim old backups: keep newest 40 (roughly 20 publishes across 2 pages).
+// Trim old backups by PUBLISH, not by filename.  Every publish (and every
+// restore's safety copy) writes one file per page sharing a timestamp, so
+// group by that timestamp and keep the newest 30 groups whole.  The old
+// code sorted filenames alphabetically and kept the last 40, which kept
+// only quote-*.html and deleted every other page's backup straight away,
+// so "Restore previous" could only ever restore the contact page.
 $backups = glob($backupsDir . '/*.html');
-if (is_array($backups) && count($backups) > 40) {
-    sort($backups);
-    $toDelete = array_slice($backups, 0, count($backups) - 40);
-    foreach ($toDelete as $b) @unlink($b);
+if (is_array($backups)) {
+    $groups = array();
+    foreach ($backups as $b) {
+        if (preg_match('/-(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})\.html$/', basename($b), $m)) {
+            $groups[$m[1]][] = $b;
+        }
+    }
+    krsort($groups);                       // newest timestamp first
+    $keep = 30;
+    foreach (array_slice($groups, $keep, null, true) as $files) {
+        foreach ($files as $b) @unlink($b);
+    }
 }
 
 fx_json_response(array(
