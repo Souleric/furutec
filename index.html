@@ -852,6 +852,16 @@ html { scroll-padding-top: 80px; }
     #engineered-section h2 { font-size:44px !important; }
     #engineered-section .es-content p { max-width:680px !important; }
   }
+  /* Facilities photos: show the four production shots across the seam
+     between the two building photos on phones and tablets too (they were
+     hidden below 900px).  Kept inside the photo width so nothing reaches
+     the screen edge. */
+  @media (max-width: 900px) {
+    .fv2-process { display:grid !important; width:94% !important; max-width:none !important; gap:10px; }
+  }
+  @media (max-width: 720px) {
+    .fv2-process { width:95% !important; gap:6px; }
+  }
   /* Globe hint: centred under the globe at every size (it used to sit in
      the bottom-right corner of the drawing, which reaches the screen edge). */
   /* The globe's outer ring ends at y=531 of the 540-tall drawing, so the
