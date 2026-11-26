@@ -836,6 +836,22 @@ html { scroll-padding-top: 80px; }
     #engineered-section .es-bg-veil { display:none !important; }
     #engineered-section .es-content { opacity:1 !important; transform:none !important; transition:none !important; }
   }
+  /* Tablet portrait (every iPad held upright): Company Profile laid out
+     like the phone — globe centred on top, text full width below. */
+  @media (min-width: 721px) and (max-width: 1024px) and (orientation: portrait) {
+    #engineered-section .es-content { grid-template-columns:1fr !important; gap:32px !important; }
+    #engineered-section .es-content > div:nth-child(2) {
+      order:-1 !important; min-height:auto !important; justify-content:center !important; display:flex !important;
+    }
+    #engineered-section .es-content > div:nth-child(2) > div {
+      position:static !important; right:auto !important; top:auto !important; transform:none !important;
+      width:100% !important; max-width:460px !important; margin:0 auto !important;
+    }
+    #world-map-dots { width:100% !important; margin:0 auto !important; }
+    #world-map-dots svg { width:100% !important; height:auto !important; }
+    #engineered-section h2 { font-size:44px !important; }
+    #engineered-section .es-content p { max-width:680px !important; }
+  }
   /* Globe hint: centred under the globe at every size (it used to sit in
      the bottom-right corner of the drawing, which reaches the screen edge). */
   #globe-hint { transform:translate(375px, 534px); }
