@@ -854,11 +854,19 @@ html { scroll-padding-top: 80px; }
   }
   /* Globe hint: centred under the globe at every size (it used to sit in
      the bottom-right corner of the drawing, which reaches the screen edge). */
-  #globe-hint { transform:translate(375px, 534px); }
-  #globe-hint text { text-anchor:middle; }
+  /* The globe's outer ring ends at y=531 of the 540-tall drawing, so the
+     hint is placed just below the drawing (16 units clear of the ring) and
+     the drawing is allowed to show it; the margin reserves that space. */
+  #globe-svg { overflow:visible; margin-bottom:8%; }
+  #globe-hint { transform:translate(375px, 550px); }
+  #globe-hint text { text-anchor:middle; dominant-baseline:hanging; }
   @media (max-width: 1100px) {
     #globe-hint text { font-size:22px !important; }
   }
+  /* The drawing is scaled down on smaller screens, so move the hint
+     further (in drawing units) to keep roughly the same visible gap. */
+  @media (max-width: 1024px) { #globe-hint { transform:translate(375px, 556px); } }
+  @media (max-width: 720px)  { #globe-hint { transform:translate(375px, 564px); } }
   /* Phones: size the hero headline to the screen so its first line
      ("Engineered for Density.") stays on one line instead of breaking. */
   @media (max-width: 480px) {
