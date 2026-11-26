@@ -774,18 +774,18 @@ html { scroll-padding-top: 80px; }
      let the logo only ever scale in proportion. */
   .ft-logo-img { height:auto !important; max-height:44px; width:auto; max-width:100%; }
   @media (max-width: 820px) {
-    #ft-header-inner { gap:12px !important; padding:12px 18px !important; }
+    #ft-header-inner { gap:12px !important; padding:12px 32px !important; }
     #ft-utility { gap:10px !important; }
   }
   @media (max-width: 420px) {
-    #ft-header-inner { gap:8px !important; padding:10px 14px !important; }
+    #ft-header-inner { gap:8px !important; padding:10px 20px !important; }
     #ft-utility { gap:8px !important; }
   }
   /* Tablets (iPad portrait/landscape, 821-1100px): same inline-style
      problem — the full menu, phone number and button did not fit, which
      crushed the logo.  Tighten the spacing and keep WhatsApp as an icon. */
   @media (min-width: 821px) and (max-width: 1100px) {
-    #ft-header-inner { gap:20px !important; padding:14px 24px !important; }
+    #ft-header-inner { gap:20px !important; padding:14px 32px !important; }
     #ft-nav { gap:20px !important; }
     #ft-utility { gap:10px !important; }
     #ft-phone span { display:none; }
@@ -800,6 +800,11 @@ html { scroll-padding-top: 80px; }
      right edge (they used to sit in the middle of the bar on iPads). */
   @media (max-width: 820px) {
     #ft-header-inner { grid-template-columns:1fr auto !important; }
+  }
+  /* Side gutters: the header now lines up with the page content
+     (32px on tablets and small desktops, 20px on phones). */
+  @media (max-width: 480px) {
+    #ft-header-inner { padding-left:20px !important; padding-right:20px !important; }
   }
   /* Tablets: the 5-column footer was too cramped — brand block on its own
      row, the four link columns below, and a centred bottom bar. */
@@ -822,10 +827,12 @@ html { scroll-padding-top: 80px; }
     /* Events & Newsletter: three cards in one row instead of 2 + 1 orphan */
     .en-grid { grid-template-columns:repeat(3, 1fr) !important; gap:16px !important; }
   }
+  /* Globe hint: centred under the globe at every size (it used to sit in
+     the bottom-right corner of the drawing, which reaches the screen edge). */
+  #globe-hint { transform:translate(375px, 534px); }
+  #globe-hint text { text-anchor:middle; }
   @media (max-width: 1100px) {
-    /* Globe hint: was a few pixels tall and jammed against the edge */
-    #globe-hint { transform:translate(375px, 532px); }
-    #globe-hint text { text-anchor:middle; font-size:22px !important; }
+    #globe-hint text { font-size:22px !important; }
   }
   /* Phones: size the hero headline to the screen so its first line
      ("Engineered for Density.") stays on one line instead of breaking. */
