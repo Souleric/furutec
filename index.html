@@ -710,10 +710,8 @@ html { scroll-padding-top: 80px; }
     }
   }
 
-  /* --- HOMEPAGE: Company Profile ("Build on expertise") section — phones AND
-     tablets (up to 1024px, i.e. every iPad in portrait): one column, globe
-     above the text, same as the phone layout --- */
-  @media (max-width: 1024px) {
+  /* --- HOMEPAGE: Company Profile ("Build on expertise") section — mobile layout --- */
+  @media (max-width: 720px) {
     /* Hide the background logo video and its veil (also saves bandwidth on mobile) */
     #engineered-section .es-bg-video,
     #engineered-section .es-bg-veil { display: none !important; }
@@ -744,10 +742,6 @@ html { scroll-padding-top: 80px; }
     }
     #world-map-dots { width: 100% !important; margin: 0 auto !important; }
     #world-map-dots svg { width: 100% !important; height: auto !important; }
-  }
-  /* Tablets: same stacked layout as phones, globe a little larger */
-  @media (min-width: 721px) and (max-width: 1024px) {
-    #engineered-section .es-content > div:nth-child(2) > div { max-width: 440px !important; }
   }
 </style>
 
