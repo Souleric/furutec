@@ -815,6 +815,29 @@ html { scroll-padding-top: 80px; }
   </nav>
 </header>
 
+<!-- Mobile menu toggle (was missing on this page, so the hamburger did nothing) -->
+<script>
+  (function () {
+    var burger = document.getElementById('ft-burger');
+    var menu = document.getElementById('ft-mobile-nav');
+    if (!burger || !menu) return;
+    function close() { burger.classList.remove('open'); menu.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); }
+    burger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = !burger.classList.contains('open');
+      burger.classList.toggle('open', open);
+      menu.classList.toggle('open', open);
+      burger.setAttribute('aria-expanded', String(open));
+    });
+    document.addEventListener('click', function (e) {
+      if (!menu.classList.contains('open')) return;
+      if (menu.contains(e.target) || burger.contains(e.target)) return;
+      close();
+    });
+    menu.addEventListener('click', function (e) { if (e.target.tagName === 'A') close(); });
+  })();
+</script>
+
 <!-- PAGE HEADER -->
 <section style="background:#F4F6FB;padding:96px 0 72px;border-bottom:1px solid #ECECF1;">
   <div style="max-width:1320px;margin:0 auto;padding:0 32px;text-align:center;">
