@@ -2187,12 +2187,23 @@ fxHero.init();
     display:flex; align-items:center; justify-content:center;
   }
   #engineered-section .es-content { width:100%; }
+  /* Logo video stage: centred in the section and never larger than one
+     screen (viewport minus the sticky header), and never so tall for its
+     width that the 16:9 clip has to crop the logo at the sides (the logo
+     spans ~73% of the frame at its widest).  Soft top/bottom fade so the
+     clip's grey backdrop melts into the section instead of ending on a
+     hard line when the stage is shorter than the section. */
   .es-bg-video {
-    position:absolute; inset:0;
+    position:absolute; left:0; right:0; top:50%;
+    transform:translateY(-50%);
     width:100%; height:100%;
+    max-height:min(calc(100vh - 76px), 72vw);
+    max-height:min(calc(100svh - 76px), 72vw);
     object-fit:cover;
     z-index:0;
     pointer-events:none;
+    -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 9%, #000 91%, transparent 100%);
+            mask-image:linear-gradient(to bottom, transparent 0, #000 9%, #000 91%, transparent 100%);
   }
   .es-bg-veil {
     position:absolute; inset:0; z-index:1;
@@ -2290,11 +2301,13 @@ fxHero.init();
       entries.forEach(function (e) {
         if (e.isIntersecting) {
           playOnce();
-          io.unobserve(section);
+          io.disconnect();
         }
       });
-    }, { threshold: 0.25 });
-    io.observe(section);
+    }, { threshold: 0.6 });
+    // Watch the video stage itself (never taller than the screen), so the
+    // clip starts once most of it is actually in view.
+    io.observe(video || section);
   })();
 
 </script>
