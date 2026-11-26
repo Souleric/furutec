@@ -827,6 +827,15 @@ html { scroll-padding-top: 80px; }
     /* Events & Newsletter: three cards in one row instead of 2 + 1 orphan */
     .en-grid { grid-template-columns:repeat(3, 1fr) !important; gap:16px !important; }
   }
+  /* Tablets and phones (up to 1024px, i.e. every iPad in portrait): no
+     logo video before the Company Profile — the 16:9 clip does not suit
+     portrait screens.  The text and globe simply show straight away.
+     (Phones up to 720px were already handled further up.) */
+  @media (max-width: 1024px) {
+    #engineered-section .es-bg-video,
+    #engineered-section .es-bg-veil { display:none !important; }
+    #engineered-section .es-content { opacity:1 !important; transform:none !important; transition:none !important; }
+  }
   /* Globe hint: centred under the globe at every size (it used to sit in
      the bottom-right corner of the drawing, which reaches the screen edge). */
   #globe-hint { transform:translate(375px, 534px); }
@@ -2282,6 +2291,13 @@ fxHero.init();
       section.classList.add('is-revealed');
     }
 
+    // Tablets and phones: the clip is hidden by CSS, so do not play or
+    // download it — show the content at once.
+    if (window.matchMedia && window.matchMedia('(max-width: 1024px)').matches) {
+      reveal();
+      if (video) { try { video.preload = 'none'; video.removeAttribute('src'); video.load(); } catch (e) {} }
+      return;
+    }
     function playOnce() {
       if (triggered || !video) return;
       triggered = true;
